@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Player Page Template</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="player.css">
+    <!-- Latest compiled and minified plotly.js JavaScript -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+</head>
+<body>
+<div class="container my-5 player-container">
+    <div class="row player-header my-2">
+        <div class="col-sm-5 player-info">
+            <div class="well player-image">
+                <img width="250px" src="https://media.giphy.com/media/7SZzTSx9jPWFIEJkeo/giphy.gif"/>
+            </div>
+            <div class="player-info">
+                <span class="first-name">Saquan</span>
+                <span class="last-name">Barkley</span>
+                <span class="player-info-line">#34 New York Giants</span>
+                <br>
+                <span class="player-info-line">5' 11"</span>
+                <br>
+                <span class="player-info-line">233 lbs</span>
+                <br>
+                <span class="player-info-line">Age: 22.3</span>
+                <br>
+                <span class="player-info-line">College: Penn. St.</span>
+                <br>
+                <span class="player-info-line">Draft Pick: 1.02</span>
+            </div>
+            <div>
+                <span> Sleeper Redraft ADP: 1.01 | </span>
+                <span> Sleeper Dynasty ADP: 1.01</span>
+                <br>
+                <span> Draft.com BestBall ADP: 1.02</span>
+            </div>
+
+        </div>
+        <div class="col-sm-3 player-info-graph">
+            <p class="text-center">Current Team Role: Alpha RB</p>
+            <div id="fit" style="width: 200px;margin: auto; height:150px"></div>
+            <div id="fit2" style="width: 200px;margin: auto;  height:150px"></div>
+        </div>
+        <div class="col-sm-3 player-scores">
+            <div id="measurables" ></div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+
+        <h5 class="text-center">Athletic Breakdown</h5>
+        <div class="row player-athlete">
+            <div class="col-sm-8">
+                <div class="prospect-graph" id="prospect"></div>
+            </div>
+            <div class="col-sm-4">
+                <p>Grinder RB Score: </p>
+                <div class="progress">
+                    <div class="progress-bar bg-success" style="width:90%"></div>
+                </div>
+                <p>Pass Catcher RB Score: </p>
+                <div class="progress">
+                    <div class="progress-bar bg-success" style="width:95%"></div>
+                </div>
+                <p>Alpha RB Score: </p>
+                <div class="progress">
+                    <div class="progress-bar bg-success" style="width:97%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 player-body my-5">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Situation Breakdown</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false">NFL Performance</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Matchup Breakdown</a>
+            </li>
+        </ul>
+
+        <div class="tab-content my-2">
+            <div class="tab-pane active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="col-sm-12 player-college">
+                    <h5 class="text-center">College Breakdown</h5>
+                    <div class="col-sm-7">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Year</th>
+                                <th scope="col">School</th>
+                                <th scope="col">Conf</th>
+                                <th scope="col">Class</th>
+                                <th scope="col">Rush Atts</th>
+                                <th scope="col">Rush Yds</th>
+                                <th scope="col">YPC</th>
+                                <th scope="col">Rush Tds</th>
+                                <th scope="col">Rec</th>
+                                <th scope="col">Rec Yds</th>
+                                <th scope="col">YPR</th>
+                                <th scope="col">Rec Tds</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Dominator</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">2015</th>
+                                <td>Penn St.</td>
+                                <td>Big Ten</td>
+                                <td>FR</td>
+                                <td>182</td>
+                                <td>1076</td>
+                                <td>5.9</td>
+                                <td>7</td>
+                                <td>20</td>
+                                <td>161</td>
+                                <td>8.1</td>
+                                <td>1</td>
+                                <td>18</td>
+                                <td>25%</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2016</th>
+                                <td>Penn St.</td>
+                                <td>Big Ten</td>
+                                <td>FR</td>
+                                <td>182</td>
+                                <td>1076</td>
+                                <td>5.9</td>
+                                <td>7</td>
+                                <td>20</td>
+                                <td>161</td>
+                                <td>8.1</td>
+                                <td>1</td>
+                                <td>18</td>
+                                <td>25%</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2017</th>
+                                <td>Penn St.</td>
+                                <td>Big Ten</td>
+                                <td>FR</td>
+                                <td>182</td>
+                                <td>1076</td>
+                                <td>5.9</td>
+                                <td>7</td>
+                                <td>20</td>
+                                <td>161</td>
+                                <td>8.1</td>
+                                <td>1</td>
+                                <td>18</td>
+                                <td>25%</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                <table id="myTable" class="cell-border compact stripe">
+                    <thead>
+                    <thead>
+
+
+
+
+
+
+                    <tr class="LAcolors player-table-header">
+                        <td colspan="4">Regular Season</td>
+
+                        <td colspan="2">Games</td>
+
+                        <td colspan="5">Receiving</td>
+
+                        <td colspan="5">Rushing</td>
+
+                        <td colspan="2">Fumbles</td>
+
+                    </tr>
+                    <tr class="player-table-key">
+                        <td class="first-td">WK</td>
+                        <td>Game Date</td>
+                        <td>Opp</td>
+                        <td>Result</td>
+
+
+                        <td>G</td>
+
+                        <td>GS</td>
+
+                        <td>Rec</td>
+
+                        <td>Yds</td>
+
+                        <td>Avg</td>
+
+                        <td>Lng</td>
+
+                        <td>TD</td>
+
+                        <td>Att</td>
+
+                        <td>Yds</td>
+
+                        <td>Avg</td>
+
+                        <td>Lng</td>
+
+                        <td>TD</td>
+
+                        <td>FUM</td>
+
+                        <td class="last-td">Lost</td>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    ...
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                Matchup
+            </div>
+        </div>
+    </div>
+    <script>
+
+       data = [{
+           type: 'scatterpolar',
+           r: [88, 80, 98, 92, 85, 95, 95],
+           theta: ['weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad'],
+           fill: 'toself'
+       }];
+
+       layout = {
+           polar: {
+               radialaxis: {
+                   visible: true,
+                   range: [0, 100]
+               }
+           },
+           title: 'Measurables',
+           font: {size: 10},
+           autosize: false,
+           width: 300,
+           height: 300,
+           margin: {
+               l: 40,
+               r: 40,
+               b: 0,
+               t: 25,
+               pad: 0
+           },
+           showlegend: false
+       };
+
+       Plotly.plot("measurables", data, layout, {responsive: true, displayModeBar: false});
+
+        var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Block Power'];
+
+        var trace1 = {
+            x: xValue,
+            y: [90, 99, 98, 90, 85],
+            name: 'Percentile',
+            type: 'bar'
+        };
+
+        var trace2 = {
+            x: xValue,
+            y: [54, 54, 64, 58, 60],
+            name: 'Average NFL Back',
+            type: 'scatter'
+        };
+
+        var data = [trace1, trace2];
+
+        var layout = {
+            font: {size: 12},
+            yaxis: {title: 'Percentile'},
+            yaxis2: {
+                titlefont: {color: 'rgb(148, 103, 189)'},
+                tickfont: {color: 'rgb(148, 103, 189)'},
+                overlaying: 'y',
+                side: 'right'
+            },
+            autoexpand: true,
+            margin: {
+              t:10
+            },
+            width: 700,
+            height: 350,
+            colorscale: [
+                ['0.0', 'rgb(165,0,38)'],
+                ['0.111111111111', 'rgb(215,48,39)'],
+                ['0.222222222222', 'rgb(244,109,67)'],
+                ['0.333333333333', 'rgb(253,174,97)'],
+                ['0.444444444444', 'rgb(254,224,144)'],
+                ['0.555555555556', 'rgb(224,243,248)'],
+                ['0.666666666667', 'rgb(171,217,233)'],
+                ['0.777777777778', 'rgb(116,173,209)'],
+                ['0.888888888889', 'rgb(69,117,180)'],
+                ['1.0', 'rgb(49,54,149)']
+            ],
+        };
+
+        Plotly.newPlot('prospect', data, layout, {responsive: true, displayModeBar: false});
+
+        // Enter a speed between 0 and 180
+        var level = 92;
+
+        // Trig to calc meter point
+        var degrees = 100 - level,
+            radius = .5;
+        var radians = degrees * Math.PI / 180;
+        var x = radius * Math.cos(radians);
+        var y = radius * Math.sin(radians);
+
+        // Path: may have to change to create a better triangle
+        var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
+            pathX = String(x),
+            space = ' ',
+            pathY = String(y),
+            pathEnd = ' Z';
+        var path = mainPath.concat(pathX,space,pathY,pathEnd);
+
+        var data = [{ type: 'scatter',
+            x: [0], y:[0],
+            marker: {size: 20, color:'850000'},
+            showlegend: false,
+            name: 'Rating',
+            text: level,
+            hoverinfo: 'text+name'},
+            { values: [20, 20, 20, 20, 20, 100],
+                rotation: 90,
+                text: ['Elite', 'Great', 'Good', 'Meh',
+                    'Trash', ''],
+                textinfo: 'text',
+                textposition:'inside',
+                marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(110, 154, 22, .5)',
+                        'rgba(170, 202, 42, .5)', 'rgba(202, 209, 95, .5)',
+                        'rgba(210, 206, 145, .5)',
+                        'rgba(255, 255, 255, 0)']},
+                labels: ['151-180', '121-150', '91-120', '61-90', '31-60', ''],
+                hoverinfo: 'label',
+                hole: .5,
+                type: 'pie',
+                showlegend: false
+            }];
+
+        var layout = {
+            font: {size: 8},
+            shapes:[{
+                type: 'path',
+                path: path,
+                fillcolor: '850000',
+                line: {
+                    color: '850000'
+                }
+            }],
+            title: 'Alpha RB Rating',
+            Speed: '0-100',
+            autosize: false,
+            width: 200,
+            height: 200,
+            margin: {
+               l: 10,
+               r: 10,
+               b: 0,
+               t: 25,
+               pad: 10
+            },
+            xaxis: {
+                zeroline:false,
+                showticklabels:false,
+                showgrid: false,
+                range: [-1, 1]
+            },
+            yaxis: {
+                zeroline:false,
+                showticklabels:false,
+                showgrid: false,
+                range: [-1, 1]
+            }
+        };
+
+        Plotly.newPlot('fit', data, layout, {displayModeBar: false});
+
+// Enter a speed between 0 and 180
+var level = 35;
+
+// Trig to calc meter point
+var degrees = 100 - level,
+    radius = .5;
+var radians = degrees * Math.PI / 100;
+var x = radius * Math.cos(radians);
+var y = radius * Math.sin(radians);
+
+// Path: may have to change to create a better triangle
+var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
+    pathX = String(x),
+    space = ' ',
+    pathY = String(y),
+    pathEnd = ' Z';
+var path = mainPath.concat(pathX,space,pathY,pathEnd);
+
+var data = [{ type: 'scatter',
+    x: [0], y:[0],
+    marker: {size: 20, color:'850000'},
+    showlegend: false,
+    name: 'Rating',
+    text: level,
+    hoverinfo: 'text+name'},
+    { values: [20, 20, 20, 20, 20, 100],
+        rotation: 90,
+        text: ['Elite', 'Great', 'Good', 'Meh',
+            'Trash', ''],
+        textinfo: 'text',
+        textposition:'inside',
+        marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(110, 154, 22, .5)',
+                'rgba(170, 202, 42, .5)', 'rgba(202, 209, 95, .5)',
+                'rgba(210, 206, 145, .5)',
+                'rgba(255, 255, 255, 0)']},
+        labels: ['151-180', '121-150', '91-120', '61-90', '31-60', ''],
+        hoverinfo: 'label',
+        hole: .5,
+        type: 'pie',
+        showlegend: false
+    }];
+
+var layout = {
+    font: {size: 8},
+    shapes:[{
+        type: 'path',
+        path: path,
+        fillcolor: '850000',
+        line: {
+            color: '850000'
+        }
+    }],
+    title: 'Team Alpha RB Opportunity',
+    Speed: '0-100',
+    autosize: false,
+    width: 200,
+    height: 200,
+    margin: {
+        l: 10,
+        r: 10,
+        b: 0,
+        t: 25,
+        pad: 10
+    },
+    xaxis: {
+        zeroline:false,
+        showticklabels:false,
+        showgrid: false,
+        range: [-1, 1]
+    },
+    yaxis: {
+        zeroline:false,
+        showticklabels:false,
+        showgrid: false,
+        range: [-1, 1]
+    }
+};
+
+Plotly.newPlot('fit2', data, layout, {displayModeBar: false});
+
+// var data = [{
+//     values: [55, 26, 19],
+//     labels: ['RB1 weeks', 'RB2 weeks', 'Bust'],
+//     type: 'pie'
+// }];
+//
+// var layout = {
+//     height: 260,
+//     width: 260,
+//     autosize:false,
+//     font: {size:10},
+//     margin: {
+//         l: 10,
+//         r: 10,
+//         b: 0,
+//         t: 55,
+//         pad: 10
+//     },
+//     title: "Weekly Usability"
+// };
+//
+// Plotly.newPlot('consistent', data, layout, {displayModeBar: false});
+
+$(document).ready( function () {
+    var data = [
+        {
+            "name":       "Tiger Nixon",
+            "position":   "System Architect",
+            "salary":     "$3,120",
+            "start_date": "2011/04/25",
+            "office":     "Edinburgh",
+            "extn":       "5421"
+        },
+        {
+            "name":       "Garrett Winters",
+            "position":   "Director",
+            "salary":     "$5,300",
+            "start_date": "2011/07/25",
+            "office":     "Edinburgh",
+            "extn":       "8422"
+        }
+    ];
+
+    $('#myTable').DataTable({
+        data: data,
+        paging: false,
+        select: true
+    });
+} );
+    </script>
+</div>
+</body>
+</html>

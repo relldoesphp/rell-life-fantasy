@@ -1,0 +1,68 @@
+body {
+    font-size:14px;
+    background: whitesmoke;
+}
+
+.player-container {
+    border:thin solid #ccc;
+    background: white;
+}
+
+.player-header {
+    min-height:270px;
+}
+
+.player-image {
+    height:250px;
+    width:250px;
+    border:thin solid #ccc;
+    display:inline-block;
+    vertical-align:top;
+}
+
+.player-info {
+    display:inline-block;
+    width:180px;
+    min-height:300px;
+    vertical-align:top;
+    margin-left:10px;
+}
+
+.first-name {
+    font-size:30px;
+    display:block;
+}
+.last-name {
+    font-size:40px;
+    display:block;
+}
+
+.radius-graph {
+    width:200px;
+    height:200px;
+    border:thin solid #ccc;
+}
+
+.player-info-line {
+
+}
+
+.player-info-graph {
+    border-left:thin solid #ccc;
+    border-right:thin solid #ccc;
+}
+
+.player-body {
+    min-height:500px;
+}
+
+.player-athlete {
+    min-height:350px;
+    border-bottom: thin solid #ccc;
+}
+
+.player-college {
+    min-height:350px;
+}
+
+
