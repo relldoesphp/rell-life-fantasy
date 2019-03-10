@@ -1,0 +1,29 @@
+<?php
+
+// module/Album/view/player/player/index.phtml:
+
+$title = 'Players';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    <a href="<?= $this->url('player', ['action' => 'add']) ?>">Add new player</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>Title</th>
+        <th>Artist</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($players as $player) : ?>
+    <tr>
+        <td><?= $this->escapeHtml($player->firstName) ?></td>
+        <td><?= $this->escapeHtml($player->lastName) ?></td>
+        <td>
+            <a href="<?= $this->url('album', ['action' => 'edit', 'id' => $player->id]) ?>">Edit</a>
+            <a href="<?= $this->url('album', ['action' => 'delete', 'id' => $player->id]) ?>">Delete</a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>
