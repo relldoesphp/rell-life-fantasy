@@ -32,7 +32,8 @@
     "autoload": {
         "psr-4": {
             "Application\\": "module/Application/src/",
-            "Blog\\": "module/Blog/src"
+            "Blog\\": "module/Blog/src",
+            "Player\\": "module/Player/src"
         }
     },
     "autoload-dev": {
