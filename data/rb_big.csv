@@ -1,0 +1,492 @@
+"Full Name",Position,Age,"Birth Date","Hand Size","Arm Length",College,Height,BMI,"Draft Pick","Height (Inches)",Team
+"Aaron Green",RB,25.4,10/15/93,"8 5/8","30    ",TCU,"5' 11""",28.3,Undrafted,71,-
+"Aaron Jones",RB,24.3,12/2/94,"9 1/2","32 1/2",UTEP,"5' 9""",30.7,5.39,69,"Green Bay Packers"
+"Aaron Ripkowski",RB,26.3,12/20/92,"10 3/8","31 3/4",Oklahoma,"6' 1""",32.5,6.30,73,"Kansas City Chiefs"
+"Adrian Peterson",RB,34.0,3/21/85,"9 1/2","32 1/4",Oklahoma,"6' 1""",28.6,1.07,73,Washington
+"Ahmad Bradshaw",RB,33.0,3/19/86,-,-,Marshall,"5' 9""",31.6,7.40,69,-
+"Akeem Hunt",RB,26.1,2/22/93,"9 5/8","31 1/8",Purdue,"5' 10""",27.1,Undrafted,70,-
+"Akeem Judd",RB,26.3,12/11/92,"9 5/8","31 1/2",Mississippi,"5' 10""",32.3,Undrafted,70,-
+"Akrum Wadley",RB,24.0,3/13/95,"8 1/4","29 1/2",Iowa,"5' 10""",27.8,Undrafted,70,-
+"Alan Cross",RB,25.9,5/2/93,"9 1/4","31 3/4",Memphis,"6' 1""",31.7,Undrafted,73,"Tampa Bay Buccaneers"
+"Alec Ingold",RB,22.7,7/19/96,"9 5/8","31 1/2",Wisconsin,"6' 1""",31.9,-,73,-
+"Alex Armah",RB,24.8,5/17/94,"9 3/4","32 1/4","West Virginia","6' 2""",32.7,6.08,74,"Carolina Panthers"
+"Alex Barnes",RB,22.4,10/27/96,"10    ","31    ","Kansas State","6' 0""",30.6,-,72,-
+"Alex Collins",RB,24.6,8/26/94,"9 1/4","30 1/4",Arkansas,"5' 10""",31.1,5.34,70,"Baltimore Ravens"
+"Alexander Mattison",RB,20.8,6/19/98,"9 1/8","31    ","Boise State","5' 11""",30.8,-,71,-
+"Alfonso Smith",RB,32.2,1/23/87,-,-,Kentucky,"6' 1""",27.4,Undrafted,73,-
+"Alfred Blue",RB,27.9,4/27/91,"9 7/8","32 3/8",LSU,"6' 2""",28.6,6.05,74,-
+"Alfred Morris",RB,30.3,12/12/88,"10 1/4","31 3/8","Florida Atlantic","5' 10""",31.4,6.03,70,"San Francisco 49ers"
+"Alonzo Harris",RB,26.4,11/9/92,"10 1/8","33 1/2",Louisiana-Lafayette,"6' 1""",29.0,Undrafted,73,-
+"Alvester Alexander",RB,28.4,10/17/90,-,-,Wyoming,"5' 10""",29.6,Undrafted,70,-
+"Alvin Kamara",RB,23.7,7/25/95,"9 1/4","32 3/4",Tennessee,"5' 10""",30.7,3.03,70,"New Orleans Saints"
+"Ameer Abdullah",RB,25.8,6/13/93,"8 5/8","30    ",Nebraska,"5' 9""",30.3,2.22,69,"Minnesota Vikings"
+"Andre Brown",RB,32.3,12/15/86,"9 1/2","32    ","NC State","6' 0""",30.8,4.29,72,-
+"Andre Ellington",RB,30.1,2/3/89,"9 3/8","31    ",Clemson,"5' 9""",29.4,6.19,69,"Tampa Bay Buccaneers"
+"Andre Williams",RB,26.6,8/28/92,"9    ","33 1/2","Boston College","5' 11""",32.1,4.13,71,-
+"Andy Janovich",RB,25.8,5/23/93,"9 3/4","31 5/8",Nebraska,"6' 1""",31.4,6.01,73,"Denver Broncos"
+"Anthony Dixon",RB,31.5,9/24/87,"9 3/4","32 1/2","Mississippi State","6' 1""",30.7,6.04,73,-
+"Anthony Sherman",RB,30.3,12/11/88,"9 3/8","30    ",Connecticut,"5' 10""",34.7,5.05,70,-
+"Anthony Wales",RB,-,-,"8 1/4","30 1/8","Western Kentucky","5' 9""",29.1,Undrafted,69,-
+"Antone Smith",RB,33.5,9/17/85,-,-,"Florida State","5' 9""",28.1,Undrafted,69,-
+"Antonio Andrews",RB,27.4,10/15/91,"9 1/2","31 1/4","Western Kentucky","5' 10""",32.3,Undrafted,70,-
+"Arian Foster",RB,32.6,8/24/86,-,-,Tennessee,"6' 1""",29.6,Undrafted,73,-
+"Austin Ekeler",RB,23.8,5/17/95,-,-,"Western State","5' 9""",29.4,Undrafted,69,"Los Angeles Chargers"
+"Austin Johnson",RB,29.8,6/16/89,-,-,Tennessee,"6' 1""",31.8,Undrafted,73,-
+"B.J. Catalon",RB,-,-,"9    ","30    ",TCU,"5' 7""",29.1,Undrafted,67,-
+"Ben Malena",RB,26.8,5/29/92,"9    ","28 3/4","Texas A&M","5' 8""",29.5,Undrafted,68,-
+"Ben Tate",RB,30.6,8/21/88,"9    ","31 1/4",Auburn,"5' 11""",30.7,2.26,71,-
+"BenJarvis Green-Ellis",RB,33.7,7/2/85,-,-,Mississippi,"5' 11""",31.2,Undrafted,71,-
+"Benny Cunningham",RB,28.7,7/7/90,-,-,"Middle Tennessee","5' 10""",30.4,Undrafted,70,"Chicago Bears"
+"Benny Snell",RB,21.1,2/27/98,"9 3/8","31    ",Kentucky,"5' 10""",32.1,-,70,-
+"Bernard Pierce",RB,28.9,5/10/90,"9 1/4","31 1/2",Temple,"6' 0""",29.6,3.21,72,-
+"Bilal Powell",RB,30.4,10/27/88,"8 5/8","30 3/4",Louisville,"5' 10""",29.3,4.29,70,-
+"Bishop Sankey",RB,26.5,9/15/92,"10    ","31    ",Washington,"5' 10""",30.0,2.22,70,-
+"Blake Sims",RB,27.2,1/3/92,"9    ","31 1/2",Alabama,"5' 11""",30.4,Undrafted,71,-
+"Bo Scarbrough",RB,22.5,9/29/96,"10    ","33 1/2",Alabama,"6' 1""",30.1,7.18,73,"Seattle Seahawks"
+"Bobby Rainey",RB,31.4,10/16/87,"8 5/8","30 1/8","Western Kentucky","5' 8""",32.2,Undrafted,68,-
+"Boom Williams",RB,23.5,9/30/95,"8 5/8","30    ",Kentucky,"5' 7""",29.8,Undrafted,67,-
+"Boston Scott",RB,23.9,4/27/95,"9 3/8","29 7/8","Louisiana Tech","5' 7""",30.5,6.27,67,"Philadelphia Eagles"
+"Bralon Addison",RB,25.4,10/20/93,"9 1/8","29 1/2",Oregon,"5' 9""",29.1,Undrafted,69,-
+"Branden Oliver",RB,27.9,5/7/91,"8 7/8","29 1/4",Buffalo,"5' 8""",31.6,Undrafted,68,-
+"Brandon Bolden",RB,29.2,1/26/90,"10    ","32 1/4",Mississippi,"5' 11""",30.0,Undrafted,71,"New England Patriots"
+"Brandon Burks",RB,25.4,11/1/93,"8 1/4","29 1/4",Troy,"5' 9""",30.7,Undrafted,69,-
+"Brandon Radcliff",RB,26.0,3/18/93,"9 1/4","29 1/4",Louisville,"5' 9""",30.4,Undrafted,69,-
+"Brandon Wegher",RB,28.3,12/9/90,"9 3/8","29 3/4",Morningside,"5' 10""",30.6,Undrafted,70,-
+"Brandon Wilds",RB,25.7,7/22/93,"10 1/4","32    ","South Carolina","6' 1""",29.0,Undrafted,73,"Arizona Cardinals"
+"Braylon Heard",RB,27.4,10/11/91,"9    ","30 1/4",Kentucky,"5' 10""",28.4,Undrafted,70,-
+"Brennan Clay",RB,27.3,12/12/91,"8 7/8","30    ",Oklahoma,"5' 11""",28.3,Undrafted,71,-
+"Brian Hill",RB,23.4,11/9/95,"8 7/8","31 3/8",Wyoming,"6' 1""",28.9,5.12,73,"Atlanta Falcons"
+"Bronson Hill",RB,26.2,1/2/93,"9 7/8","30 1/2","Eastern Michigan","5' 10""",30.8,Undrafted,70,-
+"Bryce Brown",RB,27.9,5/14/91,-,-,"Kansas State","6' 0""",30.2,7.22,72,-
+"Bryce Love",RB,21.7,7/8/97,"9 1/8","29 3/8",Stanford,"5' 9""",29.5,-,69,-
+"Buddy Howell",RB,23.0,3/27/96,"9 3/8","29 1/4","Florida Atlantic","6' 0""",29.7,Undrafted,72,"Houston Texans"
+"Byron Marshall",RB,25.1,2/13/94,"9 1/2","30 1/4",Oregon,"5' 9""",29.7,Undrafted,69,Washington
+"C.J. Anderson",RB,28.1,2/10/91,"9    ","30    ",California,"5' 8""",34.1,Undrafted,68,"Los Angeles Rams"
+"C.J. Ham",RB,25.7,7/22/93,"9 1/8","31 1/4",Augustana,"5' 11""",32.2,Undrafted,71,"Minnesota Vikings"
+"C.J. Prosise",RB,24.8,5/20/94,"8 1/2","32 1/8","Notre Dame","6' 0""",29.8,3.27,72,"Seattle Seahawks"
+"C.J. Spiller",RB,31.6,8/5/87,"10 1/8","30 3/8",Clemson,"5' 11""",27.3,1.09,71,-
+"Cameron Artis-Payne",RB,28.7,6/23/90,"8 7/8","29 5/8",Auburn,"5' 10""",30.4,5.38,70,"Carolina Panthers"
+"Cameron Marshall",RB,27.4,10/14/91,-,-,"Arizona State","5' 9""",32.0,Undrafted,69,-
+"Carlos Hyde",RB,27.5,9/20/91,"9 5/8","32    ","Ohio State","6' 0""",31.2,2.25,72,"Kansas City Chiefs"
+"Cedric Peerman",RB,32.5,10/10/86,"8    ","31    ",Virginia,"5' 9""",31.0,6.12,69,-
+"Charcandrick West",RB,27.8,6/2/91,"9 1/8","29 7/8","Abilene Christian","5' 10""",29.3,Undrafted,70,-
+"Charles Sims",RB,28.5,9/19/90,"8 1/4","31    ","West Virginia","6' 0""",29.0,3.05,72,-
+"Chase Edmonds",RB,22.9,4/13/96,"9 1/8","31 1/8",Fordham,"5' 9""",30.3,4.34,69,"Arizona Cardinals"
+"Chris Carson",RB,24.5,9/16/94,"9 5/8","33 1/4","Oklahoma State","6' 0""",29.6,7.31,72,"Seattle Seahawks"
+"Chris Ivory",RB,31.0,3/22/88,-,-,"Tiffin State","6' 0""",30.1,Undrafted,72,"Buffalo Bills"
+"Chris Johnson",RB,33.5,9/23/85,"7 1/4","30 1/4","East Carolina","5' 11""",26.6,1.24,71,-
+"Chris Ogbonnaya",RB,32.9,5/5/86,"9 7/8","31 5/8",Texas,"6' 0""",30.5,7.02,72,-
+"Chris Polk",RB,29.3,12/16/89,"9 3/4","31 1/2",Washington,"5' 10""",31.9,Undrafted,70,-
+"Chris Rainey",RB,31.1,3/2/88,"9 1/2","30 3/4",Florida,"5' 8""",26.6,5.24,68,-
+"Chris Thompson",RB,28.4,10/20/90,"9 1/4","30 1/4","Florida State","5' 7""",30.1,5.21,67,Washington
+"Chris Warren",RB,22.8,6/6/96,"10    ","32    ",Texas,"6' 2""",31.7,Undrafted,74,"Oakland Raiders"
+"Christian McCaffrey",RB,22.8,6/7/96,"9    ","30    ",Stanford,"5' 11""",28.2,1.08,71,"Carolina Panthers"
+"Christian Powell",RB,25.1,3/3/94,"8 7/8","32 1/2",Colorado,"5' 11""",31.9,Undrafted,71,-
+"Christine Michael",RB,28.4,11/9/90,"9 3/8","31 1/2","Texas A&M","5' 10""",31.6,2.30,70,-
+"Christopher Ezeala",RB,23.1,9/19/95,-,-,None,"5' 11""",33.9,Undrafted,71,"Baltimore Ravens"
+"Cierre Wood",RB,28.1,2/21/91,"8 5/8","30 7/8","Notre Dame","5' 11""",29.7,Undrafted,71,-
+"Corey Clement",RB,24.4,11/2/94,"9 3/4","30 1/2",Wisconsin,"5' 10""",31.6,Undrafted,70,"Philadelphia Eagles"
+"Corey Grant",RB,27.3,12/19/91,"8 1/4","30 7/8",Auburn,"5' 11""",28.0,Undrafted,71,-
+"Cyrus Gray",RB,29.3,11/18/89,"9 1/8","29 1/2","Texas A&M","5' 10""",28.4,6.12,70,-
+"D'Angelo Brewer",RB,23.2,1/6/96,"8 7/8","29 1/4",Tulsa,"5' 7""",29.8,Undrafted,67,-
+"D'Ernest Johnson",RB,-,-,"9 5/8","31    ",USF,"5' 11""",27.9,Undrafted,71,-
+"D'Onta Foreman",RB,22.9,4/24/96,"10 1/8","31 3/8",Texas,"6' 0""",31.6,3.25,72,"Houston Texans"
+"D.J. Adams",RB,28.5,9/27/90,"9    ","30 1/2","Portland State","5' 9""",29.4,Undrafted,69,-
+"D.J. Foster",RB,25.3,11/22/93,"9 1/4","30 1/2","Arizona State","5' 10""",27.7,Undrafted,70,"Arizona Cardinals"
+"Da&#039;Rel Scott",RB,30.8,5/26/88,"9    ","32 3/8",Maryland,"5' 11""",29.3,7.18,71,-
+"Dalton Crossan",RB,25.1,2/25/94,"9 1/2","28 1/2","New Hampshire","5' 11""",28.6,Undrafted,71,-
+"Dalvin Cook",RB,23.6,8/10/95,"9 1/4","33 3/8","Florida State","5' 10""",30.1,2.09,70,"Minnesota Vikings"
+"Dalyn Dawkins",RB,24.3,12/12/94,"8 3/8","29    ","Colorado State","5' 7""",28.7,Undrafted,67,"Tennessee Titans"
+"Damien Harris",RB,22.1,2/11/97,"9 3/4","30 3/4",Alabama,"5' 10""",31.0,-,70,-
+"Damien Williams",RB,27.0,4/3/92,"9 1/8","30 5/8",Oklahoma,"5' 11""",31.0,Undrafted,71,"Kansas City Chiefs"
+"Dan Herron",RB,30.0,3/21/89,"9    ","32    ","Ohio State","5' 10""",30.8,6.21,70,-
+"Dan Vitale",RB,25.4,10/26/93,"9 3/4","31 3/4",Northwestern,"6' 1""",31.5,6.22,73,"Green Bay Packers"
+"Daniel Lasco",RB,26.4,10/9/92,"9 1/8","32    ",California,"6' 0""",28.3,7.16,72,-
+"Daniel Thomas",RB,31.4,10/29/87,"9    ","32 1/4","Kansas State","6' 0""",31.6,2.30,72,-
+"Danny Woodhead",RB,34.2,1/25/85,"9 1/8","28 3/8","Chadron State","5' 8""",29.6,Undrafted,68,-
+"Dare Ogunbowale",RB,24.9,5/4/94,"9 1/8","31 3/8",Wisconsin,"5' 11""",29.7,Undrafted,71,"Tampa Bay Buccaneers"
+"Darius Jackson",RB,25.3,12/1/93,"8 5/8","31 5/8","Eastern Michigan","6' 0""",29.8,6.41,72,"Dallas Cowboys"
+"Darius Victor",RB,25.0,3/6/94,"9    ","28 3/8","Towson State","5' 7""",35.5,Undrafted,67,-
+"Darrel Williams",RB,23.9,4/15/95,"9 3/8","31    ",LSU,"6' 0""",30.5,Undrafted,72,"Kansas City Chiefs"
+"Darrel Young",RB,32.0,4/8/87,-,-,Villanova,"5' 11""",35.0,Undrafted,71,-
+"Darrell Henderson",RB,21.6,8/19/97,"8 5/8","31    ",Memphis,"5' 8""",31.6,-,68,-
+"Darren McFadden",RB,31.6,8/27/87,"9 3/8","32 1/4",Arkansas,"6' 1""",27.7,1.04,73,-
+"Darren Sproles",RB,35.8,6/20/83,"8    ","28    ","Kansas State","5' 6""",29.9,4.29,66,"Philadelphia Eagles"
+"Darrin Reaves",RB,25.9,4/17/93,"8 3/8","30    ",UAB,"5' 7""",33.5,Undrafted,67,-
+"Daryl Richardson",RB,28.9,4/12/90,"9 1/8","30 5/8","Abilene Christian","5' 10""",27.5,7.45,70,-
+"David Cobb",RB,25.8,6/3/93,"9 3/8","31 5/8",Minnesota,"5' 11""",31.9,5.02,71,-
+"David Fluellen",RB,27.1,1/29/92,"9 1/8","33 3/8",Toledo,"5' 11""",31.2,Undrafted,71,"Tennessee Titans"
+"David Johnson",RB,27.3,12/16/91,"9 5/8","31 1/4","Northern Iowa","6' 1""",29.6,3.22,73,"Arizona Cardinals"
+"David Montgomery",RB,21.8,6/7/97,"9 1/4","31 3/8","Iowa State","5' 10""",31.9,-,70,-
+"David Williams",RB,24.8,6/17/94,"9 1/8","30    ",Arkansas,"6' 0""",30.4,7.08,72,"Jacksonville Jaguars"
+"David Wilson",RB,27.8,6/15/91,"9 3/8","30 1/4","Virginia Tech","5' 10""",29.4,1.32,70,-
+"Davin Meggett",RB,29.0,3/22/90,"9 1/2","30 1/8",Maryland,"5' 8""",33.3,Undrafted,68,-
+"De'Angelo Henderson",RB,26.3,11/24/92,"9 1/2","29    ","Coastal Carolina","5' 7""",32.6,6.19,67,"New York Jets"
+"De'Lance Turner",RB,23.6,8/23/95,"9    ","30    ","Alcorn State","5' 11""",30.1,Undrafted,71,"Baltimore Ravens"
+"De'Veon Smith",RB,24.4,11/8/94,"9    ","29 1/2",Michigan,"5' 11""",31.1,Undrafted,71,-
+"DeAndre Washington",RB,26.1,2/22/93,"9    ","30    ","Texas Tech","5' 8""",31.0,5.04,68,"Oakland Raiders"
+"DeAngelo Williams",RB,35.9,4/25/83,"9 1/8","31    ",Memphis,"5' 9""",32.0,1.27,69,-
+"DeMarco Murray",RB,31.1,2/12/88,"9 1/4","32    ",Oklahoma,"6' 0""",29.2,3.07,72,-
+"Dee Hart",RB,26.2,1/1/93,"9    ","29 3/4","Colorado State","5' 7""",31.2,Undrafted,67,-
+"Delone Carter",RB,31.8,6/22/87,"9 3/8","31    ",Syracuse,"5' 9""",33.2,4.22,69,-
+"Demario Richard",RB,22.3,12/2/96,"9 1/4","28 3/4","Arizona State","5' 9""",32.2,Undrafted,69,-
+"Denard Robinson",RB,28.5,9/22/90,"9    ","32 5/8",Michigan,"5' 10""",28.6,5.02,70,-
+"Dennis Johnson",RB,29.1,2/24/90,-,-,Arkansas,"5' 7""",30.2,Undrafted,67,-
+"Derek Watt",RB,26.4,11/7/92,"10 1/8","31    ",Wisconsin,"6' 2""",30.0,6.23,74,"Los Angeles Chargers"
+"Derrick Coleman",RB,28.4,10/18/90,-,-,UCLA,"6' 0""",31.6,Undrafted,72,"Arizona Cardinals"
+"Derrick Henry",RB,24.7,7/17/94,"8 3/4","33    ",Alabama,"6' 3""",30.9,2.14,75,"Tennessee Titans"
+"Derrius Guice",RB,21.7,6/21/97,"9    ","30 3/4",LSU,"5' 11""",31.2,2.27,71,Washington
+"Desmond Martin",RB,27.0,3/20/92,"9 1/2","30 1/2","Wayne State","6' 0""",30.0,Undrafted,72,-
+"Detrez Newsome",RB,25.0,3/6/94,"9 7/8","31 3/4","Western Carolina","5' 9""",30.7,Undrafted,69,"Los Angeles Chargers"
+"Devante Mays",RB,24.8,5/26/94,"8 5/8","31 3/4","Utah State","5' 10""",33.0,7.20,70,"Cleveland Browns"
+"Devin Singletary",RB,21.5,9/3/97,"8 1/2","28 7/8","Florida Atlantic","5' 7""",31.8,-,67,-
+"Devine Redding",RB,23.1,2/5/96,"9 5/8","29 1/4",Indiana,"5' 8""",31.2,Undrafted,68,-
+"Devon Johnson",RB,25.6,7/28/93,"9 1/4","31 1/4",Marshall,"6' 0""",32.3,Undrafted,72,-
+"Devonta Freeman",RB,27.0,3/15/92,"9 5/8","29 3/8","Florida State","5' 8""",31.3,4.03,68,"Atlanta Falcons"
+"Devontae Booker",RB,26.8,5/27/92,"8 5/8","31 5/8",Utah,"5' 11""",30.5,4.38,71,"Denver Broncos"
+"Dexter McCluster",RB,30.6,8/25/88,"8 3/8","29 1/4",Mississippi,"5' 8""",25.8,2.04,68,-
+"Dexter Williams",RB,22.2,1/6/97,"9 5/8","32 1/4","Notre Dame","5' 11""",29.6,-,71,-
+"Dillon Baxter",RB,27.4,10/23/91,"8    ","30    ","Baker University","5' 11""",27.5,Undrafted,71,-
+"Dimitri Flowers",RB,23.2,1/20/96,"9 1/4","30 3/4",Oklahoma,"6' 2""",31.8,Undrafted,74,"Jacksonville Jaguars"
+"Diocemy Saint Juste",RB,-,-,"9 3/8","29    ",Hawaii,"5' 8""",28.7,Undrafted,68,-
+"Dion Lewis",RB,28.5,9/27/90,"8 5/8","28 1/8",Pittsburgh,"5' 7""",30.2,5.18,67,"Tennessee Titans"
+"Dominique Brown",RB,27.2,12/27/91,"9 1/2","32 3/8",Louisville,"6' 2""",30.0,Undrafted,74,-
+"Dominique Williams",RB,28.6,9/2/90,"9 1/2","30 3/4",Wagner,"5' 9""",30.3,Undrafted,69,-
+"Don Jackson",RB,25.5,9/7/93,"9    ","29 7/8",Nevada,"5' 11""",28.6,Undrafted,71,-
+"Donald Brown",RB,31.9,4/11/87,"9    ","31 1/2",Connecticut,"5' 10""",30.1,1.27,70,-
+"Donnel Pumphrey",RB,24.3,12/6/94,"8 1/2","29    ","San Diego State","5' 8""",26.8,4.26,68,"Philadelphia Eagles"
+"Dontrell Hilliard",RB,24.1,2/26/95,"9 3/4","31 7/8",Tulane,"5' 11""",28.2,Undrafted,71,"Cleveland Browns"
+"Doug Martin",RB,30.2,1/13/89,"9    ","30 1/2","Boise State","5' 9""",32.9,1.31,69,-
+"Dreamius Smith",RB,26.5,9/8/92,"9 1/4","30 5/8","West Virginia","5' 11""",31.1,Undrafted,71,-
+"Dri Archer",RB,27.6,8/9/91,"8 7/8","31    ","Kent State","5' 8""",26.3,3.33,68,-
+"DuJuan Harris",RB,30.5,9/3/88,-,-,Troy,"5' 7""",30.9,Undrafted,67,-
+"Duke Johnson",RB,25.5,9/23/93,"9 1/4","30 3/8",Miami,"5' 9""",30.6,3.13,69,"Cleveland Browns"
+"Dwayne Washington",RB,24.9,4/24/94,"9 7/8","32 3/8",Washington,"6' 0""",30.2,7.15,72,"New Orleans Saints"
+"Eddie Lacy",RB,28.8,6/2/90,"9 1/2","31    ",Alabama,"5' 11""",34.9,2.29,71,-
+"Edwin Baker",RB,27.8,6/1/91,"8 1/8","29 5/8","Michigan State","5' 8""",30.4,7.43,68,-
+"Elijah Holyfield",RB,20.5,9/12/98,"9    ","30 3/8",Georgia,"5' 10""",31.1,-,70,-
+"Elijah Hood",RB,22.9,4/22/96,"9 3/8","30 3/8","North Carolina","6' 0""",31.5,7.24,72,"Carolina Panthers"
+"Elijah McGuire",RB,24.8,6/1/94,"9    ","31    ","UL Lafayette","5' 10""",30.7,6.04,70,"New York Jets"
+"Elijah Wellman",RB,24.5,9/20/94,"8 7/8","30 1/8","West Virginia","6' 1""",31.8,Undrafted,73,Washington
+"Elijhaa Penny",RB,25.6,8/17/93,"9 1/8","30 1/4",Idaho,"6' 1""",32.2,Undrafted,73,"New York Giants"
+"Evan Royster",RB,31.3,11/26/87,"9 1/4","30 5/8","Penn State","6' 0""",28.7,6.12,72,-
+"Ezekiel Elliott",RB,23.7,7/22/95,"10 1/4","31 1/4","Ohio State","6' 0""",30.5,1.04,72,"Dallas Cowboys"
+"Felix Jones",RB,31.9,5/8/87,"9 1/8","31 1/8",Arkansas,"5' 10""",30.8,1.22,70,-
+"Fitzgerald Toussaint",RB,28.9,5/4/90,"8 1/2","30 1/2",Michigan,"5' 10""",29.4,Undrafted,70,-
+"Fozzy Whittaker",RB,30.1,2/2/89,"9 1/4","30 3/4",Texas,"5' 9""",29.8,Undrafted,69,"Carolina Panthers"
+"Frank Gore",RB,35.9,5/14/83,-,-,Miami,"5' 9""",32.0,3.01,69,"Buffalo Bills"
+"Fred Jackson",RB,38.1,2/20/81,-,-,"Coe College","6' 1""",28.4,Undrafted,73,-
+"George Atkinson III",RB,26.3,11/29/92,"9 3/8","33 1/4","Notre Dame","6' 1""",28.8,Undrafted,73,-
+"George Farmer",RB,25.7,7/4/93,"8 5/8","33    ",USC,"6' 1""",27.0,Undrafted,73,-
+"George Winn",RB,28.4,11/10/90,"9 7/8","30 7/8",Cincinnati,"5' 11""",29.3,Undrafted,71,-
+"Giovani Bernard",RB,27.3,11/22/91,"9 3/8","28    ","North Carolina","5' 8""",30.7,2.05,68,"Cincinnati Bengals"
+"Glasco Martin",RB,27.9,4/14/91,"9 1/2","32    ",Baylor,"6' 0""",29.4,Undrafted,72,-
+"Glenn Winston",RB,29.9,4/29/89,"10 3/8","31    ",Northwood,"6' 2""",28.2,Undrafted,74,-
+"Gus Edwards",RB,23.9,4/13/95,"9 1/8","32 5/8",Rutgers,"6' 1""",30.2,Undrafted,73,"Baltimore Ravens"
+"Gus Johnson",RB,25.6,8/10/93,"9 1/8","29 5/8","Stephen F. Austin","5' 10""",30.8,Undrafted,70,-
+"Henry Josey",RB,27.5,9/25/91,"9 1/2","30 1/4",Missouri,"5' 8""",29.5,Undrafted,68,-
+"I'Tavius Mathers",RB,25.3,11/19/93,"9    ","31    ","Middle Tennessee","5' 11""",28.3,Undrafted,71,-
+"Isaiah Crowell",RB,26.2,1/8/93,"9 1/4","31 3/4","Alabama State","5' 11""",31.2,Undrafted,71,-
+"Isaiah Pead",RB,29.3,12/14/89,"8 5/8","31    ",Cincinnati,"5' 10""",28.3,2.18,70,-
+"Ito Smith",RB,23.5,9/11/95,"9 3/8","28 7/8","S. Mississippi","5' 9""",29.5,4.26,69,"Atlanta Falcons"
+"J.D. McKissic",RB,25.6,8/15/93,"9 5/8","29    ","Arkansas State","5' 10""",26.8,Undrafted,70,"Seattle Seahawks"
+"Jackie Battle",RB,35.5,10/1/83,"9 5/8","32 5/8",Houston,"6' 2""",30.8,Undrafted,74,-
+"Jacquizz Rodgers",RB,29.1,2/6/90,"8 3/4","30 3/8","Oregon State","5' 6""",31.6,5.14,66,"Tampa Bay Buccaneers"
+"Jahad Thomas",RB,23.4,11/6/95,"9    ","30 1/8",Temple,"5' 10""",27.3,Undrafted,70,-
+"Jahwan Edwards",RB,26.7,7/27/92,"8 7/8","31 5/8","Ball State","5' 9""",32.5,Undrafted,69,-
+"Jalen Parmele",RB,33.2,12/30/85,"8 7/8","32 1/4",Toledo,"5' 11""",31.1,6.10,71,-
+"Jalen Richard",RB,25.4,10/15/93,"8 7/8","29 1/8","S Mississippi","5' 8""",31.5,Undrafted,68,"Oakland Raiders"
+"Jalen Simmons",RB,27.0,4/1/92,"8 1/8","29 5/8","South Carolina State","5' 8""",33.4,Undrafted,68,-
+"Jalin Moore",RB,23.3,11/28/95,"9 1/4","32 3/8","Appalachian State","5' 10""",30.4,-,70,-
+"Jalston Fowler",RB,28.7,7/26/90,"10 1/2","32 3/4",Alabama,"5' 11""",35.4,4.09,71,-
+"Jamaal Charles",RB,32.2,12/27/86,"9 1/8","31 5/8",Texas,"5' 11""",27.8,3.10,71,-
+"Jamaal Williams",RB,24.0,4/3/95,"10    ","31 1/4",BYU,"6' 0""",28.7,4.28,72,"Green Bay Packers"
+"Jamal Morrow",RB,24.2,1/23/95,"8 7/8","29 3/8","Washington State","5' 8""",29.6,Undrafted,68,-
+"James Butler",RB,24.1,2/19/95,"8 3/4","29 5/8",Iowa,"5' 8""",31.8,Undrafted,68,"Oakland Raiders"
+"James Conner",RB,23.9,5/5/95,"9 7/8","31 1/4",Pittsburgh,"6' 1""",30.7,3.41,73,"Pittsburgh Steelers"
+"James Develin",RB,30.7,7/23/88,-,-,Brown,"6' 3""",31.9,Undrafted,75,"New England Patriots"
+"James Flanders",RB,24.7,6/30/94,"8    ","29 1/2",Tulsa,"5' 9""",29.2,Undrafted,69,-
+"James Starks",RB,33.1,2/25/86,"9 1/2","33 5/8",Buffalo,"6' 2""",28.0,6.24,74,-
+"James Summers",RB,24.8,6/12/94,"9 3/8","30 7/8","East Carolina","6' 1""",28.8,Undrafted,73,-
+"James White",RB,27.1,2/3/92,"8 1/4","29 1/4",Wisconsin,"5' 9""",30.1,4.30,69,"New England Patriots"
+"James Wilder Jr.",RB,26.9,4/14/92,"9 3/4","32    ","Florida State","6' 3""",29.0,Undrafted,75,-
+"James Williams",RB,22.8,5/17/96,"9 1/4","30 3/8","Washington State","5' 9""",29.1,-,69,-
+"Jamize Olawale",RB,29.9,4/17/89,-,-,"North Texas","6' 1""",31.4,Undrafted,73,"Dallas Cowboys"
+"Jarryd Hayne",RB,31.1,2/15/88,-,-,None,"6' 2""",28.2,Undrafted,74,-
+"Jarveon Williams",RB,24.2,1/3/95,"9 1/2","30 1/8",UTSA,"5' 9""",30.3,Undrafted,69,-
+"Jarvion Franklin",RB,23.3,12/9/95,"9 1/4","31 1/4","Western Michigan","6' 0""",32.4,Undrafted,72,-
+"Javorius Allen",RB,27.6,8/27/91,"9 3/8","31 3/4",USC,"6' 0""",30.0,4.26,72,-
+"Jay Ajayi",RB,25.8,6/15/93,"10    ","32    ","Boise State","6' 0""",30.0,5.13,72,"Philadelphia Eagles"
+"Jay Prosch",RB,26.6,8/21/92,"10    ","30 1/8",Auburn,"6' 1""",33.6,6.35,73,-
+"Jaylen Samuels",RB,22.7,7/20/96,"9 1/4","31 3/8","NC State","6' 0""",30.5,5.28,72,"Pittsburgh Steelers"
+"Jeff Wilson",RB,23.3,11/16/95,"9 1/4","31 1/2","North Texas","6' 0""",28.5,Undrafted,72,"San Francisco 49ers"
+"Jeremy Hill",RB,26.4,10/29/92,"10 3/8","32 5/8",LSU,"6' 1""",30.7,2.23,73,-
+"Jeremy Langford",RB,27.3,12/6/91,"8 3/4","31 1/2","Michigan State","6' 0""",28.2,4.07,72,"Atlanta Falcons"
+"Jeremy McNichols",RB,23.2,12/26/95,"10    ","31 1/2","Boise State","5' 9""",31.6,5.18,69,"Tennessee Titans"
+"Jeremy Stewart",RB,30.1,2/17/89,-,-,Stanford,"6' 1""",28.8,Undrafted,73,-
+"Jerick McKinnon",RB,26.9,5/3/92,"8 5/8","30 1/4","Georgia Southern","5' 9""",30.9,3.32,69,"San Francisco 49ers"
+"Jerome Smith",RB,27.9,4/15/91,"9 3/4","30 7/8",Syracuse,"5' 11""",30.7,Undrafted,71,-
+"Jewel Hampton",RB,29.2,12/23/89,"9 5/8","31    ","Southern Illinois","5' 9""",31.0,Undrafted,69,-
+"Jhurell Pressley",RB,26.8,5/20/92,"9 1/4","32    ","New Mexico","5' 10""",29.6,Undrafted,70,-
+"Joe Banyard",RB,30.4,11/12/88,-,-,UTEP,"5' 10""",29.4,Undrafted,70,-
+"Joe Kerridge",RB,26.5,9/17/92,"9 1/2","31 1/8",Michigan,"6' 0""",33.2,Undrafted,72,-
+"Joe Mixon",RB,22.7,7/24/96,"10 1/4","30 1/8",Oklahoma,"6' 1""",30.1,2.16,73,"Cincinnati Bengals"
+"Joe Williams",RB,25.5,9/4/93,"9 3/8","30 3/4",Utah,"5' 11""",29.3,4.15,71,-
+"Joel Bouagnon",RB,24.0,3/28/95,"9 3/4","31 1/2","Northern Illinois","6' 1""",30.3,Undrafted,73,-
+"Joey Demartino",RB,28.5,9/28/90,"9 5/8","30 5/8","Utah State","5' 11""",27.9,Undrafted,71,-
+"Joey Iosefa",RB,27.8,6/19/91,"10 1/4","31 3/4",Hawaii,"6' 0""",33.2,7.14,72,-
+"John Crockett",RB,27.1,2/6/92,"9 3/4","31    ","North Dakota State","6' 0""",29.4,Undrafted,72,-
+"John Kelly",RB,22.5,10/4/96,"9 3/8","31 3/8",Tennessee,"5' 10""",31.0,6.02,70,"Los Angeles Rams"
+"John Kuhn",RB,36.5,9/9/82,-,-,Shippensburg,"6' 0""",33.9,Undrafted,72,-
+"John Spooney",RB,27.1,2/11/92,"9 1/3","30 1/2",Brown,"5' 10""",27.7,Undrafted,70,-
+"Johnathan Franklin",RB,29.4,10/23/89,"9 3/8","30    ",UCLA,"5' 10""",29.4,4.28,70,-
+"Joique Bell",RB,32.6,8/4/86,"9    ","31 3/8","Wayne State","5' 11""",30.7,Undrafted,71,-
+"Jonas Gray",RB,28.7,6/27/90,"10    ","31 3/8","Notre Dame","5' 10""",32.3,Undrafted,70,-
+"Jonathan Dwyer",RB,29.7,7/26/89,"8 5/8","31    ","Georgia Tech","5' 11""",31.9,6.19,71,-
+"Jonathan Grimes",RB,29.3,12/21/89,"9 3/4","31 1/2","William & Mary","5' 10""",29.8,Undrafted,70,-
+"Jonathan Stewart",RB,32.0,3/21/87,"9 1/2","32 1/4",Oregon,"5' 10""",33.7,1.13,70,-
+"Jonathan Williams",RB,25.1,2/2/94,"10    ","31 5/8",Arkansas,"5' 11""",30.7,5.18,71,"Indianapolis Colts"
+"Jordan Chunn",RB,24.2,1/2/95,"8 1/4","31 1/8",Troy,"6' 0""",32.4,Undrafted,72,"Dallas Cowboys"
+"Jordan Howard",RB,24.4,11/2/94,"9    ","32 1/4",Indiana,"6' 0""",31.2,5.11,72,"Chicago Bears"
+"Jordan Johnson",RB,24.8,5/21/94,"9    ","30 3/8",Buffalo,"6' 1""",29.4,Undrafted,73,-
+"Jordan Lynch",RB,28.5,10/3/90,"8 7/8","29 3/4","Northern Illinois","6' 0""",29.4,Undrafted,72,-
+"Jordan Scarlett",RB,23.1,2/9/96,"8 7/8","30 3/8",Florida,"5' 11""",29.0,-,71,-
+"Jordan Todman",RB,29.1,2/24/90,"9 1/4","32    ",Connecticut,"5' 9""",29.2,6.18,69,-
+"Jordan Wilkins",RB,24.7,7/18/94,"9 3/8","30 1/8",Mississippi,"6' 1""",28.5,5.32,73,"Indianapolis Colts"
+"Joseph Randle",RB,27.2,12/29/91,"8 3/4","31 3/4","Oklahoma State","6' 0""",28.5,5.18,72,-
+"Joseph Yearby",RB,23.3,12/11/95,"8 5/8","29 5/8",Miami,"5' 9""",27.3,Undrafted,69,-
+"Josh Adams",RB,22.4,10/29/96,"9 1/4","33 3/4","Notre Dame","6' 2""",27.3,Undrafted,74,"Philadelphia Eagles"
+"Josh Ferguson",RB,25.8,5/23/93,"9    ","30    ",Illinois,"5' 9""",29.2,Undrafted,69,"Houston Texans"
+"Josh Harris",RB,28.2,1/22/91,"9    ","30 1/2","Wake Forest","6' 0""",27.1,Undrafted,72,-
+"Josh Jacobs",RB,21.1,2/11/98,"10 1/8","31 5/8",Alabama,"5' 10""",31.6,-,70,-
+"Josh Robinson",RB,26.6,8/24/92,"10 1/8","29 3/4","Mississippi State","5' 8""",33.0,6.29,68,-
+"Josh Rounds",RB,25.4,10/11/93,"9 1/2","31 1/8",Tulane,"6' 0""",27.8,Undrafted,72,-
+"Justice Hill",RB,21.3,11/14/97,"9 1/2","31 5/8","Oklahoma State","5' 10""",28.4,-,70,-
+"Justin Crawford",RB,24.1,2/19/95,"9 1/8","32    ","West Virginia","5' 11""",27.8,Undrafted,71,-
+"Justin Davis",RB,23.4,11/11/95,"9 5/8","31    ",USC,"6' 1""",27.4,Undrafted,73,"Los Angeles Rams"
+"Justin Forsett",RB,33.4,10/14/85,"10 1/2","30 1/4",California,"5' 8""",30.1,7.26,68,-
+"Justin Jackson",RB,22.9,4/22/96,"9 1/4","30 5/8",Northwestern,"6' 0""",26.2,7.33,72,"Los Angeles Chargers"
+"Justin Stockton",RB,23.7,7/6/95,"9 1/8","30 3/4","Texas Tech","5' 9""",29.7,Undrafted,69,"Detroit Lions"
+"Juwan Thompson",RB,26.9,5/13/92,"9    ","30 3/4",Duke,"5' 11""",31.8,Undrafted,71,-
+"Ka'Deem Carey",RB,26.4,10/30/92,"9 1/2","31 3/4",Arizona,"5' 9""",30.6,4.17,69,-
+"Kahlil Bell",RB,32.3,12/10/86,"10 1/4","31 1/2",UCLA,"6' 0""",29.7,Undrafted,72,-
+"Kalen Ballage",RB,23.2,12/22/95,"9 1/2","32 3/4","Arizona State","6' 2""",29.3,4.31,74,"Miami Dolphins"
+"Kamryn Pettway",RB,23.3,12/20/95,"9 1/2","31 1/4",Auburn,"6' 0""",31.9,Undrafted,72,-
+"Kapri Bibbs",RB,26.2,1/10/93,"8 1/2","31 3/8","Colorado State","5' 9""",31.3,Undrafted,69,"Green Bay Packers"
+"Karan Higdon",RB,22.5,9/8/96,"9 5/8","30 3/4",Michigan,"5' 9""",30.4,-,69,-
+"Kareem Hunt",RB,23.6,8/6/95,"9 5/8","31 3/8",Toledo,"5' 10""",31.0,3.22,70,"Cleveland Browns"
+"Karlos Williams",RB,25.9,5/4/93,"9 3/4","33    ","Florida State","6' 1""",30.3,5.19,73,-
+"Keith Ford",RB,24.9,4/18/94,"9 1/2","31 7/8","Texas A&M","5' 10""",31.4,Undrafted,70,"Buffalo Bills"
+"Keith Marshall",RB,25.1,2/16/94,"9 3/8","31 5/8",Georgia,"5' 11""",30.5,7.21,71,-
+"Keith Smith",RB,27.0,4/8/92,"10    ","31 3/4","San Jose State","6' 0""",32.5,Undrafted,72,"Oakland Raiders"
+"Kelvin Taylor",RB,25.5,9/28/93,"8 1/4","29 1/4",Florida,"5' 10""",29.7,6.36,70,-
+"Kendall Gaskins",RB,28.4,11/4/90,"8 3/4","32    ",Richmond,"6' 1""",31.4,Undrafted,73,-
+"Kendall Hunter",RB,30.5,9/16/88,"8 5/8","31    ","Oklahoma State","5' 7""",31.2,4.18,67,-
+"Kenjon Barner",RB,29.9,4/28/89,"9 1/8","29 5/8",Oregon,"5' 9""",28.9,6.14,69,"Atlanta Falcons"
+"Kenneth Dixon",RB,25.2,1/21/94,"9 1/2","31 3/8","Louisiana Tech","5' 10""",30.8,4.36,70,"Baltimore Ravens"
+"Kenneth Farrow",RB,26.0,3/7/93,"9 1/2","31 3/8",Houston,"5' 9""",32.2,Undrafted,69,-
+"Kenny Hilliard",RB,27.4,10/31/91,"9 1/4","31 1/4",LSU,"6' 0""",30.6,7.18,72,-
+"Kenyan Drake",RB,25.1,1/27/94,"9 3/4","31 3/4",Alabama,"6' 1""",27.7,3.10,73,"Miami Dolphins"
+"Kerryon Johnson",RB,21.7,6/30/97,"9 3/4","32 1/2",Auburn,"6' 0""",28.9,2.11,72,"Detroit Lions"
+"Kerwynn Williams",RB,27.8,6/9/91,"9 1/8","29 3/4","Utah State","5' 8""",29.6,7.24,68,"Detroit Lions"
+"Keshawn Hill",RB,26.0,3/17/93,"8 3/4","29 5/8","Sam Houston State","5' 10""",28.7,Undrafted,70,-
+"Khalfani Muhammad",RB,24.5,9/26/94,"9 1/4","28 7/8",California,"5' 7""",26.6,7.23,67,"Denver Broncos"
+"Khalid Hill",RB,23.8,6/4/95,"9 3/8","32 1/2",Michigan,"6' 1""",34.7,Undrafted,73,-
+"Khiry Robinson",RB,29.2,12/28/89,"9 1/4","31 1/4","West Texas A&M","6' 0""",29.8,Undrafted,72,-
+"Knile Davis",RB,27.5,10/5/91,"8 5/8","29 3/4",Arkansas,"5' 10""",32.6,3.34,70,-
+"Knowshon Moreno",RB,31.7,7/16/87,"10    ","30 3/4",Georgia,"5' 11""",29.3,1.12,71,-
+"Kory Sheets",RB,34.0,3/31/85,"9 1/2","31 1/4",Purdue,"5' 11""",28.3,Undrafted,71,-
+"Kyle Hicks",RB,23.2,1/17/96,"9 1/2","32 1/2",TCU,"5' 10""",29.0,Undrafted,70,-
+"Kyle Juszczyk",RB,27.9,4/23/91,"9 1/8","31 1/4",Harvard,"6' 1""",32.7,4.33,73,"San Francisco 49ers"
+"L.J. Scott",RB,22.5,9/15/96,"9 3/8","32 1/8","Michigan State","6' 0""",30.8,-,72,-
+"La&#039;Rod Stephens-Howling",RB,31.9,4/26/87,-,-,Pittsburgh,"5' 7""",29.0,7.31,67,-
+"LaDainian Tomlinson",RB,39.8,6/23/79,-,-,TCU,"5' 10""",30.8,1.05,70,-
+"LaDarius Perkins",RB,28.5,9/18/90,"9 5/8","31    ","Mississippi State","5' 7""",30.5,Undrafted,67,-
+"LaMichael James",RB,29.4,10/22/89,"9    ","30 1/4",Oregon,"5' 8""",29.6,2.29,68,-
+"Lache Seastrunk",RB,27.6,7/29/91,"9 1/4","30    ",Baylor,"5' 10""",28.8,6.10,70,-
+"Lamar Miller",RB,27.9,4/25/91,"9 1/4","31 3/8",Miami,"5' 11""",30.4,4.02,71,"Houston Texans"
+"Lance Dunbar",RB,29.2,1/25/90,-,-,"North Texas","5' 8""",29.0,Undrafted,68,-
+"Larry Rose",RB,23.5,9/9/95,"8 1/2","30 3/4","New Mexico State","5' 9""",28.4,Undrafted,69,-
+"Latavius Murray",RB,29.2,1/18/90,"9 1/8","33 1/4","Central Florida","6' 2""",28.6,6.13,74,"New Orleans Saints"
+"Lavon Coleman",RB,24.3,12/10/94,"9 1/4","30 1/2",Washington,"5' 11""",30.0,Undrafted,71,"Green Bay Packers"
+"Lawrence Thomas",RB,25.9,4/16/93,"10 1/8","33 1/4","Michigan State","6' 3""",35.7,Undrafted,75,-
+"Le'Veon Bell",RB,27.1,2/18/92,"9 5/8","31 1/2","Michigan State","6' 1""",30.3,2.16,73,"New York Jets"
+"LeGarrette Blount",RB,32.3,12/5/86,"10    ","33 3/8",Oregon,"6' 0""",32.7,Undrafted,72,"Detroit Lions"
+"LeSean McCoy",RB,30.7,7/12/88,"8 7/8","31 3/4",Pittsburgh,"5' 10""",29.8,2.21,70,"Buffalo Bills"
+"LeShun Daniels",RB,23.8,6/4/95,"9 1/2","30 5/8",Iowa,"5' 11""",31.0,Undrafted,71,-
+"Lenard Tillery",RB,25.3,12/9/93,"8 7/8","29 1/4",Southern,"5' 10""",28.4,Undrafted,70,-
+"Leonard Fournette",RB,24.2,1/18/95,"9 1/4","31 5/8",LSU,"6' 0""",32.5,1.04,72,"Jacksonville Jaguars"
+"Lorenzo Taliaferro",RB,27.2,12/23/91,"8 3/8","32    ","Coastal Carolina","6' 0""",31.1,4.38,72,-
+"Mack Brown",RB,27.5,9/24/91,"9 1/2","31 1/4",Florida,"5' 11""",28.7,Undrafted,71,-
+"Malcolm Agnew",RB,25.8,5/17/93,"8 7/8","30 3/8","Southern Illinois","5' 9""",29.8,Undrafted,69,-
+"Malcolm Brown",RB,26.2,1/1/93,"10 1/4","32 3/4",Texas,"5' 11""",31.2,Undrafted,71,"Los Angeles Rams"
+"Malcolm Johnson",RB,26.6,8/11/92,"9 1/8","31 1/2","Mississippi State","6' 1""",30.5,6.19,73,"Green Bay Packers"
+"Malik Williams",RB,22.7,6/20/96,"9 5/8","32 1/4",Louisville,"6' 0""",27.1,Undrafted,72,"Pittsburgh Steelers"
+"Marcel Reece",RB,33.7,6/23/85,-,-,Washington,"6' 2""",30.8,Undrafted,74,-
+"Marcus Cox",RB,24.5,9/20/94,"9    ","30    ","Appalachian State","5' 10""",30.3,Undrafted,70,-
+"Marcus Lattimore",RB,27.4,10/29/91,"9 7/8","32 1/2","South Carolina","5' 11""",30.8,4.34,71,-
+"Marcus Murphy",RB,27.5,10/3/91,"8 5/8","31    ",Missouri,"5' 8""",29.3,7.13,68,"Buffalo Bills"
+"Marion Grice",RB,26.9,4/10/92,"9 1/4","32    ","Arizona State","6' 0""",28.2,6.25,72,-
+"Mark Ingram",RB,29.3,12/21/89,"9 3/8","30 5/8",Alabama,"5' 9""",31.7,1.28,69,"Baltimore Ravens"
+"Mark Thompson",RB,24.3,12/9/94,"9 5/8","32 3/4",Florida,"6' 2""",29.8,Undrafted,74,"Detroit Lions"
+"Mark Walton",RB,22.0,3/28/97,"9 1/4","30    ",Miami,"5' 10""",29.0,4.12,70,"Cincinnati Bengals"
+"Marlon Mack",RB,23.0,3/7/96,"9    ","32    ","South Florida","5' 11""",29.7,4.37,71,"Indianapolis Colts"
+"Marquez Williams",RB,24.7,7/16/94,"9 1/2","30    ",Miami,"5' 11""",36.3,7.22,71,-
+"Marshaun Coprich",RB,24.6,8/10/94,"9    ","29 5/8","Illinois State","5' 8""",31.5,Undrafted,68,-
+"Marshawn Lynch",RB,32.9,4/22/86,"9 5/8","32 1/2",California,"5' 11""",30.0,1.12,71,-
+"Martez Carter",RB,26.0,3/8/93,"8 5/8","31    ",Grambling,"5' 7""",32.9,Undrafted,67,"New Orleans Saints"
+"Matt Asiata",RB,31.7,7/24/87,"9 3/8","30 1/8",Utah,"5' 11""",32.6,Undrafted,71,-
+"Matt Breida",RB,24.1,2/28/95,"9 5/8","32 1/8","Georgia Southern","5' 9""",28.8,Undrafted,69,"San Francisco 49ers"
+"Matt Forte",RB,33.3,12/10/85,"9 5/8","31 1/8",Tulane,"6' 1""",28.8,2.13,73,-
+"Matt Jones",RB,26.0,3/7/93,"8 5/8","32    ",Florida,"6' 2""",29.7,3.31,74,-
+"Matthew Dayes",RB,24.5,9/3/94,"10 1/2","30    ","NC State","5' 9""",30.3,7.34,69,"San Francisco 49ers"
+"Matthew Tucker",RB,27.8,5/24/91,"9 1/4","30 1/4",TCU,"6' 0""",30.8,Undrafted,72,-
+"Maurice Jones-Drew",RB,34.0,3/23/85,-,-,UCLA,"5' 7""",32.6,2.28,67,-
+"Melvin Gordon",RB,25.9,4/12/93,"9 3/4","32 3/8",Wisconsin,"6' 1""",28.4,1.15,73,"Los Angeles Chargers"
+"Michael Bush",RB,34.8,6/16/84,"9    ","32    ",Louisville,"6' 1""",32.3,4.01,73,-
+"Michael Cox",RB,30.4,11/14/88,-,-,Massachusetts,"6' 1""",28.2,7.47,73,-
+"Michael Dyer",RB,28.4,10/13/90,"9 1/2","30 5/8",Louisville,"5' 8""",33.1,Undrafted,68,-
+"Michael Ford",RB,28.8,5/27/90,"9    ","30 3/8",LSU,"5' 9""",31.9,Undrafted,69,-
+"Michael Hill",RB,29.6,8/14/89,"10    ","29 7/8","Missouri Western","5' 10""",30.1,Undrafted,70,-
+"Michael Smith",RB,30.6,8/9/88,-,-,"Utah State","5' 9""",30.3,7.05,69,-
+"Mike Boone",RB,23.6,7/30/95,"9 1/2","30 3/8",Cincinnati,"5' 10""",29.6,Undrafted,70,"Minnesota Vikings"
+"Mike Burton",RB,27.1,2/1/92,"9 1/2","29 1/4",Rutgers,"6' 0""",32.5,5.32,72,"Chicago Bears"
+"Mike Davis",RB,26.9,5/11/92,"9 3/8","30 1/4","South Carolina","5' 9""",32.0,4.27,69,"Chicago Bears"
+"Mike Gillislee",RB,28.4,11/1/90,"9 3/8","31 1/8",Florida,"5' 11""",30.5,5.31,71,-
+"Mike Goodson",RB,31.8,5/23/87,"9 7/8","32 1/4","Texas A&M","6' 0""",28.7,4.11,72,-
+"Mike James",RB,27.9,4/13/91,"9 3/4","31 5/8",Miami,"5' 10""",32.0,6.21,70,-
+"Mike Tolbert",RB,33.3,11/23/85,-,-,"Coastal Carolina","5' 9""",35.9,Undrafted,69,-
+"Mike Weber",RB,21.6,8/25/97,"9 3/8","29 3/4","Ohio State","5' 10""",30.3,-,70,-
+"Mikel Leshoure",RB,29.0,3/30/90,"9 3/8","32 1/2",Illinois,"6' 0""",31.6,2.25,72,-
+"Miles Sanders",RB,21.9,5/1/97,"9 1/4","30 5/8","Penn State","5' 11""",29.4,-,71,-
+"Montee Ball",RB,28.3,12/5/90,"9    ","32 5/8",Wisconsin,"5' 10""",30.7,2.26,70,-
+"Myles Gaskin",RB,22.1,2/15/97,"8 3/4","29 1/2",Washington,"5' 9""",30.3,-,69,-
+"Nick Bawden",RB,22.7,6/22/96,"9 1/4","30 1/2","San Diego State","6' 2""",31.5,7.19,74,"Detroit Lions"
+"Nick Brossette",RB,23.1,3/2/96,"8 5/8","30    ",LSU,"5' 11""",29.1,-,71,-
+"Nick Chubb",RB,23.2,12/27/95,"9 5/8","32    ",Georgia,"5' 11""",31.7,2.03,71,"Cleveland Browns"
+"Nick Holley",RB,24.3,12/5/94,"9 1/4","29 7/8","Kent State","5' 10""",28.1,Undrafted,70,-
+"Nick Wilson",RB,22.9,4/21/96,"9 3/4","29 7/8",Arizona,"5' 10""",28.6,Undrafted,70,-
+"Nyheim Hines",RB,22.4,11/12/96,"8 7/8","30 3/4","NC State","5' 8""",30.1,4.04,68,"Indianapolis Colts"
+"Orleans Darkwa",RB,27.1,2/28/92,"8 1/8","30 3/4",Tulane,"6' 0""",29.2,Undrafted,72,-
+"Patrick DiMarco",RB,29.9,4/30/89,-,-,"South Carolina","6' 1""",30.9,Undrafted,73,"Buffalo Bills"
+"Paul Perkins",RB,24.3,11/16/94,"9    ","31 5/8",UCLA,"5' 10""",29.8,5.10,70,"New York Giants"
+"Peyton Barber",RB,24.7,6/27/94,"9 3/8","30 1/4",Auburn,"5' 10""",32.7,Undrafted,70,"Tampa Bay Buccaneers"
+"Peyton Hillis",RB,33.2,1/21/86,"8    ","31 1/8",Arkansas,"6' 1""",33.0,7.20,73,-
+"Phillip Lindsay",RB,24.7,7/24/94,"8 5/8","30 7/8",Colorado,"5' 7""",28.8,Undrafted,67,"Denver Broncos"
+"Phillip Tanner",RB,30.6,8/8/88,-,-,"Middle Tennessee","5' 10""",29.8,Undrafted,70,-
+"Pierre Thomas",RB,34.3,12/18/84,-,-,Illinois,"5' 11""",30.0,Undrafted,71,-
+"Qadree Ollison",RB,22.5,9/8/96,"9 5/8","31 1/2",Pittsburgh,"6' 1""",30.1,-,73,-
+"Quinton Flowers",RB,24.3,12/2/94,"9 3/4","30 7/8","Central Florida","5' 10""",30.7,Undrafted,70,"Cincinnati Bengals"
+"Raheem Mostert",RB,26.9,4/9/92,"9 3/4","30 7/8",Purdue,"5' 11""",25.9,Undrafted,71,"San Francisco 49ers"
+"Rajion Neal",RB,27.0,3/28/92,"9 1/8","30 3/4",Tennessee,"5' 11""",30.7,Undrafted,71,-
+"Ralph Webb",RB,24.3,11/21/94,"9 1/4","30 1/4",Vanderbilt,"5' 9""",29.8,Undrafted,69,"Pittsburgh Steelers"
+"Rashaad Penny",RB,23.1,2/2/96,"9 1/4","31 1/4","San Diego State","5' 11""",30.7,1.27,71,"Seattle Seahawks"
+"Rashad Jennings",RB,34.0,3/26/85,"10 3/8","32    ",Liberty,"6' 1""",31.0,7.41,73,-
+"Rasheed Williams",RB,-,-,-,-,"Alfred State","6' 1""",28.4,Undrafted,73,-
+"Ray Graham",RB,28.5,9/18/90,"9 5/8","30 3/4",Pittsburgh,"5' 9""",29.4,Undrafted,69,-
+"Ray Lawry",RB,22.5,9/10/96,"9 1/8","29 1/4","Old Dominion","5' 9""",30.3,Undrafted,69,-
+"Ray Rice",RB,32.2,1/22/87,-,-,Rutgers,"5' 8""",32.2,2.24,68,-
+"Raymond Maples",RB,-,-,-,-,Army,"6' 0""",29.6,Undrafted,72,-
+"Reggie Bonnafon",RB,23.2,1/4/96,"9 3/4","32 3/4",Louisville,"6' 1""",28.0,Undrafted,73,"Carolina Panthers"
+"Reggie Bush",RB,34.1,3/2/85,"9 3/8","32 1/4",USC,"5' 11""",28.3,1.02,71,-
+"Rex Burkhead",RB,28.7,7/2/90,"9 3/4","30 7/8",Nebraska,"5' 10""",30.7,6.22,70,"New England Patriots"
+"Ricky Ortiz",RB,24.9,4/15/94,"10 1/4","30 1/2","Oregon State","6' 0""",31.6,Undrafted,72,"Atlanta Falcons"
+"Rob Kelley",RB,26.5,10/3/92,"9 1/2","30    ",Tulane,"5' 11""",31.5,Undrafted,71,Washington
+"Robert Hughes",RB,29.8,6/21/89,"10 1/4","32    ","Notre Dame","5' 11""",32.8,Undrafted,71,-
+"Robert Martin",RB,23.5,9/4/95,"8 1/4","30 1/4",Rutgers,"5' 11""",29.3,Undrafted,71,"New York Giants"
+"Robert Turbin",RB,29.3,12/2/89,"9 3/4","31    ","Utah State","5' 10""",31.9,4.11,70,-
+"Roc Thomas",RB,23.5,9/2/95,"9 1/4","31 5/8","Jacksonville State","5' 10""",28.4,Undrafted,70,"Minnesota Vikings"
+"Rod Smith",RB,27.2,1/10/92,-,-,"Ohio State","6' 3""",28.2,Undrafted,75,"Dallas Cowboys"
+"Rodney Anderson",RB,22.5,9/12/96,"9 3/4","30 3/4",Oklahoma,"6' 0""",30.4,-,72,-
+"Ronald Jones",RB,21.6,8/3/97,"8 3/4","31    ",USC,"5' 11""",28.6,2.06,71,"Tampa Bay Buccaneers"
+"Ronnie Brown",RB,37.3,12/12/81,"9 5/8","31 5/8",Auburn,"6' 0""",31.2,1.02,72,-
+"Ronnie Hillman",RB,27.5,9/14/91,"8 1/2","30    ","San Diego State","5' 9""",29.5,3.04,69,-
+"Ronnie Wingo",RB,28.1,2/18/91,"9 1/2","32 3/8",Arkansas,"6' 3""",28.9,Undrafted,75,-
+"Roosevelt Nix",RB,27.0,3/30/92,"9 3/4","30    ","Kent State","5' 11""",34.6,Undrafted,71,"Pittsburgh Steelers"
+"Ross Scheuerman",RB,26.0,3/5/93,"8 3/4","30    ",Lafayette,"6' 0""",27.7,Undrafted,72,-
+"Roy Finch",RB,27.5,10/1/91,"8 1/4","27 7/8",Oklahoma,"5' 6""",28.6,Undrafted,66,-
+"Roy Helu",RB,30.3,12/7/88,"10 1/4","31 1/4",Nebraska,"5' 11""",30.5,4.08,71,-
+"Royce Freeman",RB,23.1,2/24/96,"9 1/2","32    ",Oregon,"6' 0""",31.1,3.07,72,"Denver Broncos"
+"Rushel Shell",RB,25.5,9/7/93,"9 5/8","30    ","West Virginia","5' 10""",32.6,Undrafted,70,-
+"Russell Hansbrough",RB,25.3,11/19/93,"9    ","28 7/8",Missouri,"5' 8""",29.2,Undrafted,68,Washington
+"Ryan Green",RB,24.9,4/19/94,"8 3/4","31 1/2","Florida State","5' 10""",27.5,Undrafted,70,-
+"Ryan Hewitt",RB,28.2,1/24/91,"9 1/4","32    ",Stanford,"6' 4""",31.0,Undrafted,76,-
+"Ryan Mathews",RB,31.5,10/10/87,"9 1/4","31    ","Fresno State","6' 0""",29.8,1.12,72,-
+"Ryan Williams",RB,29.0,4/9/90,"9    ","30 5/8","Virginia Tech","5' 9""",30.6,2.06,69,-
+"Ryquell Armstead",RB,-,-,"9 1/8","30 5/8",Temple,"5' 11""",30.7,-,71,-
+"Sam Rogers",RB,23.9,4/12/95,"9 3/4","30 1/4","Virginia Tech","5' 10""",33.7,6.22,70,-
+"Samaje Perine",RB,23.5,9/16/95,"10    ","30 3/8",Oklahoma,"5' 11""",32.5,4.07,71,Washington
+"Saquon Barkley",RB,22.1,2/7/97,"9 1/2","31 3/8","Penn State","6' 0""",31.6,1.02,72,"New York Giants"
+"Senorise Perry",RB,27.5,9/19/91,"9 1/2","31 1/2",Louisville,"6' 0""",25.4,Undrafted,72,"Miami Dolphins"
+"Shane Vereen",RB,29.9,5/2/89,"9 1/4","30 1/4",California,"5' 10""",29.1,2.24,70,-
+"Shaun Draughn",RB,31.3,12/7/87,"10    ","31    ","North Carolina","6' 0""",27.8,Undrafted,72,-
+"Shaun Wilson",RB,23.3,12/2/95,"8 3/4","30 1/2",Duke,"5' 8""",28.1,Undrafted,68,"Tampa Bay Buccaneers"
+"Shock Linwood",RB,25.4,10/13/93,"9 1/4","29 1/4",Baylor,"5' 9""",29.7,Undrafted,69,-
+"Shonn Greene",RB,33.6,8/21/85,"8 1/2","31 3/4",Iowa,"5' 11""",31.5,3.01,71,-
+"Silas Redd",RB,27.1,3/1/92,"9    ","30 1/4",USC,"5' 10""",30.4,Undrafted,70,-
+"Sony Michel",RB,24.1,2/17/95,"9 1/8","31 1/4",Georgia,"5' 11""",29.8,1.31,71,"New England Patriots"
+"Spencer Ware",RB,27.3,11/23/91,"9 5/8","30 1/8",LSU,"5' 10""",32.9,6.26,70,-
+"Stepfan Taylor",RB,27.8,6/9/91,"8 5/8","30 1/8",Stanford,"5' 9""",31.6,5.07,69,-
+"Stephen Houston",RB,27.4,10/28/91,"9    ","30 3/4",Indiana,"5' 11""",31.4,Undrafted,71,-
+"Stevan Ridley",RB,30.1,1/27/89,"9 1/4","31 3/4",LSU,"5' 11""",31.4,3.09,71,-
+"Steven Jackson",RB,35.7,7/22/83,-,-,"Oregon State","6' 1""",31.1,1.24,73,-
+"Steven Miller",RB,28.0,3/23/91,-,-,"Appalachian State","5' 7""",26.9,Undrafted,67,-
+"Storm Johnson",RB,27.7,7/10/91,"9 1/2","32    ","Central Florida","6' 0""",28.3,7.07,72,-
+"Synjyn Days",RB,27.5,10/9/91,"9 3/8","31 3/8","Georgia Tech","6' 1""",30.6,Undrafted,73,-
+"T.J. Logan",RB,24.5,9/3/94,"9    ","32    ","North Carolina","5' 9""",28.9,5.36,69,"Arizona Cardinals"
+"T.J. Yeldon",RB,25.5,10/2/93,"9    ","31 5/8",Alabama,"6' 1""",29.8,2.04,73,-
+"Taiwan Jones",RB,30.7,7/26/88,"8 3/4","29 1/2","Eastern Washington","6' 0""",26.4,4.28,72,-
+"Taquan Mizzell",RB,25.4,10/21/93,"9    ","31    ",Virginia,"5' 9""",29.1,Undrafted,69,"Chicago Bears"
+"Tarean Folston",RB,24.2,1/10/95,"9 1/2","30 3/8","Notre Dame","5' 9""",29.4,Undrafted,69,-
+"Tarik Cohen",RB,23.7,7/26/95,"10 1/8","29 3/4","North Carolina A&T","5' 6""",28.9,4.13,66,"Chicago Bears"
+"Tauren Poole",RB,29.4,10/19/89,"8    ","29 5/8",Tennessee,"5' 10""",30.0,Undrafted,70,-
+"Tavon Austin",RB,28.0,3/15/91,"9 1/8","30    ","West Virginia","5' 8""",26.5,1.08,68,"Dallas Cowboys"
+"Teriyon Gipson",RB,24.2,1/19/95,"8 3/4","29 3/8","New Mexico","5' 8""",28.4,Undrafted,68,-
+"Terrance Cobb",RB,28.5,9/18/90,-,-,Cumberlands,"5' 10""",31.6,Undrafted,70,-
+"Terrance West",RB,28.1,1/28/91,"9 1/8","31    ","Towson State","5' 9""",33.2,3.30,69,-
+"Terrell Watson",RB,25.6,8/22/93,"9 1/8","31 1/4","Azusa Pacific","6' 1""",31.9,Undrafted,73,-
+"Terrence Magee",RB,26.0,3/16/93,"9    ","30    ",LSU,"5' 8""",32.4,Undrafted,68,-
+"Terris Jones-Grigsby",RB,26.3,11/28/92,"8 1/2","27 3/4",Arizona,"5' 7""",30.5,Undrafted,67,-
+"Terron Ward",RB,27.1,2/15/92,"8 7/8","28    ","Oregon State","5' 7""",31.5,Undrafted,67,-
+"Terry Swanson",RB,22.6,8/6/96,"8 5/8","29 5/8",Toledo,"5' 9""",30.7,Undrafted,69,-
+"Tevin Coleman",RB,26.0,4/6/93,"8 5/8","32    ",Indiana,"5' 11""",28.7,3.09,71,"San Francisco 49ers"
+"Theo Riddick",RB,27.9,5/4/91,"8 3/4","30    ","Notre Dame","5' 10""",28.8,6.31,70,"Detroit Lions"
+"Thomas Rawls",RB,25.6,8/8/93,"9 1/2","30 3/4","Central Michigan","5' 9""",31.7,Undrafted,69,"Jacksonville Jaguars"
+"Tim Cook",RB,24.9,4/19/94,"9 1/2","30 5/8","Oregon State","6' 0""",32.8,Undrafted,72,-
+"Tim Cornett",RB,26.9,4/18/92,"9 1/4","31    ",UNLV,"6' 0""",28.3,Undrafted,72,-
+"Tim Flanders",RB,27.5,9/29/91,"9 1/4","30 1/4","Sam Houston","5' 9""",30.6,Undrafted,69,-
+"Tim Hightower",RB,32.8,5/23/86,"9    ","32    ",Richmond,"6' 0""",29.8,5.14,72,-
+"Tion Green",RB,25.3,12/14/93,"9    ","31    ",Cincinnati,"5' 11""",30.8,Undrafted,71,-
+"Toby Gerhart",RB,32.0,3/28/87,"9 5/8","32    ",Stanford,"6' 0""",31.3,2.19,72,-
+"Todd Gurley",RB,24.6,8/3/94,"10    ","32 1/2",Georgia,"6' 1""",29.9,1.10,73,"Los Angeles Rams"
+"Tommy Bohanon",RB,28.5,9/10/90,"10 1/8","30    ","Wake Forest","6' 1""",32.5,7.09,73,-
+"Tony Pollard",RB,21.9,4/30/97,"9 1/2","30    ",Memphis,"6' 0""",28.5,-,72,-
+"Tra Carson",RB,26.4,10/24/92,"9 1/4","31 1/2","Texas A&M","5' 11""",31.7,Undrafted,71,"Green Bay Packers"
+"Travaris Cadet",RB,30.1,2/1/89,-,-,"Appalachian State","6' 1""",27.7,Undrafted,73,"Carolina Panthers"
+"Travis Homer",RB,20.6,8/7/98,"10    ","31 1/2",Miami,"5' 10""",28.8,-,70,-
+"Trayveon Williams",RB,21.4,10/18/97,"9 1/4","30 3/8","Texas A&M","5' 8""",31.3,-,68,-
+"Tre Madden",RB,25.6,8/16/93,"9 3/8","29 3/4",USC,"6' 0""",30.2,Undrafted,72,"Seattle Seahawks"
+"Tre Mason",RB,23.2,8/6/93,"9    ","30    ",Auburn,"5' 9""",30.6,3.11,69,-
+"Trent Richardson",RB,27.7,7/10/91,"9 1/2","30 1/4",Alabama,"5' 9""",34.0,1.03,69,-
+"Trenton Cannon",RB,24.7,7/23/94,"8 3/8","30 1/4","Virginia State","5' 10""",26.5,6.30,70,"New York Jets"
+"Trevon Wesco",RB,-,-,"9 1/2","34 3/4","West Virginia","6' 3""",33.4,-,75,-
+"Trey Edmunds",RB,24.2,12/30/94,"9 3/8","32 3/8",Maryland,"6' 1""",29.4,Undrafted,73,"Pittsburgh Steelers"
+"Trey Watts",RB,28.1,2/13/91,"9 1/8","29 1/8",Tulsa,"5' 9""",30.7,Undrafted,69,-
+"Trey Williams",RB,26.3,12/11/92,"8 1/4","29 7/8","Texas A&M","5' 7""",30.5,Undrafted,67,-
+"Troymaine Pope",RB,25.3,11/26/93,"9 5/8","30 1/8","Jacksonville St","5' 8""",31.2,Undrafted,68,"Los Angeles Chargers"
+"Ty Issac",RB,24.4,10/16/94,"10 1/8","32    ",Michigan,"6' 2""",29.1,Undrafted,74,-
+"Ty Montgomery",RB,26.2,1/22/93,"10 1/8","31    ",Stanford,"6' 0""",29.3,3.30,72,-
+"Tyler Ervin",RB,25.5,10/7/93,"9 1/8","29 3/4","San Jose State","5' 10""",27.5,4.21,70,"Baltimore Ravens"
+"Tyler Gaffney",RB,27.9,4/20/91,"9    ","30 1/4",Stanford,"6' 0""",29.8,6.28,72,-
+"Tyler Varga",RB,25.5,9/24/93,"10 5/8","30 3/8",Yale,"5' 11""",31.0,Undrafted,71,-
+"Vick Ballard",RB,28.7,7/16/90,"9 1/2","31 3/4","Mississippi State","5' 10""",31.4,5.35,70,-
+"Wayne Gallman",RB,24.5,10/1/94,"9 1/8","32 5/8",Clemson,"6' 0""",29.2,4.34,72,"New York Giants"
+"Wendell Smallwood",RB,25.1,1/29/94,"9 1/4","30 1/2","West Virginia","5' 10""",29.8,5.14,70,"Philadelphia Eagles"
+"William Stanback",RB,24.7,7/6/94,"9 1/8","32 1/4","Virginia Union","5' 11""",32.5,Undrafted,71,-
+"Zac Brooks",RB,26.1,2/1/93,"8 3/4","31 1/2",Clemson,"6' 1""",26.4,7.26,73,-
+"Zac Stacy",RB,28.0,4/9/91,"8 5/8","30 1/4",Vanderbilt,"5' 8""",34.1,5.27,68,-
+"Zach Bauman",RB,26.7,7/24/92,"8 7/8","29 7/8","Northern Arizona","5' 10""",28.7,Undrafted,70,-
+"Zach Laskey",RB,26.7,7/8/92,"10 1/8","31 1/8","Georgia Tech","6' 2""",30.6,Undrafted,74,-
+"Zach Line",RB,28.9,4/26/90,"8 3/4","30 3/4",SMU,"6' 0""",31.5,Undrafted,72,"New Orleans Saints"
+"Zach Zenner",RB,27.5,9/13/91,"9 5/8","32    ","South Dakota State","5' 11""",31.1,Undrafted,71,"Detroit Lions"
+"Zurlon Tipton",RB,28.9,4/27/90,"9 3/8","32 1/8","Central Michigan","6' 0""",30.1,Undrafted,72,-
