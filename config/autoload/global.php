@@ -14,6 +14,13 @@
 return [
         'db' => [
             'driver' => 'Pdo',
-            'dsn'    => sprintf('sqlite:%s/data/zftutorial.db', realpath(getcwd())),
+            'adapters' => [
+                'Rlf\Db\Adapter' => [
+                    'driver' => 'Pdo',
+                    'dsn'    => 'mysql:dbname=fantasy_football;host=localhost;charset=utf8',
+                    'username' => 'rell',
+                    'password' => 'rell'
+                ],
+            ],
         ],
 ];

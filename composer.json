@@ -17,7 +17,7 @@
         "zendframework/zend-mvc": "^3.0.1",
         "zfcampus/zf-development-mode": "^3.0",
         "zendframework/zend-cache": "^2.7.1",
-        "zendframework/zend-db": "^2.8.1",
+        "zendframework/zend-db": "^2.10",
         "zendframework/zend-mvc-form": "^1.0",
         "zendframework/zend-json": "^3.0",
         "zendframework/zend-log": "^2.9",
@@ -32,7 +32,6 @@
     "autoload": {
         "psr-4": {
             "Application\\": "module/Application/src/",
-            "Player\\": "module/Player/src",
             "Blog\\": "module/Blog/src"
         }
     },

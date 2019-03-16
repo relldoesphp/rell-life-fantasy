@@ -4,6 +4,7 @@ namespace Blog;
 
 use Zend\Router\Http\Literal;
 use Zend\ServiceManager\Factory\InvokableFactory;
+use Zend\Db\Adapter\AdapterAbstractServiceFactory;
 
 return [
     'service_manager' => [
@@ -11,6 +12,7 @@ return [
             Model\PostRepositoryInterface::class => Model\ZendDbSqlRepository::class,
         ],
         'factories' => [
+            'Rlf\Db\Adapter' => AdapterAbstractServiceFactory::class,
             Model\PostRepository::class => InvokableFactory::class,
             Model\ZendDbSqlRepository::class => Factory\ZendDbSqlRepositoryFactory::class,
         ],
