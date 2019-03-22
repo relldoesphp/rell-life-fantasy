@@ -20,6 +20,7 @@ class Player
     private $height;
     private $height_inches;
     private $weight;
+    private $bmi;
     private $arms;
     private $arms_inches;
     private $age;
@@ -28,6 +29,9 @@ class Player
     private $draftYear;
     private $metrics;
     private $percentiles;
+    private $scores;
+    private $role;
+    private $position;
 
     public function __construct()
     {
@@ -153,5 +157,54 @@ class Player
     {
         return $this->percentiles;
     }
+
+    /**
+     * @param mixed $metrics
+     */
+    public function setMetrics($metrics)
+    {
+        $this->metrics = $metrics;
+    }
+
+    /**
+     * @param mixed $percentiles
+     */
+    public function setPercentiles($percentiles)
+    {
+        $this->percentiles = $percentiles;
+    }
+
+    public function setScores($scores)
+    {
+        $this->scores = $scores;
+    }
+
+    public function getAllInfo()
+    {
+        $data = [
+            "id" => $this->id,
+            "firstName" => $this->firstName,
+            "lastName" => $this->lastName,
+            "team" => $this->team,
+            "height" => $this->height,
+            "height_inches" => $this->height_inches,
+            "weight" => $this->weight,
+            "bmi" => $this->bmi,
+            "arms" => $this->arms,
+            "arms_inches" => $this->arms_inches,
+            "age" => $this->age,
+            "college" => $this->college,
+            "draftPick" => $this->draftPick,
+            "draftYear" => $this->draftYear,
+            "metrics" => $this->metrics,
+            "percentiles" => $this->percentiles,
+            "position" => $this->position,
+            "role" => $this->role,
+            "scores" => $this->scores
+        ];
+
+        return $data;
+    }
+
 
 }

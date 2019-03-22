@@ -8,20 +8,26 @@
 
 namespace Player;
 
-use Player\Factory\PlayerControllerFactory;
 use Zend\Router\Http\Segment;
 use Zend\Db\Adapter\AdapterAbstractServiceFactory;
+use Zend\ServiceManager\Factory\InvokableFactory;
+use Player\Factory\SqlPlayerCommandFactory;
 
 return [
     'service_manager' => [
         'aliases' => [
             // Update this line:
             Model\PlayerRepositoryInterface::class => Model\SqlPlayerRepository::class,
+            // Add Command Center
+            Model\PlayerCommandInterface::class => Model\SqlPlayerCommand::class,
         ],
         'factories' => [
-            // Add this line:
-            Model\SqlPlayerRepository::class => Factory\SqlPlayerRepositoryFactory::class,
+            // Custom Mysql Adapter defined in configs
             'Rlf\Db\Adapter' => AdapterAbstractServiceFactory::class,
+            // factory for sql repository
+            Model\SqlPlayerRepository::class => Factory\SqlPlayerRepositoryFactory::class,
+            // factory for Command Center
+            Model\SqlPlayerCommand::class => Factory\SqlPlayerCommandFactory::class,
         ],
     ],
 
@@ -41,18 +47,38 @@ return [
                     ],
                 ],
             ],
+            'script' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/scripts[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\ScriptController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
 
     'controllers' => [
         'factories' => [
-            Controller\PlayerController::class => PlayerControllerFactory::class,
+            // factory for script controller
+            Controller\ScriptController::class => Factory\ScriptControllerFactory::class,
+            // factory for player controller
+            Controller\PlayerController::class => Factory\PlayerControllerFactory::class
         ],
     ],
 
     'view_manager' => [
         'template_path_stack' => [
             'player' => __DIR__ . '/../view',
+        ],
+        'template_map' => [
+            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
         ],
     ],
 ];

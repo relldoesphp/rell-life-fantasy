@@ -1,48 +1,5 @@
 //store all functions in object
 
-var rlfData = {
-    player : {
-        firstName: 'Saquon',
-        lastName: 'Barkley',
-        position: 'RB',
-        role: 'Alpha',
-        percentiles : {
-            height: 88,
-            weight: 80,
-            arms: 92,
-            bmi: 90,
-            speed: 85,
-            bench: 90,
-            vertical: 90,
-            broad: 80,
-            agility: 99,
-            elusiveness: 95,
-            run_power: 89,
-            block_power: 80,
-        },
-        position_scores: {
-            alpha_score: 95,
-            grinder_score: 85,
-            pass_score: 90
-        },
-        team_scores: {
-            alpha_score: 40,
-            grinder_score:45,
-            pass_score: 70
-        }
-    },
-
-    average : {
-      LB : {
-         speed: 45,
-         agility: 50,
-         elusiveness: 55,
-         run_power: 70,
-         block_power: 66
-      },
-    },
-};
-
 var rlf =  {
     initRbPage : function(){
         rlf.initOppChartsRB();
@@ -66,7 +23,7 @@ var rlf =  {
 
     initProsChartsRB : function(){
         var percent = rlfData.player.percentiles;
-        var avgLB = rlfData.average.LB;
+        // var avgLB = rlfData.average.LB;
 
         var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Block Power'];
 
@@ -271,25 +228,25 @@ var rlf =  {
     /***** WR Stuff *****/
     initProsChartsWR : function(){
         var percent = rlfData.player.percentiles;
-        var avgLB = rlfData.average.LB;
+       // var avgLB = rlfData.average.LB;
 
         var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Block Power'];
 
         var trace1 = {
             x: xValue,
-            y: [percent.speed, percent.agility, percent.elusiveness, percent.run_power, percent.block_power],
+            y: [percent['40_percent'], percent.agility_percent, percent.agility_percent, percent.adj_broadjump_percent, percent.beat_press],
             name: 'Percentile',
             type: 'bar'
         };
 
-        var trace2 = {
-            x: xValue,
-            y: [avgLB.speed, avgLB.agility, avgLB.elusiveness, avgLB.run_power, avgLB.block_power],
-            name: 'Average NFL Linebacker',
-            type: 'scatter'
-        };
+        // var trace2 = {
+        //     x: xValue,
+        //     y: [avgLB.speed, avgLB.agility, avgLB.elusiveness, avgLB.run_power, avgLB.block_power],
+        //     name: 'Average NFL Linebacker',
+        //     type: 'scatter'
+        // };
 
-        var data = [trace1, trace2];
+        var data = [trace1];
 
         var layout = {
             font: {size: 12},

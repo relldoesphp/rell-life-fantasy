@@ -15,10 +15,10 @@ interface PlayerRepositoryInterface
 
     public function findAllPlayers();
 
-    public function findPlayer();
+    public function findPlayer($id);
 
-    public function _getPlayerMetrics();
+    public function getPlayerMetrics($id);
 
-    public function _getPlayerPercentiles();
+    public function getPlayerPercentiles($id);
 
 }

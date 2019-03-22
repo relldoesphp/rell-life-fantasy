@@ -1,0 +1,12 @@
+<?php
+$json = json_encode($this->jsVars);
+$page = <<<EOT
+<div>
+    <h5>{$player['firstName']}&nbsp;{$player['lastName']}</h5>
+</div>
+
+
+EOT;
+
+echo $page;
+
