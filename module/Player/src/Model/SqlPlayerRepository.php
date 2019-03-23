@@ -70,13 +70,31 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         // TODO: Implement findAllPlayers() method.
     }
 
+    public function findPlayerByAlias($alias){
+        $sql    = new Sql($this->db);
+        $select = $sql->select('players');
+        $select->where(['alias = ?' => $alias]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
+        $resultSet->initialize($result);
+        $player = $resultSet->current();
+
+        return $player;
+    }
+
     /**
      * @return mixed
      */
     public function findPlayer($id)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('receivers');
+        $select = $sql->select('players');
         $select->where(['id = ?' => $id]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -98,8 +116,8 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     public function getPlayerMetrics($id)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('receiver_percentiles');
-        $select->where(['receiverId = ?' => $id]);
+        $select = $sql->select('wr_metrics');
+        $select->where(['playerId = ?' => $id]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -117,7 +135,19 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
      */
     public function getPlayerPercentiles($id)
     {
-        // TODO: Implement _getPlayerPercentiles() method.
+        $sql    = new Sql($this->db);
+        $select = $sql->select('wr_percentiles');
+        $select->where(['playerId = ?' => $id]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        return $resultSet->toArray();
     }
 
 

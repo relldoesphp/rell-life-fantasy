@@ -39,7 +39,6 @@ return [
                     'route' => '/player[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
                     ],
                     'defaults' => [
                         'controller' => Controller\PlayerController::class,
@@ -47,17 +46,21 @@ return [
                     ],
                 ],
             ],
-            'script' => [
-                'type' => Segment::class,
-                'options' => [
-                    'route'    => '/scripts[/:action[/:id]]',
-                    'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
-                    ],
-                    'defaults' => [
-                        'controller' => Controller\ScriptController::class,
-                        'action'     => 'index',
+        ],
+    ],
+
+    'console' => [
+        'router' => [
+            'routes' => [
+                'wr-metrics' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'update wr metrics',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'updatePercentiles',
+                        ],
                     ],
                 ],
             ],

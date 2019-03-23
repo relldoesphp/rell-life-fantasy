@@ -20,7 +20,7 @@ class ScriptController extends AbstractActionController
 
     public function __construct(PlayerCommandInterface $command)
     {
-        $this->command;
+        $this->command = $command;
     }
 
     public function indexAction()
@@ -30,12 +30,15 @@ class ScriptController extends AbstractActionController
 
     public function updateMetricsAction()
     {
+        $wr = "WR";
+        $this->command->calculateMetrics($wr);
 
     }
 
     public function updatePercentilesAction()
     {
-
+        $wr = "WR";
+        $this->command->calculatePercentiles($wr);
     }
 
 }

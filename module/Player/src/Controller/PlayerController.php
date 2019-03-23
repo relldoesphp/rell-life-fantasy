@@ -31,9 +31,14 @@ class PlayerController extends AbstractActionController
 
     public function viewAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        $player = $this->playerRepository->findPlayer($id);
-        $player->setPercentiles($this->playerRepository->getPlayerMetrics($id));
+        $id = $this->params()->fromRoute('id', 0);
+        if (!is_integer($id)) {
+            $player = $this->playerRepository->findPlayerByAlias($id);
+        } else {
+            $player = $this->playerRepository->findPlayer($id);
+        }
+        $player->setMetrics($this->playerRepository->getPlayerMetrics($player->getId()));
+        $player->setPercentiles($this->playerRepository->getPlayerPercentiles($player->getId()));
         $playerData = $player->getAllInfo();
         $jsVars['player'] = $playerData;
         $viewModel = new ViewModel([

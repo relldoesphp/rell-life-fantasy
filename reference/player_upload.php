@@ -61,39 +61,38 @@ $password = "rell";
 //    echo "Connection failed: " . $e->getMessage();
 //}
 
-//try {
-//    $conn = new PDO("mysql:host=$servername;dbname=fantasy_football", $username, $password);
-//    // set the PDO error mode to exception
-//    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-//
-//    $csv = array_map('str_getcsv', file('/Users/tcook/Sites/rell/rell-life-fantasy/data/rb_big_2.csv'));
-//
-//    foreach ($csv as $data) {
-//        if ($data[0] !== "Full Name") {
-//            $player = [];
-//            $name = explode(" ", $data[0]);
-//            $player['firstName'] = $name[0];
-//            $player['lastName'] = $name[1];
-//
-//            $player['weight'] = str_replace(" lbs", "", $data[3]);
-//            $player['draftYear'] = $data[4];
-//
-//
-//            $sql = <<<EOT
-//Update players SET weight = :weight, draftYear = :draftYear WHERE firstName = :firstName and lastName = :lastName;
-//EOT;
-//
-//
-//            $stmt= $conn->prepare($sql);
-//            $stmt->execute($player);
-//
-//            print "{$data[0]} updated.\n";
-//        }
-//    }
-//
-//} catch(PDOException $e) {
-//    echo "Connection failed: " . $e->getMessage();
-//}
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=fantasy_football", $username, $password);
+    // set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $csv = array_map('str_getcsv', file('/Users/tcook/Sites/rell/rell-life-fantasy/data/wr_big_2.csv'));
+
+    foreach ($csv as $data) {
+        if ($data[0] !== "Full Name") {
+            $player = [];
+            $name = explode(" ", $data[0]);
+            $alias = str_replace(" ", "-", $data[0]);
+            $player['alias'] = str_replace(".", "", $alias);
+
+            $player['weight'] = str_replace(" lbs", "", $data[3]);
+            $player['draftYear'] = $data[4];
+
+
+            $sql = <<<EOT
+Update players SET weight = :weight, draftYear = :draftYear WHERE alias = :alias;
+EOT;
+
+            $stmt= $conn->prepare($sql);
+            $stmt->execute($player);
+
+            print "{$data[0]} updated.\n";
+        }
+    }
+
+} catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=fantasy_football", $username, $password);

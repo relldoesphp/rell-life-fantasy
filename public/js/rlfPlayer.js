@@ -227,30 +227,51 @@ var rlf =  {
 
     /***** WR Stuff *****/
     initProsChartsWR : function(){
-        var percent = rlfData.player.percentiles;
+        var percent = rlfData.player.percentiles[0];
+        var metrics = rlfData.player.metrics[0];
        // var avgLB = rlfData.average.LB;
-
-        var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Block Power'];
+        var xValue = ['Bully Score', 'Speed', 'Agility', 'Jumpball'];
+        var yValue = [percent.bully, percent.fortyTime, percent.agility, percent.jumpball];
 
         var trace1 = {
             x: xValue,
-            y: [percent['40_percent'], percent.agility_percent, percent.agility_percent, percent.adj_broadjump_percent, percent.beat_press],
-            name: 'Percentile',
-            type: 'bar'
+            y: yValue,
+            name: 'WR Ability',
+            type: 'bar',
+            text: [
+                metrics.bully+'<br>'+Math.round(percent.bully)+'%',
+                metrics.fortyTime+'<br>'+Math.round(percent.fortyTime)+'%',
+                metrics.agility+'<br>'+Math.round(percent.agility)+'%',
+                metrics.jumpball+'<br>'+Math.round(percent.jumpball)+'%'
+            ],
+            textposition: 'auto',
+            hoverinfo: 'none'
         };
 
-        // var trace2 = {
-        //     x: xValue,
-        //     y: [avgLB.speed, avgLB.agility, avgLB.elusiveness, avgLB.run_power, avgLB.block_power],
-        //     name: 'Average NFL Linebacker',
-        //     type: 'scatter'
-        // };
+        var trace2 = {
+            x: xValue,
+            y: [44, 58, 54, 41],
+            name: 'Average NFL CB',
+            type: 'scatter'
+        };
 
-        var data = [trace1];
+        var trace3 = {
+            x:['Elusiveness', 'Power'],
+            y: [percent.elusiveness, percent.power],
+            name: 'YAC Ability',
+            text: [
+                metrics.elusiveness+'<br>'+Math.round(percent.elusiveness)+'%',
+                metrics.power+'<br>'+Math.round(percent.power)+'%'
+            ],
+            textposition: 'auto',
+            type: 'bar',
+        };
+
+        var data = [trace1, trace2, trace3];
 
         var layout = {
             font: {size: 12},
-            yaxis: {title: 'Percentile'},
+            yaxis: {title: 'Percentile', range: [0, 100]},
             yaxis2: {
                 titlefont: {color: 'rgb(148, 103, 189)'},
                 tickfont: {color: 'rgb(148, 103, 189)'},
@@ -266,14 +287,15 @@ var rlf =  {
         };
 
         Plotly.newPlot('prospect', data, layout, {responsive: true, displayModeBar: false});
+
     },
 
     initMesChartsWR : function(){
-        var percent = rlfData.player.percentiles;
+        var percent = rlfData.player.percentiles[0];
 
         var data = [{
             type: 'scatterpolar',
-            r: [ percent.height, percent.weight, percent.arms, percent.bmi, percent.speed, percent.bench, percent.vertical, percent.broad],
+            r: [ percent.height, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump],
             theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad'],
             fill: 'toself'
         }];
