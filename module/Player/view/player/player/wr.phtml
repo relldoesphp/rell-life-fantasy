@@ -11,7 +11,7 @@ $page = <<<EOT
             <div class="player-info">
                 <span class="first-name">{$player['firstName']}</span>
                 <span class="last-name">{$player['lastName']}</span>
-                <span class="player-info-line">#18 Los Angeles Rams</span>
+                <span class="player-info-line">{$player['team']}</span>
                 <br>
                 <span class="player-info-line">{$player['height']}</span>
                 <br>
@@ -53,13 +53,13 @@ $page = <<<EOT
                     <div class="profile-score col-sm-2">
                         <div style="margin-top:10px">Slot Score:</div>
                     </div>
-                    <div class="col-sm-8" id="slot-score"></div>
+                    <div class="col-sm-8" id="slot-score">{$player['metrics'][0]['slot']}/11</div>
                 </div>
                 <div class="row my-2">
                     <div class="profile-score col-sm-2">
                         <div style="margin-top:10px">Deep Score:</div>
                     </div>
-                    <div class="col-sm-8" id="deep-score"></div>
+                    <div class="col-sm-8" id="deep-score">{$player['metrics'][0]['deep']}/11</div>
                 </div>
                 <div class="row my-2">
                     <div class="profile-score col-sm-2">
@@ -232,11 +232,15 @@ $page = <<<EOT
         </div> 
 <script type="text/javascript">
     var rlfData = {$json};
+    
     $(document).ready(function() {
        rlf.initWrPage(); 
+       rlf.initSearch();
     });
 </script>
 
 EOT;
 
 echo $page;
+
+

@@ -16,9 +16,12 @@ class PlayerController extends AbstractActionController
 {
     private $playerRepository;
 
+    private $playerList;
+
     public function __construct(PlayerRepositoryInterface $playerRepository)
     {
         $this->playerRepository = $playerRepository;
+        $this->playerList =  $this->playerRepository->getPlayerNames();
     }
 
     public function indexAction()
@@ -26,7 +29,6 @@ class PlayerController extends AbstractActionController
          new ViewModel([
             'players' => $this->playerRepository->getPlayerNames(),
         ]);
-
     }
 
     public function viewAction()
@@ -37,16 +39,15 @@ class PlayerController extends AbstractActionController
         } else {
             $player = $this->playerRepository->findPlayer($id);
         }
-        $player->setMetrics($this->playerRepository->getPlayerMetrics($player->getId()));
-        $player->setPercentiles($this->playerRepository->getPlayerPercentiles($player->getId()));
+        $player->setMetrics($this->playerRepository->getPlayerMetrics($player->getId(), $player->getPosition()));
+        $player->setPercentiles($this->playerRepository->getPlayerPercentiles($player->getId(), $player->getPosition()));
         $playerData = $player->getAllInfo();
         $jsVars['player'] = $playerData;
+        $jsVars['list'] = $this->playerList;
         $viewModel = new ViewModel([
             'player' => $playerData,
             'jsVars' => $jsVars,
         ]);
-
-        $playerData['position'] = 'WR';
 
         switch ($playerData['position']){
             case 'WR':

@@ -19,24 +19,70 @@ var rlf =  {
         rlf.initMesChartsTE();
     },
 
+    initSearch : function(){
+        var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+            'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
+            'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
+            'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
+            'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+            'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+            'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
+            'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+            'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+        ];
+
+
+        var list = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('fullName'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            // `states` is an array of state names defined in "The Basics"
+            local: rlfData.list,
+        });
+
+
+        $('#custom-templates .typeahead').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            },
+            {
+                name: 'best-pictures',
+                source: list,
+                display: 'fullName',
+            });
+
+        $('#custom-templates .typeahead').on('typeahead:selected', function(evt, item){
+            var url = "http://relllifefantasy/player/view/"+item.alias;
+            window.location.href=url;
+        });
+    },
     /**** RB Stuff ****/
 
     initProsChartsRB : function(){
-        var percent = rlfData.player.percentiles;
+        var percent = rlfData.player.percentiles[0];
+        var metrics = rlfData.player.metrics[0];
         // var avgLB = rlfData.average.LB;
 
         var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Block Power'];
 
         var trace1 = {
             x: xValue,
-            y: [percent.speed, percent.agility, percent.elusiveness, percent.run_power, percent.block_power],
+            y: [percent.fortyTime, percent.agility, percent.elusiveness, percent.power, ''],
             name: 'Percentile',
-            type: 'bar'
+            type: 'bar',
+            text: [
+                metrics.fortyTime+'<br>'+Math.round(percent.fortyTime)+'%',
+                metrics.agility+'<br>'+Math.round(percent.agility)+'%',
+                metrics.elusiveness+'<br>'+Math.round(percent.elusiveness)+'%',
+                metrics.power+'<br>'+Math.round(percent.power)+'%',
+            ],
+            textposition: 'auto',
+            hoverinfo: 'none'
         };
 
         var trace2 = {
             x: xValue,
-            y: [avgLB.speed, avgLB.agility, avgLB.elusiveness, avgLB.run_power, avgLB.block_power],
+            y: [30, 38, 50, 60,],
             name: 'Average NFL Linebacker',
             type: 'scatter'
         };
@@ -45,7 +91,7 @@ var rlf =  {
 
         var layout = {
             font: {size: 12},
-            yaxis: {title: 'Percentile'},
+            yaxis: {title: 'Percentile', range: [0, 100]},
             yaxis2: {
                 titlefont: {color: 'rgb(148, 103, 189)'},
                 tickfont: {color: 'rgb(148, 103, 189)'},
@@ -64,12 +110,12 @@ var rlf =  {
     },
 
     initMesChartsRB : function(){
-        var percent = rlfData.player.percentiles;
+        var percent = rlfData.player.percentiles[0];
 
         var data = [{
             type: 'scatterpolar',
-            r: [ percent.height, percent.weight, percent.arms, percent.bmi, percent.speed, percent.bench, percent.vertical, percent.broad],
-            theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad'],
+            r: [ percent.height, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.agility],
+            theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', 'agility'],
             fill: 'toself'
         }];
 
@@ -245,7 +291,8 @@ var rlf =  {
                 metrics.jumpball+'<br>'+Math.round(percent.jumpball)+'%'
             ],
             textposition: 'auto',
-            hoverinfo: 'none'
+            hoverinfo: 'none',
+            opacity: 0.8,
         };
 
         var trace2 = {
@@ -255,19 +302,47 @@ var rlf =  {
             type: 'scatter'
         };
 
+        var yacPower = percent.power * .40;
+        var yacElusive = percent.elusiveness * .60;
+        var yacPercent = Math.round(yacPower+yacElusive);
+
         var trace3 = {
-            x:['Elusiveness', 'Power'],
-            y: [percent.elusiveness, percent.power],
-            name: 'YAC Ability',
+            x:['YAC'],
+            y: [yacPower],
+            name: 'Power ('+Math.round(percent.power)+'%)',
             text: [
-                metrics.elusiveness+'<br>'+Math.round(percent.elusiveness)+'%',
-                metrics.power+'<br>'+Math.round(percent.power)+'%'
+                metrics.power
             ],
             textposition: 'auto',
             type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
         };
 
-        var data = [trace1, trace2, trace3];
+        var trace4 = {
+            x:['YAC'],
+            y: [yacElusive],
+            name: 'Elusiveness ('+Math.round(percent.elusiveness)+'%)',
+            text: [
+                Math.round(yacPercent)+'%<br>'+metrics.elusiveness
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var data = [trace1, trace2, trace3, trace4];
 
         var layout = {
             font: {size: 12},
@@ -284,6 +359,7 @@ var rlf =  {
             },
             width: 700,
             height: 350,
+            barmode: 'stack'
         };
 
         Plotly.newPlot('prospect', data, layout, {responsive: true, displayModeBar: false});
@@ -655,5 +731,27 @@ var rlf =  {
         layout.title = 'Team Alpha RB Opportunity';
 
         Plotly.newPlot('fit2', data, layout, {displayModeBar: false});
-    }
+    },
+
+    substringMatcher : function(strs) {
+        return function findMatches(q, cb) {
+            var matches, substringRegex;
+
+            // an array that will be populated with substring matches
+            matches = [];
+
+            // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function (i, str) {
+                if (substrRegex.test(str)) {
+                    matches.push(str);
+                }
+            });
+
+            cb(matches);
+        };
+    },
 };

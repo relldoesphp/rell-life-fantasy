@@ -21,10 +21,16 @@
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="/js/twitter/typeahead.js/dist/typeahead.bundle.js"></script>
+        <script type="text/javascript" src="/js/twitter/typeahead.js/dist/bloodhound.js"></script>
         <script type="text/javascript" src="/js/rlfPlayer.js"></script>
     </head>
     <body>
+    <div id="custom-templates" class="container my-2">
+        <input class="typeahead" type="text" placeholder="Oscar winners for Best Picture">
+    </div>
         <div class="container my-5 player-container">
+
             <?= $this->content ?>
             <hr>
             <footer>

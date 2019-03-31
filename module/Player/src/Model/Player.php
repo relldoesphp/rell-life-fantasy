@@ -158,6 +158,11 @@ class Player
         return $this->percentiles;
     }
 
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
     /**
      * @param mixed $metrics
      */

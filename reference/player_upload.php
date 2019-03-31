@@ -66,7 +66,7 @@ try {
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $csv = array_map('str_getcsv', file('/Users/tcook/Sites/rell/rell-life-fantasy/data/wr_big_2.csv'));
+    $csv = array_map('str_getcsv', file('/Users/tcook/Sites/rell/rell-life-fantasy/data/wr_big.csv'));
 
     foreach ($csv as $data) {
         if ($data[0] !== "Full Name") {
@@ -74,13 +74,10 @@ try {
             $name = explode(" ", $data[0]);
             $alias = str_replace(" ", "-", $data[0]);
             $player['alias'] = str_replace(".", "", $alias);
-
-            $player['weight'] = str_replace(" lbs", "", $data[3]);
-            $player['draftYear'] = $data[4];
-
+            $player['college'] = $data[6];
 
             $sql = <<<EOT
-Update players SET weight = :weight, draftYear = :draftYear WHERE alias = :alias;
+Update players SET college = :college WHERE alias = :alias;
 EOT;
 
             $stmt= $conn->prepare($sql);

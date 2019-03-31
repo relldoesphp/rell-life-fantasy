@@ -12,6 +12,8 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Controller\PlayerController;
 use Player\Model\SqlPlayerCommand;
+use Zend\ProgressBar\Adapter\Console;
+
 
 class SqlPlayerCommandFactory implements FactoryInterface
 {
@@ -20,6 +22,6 @@ class SqlPlayerCommandFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new SqlPlayerCommand($container->get('Rlf\Db\Adapter'));
+        return new SqlPlayerCommand($container->get('Rlf\Db\Adapter'), new Console());
     }
 }

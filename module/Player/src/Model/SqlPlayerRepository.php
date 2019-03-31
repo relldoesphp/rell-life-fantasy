@@ -14,6 +14,7 @@ use Zend\Db\Adapter\AdapterInterface;
 use Zend\Hydrator\HydratorInterface;
 use Player\Model\Player;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\ResultSet\HydratingResultSet;
@@ -48,7 +49,15 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     public function getPlayerNames()
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('receivers')->columns(['id', 'firstName', 'lastName']);
+        $select = $sql->select('players')->columns([
+            'id',
+            'firstName',
+            'lastName',
+            'alias',
+            'position',
+            'team',
+            'fullName' => new Expression('CONCAT(firstName," ",lastName)')
+        ]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -56,10 +65,9 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
             return [];
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
+        $resultSet = new ResultSet();
         $resultSet->initialize($result);
-        return $resultSet;
-
+        return  $resultSet->toArray();
     }
 
     /**
@@ -113,10 +121,11 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     /**
      * @return mixed
      */
-    public function getPlayerMetrics($id)
+    public function getPlayerMetrics($id, $position)
     {
+        $table = strtolower($position).'_metrics';
         $sql    = new Sql($this->db);
-        $select = $sql->select('wr_metrics');
+        $select = $sql->select($table);
         $select->where(['playerId = ?' => $id]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -133,10 +142,11 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     /**
      * @return mixed
      */
-    public function getPlayerPercentiles($id)
+    public function getPlayerPercentiles($id, $position)
     {
+        $table = strtolower($position).'_percentiles';
         $sql    = new Sql($this->db);
-        $select = $sql->select('wr_percentiles');
+        $select = $sql->select($table);
         $select->where(['playerId = ?' => $id]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();

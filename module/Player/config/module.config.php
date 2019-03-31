@@ -56,10 +56,32 @@ return [
                     'type'    => 'simple',  // This is the default, and may be omitted; more on
                     // types below
                     'options' => [
-                        'route'    => 'update wr metrics',
+                        'route'    => 'update-wr-metrics',
                         'defaults' => [
                             'controller' => Controller\ScriptController::class,
-                            'action'     => 'updatePercentiles',
+                            'action'     => 'updateWrMetrics',
+                        ],
+                    ],
+                ],
+                'rb-metrics' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'update-rb-metrics',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'updateRbMetrics',
+                        ],
+                    ],
+                ],
+                'te-metrics' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'update-te-metrics',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'updateTeMetrics',
                         ],
                     ],
                 ],

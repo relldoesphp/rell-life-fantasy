@@ -19,8 +19,8 @@ interface PlayerRepositoryInterface
 
     public function findPlayerByAlias($alias);
 
-    public function getPlayerMetrics($id);
+    public function getPlayerMetrics($id, $position);
 
-    public function getPlayerPercentiles($id);
+    public function getPlayerPercentiles($id, $position);
 
 }
