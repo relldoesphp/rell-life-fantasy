@@ -85,6 +85,17 @@ return [
                         ],
                     ],
                 ],
+                'data-scrap' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'data-scrapper',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'dataScrapper',
+                        ],
+                    ],
+                ],
             ],
         ],
     ],

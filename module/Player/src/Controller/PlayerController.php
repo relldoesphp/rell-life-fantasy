@@ -42,6 +42,32 @@ class PlayerController extends AbstractActionController
         $player->setMetrics($this->playerRepository->getPlayerMetrics($player->getId(), $player->getPosition()));
         $player->setPercentiles($this->playerRepository->getPlayerPercentiles($player->getId(), $player->getPosition()));
         $playerData = $player->getAllInfo();
+
+        $tableData = [];
+
+        if (!empty($playerData['collegeStats'])) {
+            $collegeStats = (array) $playerData['collegeStats'];
+            foreach ($collegeStats as $year => $stats) {
+                $tableData[] = [
+                    $year,
+                    $stats->college,
+                    $stats->class,
+                    $stats->games,
+                    $stats->receptions,
+                    $stats->recYds,
+                    $stats->recTds,
+                    $stats->recAvg,
+                    round($stats->recDominator,1)."%",
+                    round($stats->ydsDominator,1)."%",
+                    round($stats->tdDominator,1)."%",
+                    ($stats->returnStats->kickYds + $stats->returnStats->puntYds),
+                    ($stats->returnStats->kickTds + $stats->returnStats->puntTds),
+                    ($stats->returnStats->returnDominator * 100)."%",
+                ];
+            }
+        }
+
+        $playerData['collegeTable'] = $tableData;
         $jsVars['player'] = $playerData;
         $jsVars['list'] = $this->playerList;
         $viewModel = new ViewModel([

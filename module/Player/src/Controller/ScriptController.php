@@ -17,10 +17,16 @@ use Zend\View\Model\ViewModel;
 class ScriptController extends AbstractActionController
 {
     private $command;
+    private $wrCommand;
+    private $rbCommand;
+    private $teCommand;
 
     public function __construct(PlayerCommandInterface $command)
     {
         $this->command = $command;
+        $this->wrCommand = $command->getWrCommand();
+        $this->rbCommand = $command->getRbCommand();
+        $this->teCommand = $command->getTeCommand();
     }
 
     public function indexAction()
@@ -31,9 +37,10 @@ class ScriptController extends AbstractActionController
     public function updateWrMetricsAction()
     {
         $wr = "WR";
-//        $this->command->calculateWrMetrics($wr);
-//        $this->command->calculateWrPercentiles($wr);
-        $this->command->calculateWrSpecialScores();
+        $this->wrCommand->calculateMetrics($wr);
+        $this->wrCommand->calculatePercentiles($wr);
+        $this->wrCommand->calculateSpecialScores($wr);
+        $this->wrCommand->calculatePercentiles($wr);
     }
 
     public function updateRbMetricsAction()
@@ -50,6 +57,8 @@ class ScriptController extends AbstractActionController
         $this->command->calculateTePercentiles($wr);
     }
 
-
-
+    public function dataScrapperAction()
+    {
+        $this->wrCommand->scrapCollegeJob();
+    }
 }

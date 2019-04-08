@@ -32,6 +32,7 @@ class Player
     private $scores;
     private $role;
     private $position;
+    private $collegeStats;
 
     public function __construct()
     {
@@ -205,7 +206,8 @@ class Player
             "percentiles" => $this->percentiles,
             "position" => $this->position,
             "role" => $this->role,
-            "scores" => $this->scores
+            "scores" => $this->scores,
+            "collegeStats" => json_decode($this->collegeStats)
         ];
 
         return $data;

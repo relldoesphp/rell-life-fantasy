@@ -21,17 +21,10 @@ interface PlayerCommandInterface
 
     public function deletePlayer(Player $player);
 
-    public function calculateWrMetrics($type);
+    public function getWrCommand();
 
-    public function calculateWrPercentiles($type);
+    public function getRbCommand();
 
-    public function calculateRbMetrics($type);
+    public function getTeCommand();
 
-    public function calculateRbPercentiles($type);
-
-    public function calculateTeMetrics($type);
-
-    public function calculateTePercentiles($type);
-
-    public function calculateWrSpecialScores();
 }

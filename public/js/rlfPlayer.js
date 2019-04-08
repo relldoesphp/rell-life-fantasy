@@ -7,10 +7,62 @@ var rlf =  {
         rlf.initProsChartsRB();
     },
 
-    initWrPage : function(){
+    initWrPage : function() {
         rlf.initMesChartsWR();
         rlf.initProsChartsWR();
         rlf.initOppChartsWR();
+
+        var slotPercent = rlfData.player.percentiles[0].slot;
+
+        $(".slot-bar").css("width", slotPercent + "%");
+        if (slotPercent > 69) {
+            $(".slot-bar").addClass("bg-success");
+        }
+
+        if (slotPercent < 69 && slotPercent > 40) {
+            $(".slot-bar").addClass("bg-warning");
+        }
+
+        if (slotPercent < 39) {
+            $(".slot-bar").addClass("bg-danger");
+        }
+
+        var deepPercent = rlfData.player.percentiles[0].deep;
+
+        $(".deep-bar").css("width", deepPercent + "%");
+        if (deepPercent > 64) {
+            $(".deep-bar").addClass("bg-success");
+        }
+
+        if (deepPercent < 64 && deepPercent > 40) {
+            $(".deep-bar").addClass("bg-warning");
+        }
+
+        if (deepPercent < 39) {
+            $(".deep-bar").addClass("bg-danger");
+        }
+
+        $('#college-stats').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            data: rlfData.player.collegeTable,
+            columns: [
+                { title: "Year" },
+                { title: "College" },
+                { title: "Class" },
+                { title: "GP" },
+                { title: "Rec" },
+                { title: "Rec Yds" },
+                { title: "Rec Tds" },
+                { title: "YPR Avg" },
+                { title: "% of Recs" },
+                { title: "% of Rec Yds" },
+                { title: "% of Rec Tds" },
+                { title: "Return Yds" },
+                { title: "Return Tds" },
+                { title: "% of Return Yds" },
+            ]
+        } );
     },
 
     initTePage : function(){
@@ -342,7 +394,22 @@ var rlf =  {
             }
         };
 
-        var data = [trace1, trace2, trace3, trace4];
+        var trace5 = {
+            x:['College'],
+            y: [percent.collegeScore],
+            name: 'College Score ('+Math.round(percent.collegeScore)+'%)',
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var data = [trace1, trace2, trace3, trace4, trace5];
 
         var layout = {
             font: {size: 12},
