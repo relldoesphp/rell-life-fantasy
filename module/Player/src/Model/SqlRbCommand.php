@@ -16,6 +16,7 @@ use Zend\ProgressBar\ProgressBar;
 use Zend\ProgressBar\Adapter\Console;
 use Zend\Db\Sql\Select;
 
+
 class SqlRbCommand extends SqlPlayerAbstract
 {
     private $db;
@@ -23,7 +24,8 @@ class SqlRbCommand extends SqlPlayerAbstract
 
     public function __construct(AdapterInterface $db, Console $consoleAdapter)
     {
-        parent::__construct($db, $consoleAdapter);
+        $this->db = $db;
+        $this->consoleAdapter = $consoleAdapter;
     }
 
     public function calculateMetrics($type)
@@ -31,7 +33,41 @@ class SqlRbCommand extends SqlPlayerAbstract
         $sql    = new Sql($this->db);
         $select = $sql->select();
         $select->from(['p' => 'players']);
-        $select->join(['m' => 'rb_metrics'], 'p.id = m.playerId');
+        $select->join(['metrics' => 'rb_metrics'], 'p.id = metrics.playerId', [
+            'metrics.fortyTime' => 'fortyTime',
+            'metrics.verticalJump' => 'verticalJump',
+            'metrics.broadJump' => 'broadJump',
+            'metrics.benchPress' => 'benchPress',
+            'metrics.shuttle' => 'shuttle',
+            'metrics.cone' => 'cone',
+            'metrics.breakoutAge' => 'breakoutAge',
+            'metrics.breakoutYear' => 'breakoutYear',
+            'metrics.collegeDominator' => 'collegeDominator',
+            'metrics.collegeYPC' => 'collegeYPC',
+            'metrics.agility' => 'agility',
+            'metrics.elusiveness' => 'elusiveness',
+            'metrics.power' => 'power',
+            'metrics.bully' => 'bully',
+            'metrics.jumpball' => 'jumpball',
+            'metrics.speedScore' => 'speedScore'
+        ], Select::JOIN_LEFT);
+        $select->join(['percent' => 'rb_percentiles'], 'p.id = percent.playerId', [
+            'percent.fortyTime' => 'fortyTime',
+            'percent.verticalJump' => 'verticalJump',
+            'percent.broadJump' => 'broadJump',
+            'percent.benchPress' => 'benchPress',
+            'percent.shuttle' => 'shuttle',
+            'percent.cone' => 'cone',
+            'percent.breakoutAge' => 'breakoutAge',
+            'percent.collegeDominator' => 'collegeDominator',
+            'percent.collegeYPR' => 'collegeYPR',
+            'percent.agility' => 'agility',
+            'percent.elusiveness' => 'elusiveness',
+            'percent.power' => 'power',
+            'percent.bully' => 'bully',
+            'percent.jumpball' => 'jumpball',
+            'percent.collegeScore' => 'collegeScore'
+        ], Select::JOIN_LEFT);
         $select->where(['p.position = ?' => 'RB']);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -50,14 +86,14 @@ class SqlRbCommand extends SqlPlayerAbstract
             $data = [];
             // (average bmi 26.6/ average bench 14.2) = 1.87
             // (1.87 * (wr bmi - average bmi)) + wr bench Press
-            if ($player['benchPress'] != null) {
-                $data["bully"] = (1.53 * ($player['bmi'] - 30.27)) + $player['benchPress'];
+            if ($player['metrics.benchPress'] != null) {
+                $data["bully"] = (1.53 * ($player['bmi'] - 30.27)) + $player['metrics.benchPress'];
             } else {
                 $data["bully"] = null;
             }
 
-            if ($player['shuttle'] != null && $player['cone'] != null) {
-                $data['agility'] = $player["shuttle"] + $player["cone"];
+            if ($player['metrics.shuttle'] != null && $player['metrics.cone'] != null) {
+                $data['agility'] = $player["metrics.shuttle"] + $player["metrics.cone"];
             } else {
                 $data['agility'] = null;
             }
@@ -74,17 +110,17 @@ class SqlRbCommand extends SqlPlayerAbstract
             // break tackle ability
             // each inch worth 1.69 broad jump
             // each pound over 200 worth .61 broad jump
-            if ($player["broadJump"] != null) {
+            if ($player["metrics.broadJump"] != null) {
                 $weightBroad = ($player['weight']-215) * .55;
                 $heightBroad = ($player['heightInches'] - 70) * 1.68;
-                $data['power'] = $player["broadJump"] - $heightBroad + $weightBroad;
+                $data['power'] = $player["metrics.broadJump"] - $heightBroad + $weightBroad;
             } else {
                 $data['power'] = null;
             }
 
             // add jumpball reach
-            if ($player["verticalJump"] != null) {
-                $data['jumpball'] = $player["heightInches"] + $player["armsInches"] + $player["verticalJump"];
+            if ($player["metrics.verticalJump"] != null) {
+                $data['jumpball'] = $player["heightInches"] + $player["armsInches"] + $player["metrics.verticalJump"];
                 // Premium for big Hands
                 if ($player["hands"] > 9.5) {
                     $data["jumpball"] = $data["jumpball"] + 3;
@@ -97,6 +133,11 @@ class SqlRbCommand extends SqlPlayerAbstract
                 $data['jumpball'] = null;
             }
 
+            //add speed score
+            if ($player["metrics.fortyTime"] != null) {
+                $data["speedScore"] = ($player['weight'] * 200)/pow($player['metrics.fortyTime'], 4);
+            }
+
             $data['firstName'] = $player['firstName'];
             $data['lastName'] = $player['lastName'];
             $data['team'] = $player['team'];
@@ -104,7 +145,7 @@ class SqlRbCommand extends SqlPlayerAbstract
             $sql = new Sql($this->db);
             $update = $sql->update('rb_metrics');
             $update->set($data);
-            $update->where(['playerId = ?' => $player['playerId']]);
+            $update->where(['playerId = ?' => $player['id']]);
 
             $stmt   = $sql->prepareStatementForSqlObject($update);
             $playerUpdated = $stmt->execute();
@@ -335,6 +376,18 @@ class SqlRbCommand extends SqlPlayerAbstract
                 $data['breakoutAge'] = ($total / $count) * 100;
             } else {
                 $data['breakoutAge'] = null;
+            }
+
+            if ($rb['speedScore'] != null) {
+                $sql    = new Sql($this->db);
+                $select = $sql->select('rb_metrics');
+                $select->where(['speedScore < ?' => $rb['speedScore']]);
+                $stmt   = $sql->prepareStatementForSqlObject($select);
+                $result = $stmt->execute();
+                $total = $result->count();
+                $data['speedScore'] = ($total / $count) * 100;
+            } else {
+                $data['speedScore'] = null;
             }
 
             $data['playerId'] = $rb['playerId'];

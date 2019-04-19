@@ -4,9 +4,9 @@ $json = json_encode($this->jsVars);
 
 $page = <<<EOT
     <div class="row player-header my-2">
-        <div class="col-sm-5 player-info">
+        <div class="col-sm-7 player-info">
             <div class="well player-image">
-                <img width="250px" style="height:250px" src="https://media.giphy.com/media/5wFuyUCJ1Px98OEN55/giphy.gif"/>
+               <img width="350px" style="height:250px" src="{$player['image1']}"/>
             </div>
             <div class="player-info">
                 <span class="first-name">{$player['firstName']}</span>
@@ -23,23 +23,28 @@ $page = <<<EOT
                 <br>
                 <span class="player-info-line">Draft Pick: {$player['draftPick']}</span>
             </div>
-            <div>
-                <span> Sleeper Redraft ADP: 1.01 | </span>
-                <span> Sleeper Dynasty ADP: 1.01</span>
-                <br>
-                <span> Draft.com BestBall ADP: 1.02</span>
-            </div>
-
-        </div>
-        <div class="col-sm-3 player-info-graph">
-            <p class="text-center">Current Team Role: {$player['role']}</p>
-            <div id="fit" style="width: 200px;margin: auto; height:150px"></div>
-            <div id="fit2" style="width: 200px;margin: auto;  height:150px"></div>
         </div>
         <div class="col-sm-3 player-scores">
             <div id="measurables" ></div>
         </div>
     </div>
+    
+        <div class="container my-5">
+    
+        <div class="row">
+            <div class="col-sm-4 player-info-graph">
+                <p class="text-center">Current Role : {$player['role']}</p>
+                <div id="fit" style="width: 200px;margin: auto; height:150px"></div>
+            </div>
+            <div class="col-sm-4 player-info-graph">
+                <p class="text-center"> Team Role Opportunity: {$player['role']}</p>
+                <div id="fit2" style="width: 200px;margin: auto; height:150px"></div>
+            </div>
+            <div class="col-sm-4 player-info-graph">
+                <p class="text-center"> Team Supporting Efficiency: {$player['role']}</p>
+                <div id="fit3" style="width: 200px;margin: auto; height:150px"></div>
+            </div>
+        </div>
 
     <div class="container my-5">
 

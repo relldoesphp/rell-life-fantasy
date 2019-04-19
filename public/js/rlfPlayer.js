@@ -42,6 +42,21 @@ var rlf =  {
             $(".deep-bar").addClass("bg-danger");
         }
 
+        var alphaPercent = (rlfData.player.metrics[0].alpha / 30) * 100;
+
+        $(".alpha-bar").css("width", alphaPercent + "%");
+        if (alphaPercent > 64) {
+            $(".alpha-bar").addClass("bg-success");
+        }
+
+        if (alphaPercent < 64 && alphaPercent > 40) {
+            $(".alpha-bar").addClass("bg-warning");
+        }
+
+        if (alphaPercent < 39) {
+            $(".alpha-bar").addClass("bg-danger");
+        }
+
         $('#college-stats').DataTable( {
             "paging":   false,
             "ordering": false,
@@ -115,11 +130,50 @@ var rlf =  {
         var metrics = rlfData.player.metrics[0];
         // var avgLB = rlfData.average.LB;
 
-        var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Block Power'];
+        var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Speed Score'];
+
+        var cone = percent.agility * .5;
+        var shuttle = percent.agility * .5;
+        var agilityPercent = Math.round(cone+shuttle);
+        var coneTrace = {
+            x:['Agility'],
+            y: [cone],
+            name: '3 cone ('+Math.round(percent.cone)+'%)',
+            text: [
+                metrics.cone
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var shuttleTrace = {
+            x:['Agility'],
+            y: [ shuttle],
+            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
+            text: [
+                metrics.shuttle
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
 
         var trace1 = {
             x: xValue,
-            y: [percent.fortyTime, percent.agility, percent.elusiveness, percent.power, ''],
+            y: [percent.fortyTime, '', percent.elusiveness, percent.power, percent.speedScore],
             name: 'Percentile',
             type: 'bar',
             text: [
@@ -127,6 +181,7 @@ var rlf =  {
                 metrics.agility+'<br>'+Math.round(percent.agility)+'%',
                 metrics.elusiveness+'<br>'+Math.round(percent.elusiveness)+'%',
                 metrics.power+'<br>'+Math.round(percent.power)+'%',
+                metrics.speedScore+'<br>'+Math.round(percent.speedScore)+'%',
             ],
             textposition: 'auto',
             hoverinfo: 'none'
@@ -139,7 +194,7 @@ var rlf =  {
             type: 'scatter'
         };
 
-        var data = [trace1, trace2];
+        var data = [trace1, trace2, coneTrace, shuttleTrace];
 
         var layout = {
             font: {size: 12},
@@ -156,6 +211,7 @@ var rlf =  {
             },
             width: 700,
             height: 350,
+            barmode: 'stack'
         };
 
         Plotly.newPlot('prospect', data, layout, {responsive: true, displayModeBar: false});
@@ -196,32 +252,32 @@ var rlf =  {
         Plotly.plot("measurables", data, layout, {responsive: true, displayModeBar: false});
     },
 
-    initOppChartsRB : function(){
-         var level = 0,
-             teamLevel = 0,
-             title = "",
-             teamTitle = "";
+    initOppChartsRB : function() {
+        var level = 0,
+            teamLevel = 0,
+            title = "",
+            teamTitle = "";
 
-         if (rlfData.player.role === "Alpha") {
-             level = rlfData.player.position_scores.alpha_score;
-             teamLevel = rlfData.player.team_scores.alpha_score;
-             title = 'Alpha RB Rating';
-             teamTitle = "Team Alpha RB Opportunity";
-         }
+        if (rlfData.player.role === "Alpha") {
+            level = rlfData.player.position_scores.alpha_score;
+            teamLevel = rlfData.player.team_scores.alpha_score;
+            title = 'Alpha RB Rating';
+            teamTitle = "Team Alpha RB Opportunity";
+        }
 
-         if (rlfData.player.role === "Grinder") {
-             level = rlfData.player.position_scores.grinder_score;
-             teamLevel = rlfData.player.team_scores.grinder_score;
-             title = 'Grinder RB Rating';
-             teamTitle = "Team Grinder RB Opportunity";
-         }
+        if (rlfData.player.role === "Grinder") {
+            level = rlfData.player.position_scores.grinder_score;
+            teamLevel = rlfData.player.team_scores.grinder_score;
+            title = 'Grinder RB Rating';
+            teamTitle = "Team Grinder RB Opportunity";
+        }
 
-         if (rlfData.player.role === "Pass Catcher") {
-             level = rlfData.player.position_scores.pass_score;
-             teamLevel = rlfData.player.team_scores.pass_score;
-             title = 'Pass Catcher RB Rating';
-             teamTitle = "Team Pass Catcher RB Opportunity";
-         }
+        if (rlfData.player.role === "Pass Catcher") {
+            level = rlfData.player.position_scores.pass_score;
+            teamLevel = rlfData.player.team_scores.pass_score;
+            title = 'Pass Catcher RB Rating';
+            teamTitle = "Team Pass Catcher RB Opportunity";
+        }
 
         // Trig to calc meter point
         var degrees = 100 - level,
@@ -236,26 +292,30 @@ var rlf =  {
             space = ' ',
             pathY = String(y),
             pathEnd = ' Z';
-        var path = mainPath.concat(pathX,space,pathY,pathEnd);
+        var path = mainPath.concat(pathX, space, pathY, pathEnd);
 
         var data = [{
             type: 'scatter',
-            x: [0], y:[0],
-            marker: {size: 20, color:'850000'},
+            x: [0], y: [0],
+            marker: {size: 20, color: '850000'},
             showlegend: false,
             name: 'Rating',
             text: level,
-            hoverinfo: 'text+name'},
-            { values: [20, 20, 20, 20, 20, 100],
+            hoverinfo: 'text+name'
+        },
+            {
+                values: [20, 20, 20, 20, 20, 100],
                 rotation: 90,
                 text: ['Elite', 'Great', 'Good', 'Meh',
                     'Trash', ''],
                 textinfo: 'text',
-                textposition:'inside',
-                marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(110, 154, 22, .5)',
+                textposition: 'inside',
+                marker: {
+                    colors: ['rgba(14, 127, 0, .5)', 'rgba(110, 154, 22, .5)',
                         'rgba(170, 202, 42, .5)', 'rgba(202, 209, 95, .5)',
                         'rgba(210, 206, 145, .5)',
-                        'rgba(255, 255, 255, 0)']},
+                        'rgba(255, 255, 255, 0)']
+                },
                 labels: ['151-180', '121-150', '91-120', '61-90', '31-60', ''],
                 hoverinfo: 'label',
                 hole: .5,
@@ -265,7 +325,7 @@ var rlf =  {
 
         var layout = {
             font: {size: 8},
-            shapes:[{
+            shapes: [{
                 type: 'path',
                 path: path,
                 fillcolor: '850000',
@@ -286,14 +346,14 @@ var rlf =  {
                 pad: 10
             },
             xaxis: {
-                zeroline:false,
-                showticklabels:false,
+                zeroline: false,
+                showticklabels: false,
                 showgrid: false,
                 range: [-1, 1]
             },
             yaxis: {
-                zeroline:false,
-                showticklabels:false,
+                zeroline: false,
+                showticklabels: false,
                 showgrid: false,
                 range: [-1, 1]
             }
@@ -314,7 +374,7 @@ var rlf =  {
             space2 = ' ',
             pathY2 = String(y2),
             pathEnd2 = ' Z';
-        var path2 = mainPath2.concat(pathX2,space2,pathY2,pathEnd2);
+        var path2 = mainPath2.concat(pathX2, space2, pathY2, pathEnd2);
 
         data.text = teamTitle;
         layout.shapes[0].path = path2;
@@ -329,7 +389,47 @@ var rlf =  {
         var metrics = rlfData.player.metrics[0];
        // var avgLB = rlfData.average.LB;
         var xValue = ['Bully Score', 'Speed', 'Agility', 'Jumpball'];
-        var yValue = [percent.bully, percent.fortyTime, percent.agility, percent.jumpball];
+        var yValue = [percent.bully, percent.fortyTime, '', percent.jumpball];
+
+        var cone = percent.agility * .5;
+        var shuttle = percent.agility * .5;
+        var agilityPercent = Math.round(cone+shuttle);
+        var coneTrace = {
+            x:['Agility'],
+            y: [cone],
+            name: '3 cone ('+Math.round(percent.cone)+'%)',
+            text: [
+                metrics.cone
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var shuttleTrace = {
+            x:['Agility'],
+            y: [ shuttle],
+            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
+            text: [
+                metrics.shuttle
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
 
         var trace1 = {
             x: xValue,
@@ -409,7 +509,7 @@ var rlf =  {
             }
         };
 
-        var data = [trace1, trace2, trace3, trace4, trace5];
+        var data = [trace1, trace2, trace3, trace4, trace5, coneTrace, shuttleTrace];
 
         var layout = {
             font: {size: 12},
@@ -477,11 +577,11 @@ var rlf =  {
         if (rlfData.player.role === "Alpha") {
             level = rlfData.player.position_scores.alpha_score;
             teamLevel = rlfData.player.team_scores.alpha_score;
-            title = 'Alpha RB Rating';
-            teamTitle = "Team Alpha RB Opportunity";
+            title = 'Alpha WR Rating';
+            teamTitle = "Team Alpha WR Opportunity";
         }
 
-        if (rlfData.player.role === "Grinder") {
+        if (rlfData.player.role === "G") {
             level = rlfData.player.position_scores.grinder_score;
             teamLevel = rlfData.player.team_scores.grinder_score;
             title = 'Grinder RB Rating';
@@ -589,10 +689,20 @@ var rlf =  {
         var path2 = mainPath2.concat(pathX2,space2,pathY2,pathEnd2);
 
         data.text = teamTitle;
+        data[1].text = ['Elite', 'Great', 'Good', 'Meh', 'Trash', ''];
+        data[1].labels = [
+            'Great Volume & Great Effeciency',
+            'Great Volume & Average Effeciency',
+            'Average Volume & Great Effeciency',
+            'Average Vol & Average Effeciency',
+            'Poor volume',
+            ''
+        ];
         layout.shapes[0].path = path2;
         layout.title = 'Team Alpha RB Opportunity';
 
         Plotly.newPlot('fit2', data, layout, {displayModeBar: false});
+        Plotly.newPlot('fit3', data, layout, {displayModeBar: false});
     },
 
     /**** TE stuff ****/

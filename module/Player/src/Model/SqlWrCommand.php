@@ -422,8 +422,6 @@ class SqlWrCommand extends SqlPlayerAbstract
                 $stmt   = $sql->prepareStatementForSqlObject($insert);
                 $result = $stmt->execute();
                 $result->count();
-
-
             }
 
             if (true) {
@@ -496,7 +494,8 @@ class SqlWrCommand extends SqlPlayerAbstract
             'percent.power' => 'power',
             'percent.bully' => 'bully',
             'percent.jumpball' => 'jumpball',
-            'percent.yacScore' => 'yacScore'
+            'percent.yacScore' => 'yacScore',
+            'percent.collegeScore' => 'collegeScore'
         ], Select::JOIN_LEFT);
         $select->where(['p.position = ?' => 'WR']);
         $sqlString = $select->getSqlString();
@@ -620,6 +619,34 @@ class SqlWrCommand extends SqlPlayerAbstract
                 $data['collegeScore'] = null;
             }
 
+            $alphaScore = ($data['collegeScore'] * 1.5) + ($data['deep'] * .6) + ($data['slot'] * .4);
+
+            // Penalties
+            if ($wr['percent.agility'] < 35) {
+                $alphaScore = $alphaScore - 1;
+            }
+
+//            if ($wr['percent.agility'] < 20) {
+//                $alphaScore = $alphaScore - 3;
+//            }
+
+            if ($wr['percent.jumpball'] < 40) {
+                $alphaScore = $alphaScore - 2;
+            }
+
+            if ($wr['percent.jumpball'] < 25) {
+                $alphaScore = $alphaScore - 3;
+            }
+
+            if ($wr['percent.fortyTime'] < 35) {
+                $alphaScore = $alphaScore - 2;
+            }
+
+            if ($wr['percent.fortyTime'] < 25) {
+                $alphaScore = $alphaScore - 3;
+            }
+
+            $data['alpha'] = round($alphaScore,2);
 
             $sql = new Sql($this->db);
             $update = $sql->update('wr_metrics');
@@ -653,17 +680,17 @@ class SqlWrCommand extends SqlPlayerAbstract
                 $data2['deep'] = null;
             }
 
-//            if ($data['collegeScore'] != null) {
-//                $sql    = new Sql($this->db);
-//                $select = $sql->select('wr_metrics');
-//                $select->where(['collegeScore < ?' => $data['collegeScore']]);
-//                $stmt   = $sql->prepareStatementForSqlObject($select);
-//                $result = $stmt->execute();
-//                $total = $result->count();
-//                $data2['deep'] = ($total / 850) * 100;
-//            } else {
-//                $data2['deep'] = null;
-//            }
+            if ($data['alpha'] != null) {
+                $sql    = new Sql($this->db);
+                $select = $sql->select('wr_metrics');
+                $select->where(['alpha < ?' => $data['alpha']]);
+                $stmt   = $sql->prepareStatementForSqlObject($select);
+                $result = $stmt->execute();
+                $total = $result->count();
+                $data2['alpha'] = ($total / 850) * 100;
+            } else {
+                $data2['alpha'] = null;
+            }
 
             $sql = new Sql($this->db);
             $update = $sql->update('wr_percentiles');
@@ -740,9 +767,9 @@ class SqlWrCommand extends SqlPlayerAbstract
             $firstItem = $rowChildren->item(1)->nodeValue;
 
             if (!empty($firstItem) && $firstItem != 'Year') {
-                if ($rowChildren->item(1)->nodeValue != $wr['college']) {
-                    return false;
-                }
+//                if ($rowChildren->item(1)->nodeValue != $wr['college']) {
+//                    return false;
+//                }
                 $year = $rowChildren->item(0)->nodeValue;
                 $year = str_replace("*", "", $year);
                 if (! $rowChildren->item(1)->firstChild instanceof \DOMElement) {
@@ -870,6 +897,7 @@ class SqlWrCommand extends SqlPlayerAbstract
         $breakout = false;
         $collegeScore = 0;
         $bestBreakout = 0;
+        $bestReturn = 0;
         $lastYear = "";
         foreach ($collegeStats as $stats) {
             // figure out breakout year
@@ -886,6 +914,10 @@ class SqlWrCommand extends SqlPlayerAbstract
                             $collegeScore = 1 + $collegeScore;
                         }
                         $breakout = true;
+                    }
+
+                    if ($stats->returnStats->puntYds > 0) {
+                        $bestReturn = $stats->returnStats->puntYds + $stats->returnStats->kickYds;
                     }
 
                     $currentBreakout = (array_sum([$stats->ydsDominator, $stats->tdDominator])) / 2;
@@ -924,6 +956,23 @@ class SqlWrCommand extends SqlPlayerAbstract
                 $collegeScore = $collegeScore + 1;
                 break;
             default:
+        }
+        if ($bestReturn != 0) {
+            switch ($bestReturn) {
+                case $bestReturn > 1000:
+                    $collegeScore = $collegeScore + 4;
+                    break;
+                case $bestReturn > 750:
+                    $collegeScore = $collegeScore + 3;
+                    break;
+                case $bestReturn > 500:
+                    $collegeScore = $collegeScore + 2;
+                    break;
+                case $bestReturn > 250:
+                    $collegeScore = $collegeScore + 1;
+                    break;
+                default:
+            }
         }
 
         return $collegeScore;

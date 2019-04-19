@@ -37,8 +37,8 @@ class ScriptController extends AbstractActionController
     public function updateWrMetricsAction()
     {
         $wr = "WR";
-        $this->wrCommand->calculateMetrics($wr);
-        $this->wrCommand->calculatePercentiles($wr);
+//        $this->wrCommand->calculateMetrics($wr);
+//        $this->wrCommand->calculatePercentiles($wr);
         $this->wrCommand->calculateSpecialScores($wr);
         $this->wrCommand->calculatePercentiles($wr);
     }
@@ -46,8 +46,8 @@ class ScriptController extends AbstractActionController
     public function updateRbMetricsAction()
     {
         $wr = "RB";
-        $this->command->calculateRbMetrics($wr);
-        $this->command->calculateRbPercentiles($wr);
+        $this->rbCommand->calculateMetrics($wr);
+        $this->rbCommand->calculatePercentiles($wr);
     }
 
     public function updateTeMetricsAction()

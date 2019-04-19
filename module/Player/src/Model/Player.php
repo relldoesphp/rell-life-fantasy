@@ -33,6 +33,9 @@ class Player
     private $role;
     private $position;
     private $collegeStats;
+    private $image1;
+    private $image2;
+    private $image3;
 
     public function __construct()
     {
@@ -207,7 +210,8 @@ class Player
             "position" => $this->position,
             "role" => $this->role,
             "scores" => $this->scores,
-            "collegeStats" => json_decode($this->collegeStats)
+            "collegeStats" => json_decode($this->collegeStats),
+            "image1" => $this->image1
         ];
 
         return $data;
