@@ -6,12 +6,12 @@ $page = <<<EOT
     <div class="row player-header my-2">
         <div class="col-sm-7 player-info">
             <div class="well player-image">
-               <img width="350px" style="height:250px" src="{$player['image1']}"/>
+                <img width="350px" style="height:250px" src="{$player['image1']}"/>
             </div>
             <div class="player-info">
                 <span class="first-name">{$player['firstName']}</span>
                 <span class="last-name">{$player['lastName']}</span>
-                <span class="player-info-line">#18 Los Angeles Rams</span>
+                <span class="player-info-line">{$player['team']}</span>
                 <br>
                 <span class="player-info-line">{$player['height']}</span>
                 <br>
@@ -24,12 +24,14 @@ $page = <<<EOT
                 <span class="player-info-line">Draft Pick: {$player['draftPick']}</span>
             </div>
         </div>
+
         <div class="col-sm-3 player-scores">
             <div id="measurables" ></div>
         </div>
     </div>
     
-        <div class="container my-5">
+
+    <div class="container my-5">
     
         <div class="row">
             <div class="col-sm-4 player-info-graph">
@@ -45,9 +47,7 @@ $page = <<<EOT
                 <div id="fit3" style="width: 200px;margin: auto; height:150px"></div>
             </div>
         </div>
-
-    <div class="container my-5">
-
+      
         <h5 class="text-center">Athletic Breakdown</h5>
         <div class="row player-athlete">
             <div class="col-sm-8">
@@ -56,7 +56,7 @@ $page = <<<EOT
             <div class="col-sm-4">
                 <div class="row my-2 col-sm-12">
                     <div class="profile-score col-sm-12">
-                        <div style="margin-top:10px">Grinder Score:</div>
+                        <div style="margin-top:10px">Slot Score:</div>
                         <div class="progress">
                             <div class="progress-bar slot-bar" role="progressbar" style="width: 1%" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
@@ -65,7 +65,7 @@ $page = <<<EOT
                 </div>
                 <div class="row my-2 col-sm-12">
                     <div class="profile-score col-sm-12">
-                        <div style="margin-top:10px">Pass Catcher Score:</div>
+                        <div style="margin-top:10px">Deep Score:</div>
                         <div class="progress">
                             <div class="progress-bar deep-bar" role="progressbar" style="width: 1%" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
@@ -100,7 +100,7 @@ $page = <<<EOT
             <div class="tab-pane active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="col-sm-12 player-college">
                     <h5 class="text-center">College Breakdown</h5>
-                     <div class="col-sm-12">
+                    <div class="col-sm-12">
                         <table id="college-stats" class="display" width="100%"></table>
                     </div>
                 </div>
@@ -109,6 +109,12 @@ $page = <<<EOT
                 <table id="myTable" class="cell-border compact stripe">
                     <thead>
                     <thead>
+
+
+
+
+
+
                     <tr class="LAcolors player-table-header">
                         <td colspan="4">Regular Season</td>
 
@@ -171,10 +177,13 @@ $page = <<<EOT
     var rlfData = {$json};
     
     $(document).ready(function() {
-       rlf.initRbPage(); 
+       rlf.initTePage(); 
        rlf.initSearch();
     });
 </script>
+
 EOT;
 
 echo $page;
+
+

@@ -1,18 +1,38 @@
 //store all functions in object
 
 var rlf =  {
+    /****************************************** RB stuff **************************************************************/
+
     initRbPage : function(){
         rlf.initOppChartsRB();
         rlf.initMesChartsRB();
         rlf.initProsChartsRB();
-    },
 
-    initWrPage : function() {
-        rlf.initMesChartsWR();
-        rlf.initProsChartsWR();
-        rlf.initOppChartsWR();
+        $('#college-stats').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            data: rlfData.player.collegeTable,
+            columns: [
+                { title: "Year" },
+                { title: "College" },
+                { title: "Class" },
+                { title: "GP" },
+                { title: "Carries" },
+                { title: "Rush Yds" },
+                { title: "YPC" },
+                { title: "Rush Tds" },
+                { title: "Recs" },
+                { title: "Rec Yds" },
+                { title: "YPR" },
+                { title: "Rec Tds" },
+                { title: "% of Carries" },
+                { title: "% of Recs" },
+                { title: "% of total yds" },
+                { title: "% of total tds" },
+            ]
+        } );
 
-        var slotPercent = rlfData.player.percentiles[0].slot;
+        var slotPercent = rlfData.player.metrics[0].grinder * 10;
 
         $(".slot-bar").css("width", slotPercent + "%");
         if (slotPercent > 69) {
@@ -27,7 +47,7 @@ var rlf =  {
             $(".slot-bar").addClass("bg-danger");
         }
 
-        var deepPercent = rlfData.player.percentiles[0].deep;
+        var deepPercent = rlfData.player.metrics[0].passCatcher * 10;
 
         $(".deep-bar").css("width", deepPercent + "%");
         if (deepPercent > 64) {
@@ -56,74 +76,7 @@ var rlf =  {
         if (alphaPercent < 39) {
             $(".alpha-bar").addClass("bg-danger");
         }
-
-        $('#college-stats').DataTable( {
-            "paging":   false,
-            "ordering": false,
-            data: rlfData.player.collegeTable,
-            columns: [
-                { title: "Year" },
-                { title: "College" },
-                { title: "Class" },
-                { title: "GP" },
-                { title: "Rec" },
-                { title: "Rec Yds" },
-                { title: "Rec Tds" },
-                { title: "YPR Avg" },
-                { title: "% of Recs" },
-                { title: "% of Rec Yds" },
-                { title: "% of Rec Tds" },
-                { title: "Return Yds" },
-                { title: "Return Tds" },
-                { title: "% of Return Yds" },
-            ]
-        } );
     },
-
-    initTePage : function(){
-        rlf.initProsChartsTE();
-        rlf.initOppChartsTE();
-        rlf.initMesChartsTE();
-    },
-
-    initSearch : function(){
-        var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-            'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-            'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-            'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-            'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-            'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-            'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-            'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-            'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-        ];
-
-
-        var list = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('fullName'),
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            // `states` is an array of state names defined in "The Basics"
-            local: rlfData.list,
-        });
-
-
-        $('#custom-templates .typeahead').typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
-            },
-            {
-                name: 'best-pictures',
-                source: list,
-                display: 'fullName',
-            });
-
-        $('#custom-templates .typeahead').on('typeahead:selected', function(evt, item){
-            var url = "http://relllifefantasy/player/view/"+item.alias;
-            window.location.href=url;
-        });
-    },
-    /**** RB Stuff ****/
 
     initProsChartsRB : function(){
         var percent = rlfData.player.percentiles[0];
@@ -383,7 +336,81 @@ var rlf =  {
         Plotly.newPlot('fit2', data, layout, {displayModeBar: false});
     },
 
-    /***** WR Stuff *****/
+    /****************************************** WR stuff **************************************************************/
+    initWrPage : function() {
+        rlf.initMesChartsWR();
+        rlf.initProsChartsWR();
+        rlf.initOppChartsWR();
+
+        var slotPercent = rlfData.player.percentiles[0].slot;
+
+        $(".slot-bar").css("width", slotPercent + "%");
+        if (slotPercent > 69) {
+            $(".slot-bar").addClass("bg-success");
+        }
+
+        if (slotPercent < 69 && slotPercent > 40) {
+            $(".slot-bar").addClass("bg-warning");
+        }
+
+        if (slotPercent < 39) {
+            $(".slot-bar").addClass("bg-danger");
+        }
+
+        var deepPercent = rlfData.player.percentiles[0].deep;
+
+        $(".deep-bar").css("width", deepPercent + "%");
+        if (deepPercent > 64) {
+            $(".deep-bar").addClass("bg-success");
+        }
+
+        if (deepPercent < 64 && deepPercent > 40) {
+            $(".deep-bar").addClass("bg-warning");
+        }
+
+        if (deepPercent < 39) {
+            $(".deep-bar").addClass("bg-danger");
+        }
+
+        var alphaPercent = (rlfData.player.metrics[0].alpha / 30) * 100;
+
+        $(".alpha-bar").css("width", alphaPercent + "%");
+        if (alphaPercent > 64) {
+            $(".alpha-bar").addClass("bg-success");
+        }
+
+        if (alphaPercent < 64 && alphaPercent > 40) {
+            $(".alpha-bar").addClass("bg-warning");
+        }
+
+        if (alphaPercent < 39) {
+            $(".alpha-bar").addClass("bg-danger");
+        }
+
+        $('#college-stats').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            data: rlfData.player.collegeTable,
+            columns: [
+                { title: "Year" },
+                { title: "College" },
+                { title: "Class" },
+                { title: "GP" },
+                { title: "Rec" },
+                { title: "Rec Yds" },
+                { title: "Rec Tds" },
+                { title: "YPR Avg" },
+                { title: "% of Recs" },
+                { title: "% of Rec Yds" },
+                { title: "% of Rec Tds" },
+                { title: "Return Yds" },
+                { title: "Return Tds" },
+                { title: "% of Return Yds" },
+            ]
+        } );
+    },
+
+
     initProsChartsWR : function(){
         var percent = rlfData.player.percentiles[0];
         var metrics = rlfData.player.metrics[0];
@@ -705,32 +732,170 @@ var rlf =  {
         Plotly.newPlot('fit3', data, layout, {displayModeBar: false});
     },
 
-    /**** TE stuff ****/
-    initProsChartsTE : function(){
-        var percent = rlfData.player.percentiles;
-        var avgLB = rlfData.average.LB;
+    /****************************************** TE stuff **************************************************************/
 
-        var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Block Power'];
+    initTePage : function(){
+        rlf.initProsChartsTE();
+        rlf.initOppChartsTE();
+        rlf.initMesChartsTE();
+
+        $('#college-stats').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            data: rlfData.player.collegeTable,
+            columns: [
+                { title: "Year" },
+                { title: "College" },
+                { title: "Class" },
+                { title: "GP" },
+                { title: "Rec" },
+                { title: "Rec Yds" },
+                { title: "Rec Tds" },
+                { title: "YPR Avg" },
+                { title: "% of Recs" },
+                { title: "% of Rec Yds" },
+                { title: "% of Rec Tds" }
+            ]
+        } );
+    },
+
+    initProsChartsTE : function(){
+        var percent = rlfData.player.percentiles[0];
+        var metrics = rlfData.player.metrics[0];
+        // var avgLB = rlfData.average.LB;
+        var xValue = ['Bully Score', 'Speed', 'Agility', 'Jumpball', 'Power'];
+        var yValue = [percent.bully, percent.fortyTime, '', percent.jumpball, percent.power];
+
+        var cone = percent.agility * .5;
+        var shuttle = percent.agility * .5;
+        var agilityPercent = Math.round(cone+shuttle);
+        var coneTrace = {
+            x:['Agility'],
+            y: [cone],
+            name: '3 cone ('+Math.round(percent.cone)+'%)',
+            text: [
+                metrics.cone
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var shuttleTrace = {
+            x:['Agility'],
+            y: [ shuttle],
+            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
+            text: [
+                metrics.shuttle
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
 
         var trace1 = {
             x: xValue,
-            y: [percent.speed, percent.agility, percent.elusiveness, percent.run_power, percent.block_power],
-            name: 'Percentile',
-            type: 'bar'
+            y: yValue,
+            name: 'WR Ability',
+            type: 'bar',
+            text: [
+                metrics.bully+'<br>'+Math.round(percent.bully)+'%',
+                metrics.fortyTime+'<br>'+Math.round(percent.fortyTime)+'%',
+                metrics.agility+'<br>'+Math.round(percent.agility)+'%',
+                metrics.jumpball+'<br>'+Math.round(percent.jumpball)+'%'
+            ],
+            textposition: 'auto',
+            hoverinfo: 'none',
+            opacity: 0.8,
         };
 
         var trace2 = {
             x: xValue,
-            y: [avgLB.speed, avgLB.agility, avgLB.elusiveness, avgLB.run_power, avgLB.block_power],
-            name: 'Average NFL Linebacker',
+            y: [30, 89, 74, 45, 20],
+            name: 'Average NFL Safety',
             type: 'scatter'
         };
 
-        var data = [trace1, trace2];
+        var lineBacker = {
+            x: xValue,
+            y: [70, 67, 61, 22, 41],
+            name: 'Average NFL Safety',
+            type: 'scatter'
+        };
+
+        var yacPower = percent.power * .40;
+        var yacElusive = percent.elusiveness * .60;
+        var yacPercent = Math.round(yacPower+yacElusive);
+
+        var trace3 = {
+            x:['YAC'],
+            y: [yacPower],
+            name: 'Power ('+Math.round(percent.power)+'%)',
+            text: [
+                metrics.power
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var trace4 = {
+            x:['YAC'],
+            y: [yacElusive],
+            name: 'Elusiveness ('+Math.round(percent.elusiveness)+'%)',
+            text: [
+                Math.round(yacPercent)+'%<br>'+metrics.elusiveness
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+        //
+        // var trace5 = {
+        //     x:['College'],
+        //     y: [percent.collegeScore],
+        //     name: 'College Score ('+Math.round(percent.collegeScore)+'%)',
+        //     textposition: 'auto',
+        //     type: 'bar',
+        //     marker: {
+        //         color: 'rgba(58,200,225,.5)',
+        //         line: {
+        //             color: 'rgb(8,48,107)',
+        //             width: 1.5
+        //         }
+        //     }
+        // };
+
+        var data = [trace1, trace2, trace3, trace4, coneTrace, shuttleTrace, lineBacker];
 
         var layout = {
             font: {size: 12},
-            yaxis: {title: 'Percentile'},
+            yaxis: {title: 'Percentile', range: [0, 100]},
             yaxis2: {
                 titlefont: {color: 'rgb(148, 103, 189)'},
                 tickfont: {color: 'rgb(148, 103, 189)'},
@@ -743,17 +908,18 @@ var rlf =  {
             },
             width: 700,
             height: 350,
+            barmode: 'stack'
         };
 
         Plotly.newPlot('prospect', data, layout, {responsive: true, displayModeBar: false});
     },
 
     initMesChartsTE : function(){
-        var percent = rlfData.player.percentiles;
+        var percent = rlfData.player.percentiles[0];
 
         var data = [{
             type: 'scatterpolar',
-            r: [ percent.height, percent.weight, percent.arms, percent.bmi, percent.speed, percent.bench, percent.vertical, percent.broad],
+            r: [ percent.height, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump],
             theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad'],
             fill: 'toself'
         }];
@@ -910,6 +1076,34 @@ var rlf =  {
         Plotly.newPlot('fit2', data, layout, {displayModeBar: false});
     },
 
+    /******************************* Other Functions ***************************************/
+
+    initSearch : function(){
+        var list = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('fullName'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            // `states` is an array of state names defined in "The Basics"
+            local: rlfData.list,
+        });
+
+
+        $('#custom-templates .typeahead').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            },
+            {
+                name: 'best-pictures',
+                source: list,
+                display: 'fullName',
+            });
+
+        $('#custom-templates .typeahead').on('typeahead:selected', function(evt, item){
+            var url = "http://relllifefantasy/player/view/"+item.alias;
+            window.location.href=url;
+        });
+    },
+
     substringMatcher : function(strs) {
         return function findMatches(q, cb) {
             var matches, substringRegex;
@@ -930,5 +1124,5 @@ var rlf =  {
 
             cb(matches);
         };
-    },
+    }
 };

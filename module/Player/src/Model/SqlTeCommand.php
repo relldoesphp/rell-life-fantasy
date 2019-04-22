@@ -15,6 +15,9 @@ use Zend\Db\ResultSet\ResultSet;
 use Zend\ProgressBar\ProgressBar;
 use Zend\ProgressBar\Adapter\Console;
 use Zend\Db\Sql\Select;
+use Zend\Http\Request;
+use Zend\Http\Client;
+use Zend\Dom\Query;
 
 class SqlTeCommand extends SqlPlayerAbstract
 {
@@ -23,7 +26,8 @@ class SqlTeCommand extends SqlPlayerAbstract
 
     public function __construct(AdapterInterface $db, Console $consoleAdapter)
     {
-        parent::__construct($db, $consoleAdapter);
+        $this->db = $db;
+        $this->consoleAdapter = $consoleAdapter;
     }
 
     public function calculateMetrics($type)
@@ -31,8 +35,8 @@ class SqlTeCommand extends SqlPlayerAbstract
         $sql    = new Sql($this->db);
         $select = $sql->select();
         $select->from(['p' => 'players']);
-        $select->join(['m' => 'wr_metrics'], 'p.id = m.playerId');
-        $select->where(['p.position = ?' => 'WR']);
+        $select->join(['m' => 'te_metrics'], 'p.id = m.playerId');
+        $select->where(['p.position = ?' => 'TE']);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -48,10 +52,10 @@ class SqlTeCommand extends SqlPlayerAbstract
 
         foreach ($players as $player) {
             $data = [];
-            // (average bmi 26.6/ average bench 14.2) = 1.87
+            // (average bmi 30.15/ average bench 19.76) = 1.526
             // (1.87 * (wr bmi - average bmi)) + wr bench Press
             if ($player['benchPress'] != null) {
-                $data["bully"] = (1.87 * ($player['bmi'] - 26.6)) + $player['benchPress'];
+                $data["bully"] = (1.526 * ($player['bmi'] - 30.15)) + $player['benchPress'];
             } else {
                 $data["bully"] = null;
             }
@@ -62,41 +66,41 @@ class SqlTeCommand extends SqlPlayerAbstract
                 $data['agility'] = null;
             }
 
-            // each full pound worth .056 seconds
-            // each full bmi unit worth .42 seconds
+            // each full pound worth .046 seconds
+            // each full bmi unit worth .38 seconds
             // examples: Amari = 10.69, 10.1  JuJu = 11.07, 10.3 , Golden Tate = 11.46, 10.46, Mike Evans = 11, OBJ=10.21,
             if ($data['agility'] != null) {
-                $data["elusiveness"] = $data['agility'] - (($player["bmi"] - 26.6) * .42);
+                $data["elusiveness"] = $data['agility'] - (($player["bmi"] - 30.15) * .38);
             } else {
                 $data["elusiveness"] = null;
             }
 
             // break tackle ability
             // each inch worth 1.69 broad jump
-            // each pound over 200 worth .61 broad jump
+            // each pound over 250 worth .464 broad jump
             if ($player["broadJump"] != null) {
-                $base = 200;
-                switch($player['height']){
-                    case $player['heightInches'] > 75:
-                        $base = 221;
-                        break;
-                    case $player['heightInches'] > 74:
-                        $base = 215;
-                        break;
-                    case $player['heightInches'] > 73:
-                        $base = 210;
-                        break;
-                    case $player['heightInches'] > 72:
-                        $base = 205;
-                        break;
-                    case $player['heightInches'] > 71:
-                        $base = 195;
-                        break;
-                    default:
-                }
+                $base = 250;
+//                switch($player['height']){
+//                    case $player['heightInches'] > 75:
+//                        $base = 221;
+//                        break;
+//                    case $player['heightInches'] > 74:
+//                        $base = 215;
+//                        break;
+//                    case $player['heightInches'] > 73:
+//                        $base = 210;
+//                        break;
+//                    case $player['heightInches'] > 72:
+//                        $base = 205;
+//                        break;
+//                    case $player['heightInches'] > 71:
+//                        $base = 195;
+//                        break;
+//                    default:
+//                }
 
-                $weightBroad = ($player['weight']-$base) * .61;
-                $heightBroad = ($player['heightInches'] - 72) * -3.2;
+                $weightBroad = ($player['weight']-$base) * .46;
+//                $heightBroad = ($player['heightInches'] - 72) * -3.2;
                 $data['power'] = $player["broadJump"] + $weightBroad;
             } else {
                 $data['power'] = null;
@@ -118,7 +122,7 @@ class SqlTeCommand extends SqlPlayerAbstract
             }
 
             $sql = new Sql($this->db);
-            $update = $sql->update('wr_metrics');
+            $update = $sql->update('te_metrics');
             $update->set($data);
             $update->where(['playerId = ?' => $player['playerId']]);
 
@@ -139,8 +143,8 @@ class SqlTeCommand extends SqlPlayerAbstract
         $sql    = new Sql($this->db);
         $select = $sql->select();
         $select->from(['p' => 'players']);
-        $select->join(['m' => 'wr_metrics'], 'p.id = m.playerId');
-        $select->where(['p.position = ?' => 'WR']);
+        $select->join(['m' => 'te_metrics'], 'p.id = m.playerId');
+        $select->where(['p.position = ?' => 'TE']);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -151,14 +155,14 @@ class SqlTeCommand extends SqlPlayerAbstract
         $resultSet = new ResultSet();
         $resultSet->initialize($result);
         $count = $resultSet->count();
-        $wrs = $resultSet->toArray();
+        $tes = $resultSet->toArray();
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $resultSet->count());
         $pointer = 0;
-        foreach ($wrs as $wr) {
-            //height percentile
+        foreach ($tes as $te) {
+            //height percentile 
             $sql    = new Sql($this->db);
             $select = $sql->select('players');
-            $select->where(['position = ?' => 'WR', 'heightInches < ?' => $wr['heightInches']]);
+            $select->where(['position = ?' => 'TE', 'heightInches < ?' => $te['heightInches']]);
             $stmt   = $sql->prepareStatementForSqlObject($select);
             $result = $stmt->execute();
             $total = $result->count();
@@ -166,7 +170,7 @@ class SqlTeCommand extends SqlPlayerAbstract
 
             $sql    = new Sql($this->db);
             $select = $sql->select('players');
-            $select->where(['position = ?' => 'WR', 'armsInches < ?' => $wr['armsInches']]);
+            $select->where(['position = ?' => 'TE', 'armsInches < ?' => $te['armsInches']]);
             $stmt   = $sql->prepareStatementForSqlObject($select);
             $result = $stmt->execute();
             $total = $result->count();
@@ -174,7 +178,7 @@ class SqlTeCommand extends SqlPlayerAbstract
 
             $sql    = new Sql($this->db);
             $select = $sql->select('players');
-            $select->where(['position = ?' => 'WR', 'weight < ?' => $wr['weight']]);
+            $select->where(['position = ?' => 'TE', 'weight < ?' => $te['weight']]);
             $stmt   = $sql->prepareStatementForSqlObject($select);
             $result = $stmt->execute();
             $total = $result->count();
@@ -182,7 +186,7 @@ class SqlTeCommand extends SqlPlayerAbstract
 
             $sql    = new Sql($this->db);
             $select = $sql->select('players');
-            $select->where(['position = ?' => 'WR', 'bmi < ?' => $wr['bmi']]);
+            $select->where(['position = ?' => 'TE', 'bmi < ?' => $te['bmi']]);
             $stmt   = $sql->prepareStatementForSqlObject($select);
             $result = $stmt->execute();
             $total = $result->count();
@@ -190,88 +194,88 @@ class SqlTeCommand extends SqlPlayerAbstract
 
             $sql    = new Sql($this->db);
             $select = $sql->select('players');
-            $select->where(['position = ?' => 'WR', 'hands < ?' => $wr['hands']]);
+            $select->where(['position = ?' => 'TE', 'hands < ?' => $te['hands']]);
             $stmt   = $sql->prepareStatementForSqlObject($select);
             $result = $stmt->execute();
             $total = $result->count();
             $data['hands'] = ($total / $count) * 100;
 
-            if ($wr['fortyTime'] != null) {
+            if ($te['fortyTime'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['fortyTime > ?' => $wr['fortyTime']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['fortyTime > ?' => $te['fortyTime']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
-                $data['fortyTime'] = ($total / 790) * 100;
+                $data['fortyTime'] = ($total / $count) * 100;
             } else {
                 $data['fortyTime'] = null;
             }
 
-            if ($wr['verticalJump'] != null) {
+            if ($te['verticalJump'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['verticalJump < ?' => $wr['verticalJump']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['verticalJump < ?' => $te['verticalJump']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
-                $data['verticalJump'] = ($total / 774) * 100;
+                $data['verticalJump'] = ($total / $count) * 100;
             } else {
                 $data['verticalJump'] = null;
             }
 
-            if ($wr['benchPress'] != null) {
+            if ($te['benchPress'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['benchPress < ?' => $wr['benchPress']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['benchPress < ?' => $te['benchPress']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
-                $data['benchPress'] = ($total / 688) * 100;
+                $data['benchPress'] = ($total / $count) * 100;
             } else {
                 $data['benchPress'] = null;
             }
 
-            if ($wr['broadJump'] != null) {
+            if ($te['broadJump'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['broadJump < ?' => $wr['broadJump']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['broadJump < ?' => $te['broadJump']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
-                $data['broadJump'] = ($total / 765) * 100;
+                $data['broadJump'] = ($total / $count) * 100;
             } else {
                 $data['broadJump'] = null;
             }
 
-            if ($wr['cone'] != null) {
+            if ($te['cone'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['cone > ?' => $wr['cone']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['cone > ?' => $te['cone']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
-                $data['cone'] = ($total / 722) * 100;
+                $data['cone'] = ($total / $count) * 100;
             } else {
                 $data['cone'] = null;
             }
 
-            if ($wr['shuttle'] != null) {
+            if ($te['shuttle'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['shuttle > ?' => $wr['shuttle']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['shuttle > ?' => $te['shuttle']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
-                $data['shuttle'] = ($total / 729) * 100;
+                $data['shuttle'] = ($total / $count) * 100;
             } else {
                 $data['shuttle'] = null;
             }
 
-            if ($wr['bully'] != null) {
+            if ($te['bully'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['bully < ?' => $wr['bully']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['bully < ?' => $te['bully']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
@@ -280,58 +284,58 @@ class SqlTeCommand extends SqlPlayerAbstract
                 $data['bully'] = null;
             }
 
-            if ($wr['agility'] != null) {
+            if ($te['agility'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['agility > ?' => $wr['agility']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['agility > ?' => $te['agility']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
-                $data['agility'] = ($total / 719) * 100;
+                $data['agility'] = ($total / $count) * 100;
             } else {
                 $data['agility'] = null;
             }
 
-            if ($wr['jumpball'] != null) {
+            if ($te['jumpball'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['jumpball < ?' => $wr['jumpball']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['jumpball < ?' => $te['jumpball']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
-                $data['jumpball'] = ($total / 774) * 100;
+                $data['jumpball'] = ($total / $count) * 100;
             } else {
                 $data['jumpball'] = null;
             }
 
-            if ($wr['power'] != null) {
+            if ($te['power'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['power < ?' => $wr['power']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['power < ?' => $te['power']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
-                $data['power'] = ($total / 765) * 100;
+                $data['power'] = ($total / $count) * 100;
             } else {
                 $data['power'] = null;
             }
 
-            if ($wr['elusiveness'] != null) {
+            if ($te['elusiveness'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['elusiveness > ?' => $wr['elusiveness']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['elusiveness > ?' => $te['elusiveness']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
-                $data['elusiveness'] = ($total / 719) * 100;
+                $data['elusiveness'] = ($total / $count) * 100;
             } else {
                 $data['elusiveness'] = null;
             }
 
-            if ($wr['collegeDominator'] != null) {
+            if ($te['collegeDominator'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['collegeDominator < ?' => $wr['collegeDominator']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['collegeDominator < ?' => $te['collegeDominator']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
@@ -340,10 +344,10 @@ class SqlTeCommand extends SqlPlayerAbstract
                 $data['collegeDominator'] = null;
             }
 
-            if ($wr['breakoutAge'] != null) {
+            if ($te['breakoutAge'] != null) {
                 $sql    = new Sql($this->db);
-                $select = $sql->select('wr_metrics');
-                $select->where(['breakoutAge < ?' => $wr['breakoutAge']]);
+                $select = $sql->select('te_metrics');
+                $select->where(['breakoutAge < ?' => $te['breakoutAge']]);
                 $stmt   = $sql->prepareStatementForSqlObject($select);
                 $result = $stmt->execute();
                 $total = $result->count();
@@ -352,27 +356,27 @@ class SqlTeCommand extends SqlPlayerAbstract
                 $data['breakoutAge'] = null;
             }
 
-            $data['playerId'] = $wr['playerId'];
-            $data['firstName'] = $wr['firstName'];
-            $data['lastName'] = $wr['lastName'];
-            $data['team'] = $wr['team'];
+            $data['playerId'] = $te['playerId'];
+            $data['firstName'] = $te['firstName'];
+            $data['lastName'] = $te['lastName'];
+            $data['team'] = $te['team'];
 
             //check for existing entry
             $sql    = new Sql($this->db);
-            $select = $sql->select('wr_percentiles')->columns(['id']);
-            $select->where(['playerId = ?' => $wr['playerId']]);
+            $select = $sql->select('te_percentiles')->columns(['id']);
+            $select->where(['playerId = ?' => $te['playerId']]);
             $stmt   = $sql->prepareStatementForSqlObject($select);
             $result = $stmt->execute();
             if ($result->count() > 0) {
                 $sql = new Sql($this->db);
-                $update = $sql->update('wr_percentiles');
+                $update = $sql->update('te_percentiles');
                 $update->set($data);
-                $update->where(['playerId = ?' => $wr['playerId']]);
+                $update->where(['playerId = ?' => $te['playerId']]);
                 $stmt   = $sql->prepareStatementForSqlObject($update);
                 $playerUpdated = $stmt->execute();
             } else {
                 $sql = new Sql($this->db);
-                $insert = $sql->insert('wr_percentiles');
+                $insert = $sql->insert('te_percentiles');
                 $insert->columns([
                     'playerId',
                     'team',
@@ -400,34 +404,6 @@ class SqlTeCommand extends SqlPlayerAbstract
                 $stmt   = $sql->prepareStatementForSqlObject($insert);
                 $result = $stmt->execute();
                 $result->count();
-
-
-            }
-
-            if (true) {
-                $data2['yacScore'] = ($data['power'] * .35) + ($data['elusiveness'] *.65);
-                $sql = new Sql($this->db);
-                $update = $sql->update('wr_metrics');
-                $update->set($data2);
-                $update->where(['playerId = ?' => $wr['playerId']]);
-                $stmt   = $sql->prepareStatementForSqlObject($update);
-                $playerUpdated2 = $stmt->execute();
-
-                $sql2    = new Sql($this->db);
-                $select = $sql2->select('wr_metrics');
-                $select->where(['yacScore < ?' => $data2['yacScore']]);
-                $stmt   = $sql2->prepareStatementForSqlObject($select);
-                $result = $stmt->execute();
-                $total = $result->count();
-                $data3['yacScore'] = ($total / $count) * 100;
-
-                $sql = new Sql($this->db);
-                $update = $sql->update('wr_percentiles');
-                $update->set($data3);
-                $update->where(['playerId = ?' => $wr['playerId']]);
-                $stmt   = $sql->prepareStatementForSqlObject($update);
-                $playerUpdated3 = $stmt->execute();
-
             }
 
             $pointer++;
@@ -636,5 +612,141 @@ class SqlTeCommand extends SqlPlayerAbstract
             $progressBar->update($pointer);
         }
         $progressBar->finish();
+    }
+
+    public function scrapCollegeJob()
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['p' => 'players']);
+        $select->where([
+            'p.position = ?' => 'TE',
+            'collegeStats' => null
+        ]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $count = $resultSet->count();
+        $wrs = $resultSet->toArray();
+
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, $resultSet->count());
+        $pointer = 0;
+
+        foreach ($wrs as $wr) {
+            $result = $this->scrapCollegeStats($wr);
+            if ($result == false) {
+                continue;
+            }
+            $pointer++;
+            $progressBar->update($pointer);
+        }
+        $progressBar->finish();
+    }
+
+    public function scrapCollegeStats($wr)
+    {
+        $request = new Request();
+        if ($wr['cfb-alias'] == null) {
+            $cfb = strtolower($wr['alias'])."-1";
+        } else {
+            $cfb = $wr['cfb-alias'];
+        }
+        $request->setUri("https://www.sports-reference.com/cfb/players/{$cfb}.html");
+
+        $client = new Client();
+        $response = $client->send($request);
+        $html = $response->getBody();
+
+        $dom = new Query($html);
+        $results = $dom->execute('#receiving tr');
+
+        $count = count($results);
+        if ($count == 0) {
+            return false;
+        }
+        $collegeStats = [];
+        foreach ($results as $result) {
+            $rowChildren = $result->childNodes;
+            $firstItem = $rowChildren->item(1)->nodeValue;
+
+            if (!empty($firstItem) && $firstItem != 'Year') {
+//                if ($rowChildren->item(1)->nodeValue != $wr['college']) {
+//                    return false;
+//                }
+                $year = $rowChildren->item(0)->nodeValue;
+                $year = str_replace("*", "", $year);
+                if (! $rowChildren->item(1)->firstChild instanceof \DOMElement) {
+                    return false;
+                }
+                $collegeHref = $rowChildren->item(1)->firstChild->getAttribute("href");
+                $totals = $this->getCollegeTotals($collegeHref);
+                $collegeStats[$year]['totals'] = $totals;
+                $collegeStats[$year]['year'] = $year;
+                $collegeStats[$year]['college'] = $rowChildren->item(1)->nodeValue;
+                $collegeStats[$year]['class'] = $rowChildren->item(3)->nodeValue;
+                $collegeStats[$year]['games'] = $rowChildren->item(4)->nodeValue;
+                $collegeStats[$year]['games'] = $rowChildren->item(5)->nodeValue;
+                $collegeStats[$year]['receptions'] = $rowChildren->item(6)->nodeValue;
+                $collegeStats[$year]['recYds'] = $rowChildren->item(7)->nodeValue;
+                $collegeStats[$year]['recAvg'] = $rowChildren->item(8)->nodeValue;
+                $collegeStats[$year]['recTds'] = $rowChildren->item(9)->nodeValue;
+                $collegeStats[$year]['ydsDominator'] = (round($collegeStats[$year]['recYds'] / $totals['yds'], 4)) * 100;
+                $collegeStats[$year]['recDominator'] = (round($collegeStats[$year]['receptions'] / $totals['recs'], 4)) * 100;
+                $collegeStats[$year]['tdDominator'] = (round($collegeStats[$year]['recTds'] / $totals['tds'], 4)) * 100;
+            }
+            // $result is a DOMElement
+        }
+
+        $collegeJson = json_encode($collegeStats);
+
+        $sql = new Sql($this->db);
+        $update = $sql->update('players');
+        $update->set(["collegeStats" => $collegeJson]);
+        $update->where(['id = ?' => $wr['id']]);
+        $stmt   = $sql->prepareStatementForSqlObject($update);
+        $playerUpdated = $stmt->execute();
+        return true;
+    }
+
+    public function getCollegeTotals($href)
+    {
+        $request = new Request();
+        $uri = "https://www.sports-reference.com{$href}";
+        $request->setUri($uri);
+
+        $client = new Client();
+        $response = $client->send($request);
+        $html = $response->getBody();
+
+        $weird = strpos($html, '<div class="overthrow table_container" id="div_rushing_and_receiving">');
+        //$pos = ‌‌strpos($html, '<div class="overthrow table_container" id="div_rushing_and_receiving">');
+        $newhtml =  substr($html, $weird);
+
+        $dom = new Query($newhtml);
+        $results = $dom->execute('#rushing_and_receiving tr');
+        $count = count($results);
+        $total['recs'] = 0;
+        $total['yds'] = 0;
+        $total['tds'] = 0;
+        foreach ($results as $result) {
+            $rowChildren = $result->childNodes;
+            $firstItem = $rowChildren->item(0)->nodeValue;
+            if ($firstItem > 0.5) {
+                $recs = $rowChildren->item(6)->nodeValue;
+                $total['recs'] = $recs + $total['recs'];
+                $yds = $rowChildren->item(7)->nodeValue;
+                $total['yds'] = $yds + $total['yds'];
+                $tds = $rowChildren->item(9)->nodeValue;
+                $total['tds'] = $tds + $total['tds'];
+            }
+        }
+
+        return $total;
     }
 }

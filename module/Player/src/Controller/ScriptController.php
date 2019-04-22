@@ -46,19 +46,20 @@ class ScriptController extends AbstractActionController
     public function updateRbMetricsAction()
     {
         $wr = "RB";
-        $this->rbCommand->calculateMetrics($wr);
-        $this->rbCommand->calculatePercentiles($wr);
+ //       $this->rbCommand->calculateMetrics($wr);
+ //       $this->rbCommand->calculatePercentiles($wr);
+        $this->rbCommand->calculateSpecialScores($wr);
     }
 
     public function updateTeMetricsAction()
     {
         $wr = "TE";
-        $this->command->calculateTeMetrics($wr);
-        $this->command->calculateTePercentiles($wr);
+        $this->teCommand->calculateMetrics($wr);
+        $this->teCommand->calculatePercentiles($wr);
     }
 
     public function dataScrapperAction()
     {
-        $this->wrCommand->scrapCollegeJob();
+        $this->teCommand->scrapCollegeJob();
     }
 }

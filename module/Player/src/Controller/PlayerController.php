@@ -39,8 +39,9 @@ class PlayerController extends AbstractActionController
         } else {
             $player = $this->playerRepository->findPlayer($id);
         }
-        $player->setMetrics($this->playerRepository->getPlayerMetrics($player->getId(), $player->getPosition()));
-        $player->setPercentiles($this->playerRepository->getPlayerPercentiles($player->getId(), $player->getPosition()));
+        $position = $player->getPosition();
+        $player->setMetrics($this->playerRepository->getPlayerMetrics($player->getId(), $position));
+        $player->setPercentiles($this->playerRepository->getPlayerPercentiles($player->getId(), $position));
         $playerData = $player->getAllInfo();
 
         $tableData = [];
@@ -48,22 +49,63 @@ class PlayerController extends AbstractActionController
         if (!empty($playerData['collegeStats'])) {
             $collegeStats = (array) $playerData['collegeStats'];
             foreach ($collegeStats as $year => $stats) {
-                $tableData[] = [
-                    $year,
-                    $stats->college,
-                    $stats->class,
-                    $stats->games,
-                    $stats->receptions,
-                    $stats->recYds,
-                    $stats->recTds,
-                    $stats->recAvg,
-                    round($stats->recDominator,1)."%",
-                    round($stats->ydsDominator,1)."%",
-                    round($stats->tdDominator,1)."%",
-                    ($stats->returnStats->kickYds + $stats->returnStats->puntYds),
-                    ($stats->returnStats->kickTds + $stats->returnStats->puntTds),
-                    ($stats->returnStats->returnDominator * 100)."%",
-                ];
+                if ($position == "WR") {
+                    $tableData[] = [
+                        $year,
+                        $stats->college,
+                        $stats->class,
+                        $stats->games,
+                        $stats->receptions,
+                        $stats->recYds,
+                        $stats->recTds,
+                        $stats->recAvg,
+                        round($stats->recDominator,1)."%",
+                        round($stats->ydsDominator,1)."%",
+                        round($stats->tdDominator,1)."%",
+                        ($stats->returnStats->kickYds + $stats->returnStats->puntYds),
+                        ($stats->returnStats->kickTds + $stats->returnStats->puntTds),
+                        ($stats->returnStats->returnDominator * 100)."%",
+                    ];
+                }
+
+                if ($position == "TE") {
+                    $tableData[] = [
+                        $year,
+                        $stats->college,
+                        $stats->class,
+                        $stats->games,
+                        $stats->receptions,
+                        $stats->recYds,
+                        $stats->recTds,
+                        $stats->recAvg,
+                        round($stats->recDominator,1)."%",
+                        round($stats->ydsDominator,1)."%",
+                        round($stats->tdDominator,1)."%",
+                    ];
+                }
+
+                if ($position == "RB") {
+                    $tableData[] = [
+                        $year,
+                        $stats->college,
+                        $stats->class,
+                        $stats->games,
+                        $stats->rushAtt,
+                        $stats->rushYds,
+                        $stats->rushAvg,
+                        $stats->rushTds,
+                        $stats->recs,
+                        $stats->recYds,
+                        $stats->recAvg,
+                        $stats->recTds,
+                        round(($stats->rushAtt / $stats->totals->carries) * 100, 1)."%",
+                        round($stats->recDominator,1)."%",
+                        round($stats->ydsDominator,1)."%",
+                        round($stats->tdDominator,1)."%",
+                    ];
+                }
+
+
             }
         }
 
