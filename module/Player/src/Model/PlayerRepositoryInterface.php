@@ -11,7 +11,7 @@ namespace Player\Model;
 
 interface PlayerRepositoryInterface
 {
-    public function getPlayerNames();
+    public function getPlayerNames($type);
 
     public function findAllPlayers();
 
@@ -22,5 +22,7 @@ interface PlayerRepositoryInterface
     public function getPlayerMetrics($id, $position);
 
     public function getPlayerPercentiles($id, $position);
+
+    public function getTeamScores($team, $position);
 
 }

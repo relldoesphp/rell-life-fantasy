@@ -1,0 +1,120 @@
+<?= $this->doctype() ?>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <?= $this->headTitle('Player Application')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+    <?= $this->headMeta()
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    ?>
+    <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+        ->appendStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
+        ->appendStylesheet($this->basePath('css/materialize.css'))
+        ->appendStylesheet("https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css")
+        ->appendStylesheet("https://fonts.googleapis.com/css?family=Titillium+Web")
+        ->appendStylesheet($this->basePath('css/new_rlf.css'))
+
+
+    ?>
+
+    <!-- Scripts -->
+    <?= $this->headScript()
+        ->appendFile('https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js')
+        ->appendFile("https://cdn.plot.ly/plotly-latest.min.js")
+        ->appendFile("https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js")
+        ->appendFile($this->basePath("js/twitter/typeahead.js/dist/typeahead.bundle.js"))
+        ->appendFile($this->basePath("js/twitter/typeahead.js/dist/bloodhound.js"))
+        ->appendFile($this->basePath('js/materialize.js'))
+        ->appendFile($this->basePath("/js/rlfPlayer.js"))
+    ?>
+
+
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper">
+        <div class="row container">
+            <a href="#" class="brand-logo">Draft-Trade-Win</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="sass.html">Search Players</a></li>
+                <li><a href="sass.html">Podcasts</a></li>
+                <li><a href="badges.html">Rankings</a></li>
+                <li><a href="collapsible.html">Compare Players</a></li>
+                <li><a href="collapsible.html">Articles</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<?= $this->content ?>
+<footer class="page-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+<div class="footer-copyright">
+    <div class="container">
+        © 2019 Copyright Text
+        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+    </div>
+</div>
+</footer>
+
+<!-- Modals -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
+
+<div id="modal2" class="modal">
+    <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+<script>
+    $(document).ready(function(){
+        $('.tabs').tabs();
+        $('.scrollspy').scrollSpy();
+
+        $('.modal').modal();
+
+        $('.carousel.carousel-slider').carousel({
+            fullWidth: true,
+            indicators: true,
+        });
+
+        $('.parallax').parallax();
+
+        setInterval(function() {
+            $('.carousel.carousel-slider').carousel('next');
+        }, 5000);
+    });
+
+</script>
+</body>
+</html>

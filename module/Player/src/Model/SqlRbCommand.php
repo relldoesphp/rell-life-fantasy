@@ -506,6 +506,72 @@ class SqlRbCommand extends SqlPlayerAbstract
                 4.) Elusiveness 2
             */
 
+            $bestRecDom = 0;
+            $bestYPC = 0;
+            $collegeStats = json_decode($rb['collegeStats']);
+
+            if ($collegeStats != null) {
+                foreach ($collegeStats as $stats) {
+                    if ($stats->recDominator > $bestRecDom) {
+                        $bestRecDom = $stats->recDominator;
+                    }
+
+                    if ($stats->rushAvg > $bestYPC) {
+                        $bestYPC = $stats->rushAvg;
+                    }
+                }
+
+                switch ($bestRecDom) {
+                    case $bestRecDom > 20:
+                        $data['passCatcher'] = $data['passCatcher'] + 8;
+                        break;
+                    case $bestRecDom > 15:
+                        $data['passCatcher'] = $data['passCatcher'] + 6;
+                        break;
+                    case $bestRecDom > 10:
+                        $data['passCatcher'] = $data['passCatcher'] + 4;
+                        break;
+                    case $bestRecDom > 9:
+                        $data['passCatcher'] = $data['passCatcher'] + 3;
+                        break;
+                    case $bestRecDom > 8:
+                        $data['passCatcher'] = $data['passCatcher'] + 2;
+                        break;
+                    case $bestRecDom > 6:
+                        $data['passCatcher'] = $data['passCatcher'] - 1;
+                        break;
+                    case $bestRecDom > 4:
+                        $data['passCatcher'] = $data['passCatcher'] - 2;
+                        break;
+                    case $bestRecDom > 2:
+                        $data['passCatcher'] = $data['passCatcher'] - 3;
+                        break;
+                    default:
+                }
+
+                switch ($bestYPC) {
+                    case $bestYPC > 7:
+                        $data['grinder'] = $data['grinder'] + 3;
+                        break;
+                    case $bestYPC > 6:
+                        $data['grinder'] = $data['grinder'] + 2;
+                        break;
+                    case $bestYPC > 5:
+                        $data['grinder'] = $data['grinder'] + 1;
+                        break;
+                    case $bestYPC > 4:
+                        $data['grinder'] = $data['grinder'] - 1;
+                        break;
+                    case $bestYPC > 3:
+                        $data['grinder'] = $data['grinder'] - 2;
+                        break;
+                    case $bestYPC > 2:
+                        $data['grinder'] = $data['grinder'] - 4;
+                        break;
+                    default:
+                }
+            }
+
             switch ($rb['metrics.fortyTime']) {
                 case $rb['metrics.fortyTime'] < 4.41:
                     $data['passCatcher'] =  $data['passCatcher'] + 5;
@@ -519,8 +585,14 @@ class SqlRbCommand extends SqlPlayerAbstract
                 case $rb['metrics.fortyTime'] < 4.56:
                     $data['passCatcher'] = $data['passCatcher'] + 2;
                     break;
-                case $rb['metrics.fortyTime'] < 4.60:
+                case $rb['metrics.fortyTime'] < 4.62:
                     $data['passCatcher'] = $data['passCatcher'] + 1;
+                    break;
+                case $rb['metrics.fortyTime'] < 4.70:
+                    $data['passCatcher'] = $data['passCatcher'] - 2;
+                    break;
+                case $rb['metrics.fortyTime'] < 4.80:
+                    $data['passCatcher'] = $data['passCatcher'] - 3;
                     break;
                 default:
             }
@@ -538,7 +610,7 @@ class SqlRbCommand extends SqlPlayerAbstract
                 case $rb['metrics.agility'] < 11.30:
                     $data['passCatcher'] = $data['passCatcher'] + 2;
                     break;
-                case $rb['metrics.agility'] < 11.40:
+                case $rb['metrics.agility'] < 11.60:
                     $data['passCatcher'] = $data['passCatcher'] + 1;
                     break;
                 default:
@@ -559,7 +631,7 @@ class SqlRbCommand extends SqlPlayerAbstract
                 case $rb['percent.power'] > 60:
                     $data['grinder'] =  $data['grinder'] + 3;
                     break;
-                case $rb['percent.power'] > 40:
+                case $rb['percent.power'] > 20:
                     $data['grinder'] =  $data['grinder'] + 1;
                     break;
                 default:
@@ -583,11 +655,13 @@ class SqlRbCommand extends SqlPlayerAbstract
                 case $rb['percent.elusiveness'] > 50:
                     $data['grinder'] =  $data['grinder'] + 2;
                     break;
-                case $rb['percent.elusiveness'] > 40:
+                case $rb['percent.elusiveness'] > 20:
                     $data['grinder'] =  $data['grinder'] + 1;
                     break;
                 default:
             }
+
+            $data['alpha'] = $data['passCatcher'] + $data['grinder'];
 
             $sql = new Sql($this->db);
             $update = $sql->update('rb_metrics');

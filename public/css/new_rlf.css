@@ -1,0 +1,131 @@
+body {
+    font-family: 'Titillium Web', sans-serif;
+}
+
+div.profile {
+    height:325px;
+}
+
+nav .nav-wrapper, .page-footer {
+    background-color:rgba(0, 0, 0, 0.9);
+}
+
+.page-container {
+    margin-top:25px;
+    max-width:1150px;
+}
+
+.measurables {
+    height:325px;
+}
+
+.prospect {
+    height:400px;
+}
+
+div.fit, div.volume, div.support {
+    height:200px;
+}
+div.row-title {
+    background-color:rgba(0, 0, 0, 0.8);
+    color:white;
+    padding:15px;
+}
+
+.player-menu {
+    position:fixed;
+    top: 118px;
+    bottom: 0px;
+    right: 0px;
+    width: 125px;
+    position: fixed;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 0px;
+}
+
+.player-takes {
+    height:500px;
+}
+
+.player-stats {
+    min-height:500px;
+}
+
+.card.small .card-image {
+    max-height:82%;
+}
+
+.measurables .card.small .card-image {
+    max-height:88%;
+}
+
+#radar-graph {
+    height:256px;
+}
+
+.player-card.card.small {
+    height:345px;
+}
+.player-card-content  .btn-floating.halfway-fab {
+    bottom:48px;
+}
+
+.player-card .card-content {
+    padding:11px
+}
+
+.player-card div.card-content.player-card-content,  .player-card div.card-reveal.player-card-reveal {
+    background-color:rgba(0, 0, 0, 0.8);
+    color:white;
+}
+
+.player-card .carousel {
+    height:280px;
+}
+
+
+#fit-graph, #volume-graph, #support-graph {
+    height:100%;
+    overflow:hidden;
+}
+
+div.skillset > div {
+    height:123px;
+}
+
+div.skillset div.progress {
+    height:25px;
+    -webkit-clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);
+}
+
+.parallax-container {
+    height: 300px;
+}
+
+.twitter-typeahead {
+    width:400px;
+}
+
+.compare-search-field > .twitter-typeahead {
+    width:300px;
+}
+
+
+.tt-menu {
+    background:white;
+    width:100%;
+    padding:5px;
+}
+
+#college-stats_wrapper {
+    overflow-x:scroll;
+    font-size:12px;
+}
+
+#gradient-horizontal {
+    --color-stop-1: #a770ef;
+    --color-stop-2: #cf8bf3;
+    --color-stop-3: #fdb99b;
+}

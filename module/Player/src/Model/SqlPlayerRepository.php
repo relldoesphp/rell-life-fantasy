@@ -46,7 +46,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     /**
      * @return mixed
      */
-    public function getPlayerNames()
+    public function getPlayerNames($type = "")
     {
         $sql    = new Sql($this->db);
         $select = $sql->select('players')->columns([
@@ -58,6 +58,11 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
             'team',
             'fullName' => new Expression('CONCAT(firstName," ",lastName)')
         ]);
+
+        if (!empty($type)) {
+            $select->where(['position = ?' => $type]);
+        }
+
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -160,6 +165,46 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         return $resultSet->toArray();
     }
 
+    public function getTeamScores($team, $position)
+    {
+        if ($team == null) {
+            return null;
+        }
 
+        $sql    = new Sql($this->db);
+        $select = $sql->select("team");
+        switch ($position) {
+            case "WR":
+                $select->columns([
+                    'slot_wr_score',
+                    'deep_wr_score',
+                    'alpha_wr_score'
+                ]);
+                break;
+            case "TE":
+                $select->columns([
+                    'slot_te_score',
+                ]);
+                break;
+            case "RB":
+                $select->columns([
+                    'grinder_rb_score',
+                    'sattelite_rb_score',
+                    'alpha_rb_score'
+                ]);
+                break;
+            default:
+        }
 
+        $select->where(['name = ?' => $team]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        return $resultSet->toArray();
+    }
 }

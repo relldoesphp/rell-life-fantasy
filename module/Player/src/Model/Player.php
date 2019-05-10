@@ -211,7 +211,9 @@ class Player
             "role" => $this->role,
             "scores" => $this->scores,
             "collegeStats" => json_decode($this->collegeStats),
-            "image1" => $this->image1
+            "image1" => $this->image1,
+            "image2" => $this->image2,
+            "image3" => $this->image3
         ];
 
         return $data;

@@ -27,8 +27,59 @@ class PlayerController extends AbstractActionController
     public function indexAction()
     {
          new ViewModel([
-            'players' => $this->playerRepository->getPlayerNames(),
+             'players' => $this->playerRepository->getPlayerNames(),
+             'wr' => $this->playerRepository->getPlayerNames("WR"),
+             'rb' => $this->playerRepository->getPlayerNames("RB"),
+             'te' => $this->playerRepository->getPlayerNames("TE")
         ]);
+    }
+
+    public function compareAction()
+    {
+        $id1 = $this->params()->fromQuery("player1");
+        $id2 = $this->params()->fromQuery("player2");
+        $players = [];
+        if ($id1) {
+            $players[] = [
+                'id' => $id1
+            ];
+        }
+
+        if ($id2) {
+            $players[] = [
+                'id' => $id2
+            ];
+        }
+
+        if (!empty($players)) {
+            foreach ($players as $key => $player) {
+                $playerObject = $this->playerRepository->findPlayer($player['id']);
+                $position = $playerObject->getPosition();
+                $playerObject->setMetrics(
+                    $this->playerRepository->getPlayerMetrics($playerObject->getId(), $position)
+                );
+                $playerObject->setPercentiles(
+                    $this->playerRepository->getPlayerPercentiles($playerObject->getId(), $position)
+                );
+                $playerObject->setScores(
+                    $this->playerRepository->getTeamScores($playerObject->getTeam(), $position)
+                );
+                $players[$key] = $playerObject->getAllInfo();
+            }
+            $jsVars['players'] = $players;
+        }
+
+        $jsVars['list'] = $this->playerList;
+        $jsVars['lists']['all'] = $this->playerList;
+        $jsVars['lists']['WR'] = $this->playerRepository->getPlayerNames("WR");
+        $jsVars['lists']['RB'] = $this->playerRepository->getPlayerNames("RB");
+        $jsVars['list']['TE'] = $this->playerRepository->getPlayerNames("TE");
+        $viewModel = new ViewModel([
+            'players' => $players,
+            'jsVars' => $jsVars,
+        ]);
+
+        return $viewModel;
     }
 
     public function viewAction()
@@ -40,8 +91,15 @@ class PlayerController extends AbstractActionController
             $player = $this->playerRepository->findPlayer($id);
         }
         $position = $player->getPosition();
-        $player->setMetrics($this->playerRepository->getPlayerMetrics($player->getId(), $position));
-        $player->setPercentiles($this->playerRepository->getPlayerPercentiles($player->getId(), $position));
+        $player->setMetrics(
+            $this->playerRepository->getPlayerMetrics($player->getId(), $position)
+        );
+        $player->setPercentiles(
+            $this->playerRepository->getPlayerPercentiles($player->getId(), $position)
+        );
+        $player->setScores(
+            $this->playerRepository->getTeamScores($player->getTeam(), $position)
+        );
         $playerData = $player->getAllInfo();
 
         $tableData = [];
@@ -122,17 +180,16 @@ class PlayerController extends AbstractActionController
                 $viewModel->setTemplate('player/player/wr');
                 break;
             case 'RB':
-                $viewModel->setTemplate('player/player/rb');
+                $viewModel->setTemplate('player/player/wr');
                 break;
             case 'TE':
-                $viewModel->setTemplate('player/player/te');
+                $viewModel->setTemplate('player/player/wr');
                 break;
             case 'QB':
                 $viewModel->setTemplate('player/player/qb');
                 break;
             default:
         }
-
         return $viewModel;
     }
 

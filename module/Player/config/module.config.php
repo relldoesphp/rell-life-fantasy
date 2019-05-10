@@ -114,7 +114,7 @@ return [
             'player' => __DIR__ . '/../view',
         ],
         'template_map' => [
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/layout'           => __DIR__ . '/../view/layout/newLayout.phtml',
         ],
     ],
 ];
