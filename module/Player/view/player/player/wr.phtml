@@ -1,11 +1,3 @@
-<?php
-    $json = json_encode($this->jsVars);
-    $percents = [];
-    foreach($player['percentiles'][0] as $key => $value){
-        $nf = new NumberFormatter('en_US', NumberFormatter::ORDINAL);
-        $percents[$key] = $nf->format($value);
-    }
-?>
 
 <div class="section container page-container player-container">
     <div class="row player-header section scrollspy" id="player-header">
@@ -13,24 +5,24 @@
             <div class="card small player-card hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
                     <div class="carousel carousel-slider activator">
-                        <a class="carousel-item" href="#one!"><img  src="<?= $player['image1']?>" style="height:280px"></a>
-                        <a class="carousel-item" href="#two!"><img src="<?= $player['image2'] ?>" style="height:280px"></a>
-                        <a class="carousel-item" href="#three!"><img src="<?= $player['image3'] ?>" style="height:280px"></a>
+                        <a class="carousel-item" href="#one!"><img  src="https://sleepercdn.com/content/nfl/players/<?=$player['sleeper_id']?>.jpg" style="height:280px"></a>
+                        <a class="carousel-item" href="#two!"><img src="" style="height:280px"></a>
+                        <a class="carousel-item" href="#three!"><img src="" style="height:280px"></a>
                     </div>
                 </div>
                 <div class="card-content player-card-content center">
                     <a class="btn-floating right halfway-fab waves-effect waves-light red activator"><i class="material-icons">arrow_upward</i></a>
-                    <span class="player-title activator white-text text-darken-4"><?= $player['firstName']." ".$player['lastName'] ?></span>
-                    <p class="player-title activator yellow-text text-darken-4">#19 <?=$player['position']?> <?= $player['team']?></p>
+                    <span class="player-title activator white-text text-darken-4"><?= $player['first_name']." ".$player['last_name'] ?></span>
+                    <p class="player-title activator yellow-text text-darken-4">#<?=$player['team_info']['number'] ?> <?=$player['position']?> <?= $player['team']?></p>
                 </div>
                 <div class="card-reveal player-card-reveal">
                     <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>
-                    <p>Height: <?= $player['height']?> (<?= $percents['height'] ?> percentile)</p>
-                    <p>Weight: <?= $player['weight']?> lbs (<?= $percents['weight'] ?> percentile)</p>
-                    <p>Arms: <?= $player['arms']?> inches (<?= $percents['arms'] ?> percentile)</p>
-                    <p>BMI: <?= $player['bmi']?> (<?= $percents['bmi'] ?> percentile)</p>
-                    <p>College: <?= $player['college']?></p>
-                    <p>Draft Pick: <?= $player['draftPick']?> | Draft Year: <?= $player['draftYear']?> </p>
+                    <p>Height: <?= $player['player_info']['height']?> (<?= $player['ordinals']['heightInches'] ?> percentile)</p>
+                    <p>Weight: <?= $player['player_info']['weight']?> lbs (<?= $player['ordinals']['weight'] ?> percentile)</p>
+                    <p>Arms: <?= $player['player_info']['arms']?> inches (<?= $player['ordinals']['arms'] ?> percentile)</p>
+                    <p>BMI: <?= $player['player_info']['bmi']?> (<?= $player['ordinals']['bmi'] ?> percentile)</p>
+                    <p>College: <?= $player['player_info']['college']?></p>
+                    <p>Draft Pick: <?= $player['player_info']['draft_pick']?> | Draft Year: <?= $player['player_info']['draft_year']?> </p>
                 </div>
             </div>
         </div>
@@ -47,12 +39,12 @@
                 </div>
                 <div class="card-reveal player-card-reveal">
                     <span class="card-title white-text">Workout Metrics<i class="material-icons right">arrow_downward</i></span>
-                    <p>40 yd dash: <?= (!empty($player['metrics'][0]['fortyTime'])) ? $player['metrics'][0]['fortyTime']." seconds (".$percents['fortyTime']." percentile)" : "Not Available"?></p>
-                    <p>Bench Press: <?= (!empty($player['metrics'][0]['benchPress'])) ? $player['metrics'][0]['benchPress']." reps (".$percents['benchPress']." percentile)" : "Not Available"?></p>
-                    <p>3 cone: <?= (!empty($player['metrics'][0]['cone'])) ? $player['metrics'][0]['cone']." seconds (".$percents['cone']." percentile)" : "Not Available" ?></p>
-                    <p>Shuttle: <?= (!empty($player['metrics'][0]['shuttle'])) ? $player['metrics'][0]['shuttle']." seconds (".$percents['shuttle']." percentile)" : "Not Available" ?></p>
-                    <p>Vertical Jump: <?= (!empty($player['metrics'][0]['verticalJump'])) ? $player['metrics'][0]['verticalJump']." inches (".$percents['verticalJump']." percentile)" : "Not Available" ?></p>
-                    <p>Broad Jump: <?= (!empty($player['metrics'][0]['broadJump'])) ? $player['metrics'][0]['broadJump']." inches (".$percents['broadJump']." percentile)" : "Not Available"?></p>
+                    <p>40 yd dash: <?= (!empty($player['metrics']['fortyTime'])) ? $player['metrics']['fortyTime']." seconds (".$player['ordinals']['fortyTime']." percentile)" : "Not Available"?></p>
+                    <p>Bench Press: <?= (!empty($player['metrics']['benchPress'])) ? $player['metrics']['benchPress']." reps (".$player['ordinals']['benchPress']." percentile)" : "Not Available"?></p>
+                    <p>3 cone: <?= (!empty($player['metrics']['cone'])) ? $player['metrics']['cone']." seconds (".$player['ordinals']['cone']." percentile)" : "Not Available" ?></p>
+                    <p>Shuttle: <?= (!empty($player['metrics']['shuttle'])) ? $player['metrics']['shuttle']." seconds (".$player['ordinals']['shuttle']." percentile)" : "Not Available" ?></p>
+                    <p>Vertical Jump: <?= (!empty($player['metrics']['verticalJump'])) ? $player['metrics']['verticalJump']." inches (".$player['ordinals']['verticalJump']." percentile)" : "Not Available" ?></p>
+                    <p>Broad Jump: <?= (!empty($player['metrics']['broadJump'])) ? $player['metrics']['broadJump']." inches (".$player['ordinals']['broadJump']." percentile)" : "Not Available"?></p>
                 </div>
             </div>
         </div>
@@ -160,7 +152,7 @@
 ?>
 
 <script type="text/javascript">
-    var rlfData = <?=$json?>;
+    var rlfData = <?=json_encode($jsVars, 512)?>;
 
     $(document).ready(function() {
         <?= $init ?>

@@ -6,12 +6,12 @@
  * Time: 11:10 PM
  */
 
-$servername = "localhost";
+$servername = "drafttradewin.com";
 $username = "rell";
-$password = "rell";
+$password = "3523Kaleb!";
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=fantasy_football", $username, $password);
+    $conn = new PDO("mysql:host=$servername;dbname=dtw_dev", $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -19,45 +19,88 @@ try {
 
     foreach ($json as $key => $value) {
         $player = [];
-        $player['firstName'] = $value['first_name'];
-        $player['lastName'] = $value['last_name'];
-        $alias = str_replace(" ", "-", $data[0]);
-        $player['alias'] = str_replace(".", "", $alias);
-        $player['team'] = $data[11];
-        $player['height'] = $data[10];
-        $player['heightInches'] = $data[4];
-        $player['bmi'] = $data[2];
-        $player['arms'] = $data[9];
-        $player['weight'] = str_replace(" lbs", "", $data[5]);
+        $player['sleeper_id'] = $value->player_id;
+        $player['first_name'] = $value->first_name;
+        $player['last_name'] = $value->last_name;
+        $player['search_full_name'] = $value->search_full_name;
+        $player['position'] = $value->position;
+        $player['team'] = $value->team;
 
-        $arms = explode(" ", $data[9]);
-        $armFraction = explode("/", $arms[1]);
-        $player['armsInches'] = $arms[0] + ($armFraction[0]/$armFraction[1]);
+        $player['player_info'] = (array) $value;
 
-        $hands = explode(" ", $data[8]);
-        $handsFraction = explode("/", $hands[1]);
-        $player['hands'] = $hands[0] + $handsFraction[0]/$handsFraction[1];
-        $player['age'] = $data[6];
-        $player['birthDate'] = $data[7];
-        $player['draftPick'] = $data[3];
-        $player['position'] = $data[1];
+        unset($player['player_info']['espn_id']);
+        unset($player['player_info']['yahoo_id']);
+        unset($player['player_info']['rotoworld_id']);
+        unset($player['player_info']['rotowire_id']);
+        unset($player['player_info']['stats_id']);
+        unset($player['player_info']['sportradar_id']);
+        unset($player['player_info']['gsis_id']);
+        unset($player['player_info']['injury_notes']);
+        unset($player['player_info']['injury_body_part']);
+        unset($player['player_info']['injury_start_date']);
+        unset($player['player_info']['team']);
+        unset($player['player_info']['position']);
+        unset($player['player_info']['number']);
+        unset($player['player_info']['depth_chart_position']);
+        unset($player['player_info']['depth_chart_order']);
+        unset($player['player_info']['practice_participation']);
+        unset($player['player_info']['practice_description']);
 
-        foreach($player as $k => $v) {
-            if ($v == "-") {
-               $player[$k] = null;
-            }
-        }
+        $player['api_info']['espn_id']  = $value->espn_id;
+        $player['api_info']['yahoo_id'] = $value->yahoo_id;
+        $player['api_info']['rotoworld_id'] = $value->rotoworld_id;
+        $player['api_info']['rotowire_id'] = $value->rotowire_id;
+        $player['api_info']['stats_id'] = $value->stats_id;
+        $player['api_info']['sportradar_id'] = $value->sportradar_id;
+        $player['api_info']['gsis_id'] = $value->gsis_id;
+
+        $player['injury_info']['injury_status'] = $value->injury_status;
+        $player['injury_info']['injury_notes'] = $value->injury_notes;
+        $player['injury_info']['injury_body_part'] = $value->injury_body_part;
+        $player['injury_info']['injury_start_date'] = $value->injury_start_date;
+
+        $player['team_info']['team'] = $value->team;
+        $player['team_info']['position'] = $value->position;
+        $player['team_info']['number'] = $value->number;
+        $player['team_info']['depth_chart_position'] = $value->depth_chart_position;
+        $player['team_info']['depth_chart_order'] = $value->depth_chart_order;
+        $player['team_info']['practice_participation'] = $value->practice_participation;
+        $player['team_info']['practice_description'] = $value->practice_description;
+
+        $player['player_info'] = json_encode($player['player_info']);
+        $player['api_info'] = json_encode($player['api_info']);
+        $player['team_info'] = json_encode($player['team_info']);
+        $player['injury_info'] = json_encode($player['injury_info']);
 
         $sql = <<<EOT
-INSERT into players (firstName, lastName, alias, team, height, heightInches, bmi, arms, armsInches, hands, age, birthDate, draftPick, position, weight)
-values (:firstName,:lastName,:alias,:team,:height,:heightInches,:bmi,:arms,:armsInches,:hands,:age,:birthDate,:draftPick,:position, :weight)
+INSERT into player_test (
+  first_name, 
+  last_name, 
+  search_full_name, 
+  sleeper_id,
+  team,
+  position,
+  player_info,
+  injury_info,
+  team_info,
+  api_info
+) values (
+  :first_name,
+  :last_name,
+  :search_full_name, 
+  :sleeper_id, 
+  :team, 
+  :position, 
+  :player_info, 
+  :injury_info,
+  :team_info, 
+  :api_info
+)
 EOT;
-
-
         $stmt= $conn->prepare($sql);
         $stmt->execute($player);
 
-        print "{$data[0]} updated.\n";
+        print "{$player['search_full_name']} updated.\n";
         }
 
 } catch(PDOException $e) {

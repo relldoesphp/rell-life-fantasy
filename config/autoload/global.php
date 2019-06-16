@@ -21,6 +21,12 @@ return [
                     'username' => 'rell',
                     'password' => 'rell'
                 ],
+                'Dtw\Db\Adapter' => [
+                    'driver' => 'Pdo',
+                    'dsn'    => 'mysql:dbname=dtw_dev;host=drafttradewin.com;charset=utf8',
+                    'username' => 'rell',
+                    'password' => '3523Kaleb!'
+                ],
             ],
         ],
 ];

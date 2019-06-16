@@ -18,6 +18,7 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Sql\Predicate;
 
 class SqlPlayerRepository implements PlayerRepositoryInterface
 {
@@ -49,19 +50,45 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     public function getPlayerNames($type = "")
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('players')->columns([
+        $select = $sql->select('player_test')->columns([
             'id',
-            'firstName',
-            'lastName',
-            'alias',
-            'position',
-            'team',
-            'fullName' => new Expression('CONCAT(firstName," ",lastName)')
+            'full_name' => new Expression("concat(first_name,' ',last_name,' ',position)"),
+            "nohash" => new Expression("Replace(json_unquote(player_info->'$.hashtag'),'#','')")
         ]);
 
         if (!empty($type)) {
-            $select->where(['position = ?' => $type]);
+            $select->where->in('position', ['WR','TE','RB','OB']);
         }
+
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        return  $resultSet->toArray();
+    }
+
+    public function queryPlayers($query)
+    {
+        // TODO: Implement queryPlayers() method.
+        $sql    = new Sql($this->db);
+        $select = $sql->select('player_test')->columns([
+            'id',
+            'full_name' => new Expression("concat(first_name,' ',last_name,' ',position)"),
+            "nohash" => new Expression("Replace(json_unquote(player_info->'$.hashtag'),'#','')")
+        ]);
+        $select->where->like('first_name', $query."%")
+            ->or->like('last_name', $query."%")
+            ->or->like('search_full_name', $query."%");
+
+        $select->order([
+            new Expression("json_unquote(player_info->'$.active') DESC"),
+            new Expression("json_unquote(team_info->'$.depth_chart_order') ASC"),
+        ]);
 
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -84,9 +111,10 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     }
 
     public function findPlayerByAlias($alias){
+        $alias = "#{$alias}";
         $sql    = new Sql($this->db);
-        $select = $sql->select('players');
-        $select->where(['alias = ?' => $alias]);
+        $select = $sql->select('player_test');
+        $select->where(["player_info->'$.hashtag' = ?" => $alias]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -107,7 +135,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     public function findPlayer($id)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('players');
+        $select = $sql->select('player_test');
         $select->where(['id = ?' => $id]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();

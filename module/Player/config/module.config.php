@@ -23,7 +23,7 @@ return [
         ],
         'factories' => [
             // Custom Mysql Adapter defined in configs
-            'Rlf\Db\Adapter' => AdapterAbstractServiceFactory::class,
+            'Dtw\Db\Adapter' => AdapterAbstractServiceFactory::class,
             // factory for sql repository
             Model\SqlPlayerRepository::class => Factory\SqlPlayerRepositoryFactory::class,
             // factory for Command Center
@@ -96,6 +96,28 @@ return [
                         ],
                     ],
                 ],
+                'sleeper-stats' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'get-sleeper-stats',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'getSleeperStats',
+                        ],
+                    ],
+                ],
+                'make-json' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'make-name-json',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'makeNameJson',
+                        ],
+                    ],
+                ],
             ],
         ],
     ],
@@ -115,6 +137,9 @@ return [
         ],
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/newLayout.phtml',
+        ],
+        'strategies' => [
+            'ViewJsonStrategy',
         ],
     ],
 ];

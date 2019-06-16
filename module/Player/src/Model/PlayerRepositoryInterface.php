@@ -25,4 +25,6 @@ interface PlayerRepositoryInterface
 
     public function getTeamScores($team, $position);
 
+    public function queryPlayers($query);
+
 }

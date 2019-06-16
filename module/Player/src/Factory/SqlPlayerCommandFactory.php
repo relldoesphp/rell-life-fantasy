@@ -26,7 +26,7 @@ class SqlPlayerCommandFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return new SqlPlayerCommand(
-            $container->get('Rlf\Db\Adapter'),
+            $container->get('Dtw\Db\Adapter'),
             new Console()
         );
     }

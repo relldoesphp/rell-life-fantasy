@@ -9,6 +9,8 @@
 namespace Player\Controller;
 
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
+use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractActionController;
 use Player\Model\PlayerRepositoryInterface;
 
@@ -85,97 +87,23 @@ class PlayerController extends AbstractActionController
     public function viewAction()
     {
         $id = $this->params()->fromRoute('id', 0);
-        if (!is_integer($id)) {
-            $player = $this->playerRepository->findPlayerByAlias($id);
-        } else {
+        if (is_numeric($id)) {
             $player = $this->playerRepository->findPlayer($id);
+        } else {
+            $player = $this->playerRepository->findPlayerByAlias($id);
         }
-        $position = $player->getPosition();
-        $player->setMetrics(
-            $this->playerRepository->getPlayerMetrics($player->getId(), $position)
-        );
-        $player->setPercentiles(
-            $this->playerRepository->getPlayerPercentiles($player->getId(), $position)
-        );
-        $player->setScores(
-            $this->playerRepository->getTeamScores($player->getTeam(), $position)
-        );
+
         $playerData = $player->getAllInfo();
 
-        $tableData = [];
-
-        if (!empty($playerData['collegeStats'])) {
-            $collegeStats = (array) $playerData['collegeStats'];
-            foreach ($collegeStats as $year => $stats) {
-                if ($position == "WR") {
-                    $tableData[] = [
-                        $year,
-                        $stats->college,
-                        $stats->class,
-                        $stats->games,
-                        $stats->receptions,
-                        $stats->recYds,
-                        $stats->recTds,
-                        $stats->recAvg,
-                        round($stats->recDominator,1)."%",
-                        round($stats->ydsDominator,1)."%",
-                        round($stats->tdDominator,1)."%",
-                        ($stats->returnStats->kickYds + $stats->returnStats->puntYds),
-                        ($stats->returnStats->kickTds + $stats->returnStats->puntTds),
-                        ($stats->returnStats->returnDominator * 100)."%",
-                    ];
-                }
-
-                if ($position == "TE") {
-                    $tableData[] = [
-                        $year,
-                        $stats->college,
-                        $stats->class,
-                        $stats->games,
-                        $stats->receptions,
-                        $stats->recYds,
-                        $stats->recTds,
-                        $stats->recAvg,
-                        round($stats->recDominator,1)."%",
-                        round($stats->ydsDominator,1)."%",
-                        round($stats->tdDominator,1)."%",
-                    ];
-                }
-
-                if ($position == "RB") {
-                    $tableData[] = [
-                        $year,
-                        $stats->college,
-                        $stats->class,
-                        $stats->games,
-                        $stats->rushAtt,
-                        $stats->rushYds,
-                        $stats->rushAvg,
-                        $stats->rushTds,
-                        $stats->recs,
-                        $stats->recYds,
-                        $stats->recAvg,
-                        $stats->recTds,
-                        round(($stats->rushAtt / $stats->totals->carries) * 100, 1)."%",
-                        round($stats->recDominator,1)."%",
-                        round($stats->ydsDominator,1)."%",
-                        round($stats->tdDominator,1)."%",
-                    ];
-                }
-
-
-            }
-        }
-
-        $playerData['collegeTable'] = $tableData;
         $jsVars['player'] = $playerData;
         $jsVars['list'] = $this->playerList;
+
         $viewModel = new ViewModel([
             'player' => $playerData,
             'jsVars' => $jsVars,
         ]);
 
-        switch ($playerData['position']){
+        switch ($playerData['position']) {
             case 'WR':
                 $viewModel->setTemplate('player/player/wr');
                 break;
@@ -193,4 +121,10 @@ class PlayerController extends AbstractActionController
         return $viewModel;
     }
 
+    public function queryAction()
+    {
+        $query = $this->params()->fromRoute('id', '');
+        $results = $this->playerRepository->queryPlayers($query);
+        return new JsonModel($results);
+    }
 }

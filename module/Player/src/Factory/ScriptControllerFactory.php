@@ -8,6 +8,7 @@
 
 namespace Player\Factory;
 
+use Player\Model\PlayerRepositoryInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Controller\ScriptController;
@@ -25,7 +26,8 @@ class ScriptControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return new ScriptController(
-            $container->get(PlayerCommandInterface::class)
+            $container->get(PlayerCommandInterface::class),
+            $container->get(PlayerRepositoryInterface::class)
         );
     }
 }

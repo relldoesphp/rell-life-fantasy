@@ -22,7 +22,7 @@ class SqlPlayerRepositoryFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return new SqlPlayerRepository(
-            $container->get('Rlf\Db\Adapter'),
+            $container->get('Dtw\Db\Adapter'),
             new ReflectionHydrator(),
             new Player()
         );

@@ -27,4 +27,8 @@ interface PlayerCommandInterface
 
     public function getTeCommand();
 
+    public function getSleeperStats();
+
+    public function makePlayerNameJson();
+
 }

@@ -212,10 +212,10 @@ var rlf =  {
                 l: 50,
                 r: 20,
                 b: 20,
-                t: 25,
+                t: 50,
                 pad: 0
             },
-            height: 350,
+            height: 380,
             showlegend: true,
             legend: {
                 margin: {
@@ -226,12 +226,10 @@ var rlf =  {
         };
 
         Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
-
-
     },
 
     initCompareSkillset : function(){
-        var slotPercent = rlfData.players[0].percentiles[0].slot;
+        var slotPercent = Math.round(rlfData.players[0].percentiles[0].slot);
 
         $("#player1-skill .role-one-bar .determinate").css("width", slotPercent + "%");
         $("#player1-skill .role-one-title").text("Slot Score:");
@@ -248,7 +246,7 @@ var rlf =  {
             $("#player1-skill .role-one-bar .determinate").css("background-color", "red");
         }
 
-        var deepPercent = rlfData.players[0].percentiles[0].deep;
+        var deepPercent = Math.round(rlfData.players[0].percentiles[0].deep);
         $("#player1-skill .role-two-bar .determinate").css("width", deepPercent + "%");
         $("#player1-skill .role-two-title").text("Deep Threat Score:");
         $("#player1-skill .role-two-score").text(deepPercent + "%")
@@ -265,9 +263,9 @@ var rlf =  {
         }
 
 
-        var alphaPercent = Math.round((rlfData.players[0].metrics[0].alpha / 30) * 100);
+        var alphaPercent = Math.round(rlfData.players[0].percentiles[0].alpha);
         $("#player1-skill .role-three-bar .determinate").css("width", alphaPercent + "%");
-        $("#player1-skill .role-three-title").text("Alpha Score:");
+        $("#player1-skill .role-three-title").text("Outside X Score:");
         $("#player1-skill .role-three-score").text(alphaPercent + "%")
         if (alphaPercent > 69) {
             $("#player1-skill .role-three-bar .determinate").css("background-color", "green");
@@ -318,7 +316,7 @@ var rlf =  {
 
         var alphaPercent = Math.round((rlfData.players[1].metrics[0].alpha / 30) * 100);
         $("#player2-skill .role-three-bar .determinate").css("width", alphaPercent + "%");
-        $("#player2-skill .role-three-title").text("Alpha Score:");
+        $("#player2-skill .role-three-title").text("Outside X Score:");
         $("#player2-skill .role-three-score").text(alphaPercent + "%")
         if (alphaPercent > 69) {
             $("#player2-skill .role-three-bar .determinate").css("background-color", "green");
@@ -368,7 +366,7 @@ var rlf =  {
             ]
         } );
 
-        var grinderPercent =(rlfData.player.metrics[0].grinder / 12) * 100;
+        var grinderPercent =(rlfData.player.metrics.grinder / 12) * 100;
 
         $(".role-one-bar .determinate").css("width", grinderPercent + "%");
         $(".role-one-title").text("Grinder Score:");
@@ -385,7 +383,7 @@ var rlf =  {
             $(".role-one-bar .determinate").css("background-color", "red");
         }
 
-        var passCatcherPercent = (rlfData.player.metrics[0].passCatcher / 12) * 100;
+        var passCatcherPercent = (rlfData.player.metrics.passCatcher / 12) * 100;
         $(".role-two-bar .determinate").css("width", Math.round(passCatcherPercent) + "%");
         $(".role-two-title").text("Pass Catcher Score:");
         $(".role-two-score").text(Math.round(passCatcherPercent) + "%")
@@ -401,7 +399,7 @@ var rlf =  {
             $(".role-two-bar .determinate").css("background-color", "red");
         }
 
-        var alphaPercent = Math.round((rlfData.player.metrics[0].alpha / 25) * 100);
+        var alphaPercent = Math.round((rlfData.player.metrics.alpha / 25) * 100);
         $(".role-three-bar .determinate").css("width", alphaPercent + "%");
         $(".role-three-title").text("Alpha Back Score:");
         $(".role-three-score").text(alphaPercent + "%")
@@ -420,8 +418,9 @@ var rlf =  {
     },
 
     initProsChartsRB : function(){
-        var percent = rlfData.player.percentiles[0];
-        var metrics = rlfData.player.metrics[0];
+        var percent = rlfData.player.percentiles;
+        var metrics = rlfData.player.metrics;
+        var ordinals = rlfData.player.ordinals;
         // var avgLB = rlfData.average.LB;
 
         var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Speed Score'];
@@ -471,11 +470,11 @@ var rlf =  {
             name: 'Percentile',
             type: 'bar',
             text: [
-                metrics.fortyTime+'<br>'+Math.round(percent.fortyTime)+'%',
-                metrics.agility+'<br>'+Math.round(percent.agility)+'%',
-                metrics.elusiveness+'<br>'+Math.round(percent.elusiveness)+'%',
-                metrics.power+'<br>'+Math.round(percent.power)+'%',
-                metrics.speedScore+'<br>'+Math.round(percent.speedScore)+'%',
+                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
+                metrics.agility+'<br>'+ordinals.agility+'%',
+                metrics.elusiveness+'<br>'+ordinals.elusiveness+'%',
+                metrics.power+'<br>'+ordinals.power+'%',
+                metrics.speedScore+'<br>'+ordinals.speedScore+'%',
             ],
             textposition: 'auto',
             hoverinfo: 'none'
@@ -520,11 +519,11 @@ var rlf =  {
     },
 
     initMesChartsRB : function(){
-        var percent = rlfData.player.percentiles[0];
+        var percent = rlfData.player.percentiles;
 
         var data = [{
             type: 'scatterpolar',
-            r: [ percent.height, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
+            r: [ percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
             theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
             fill: 'toself'
         }];
@@ -561,23 +560,23 @@ var rlf =  {
             teamTitle = "";
 
         if (rlfData.player.role === "Alpha") {
-            level = (rlfData.player.metrics[0].alpha / 20) * 100;
-            teamLevel = (rlfData.player.scores[0].alpha_wr_score * 10);
+            level = (rlfData.player.metrics.alpha / 20) * 100;
+            teamLevel = (rlfData.player.scores.alpha_wr_score * 10);
             fitTitle = 'Alpha WR Fit';
             teamTitle = "Team Alpha WR Opportunity";
         }
 
 
         if (rlfData.player.role === "Grinder") {
-            level = rlfData.player.metrics[0].slot * 10;
-            teamLevel = rlfData.player.scores[0].slot_wr_score * 10;
+            level = rlfData.player.metrics.slot * 10;
+            teamLevel = rlfData.player.scores.slot_wr_score * 10;
             fitTitle = 'Slot WR Fit';
             teamTitle = "Team Grinder RB Opportunity";
         }
 
         if (rlfData.player.role === "Pass") {
-            level = rlfData.player.metrics[0].deep * 10;
-            teamLevel = rlfData.player.scores[0].deep_wr_score * 10;
+            level = rlfData.player.metrics.deep * 10;
+            teamLevel = rlfData.player.scores.deep_wr_score * 10;
             fitTitle = 'Deep WR Fit';
             teamTitle = "Team Pass Catcher RB Opportunity";
         }
@@ -769,7 +768,7 @@ var rlf =  {
         rlf.initProsChartsWR();
         rlf.initOppChartsWR();
 
-        var slotPercent = rlfData.player.percentiles[0].slot;
+        var slotPercent = rlfData.player.percentiles.slot;
 
         $(".role-one-bar .determinate").css("width", slotPercent + "%");
         $(".role-one-title").text("Slot Score:");
@@ -786,7 +785,7 @@ var rlf =  {
             $(".role-one-bar .determinate").css("background-color", "red");
         }
 
-        var deepPercent = rlfData.player.percentiles[0].deep;
+        var deepPercent = rlfData.player.percentiles.deep;
         $(".role-two-bar .determinate").css("width", deepPercent + "%");
         $(".role-two-title").text("Deep Threat Score:");
         $(".role-two-score").text(deepPercent + "%")
@@ -803,7 +802,7 @@ var rlf =  {
         }
 
 
-        var alphaPercent = Math.round((rlfData.player.metrics[0].alpha / 30) * 100);
+        var alphaPercent = Math.round((rlfData.player.metrics.alpha / 30) * 100);
         $(".role-three-bar .determinate").css("width", alphaPercent + "%");
         $(".role-three-title").text("Alpha Score:");
         $(".role-three-score").text(alphaPercent + "%")
@@ -844,8 +843,8 @@ var rlf =  {
 
 
     initProsChartsWR : function(){
-        var percent = rlfData.player.percentiles[0];
-        var metrics = rlfData.player.metrics[0];
+        var percent = rlfData.player.percentiles;
+        var metrics = rlfData.player.metrics;
        // var avgLB = rlfData.average.LB;
         var xValue = ['Bully Score', 'Speed', 'Agility', 'Jumpball'];
         var yValue = [percent.bully, percent.fortyTime, '', percent.jumpball];
@@ -1006,11 +1005,11 @@ var rlf =  {
     },
 
     initMesChartsWR : function(){
-        var percent = rlfData.player.percentiles[0];
+        var percent = rlfData.player.percentiles;
 
         var data = [{
             type: 'scatterpolar',
-            r: [ percent.height, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
+            r: [ percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
             theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
             fill: 'toself'
         }];
@@ -1174,8 +1173,8 @@ var rlf =  {
     },
 
     initProsChartsTE : function(){
-        var percent = rlfData.player.percentiles[0];
-        var metrics = rlfData.player.metrics[0];
+        var percent = rlfData.player.percentiles;
+        var metrics = rlfData.player.metrics;
         // var avgLB = rlfData.average.LB;
         var xValue = ['Bully Score', 'Speed', 'Agility', 'Jumpball', 'Power'];
         var yValue = [percent.bully, percent.fortyTime, '', percent.jumpball, percent.power];
@@ -1336,11 +1335,11 @@ var rlf =  {
     },
 
     initMesChartsTE : function(){
-        var percent = rlfData.player.percentiles[0];
+        var percent = rlfData.player.percentiles;
 
         var data = [{
             type: 'scatterpolar',
-            r: [ percent.height, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
+            r: [ percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
             theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
             fill: 'toself'
         }];
@@ -1481,26 +1480,29 @@ var rlf =  {
 
     initSearch : function(){
         var list = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('fullName'),
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('full_name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             // `states` is an array of state names defined in "The Basics"
-            local: rlfData.list,
+            remote: {
+                url: '../query/%QUERY',
+                wildcard: '%QUERY'
+            }
         });
 
 
         $('#custom-templates .typeahead').typeahead({
                 hint: true,
                 highlight: true,
-                minLength: 1
+                minLength: 3
             },
             {
                 name: 'best-pictures',
                 source: list,
-                display: 'fullName',
+                display: 'full_name'
             });
 
         $('#custom-templates .typeahead').on('typeahead:selected', function(evt, item){
-            var url = "http://relllifefantasy/player/view/"+item.alias;
+            var url = "http://relllifefantasy/player/view/"+item.nohash;
             window.location.href=url;
         });
     },

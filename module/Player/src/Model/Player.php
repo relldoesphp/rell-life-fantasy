@@ -8,34 +8,29 @@
 
 namespace Player\Model;
 
+use Zend\Json\Json;
+
 class Player
 {
     /**
      * @var
      */
     private $id;
-    private $firstName;
-    private $lastName;
+    private $first_name;
+    private $last_name;
+    private $search_full_name;
     private $team;
-    private $height;
-    private $height_inches;
-    private $weight;
-    private $bmi;
-    private $arms;
-    private $arms_inches;
-    private $age;
-    private $college;
-    private $draftPick;
-    private $draftYear;
+    private $position;
+    private $player_info;
+    private $team_info;
+    private $api_info;
+    private $injury_info;
     private $metrics;
     private $percentiles;
-    private $scores;
-    private $role;
-    private $position;
-    private $collegeStats;
-    private $image1;
-    private $image2;
-    private $image3;
+    private $college_stats;
+    private $sleeper_id;
+    public $collegeTable;
+    public $ordinals;
 
     public function __construct()
     {
@@ -55,7 +50,7 @@ class Player
      */
     public function getFirstName()
     {
-        return $this->firstName;
+        return $this->first_name;
     }
 
     /**
@@ -63,7 +58,7 @@ class Player
      */
     public function getLastName()
     {
-        return $this->lastName;
+        return $this->last_name;
     }
 
     /**
@@ -74,150 +69,97 @@ class Player
         return $this->team;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getHeight()
+    public function decodeJson()
     {
-        return $this->height;
+        $this->player_info = (!empty($this->player_info)) ? Json::decode($this->player_info, 1) : "";
+        $this->team_info = (!empty($this->team_info)) ? Json::decode($this->team_info, 1) : "";
+        $this->api_info = (!empty($this->api_info)) ? Json::decode($this->api_info, 1) : "";
+        $this->injury_info = (!empty($this->injury_info)) ? Json::decode($this->injury_info, 1) : "";
+        $this->metrics = (!empty($this->metrics)) ? Json::decode($this->metrics, 1) : "";
+        $this->percentiles = (!empty($this->percentiles)) ? Json::decode($this->percentiles, 1) : "";
+        $this->college_stats = (!empty($this->college_stats)) ? Json::decode($this->college_stats, 1) : "";
     }
 
-    /**
-     * @return mixed
-     */
-    public function getHeightInches()
+    public function makeCollegeTable()
     {
-        return $this->height_inches;
-    }
+        $tableData = [];
+        if (!empty($this->college_stats)) {
+            $collegeStats = (array) $this->college_stats;
+            foreach ($collegeStats as $year => $stats) {
+                if ($this->position == "WR") {
+                    $tableData[] = [
+                        $year,
+                        $stats['college'],
+                        $stats['class'],
+                        $stats['games'],
+                        $stats['recs'],
+                        $stats['recYds'],
+                        $stats['recTds'],
+                        $stats['recAvg'],
+                        round($stats['recs']/$stats['totals']['recs'] * 100,1)."%",
+                        round($stats['recYds']/$stats['totals']['yds'] * 100, 1)."%",
+                        round($stats['recTds']/$stats['totals']['tds'] * 100,1)."%",
+                        0,
+                        0
+                    ];
+                }
 
-    /**
-     * @return mixed
-     */
-    public function getWeight()
-    {
-        return $this->weight;
-    }
+                if ($this->position == "TE") {
+                    $tableData[] = [
+                        $year,
+                        $stats->college,
+                        $stats->class,
+                        $stats->games,
+                        $stats->receptions,
+                        $stats->recYds,
+                        $stats->recTds,
+                        $stats->recAvg,
+                        round($stats->recDominator,1)."%",
+                        round($stats->ydsDominator,1)."%",
+                        round($stats->tdDominator,1)."%",
+                    ];
+                }
 
-    /**
-     * @return mixed
-     */
-    public function getArms()
-    {
-        return $this->arms;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getArmsInches()
-    {
-        return $this->arms_inches;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAge()
-    {
-        return $this->age;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCollege()
-    {
-        return $this->college;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDraftPick()
-    {
-        return $this->draftPick;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDraftYear()
-    {
-        return $this->draftYear;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMetrics()
-    {
-        return $this->metrics;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPercentiles()
-    {
-        return $this->percentiles;
-    }
-
-    public function getPosition()
-    {
-        return $this->position;
-    }
-
-    /**
-     * @param mixed $metrics
-     */
-    public function setMetrics($metrics)
-    {
-        $this->metrics = $metrics;
-    }
-
-    /**
-     * @param mixed $percentiles
-     */
-    public function setPercentiles($percentiles)
-    {
-        $this->percentiles = $percentiles;
-    }
-
-    public function setScores($scores)
-    {
-        $this->scores = $scores;
+                if ($this->position == "RB") {
+                    $tableData[] = [
+                        $year,
+                        $stats->college,
+                        $stats->class,
+                        $stats->games,
+                        $stats->rushAtt,
+                        $stats->rushYds,
+                        $stats->rushAvg,
+                        $stats->rushTds,
+                        $stats->recs,
+                        $stats->recYds,
+                        $stats->recAvg,
+                        $stats->recTds,
+                        round(($stats->rushAtt / $stats->totals->carries) * 100, 1)."%",
+                        round($stats->recDominator,1)."%",
+                        round($stats->ydsDominator,1)."%",
+                        round($stats->tdDominator,1)."%",
+                    ];
+                }
+            }
+        }
+        return $tableData;
     }
 
     public function getAllInfo()
     {
-        $data = [
-            "id" => $this->id,
-            "firstName" => $this->firstName,
-            "lastName" => $this->lastName,
-            "team" => $this->team,
-            "height" => $this->height,
-            "height_inches" => $this->height_inches,
-            "weight" => $this->weight,
-            "bmi" => $this->bmi,
-            "arms" => $this->arms,
-            "arms_inches" => $this->arms_inches,
-            "age" => $this->age,
-            "college" => $this->college,
-            "draftPick" => $this->draftPick,
-            "draftYear" => $this->draftYear,
-            "metrics" => $this->metrics,
-            "percentiles" => $this->percentiles,
-            "position" => $this->position,
-            "role" => $this->role,
-            "scores" => $this->scores,
-            "collegeStats" => json_decode($this->collegeStats),
-            "image1" => $this->image1,
-            "image2" => $this->image2,
-            "image3" => $this->image3
-        ];
-
-        return $data;
+        $this->decodeJson();
+        $this->ordinals = $this->makeOrdinals();
+        $this->collegeTable = $this->makeCollegeTable();
+        return get_object_vars($this);
     }
 
-
+    private function makeOrdinals()
+    {
+        $ordinals = [];
+        foreach($this->percentiles as $key => $value) {
+            $nf = new \NumberFormatter('en_US', \NumberFormatter::ORDINAL);
+            $ordinals[$key] = $nf->format($value);
+        }
+        return $ordinals;
+    }
 }
