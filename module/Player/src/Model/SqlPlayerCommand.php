@@ -153,7 +153,7 @@ class SqlPlayerCommand implements PlayerCommandInterface
             $insert = $sql->insert('season_stats');
             $data = [
                 'sleeper_id' => $key,
-                'year' => '2018'
+                'year' => '2017'
             ];
 
             if (!empty((array) $value)) {
