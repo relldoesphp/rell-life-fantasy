@@ -11,10 +11,14 @@ var rlf =  {
 
     initCompareSearches : function(){
         var compareList = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('fullName'),
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('full_name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             // `states` is an array of state names defined in "The Basics"
-            local: rlfData.lists['all'],
+            prefetch: '../../data/names.json',
+            remote: {
+                url: '../query/%QUERY',
+                wildcard: '%QUERY'
+            }
         });
 
         $('#compare-1').typeahead({
@@ -25,7 +29,7 @@ var rlf =  {
                 {
                     name: 'compare-1',
                     source: compareList,
-                    display: 'fullName',
+                    display: 'full_name',
                 });
 
 
@@ -37,14 +41,14 @@ var rlf =  {
                 {
                     name: 'compare-2',
                     source: compareList,
-                    display: 'fullName',
+                    display: 'full_name',
                 });
 
 
         $('.compare-search.typeahead').on('typeahead:selected', function(evt, item){
             var id = $(this).attr("id");
             var position = item.position;
-            $(this).typeahead('val', item.firstName+" "+item.lastName+" -  "+item.team);
+            $(this).typeahead('val', item.first_name+" "+item.last_name+" -  "+item.team);
             compareList.clear();
             compareList.local = rlfData.lists[position];
             compareList.initialize(true);
@@ -67,8 +71,8 @@ var rlf =  {
     },
 
     initCompareMesChart : function(){
-        var percent = rlfData.players[0].percentiles[0];
-        var percent2 = rlfData.players[1].percentiles[0];
+        var percent = rlfData.players[0].percentiles;
+        var percent2 = rlfData.players[1].percentiles;
 
         var data = [
             {
@@ -76,14 +80,14 @@ var rlf =  {
                 r: [percent.height, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
                 theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
                 fill: 'toself',
-                name: rlfData.players[0].firstName+' '+rlfData.players[0].lastName
+                name: rlfData.players[0].first_name+' '+rlfData.players[0].last_name
             },
             {
                 type: 'scatterpolar',
                 r: [percent2.height, percent2.weight, percent2.arms, percent2.bmi, percent2.fortyTime, percent2.benchPress, percent2.verticalJump, percent2.broadJump, percent2.cone, percent2.shuttle],
-                theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
+                theta: ['heightInches', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
                 fill: 'toself',
-                name: rlfData.players[1].firstName+' '+rlfData.players[1].lastName
+                name: rlfData.players[1].first_name+' '+rlfData.players[1].last_name
             },
 
             ];
@@ -126,8 +130,8 @@ var rlf =  {
         /****** WR Traces ******/
         var xValue = ['Bully Score', 'Speed', 'Agility', 'Jumpball', 'YAC', 'College Score'];
 
-        var percent1 = rlfData.players[0].percentiles[0];
-        var metrics1 = rlfData.players[0].metrics[0];
+        var percent1 = rlfData.players[0].percentiles;
+        var metrics1 = rlfData.players[0].metrics;
         var cone1 = percent1.cone * .5;
         var shuttle1 = percent1.shuttle * .5;
         var agilityPercent1 = Math.round(cone1+shuttle1);
@@ -137,7 +141,7 @@ var rlf =  {
         var player1 = {
             x: xValue,
             y: [percent1.bully, percent1.fortyTime, agilityPercent1, percent1.jumpball, yacPercent1, percent1.collegeScore ],
-            name: rlfData.players[0].firstName+' '+rlfData.players[0].lastName,
+            name: rlfData.players[0].first_name+' '+rlfData.players[0].last_name,
             type: 'bar',
             text: [
                 metrics1.bully+'<br>'+Math.round(percent1.bully)+'%',
@@ -158,8 +162,8 @@ var rlf =  {
             }
         };
 
-        var percent2 = rlfData.players[1].percentiles[0];
-        var metrics2 = rlfData.players[1].metrics[0];
+        var percent2 = rlfData.players[1].percentiles;
+        var metrics2 = rlfData.players[1].metrics;
         var cone2 = percent2.cone * .5;
         var shuttle2 = percent2.shuttle * .5;
         var agilityPercent2 = Math.round(cone2+shuttle2);
@@ -169,7 +173,7 @@ var rlf =  {
         var player2 = {
             x: xValue,
             y: [percent2.bully, percent2.fortyTime, agilityPercent2, percent2.jumpball, yacPercent2, percent2.collegeScore],
-            name: rlfData.players[1].firstName+' '+rlfData.players[1].lastName,
+            name: rlfData.players[1].first_name+' '+rlfData.players[1].last_name,
             type: 'bar',
             text: [
                 metrics2.bully+'<br>'+Math.round(percent2.bully)+'%',
@@ -229,7 +233,7 @@ var rlf =  {
     },
 
     initCompareSkillset : function(){
-        var slotPercent = Math.round(rlfData.players[0].percentiles[0].slot);
+        var slotPercent = Math.round(rlfData.players[0].percentiles.slot);
 
         $("#player1-skill .role-one-bar .determinate").css("width", slotPercent + "%");
         $("#player1-skill .role-one-title").text("Slot Score:");
@@ -246,7 +250,7 @@ var rlf =  {
             $("#player1-skill .role-one-bar .determinate").css("background-color", "red");
         }
 
-        var deepPercent = Math.round(rlfData.players[0].percentiles[0].deep);
+        var deepPercent = Math.round(rlfData.players[0].percentiles.deep);
         $("#player1-skill .role-two-bar .determinate").css("width", deepPercent + "%");
         $("#player1-skill .role-two-title").text("Deep Threat Score:");
         $("#player1-skill .role-two-score").text(deepPercent + "%")
@@ -263,7 +267,7 @@ var rlf =  {
         }
 
 
-        var alphaPercent = Math.round(rlfData.players[0].percentiles[0].alpha);
+        var alphaPercent = Math.round(rlfData.players[0].percentiles.alpha);
         $("#player1-skill .role-three-bar .determinate").css("width", alphaPercent + "%");
         $("#player1-skill .role-three-title").text("Outside X Score:");
         $("#player1-skill .role-three-score").text(alphaPercent + "%")
@@ -280,7 +284,7 @@ var rlf =  {
         }
 
         /*** Player2 ***/
-        var slotPercent = rlfData.players[1].percentiles[0].slot;
+        var slotPercent = rlfData.players[1].percentiles.slot;
 
         $("#player2-skill .role-one-bar .determinate").css("width", slotPercent + "%");
         $("#player2-skill .role-one-title").text("Slot Score:");
@@ -297,7 +301,7 @@ var rlf =  {
             $("#player2-skill .role-one-bar .determinate").css("background-color", "red");
         }
 
-        var deepPercent = rlfData.players[1].percentiles[0].deep;
+        var deepPercent = rlfData.players[1].percentiles.deep;
         $("#player2-skill .role-two-bar .determinate").css("width", deepPercent + "%");
         $("#player2-skill .role-two-title").text("Deep Threat Score:");
         $("#player2-skill .role-two-score").text(deepPercent + "%")
@@ -314,7 +318,7 @@ var rlf =  {
         }
 
 
-        var alphaPercent = Math.round((rlfData.players[1].metrics[0].alpha / 30) * 100);
+        var alphaPercent = Math.round((rlfData.players[1].metrics.alpha / 30) * 100);
         $("#player2-skill .role-three-bar .determinate").css("width", alphaPercent + "%");
         $("#player2-skill .role-three-title").text("Outside X Score:");
         $("#player2-skill .role-three-score").text(alphaPercent + "%")
@@ -839,6 +843,25 @@ var rlf =  {
                 { title: "Return Tds" },
             ]
         } );
+
+        $('#season-stats').DataTable({
+            "paging": false,
+            "ordering": false,
+            "searching": false,
+            data: rlfData.player.seasonTable,
+            columns: [
+                {title: "Year"},
+                {title: "GP"},
+                {title: "PPG"},
+                {title: "Recs"},
+                {title: "Yds"},
+                {title: "Tds"},
+                {title: "Tgts"},
+                {title: "YPR"},
+                {title: "YPT"},
+                {title: "Deep Yds"}
+            ]
+        });
     },
 
 
@@ -1483,6 +1506,7 @@ var rlf =  {
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('full_name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             // `states` is an array of state names defined in "The Basics"
+            prefetch: '../../data/names.json',
             remote: {
                 url: '../query/%QUERY',
                 wildcard: '%QUERY'
@@ -1493,7 +1517,7 @@ var rlf =  {
         $('#custom-templates .typeahead').typeahead({
                 hint: true,
                 highlight: true,
-                minLength: 3
+                minLength: 1
             },
             {
                 name: 'best-pictures',

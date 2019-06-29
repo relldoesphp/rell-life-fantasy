@@ -27,4 +27,6 @@ interface PlayerRepositoryInterface
 
     public function queryPlayers($query);
 
+    public function getSeasonStats($sleeperId);
+
 }

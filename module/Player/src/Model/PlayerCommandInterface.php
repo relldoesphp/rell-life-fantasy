@@ -29,6 +29,11 @@ interface PlayerCommandInterface
 
     public function getSleeperStats();
 
+    public function getSleeperGameLogs();
+
     public function makePlayerNameJson();
+
+    public function updateSleeperInfo();
+
 
 }

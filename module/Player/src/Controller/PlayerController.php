@@ -8,6 +8,7 @@
 
 namespace Player\Controller;
 
+use Player\Model\Player;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Json\Json;
@@ -56,16 +57,9 @@ class PlayerController extends AbstractActionController
         if (!empty($players)) {
             foreach ($players as $key => $player) {
                 $playerObject = $this->playerRepository->findPlayer($player['id']);
-                $position = $playerObject->getPosition();
-                $playerObject->setMetrics(
-                    $this->playerRepository->getPlayerMetrics($playerObject->getId(), $position)
-                );
-                $playerObject->setPercentiles(
-                    $this->playerRepository->getPlayerPercentiles($playerObject->getId(), $position)
-                );
-                $playerObject->setScores(
-                    $this->playerRepository->getTeamScores($playerObject->getTeam(), $position)
-                );
+                if ($playerObject == false ) {
+                    $playerObject = new Player();
+                }
                 $players[$key] = $playerObject->getAllInfo();
             }
             $jsVars['players'] = $players;
@@ -75,7 +69,7 @@ class PlayerController extends AbstractActionController
         $jsVars['lists']['all'] = $this->playerList;
         $jsVars['lists']['WR'] = $this->playerRepository->getPlayerNames("WR");
         $jsVars['lists']['RB'] = $this->playerRepository->getPlayerNames("RB");
-        $jsVars['list']['TE'] = $this->playerRepository->getPlayerNames("TE");
+        $jsVars['lists']['TE'] = $this->playerRepository->getPlayerNames("TE");
         $viewModel = new ViewModel([
             'players' => $players,
             'jsVars' => $jsVars,
@@ -117,6 +111,7 @@ class PlayerController extends AbstractActionController
                 $viewModel->setTemplate('player/player/qb');
                 break;
             default:
+                $viewModel->setTemplate('player/player/wr');
         }
         return $viewModel;
     }

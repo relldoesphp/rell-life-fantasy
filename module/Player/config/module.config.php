@@ -118,6 +118,28 @@ return [
                         ],
                     ],
                 ],
+                'update-sleeper-info' => [
+                    'type' => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'update-sleeper-info',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'updateSleeperInfo',
+                        ],
+                    ],
+                ],
+                'sleeper-logs' => [
+                    'type' => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'update-sleeper-logs',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'getSleeperLogs',
+                        ],
+                    ],
+                ],
             ],
         ],
     ],

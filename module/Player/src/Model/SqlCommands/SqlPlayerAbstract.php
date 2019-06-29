@@ -10,6 +10,7 @@ namespace Player\Model;
 
 use InvalidArgumentException;
 use RuntimeException;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Adapter\Driver\ResultInterface;
@@ -210,6 +211,16 @@ class SqlPlayerAbstract
             foreach ($data as $key => $value) {
                 $jsonString .= ", '{$key}', '{$value}'";
             }
+
+            $sql = new Sql($this->db);
+            $update = $sql->update();
+            $update->set(['metrics' => new Expression("json_set(metrics{$jsonString})")]);
+            $update->where('id = ?', $player['id']);
+            $stmt = $sql->prepareStatementForSqlObject($update);
+            $playerUpdated = $stmt->execute();
+            $pointer++;
+            $progressBar->update($pointer);
+
 
             $update = <<<EOT
 UPDATE player_test SET metrics = json_set(metrics{$jsonString}) where id = {$player['id']};

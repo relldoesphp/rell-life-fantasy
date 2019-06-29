@@ -126,6 +126,15 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $resultSet->initialize($result);
         $player = $resultSet->current();
 
+        $select = $sql->select('season_stats');
+        $select->where(['sleeper_id = ?' => $player->getSleeperId()]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $player->seasonStats = $resultSet->toArray();
+
         return $player;
     }
 
@@ -148,6 +157,14 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $resultSet->initialize($result);
         $player = $resultSet->current();
 
+        $select = $sql->select('season_stats');
+        $select->where(['sleeper_id = ?' => $player->id]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $player->seasonStats = $resultSet->toArray();
         return $player;
     }
 
@@ -227,6 +244,24 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $select->where(['name = ?' => $team]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        return $resultSet->toArray();
+    }
+
+    public function getSeasonStats($sleeperId)
+    {
+        // TODO: Implement getSeasonStats() method.
+        $sql    = new Sql($this->db);
+        $select = $sql->select('season_stats');
+        $select->where(['sleeper_id = ?' => $sleeperId]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }

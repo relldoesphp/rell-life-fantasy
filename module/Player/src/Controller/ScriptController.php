@@ -128,4 +128,15 @@ class ScriptController extends AbstractActionController
        $json = $this->repository->getPlayerNames();
        file_put_contents('public/data/names.json', json_encode($json));
     }
+
+    public function updateSleeperInfoAction()
+    {
+        $this->command->updateSleeperInfo();
+    }
+
+
+    public function getSleeperLogsAction()
+    {
+        $this->command->getSleeperGameLogs();
+    }
 }
