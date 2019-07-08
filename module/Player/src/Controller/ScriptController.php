@@ -125,7 +125,7 @@ class ScriptController extends AbstractActionController
 
     public function makeNameJsonAction()
     {
-       $json = $this->repository->getPlayerNames();
+       $json = $this->repository->getPlayerNames('Off');
        file_put_contents('public/data/names.json', json_encode($json));
     }
 

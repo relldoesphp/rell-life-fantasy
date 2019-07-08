@@ -1,9 +1,0 @@
-<?php ?>
-    <!-- Filename: module/Blog/view/blog/list/index.phtml -->
-    <h1>Receivers</h1>
-
-<?php foreach ($this->players as $player): ?>
-    <article>
-        <h5 id="post<?= $player->getId() ?>"><?= $player->getfirstName() ?>&nbsp;<?= $player->getLastName() ?></h5>
-    </article>
-<?php endforeach ?>

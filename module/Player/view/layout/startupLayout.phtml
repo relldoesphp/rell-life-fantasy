@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <?= $this->headTitle('Player Application')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+    <?= $this->headMeta()
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    ?>
+    <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+        ->appendStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
+        ->appendStylesheet($this->basePath('css/materialize.css'))
+        ->appendStylesheet("https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css")
+        ->appendStylesheet("https://fonts.googleapis.com/css?family=Titillium+Web")
+        ->appendStylesheet($this->basePath('css/startup-materialize.css'))
+        ->appendStylesheet($this->basePath('css/new_rlf.css'));
+    ?>
+
+    <!-- External Scripts -->
+    <?= $this->headScript()
+        ->appendFile('https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js')
+        ->appendFile("https://cdn.plot.ly/plotly-latest.min.js")
+        ->appendFile("https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js")
+        ->appendFile($this->basePath("js/twitter/typeahead.js/dist/typeahead.bundle.js"))
+        ->appendFile($this->basePath("js/twitter/typeahead.js/dist/bloodhound.js"))
+        ->appendFile($this->basePath("js/imagesloaded.pkgd.min.js"))
+        ->appendFile($this->basePath("js/masonry.pkgd.min.js"))
+        ->appendFile($this->basePath("js/TweenMax.min.js"))
+        ->appendFile($this->basePath("js/ScrollMagic.min.js"))
+        ->appendFile($this->basePath("js/animation.gsap.min.js"));
+    ?>
+
+    <!-- Initialization Scripts -->
+    <?= $this->headScript()
+        ->appendFile($this->basePath('js/materialize.js'))
+        ->appendFile($this->basePath('js/startup.js'))
+       ->appendFile($this->basePath('js/init.js'))
+        ->appendFile($this->basePath("/js/rlfPlayer.js"));
+    ?>
+
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar dark solid">
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo">Rell Life Fantasy</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/player/search">Player Research</a></li>
+            <li><a href="docs/about.html">Podcasts</a></li>
+            <li><a href="docs/about.html">Rankings</a></li>
+            <li><a href="docs/about.html">Threads</a></li>
+        </ul>
+
+        <!--<ul id="pages" class="dropdown-content">-->
+        <!--<li><a class="active" href="horizontal-half.html">Horizontal Halves</a></li>-->
+        <!--<li><a href="sierra.html">Zoom Out</a></li>-->
+        <!--<li><a href="circle-reveal.html">Circle Reveal</a></li>-->
+        <!--<li><a href="phone-wall.html">Phone Wall</a></li>-->
+        <!--<li><a href="element-transitions.html">Element Transitions</a></li>-->
+        <!--<li><a href="basic-elements.html">Basic Elements</a></li>-->
+        <!--<li><a href="card-shuffle.html">Shuffle</a></li>-->
+        <!--<li><a href="postcards.html">Postcards</a></li>-->
+        <!--</ul>-->
+
+        <a href="#" data-target="slide-out" class="sidenav-trigger button-collapse right"><i class="material-icons white-text">menu</i></a>
+    </div>
+</nav>
+<ul id="slide-out" class="sidenav">
+    <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+            <li class="bold">
+                <a class="collapsible-header waves-effect waves-teal active">Pages</a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li><a class="active" href="horizontal-half.html">Horizontal Halves</a></li>
+                        <li><a href="sierra.html">Zoom Out</a></li>
+                        <li><a href="circle-reveal.html">Circle Reveal</a></li>
+                        <li><a href="phone-wall.html">Phone Wall</a></li>
+                        <li><a href="element-transitions.html">Element Transitions</a></li>
+                        <li><a href="basic-elements.html">Basic Elements</a></li>
+                        <li><a href="card-shuffle.html">Shuffle</a></li>
+                        <li><a href="postcards.html">Postcards</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <li><a class="waves-effect waves-teal" href="blog.html">Blog</a></li>
+    <li><a class="waves-effect waves-teal" href="team.html">Team</a></li>
+    <li><a class="waves-effect waves-teal" href="docs/about.html">Docs</a></li>
+    <li><a class="waves-effect waves-teal" href="#">Buy Now!</a></li>
+</ul>
+
+<?= $this->content ?>
+
+<!-- Footer -->
+<footer class="page-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col s6 m3">
+                <img class="materialize-logo" src="" alt="">
+                <p>Made with love by Materialize.</p>
+            </div>
+            <div class="col s6 m3">
+                <h5>About</h5>
+                <ul>
+                    <li><a href="#!">Blog</a></li>
+                    <li><a href="#!">Pricing</a></li>
+                    <li><a href="#!">Docs</a></li>
+                </ul>
+            </div>
+            <div class="col s6 m3">
+                <h5>Connect</h5>
+                <ul>
+                    <li><a href="#!">Community</a></li>
+                    <li><a href="#!">Subscribe</a></li>
+                    <li><a href="#!">Email</a></li>
+                </ul>
+            </div>
+            <div class="col s6 m3">
+                <h5>Contact</h5>
+                <ul>
+                    <li><a href="#!">Twitter</a></li>
+                    <li><a href="#!">Facebook</a></li>
+                    <li><a href="#!">Github</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="<?=$this->basePath("js/materialize.min.js")?>"></script>
+<script>
+    $(document).ready(function(){
+        $('.tabs').tabs();
+        $('.scrollspy').scrollSpy();
+
+        $('.modal').modal();
+
+        $('.carousel.carousel-slider').carousel({
+            fullWidth: true,
+            indicators: true,
+        });
+
+        $('.parallax').parallax();
+
+        setInterval(function() {
+            $('.carousel.carousel-slider').carousel('next');
+        }, 5000);
+    });
+
+</script>
+
+<!-- External libraries -->
+
+
+<!--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>-->
+
+
+<!-- Initialization script -->
+
+</body>
+</html>

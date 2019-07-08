@@ -8,6 +8,7 @@
 
 namespace Player;
 
+use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\Db\Adapter\AdapterAbstractServiceFactory;
 use Zend\ServiceManager\Factory\InvokableFactory;
@@ -33,6 +34,16 @@ return [
 
     'router' => [
         'routes' => [
+            'playerHome' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/player/',
+                    'defaults' => [
+                        'controller' => Controller\PlayerController::class,
+                        'action'     => 'search',
+                    ],
+                ],
+            ],
             'player' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -42,7 +53,7 @@ return [
                     ],
                     'defaults' => [
                         'controller' => Controller\PlayerController::class,
-                        'action'     => 'index',
+                        'action'     => 'search',
                     ],
                 ],
             ],
@@ -158,7 +169,7 @@ return [
             'player' => __DIR__ . '/../view',
         ],
         'template_map' => [
-            'layout/layout'           => __DIR__ . '/../view/layout/newLayout.phtml',
+            'layout/layout'           => __DIR__ . '/../view/layout/startupLayout.phtml',
         ],
         'strategies' => [
             'ViewJsonStrategy',

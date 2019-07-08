@@ -12,7 +12,7 @@
 <div class="section container page-container player-container">
     <div class="row player-header section scrollspy" id="player-header">
         <div class="col m5 s12 profile">
-            <div class="card small player-card hoverable">
+            <div class="card small player-card hoverable fade-in-out">
                 <div class="card-image waves-effect waves-block waves-light">
                     <div class="carousel carousel-slider activator">
                         <?=$images?>
@@ -95,33 +95,7 @@
             </div>
         </div>
     </div>
-    <div class="row player-stats section scrollspy hoverable" id="player-stats">
-        <div class="col s12 center row-title"><h6>Stats</h6></div>
-        <div class="col s12">
-            <ul class="tabs">
-                <li class="tab col s3"><a class="active" href="#test1">NFL Stats</a></li>
-                <li class="tab col s3"><a href="#test1">NFL Game Logs</a></li>
-                <li class="tab col s3"><a href="#test2">College Stats</a></li>
-            </ul>
-        </div>
-        <div id="test1" class="col s12">
-            <div class="col-sm-12">
-                <table id="season-stats" class="display" width="100%"></table>
-            </div>
-        </div>
-        <div id="test3" class="col s12">
-            <div class="col-sm-12">
-                <table id="game-logs" class="display" width="100%"></table>
-            </div>
-        </div>
-        <div id="test2" class="col s12">
-            <div class="col-sm-12">
-                <table id="college-stats" class="display" width="100%"></table>
-            </div>
-        </div>
-
-    </div>
-    <div class="row player-situation section scrollspy" id="player-situation">
+    <div class="row player-situation section scrollspy fade-in-out" id="player-situation">
         <a class="waves-effect waves-light btn-small right center modal-trigger" href="#modal1">Explain<i class="material-icons">live_help</i></a>
         <div class="col s12 center row-title"><h6>Situation Breakdown</h6></div>
         <div class="col m4 s12 fit z-depth-1 hoverable">
@@ -140,8 +114,76 @@
 <!--        <img src="https://sleepercdn.com/content/nfl/players/--><?//=$player['sleeper_id']?><!--.jpg">-->
 <!--    </div>-->
 <!--</div>-->
-<div class="section container page-container player-container">
-
+<div class="section container page-container player-container fade-in-out">
+    <div class="row player-stats section scrollspy hoverable" id="player-stats">
+        <div class="col s12 center row-title"><h6>Stats</h6></div>
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a class="active" href="#test1">NFL Stats</a></li>
+                <li class="tab col s3"><a href="#test2">NFL Game Logs</a></li>
+                <li class="tab col s3"><a href="#test3">College Stats</a></li>
+            </ul>
+        </div>
+        <div id="test1" class="col s12">
+            <div class="col-sm-12">
+                <table id="season-stats" class="display" width="100%">
+                    <tfoot>
+                    <tr>
+                        <th colspan="2">Career Average:<br>Career Total:</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div id="test2" class="col s12">
+            <div class="col-sm-12">
+                <table id="game-logs" class="display" width="100%">
+                    <tfoot>
+                    <tr>
+                        <th colspan="2">Average:<br>Total:</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div id="test3" class="col s12">
+            <div class="col-sm-12">
+                <table id="college-stats" class="display" width="100%">
+                    <tfoot>
+                    <tr>
+                        <th colspan="2">Career Average:<br>Career Total:</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
 <!--    <div class="row player-takes section scrollspy hoverable" id="player-takes">-->
 <!--        <div class="col s12 center row-title"><h6>Taeks</h6></div>-->
 <!--        <div class="col s12">-->

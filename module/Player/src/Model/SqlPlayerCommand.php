@@ -135,7 +135,7 @@ class SqlPlayerCommand implements PlayerCommandInterface
     public function getSleeperStats()
     {
         $request = new Request();
-        $uri = "https://api.sleeper.app/v1/stats/nfl/regular/2017";
+        $uri = "https://api.sleeper.app/v1/stats/nfl/regular/2016";
         $request->setUri($uri);
 
         $client = new Client();
@@ -153,7 +153,7 @@ class SqlPlayerCommand implements PlayerCommandInterface
             $insert = $sql->insert('season_stats');
             $data = [
                 'sleeper_id' => $key,
-                'year' => '2017'
+                'year' => '2016'
             ];
 
             if (!empty((array) $value)) {
@@ -172,9 +172,9 @@ class SqlPlayerCommand implements PlayerCommandInterface
     public function getSleeperGameLogs()
     {
         $week = 1;
-        while ($week < 17) {
+        while ($week < 18) {
             $request = new Request();
-            $uri = "https://api.sleeper.app/v1/stats/nfl/regular/2018/{$week}";
+            $uri = "https://api.sleeper.app/v1/stats/nfl/regular/2017/{$week}";
             $request->setUri($uri);
 
             $client = new Client();
@@ -193,7 +193,7 @@ class SqlPlayerCommand implements PlayerCommandInterface
                 $data = [
                     'sleeper_id' => $key,
                     'week' => $week,
-                    'year' => '2018'
+                    'year' => '2017'
                 ];
 
                 if (!empty((array) $value)) {

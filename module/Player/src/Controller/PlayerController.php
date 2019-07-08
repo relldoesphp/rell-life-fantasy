@@ -24,17 +24,21 @@ class PlayerController extends AbstractActionController
     public function __construct(PlayerRepositoryInterface $playerRepository)
     {
         $this->playerRepository = $playerRepository;
-        $this->playerList =  $this->playerRepository->getPlayerNames();
+        $this->playerList =  $this->playerRepository->getPlayerNames('Off');
     }
 
-    public function indexAction()
+    public function searchAction()
     {
-         new ViewModel([
-             'players' => $this->playerRepository->getPlayerNames(),
-             'wr' => $this->playerRepository->getPlayerNames("WR"),
-             'rb' => $this->playerRepository->getPlayerNames("RB"),
-             'te' => $this->playerRepository->getPlayerNames("TE")
+        $jsVars['list'] = $this->playerList;
+        $jsVars['lists']['all'] = $this->playerList;
+        $jsVars['lists']['WR'] = $this->playerRepository->getPlayerNames("WR");
+        $jsVars['lists']['RB'] = $this->playerRepository->getPlayerNames("RB");
+        $jsVars['lists']['TE'] = $this->playerRepository->getPlayerNames("TE");
+        $viewModel = new ViewModel([
+            'jsVars' => $jsVars,
         ]);
+
+        return $viewModel;
     }
 
     public function compareAction()
@@ -62,9 +66,14 @@ class PlayerController extends AbstractActionController
                 }
                 $players[$key] = $playerObject->getAllInfo();
             }
-            $jsVars['players'] = $players;
+        } else {
+            $player1 = new Player();
+            $player2 = new Player();
+            $players[0] = $player1->getAllInfo();
+            $players[1] = $player2->getAllInfo();
         }
 
+        $jsVars['players'] = $players;
         $jsVars['list'] = $this->playerList;
         $jsVars['lists']['all'] = $this->playerList;
         $jsVars['lists']['WR'] = $this->playerRepository->getPlayerNames("WR");
@@ -97,22 +106,22 @@ class PlayerController extends AbstractActionController
             'jsVars' => $jsVars,
         ]);
 
-        switch ($playerData['position']) {
-            case 'WR':
-                $viewModel->setTemplate('player/player/wr');
-                break;
-            case 'RB':
-                $viewModel->setTemplate('player/player/wr');
-                break;
-            case 'TE':
-                $viewModel->setTemplate('player/player/wr');
-                break;
-            case 'QB':
-                $viewModel->setTemplate('player/player/qb');
-                break;
-            default:
-                $viewModel->setTemplate('player/player/wr');
-        }
+//        switch ($playerData['position']) {
+//            case 'WR':
+//                $viewModel->setTemplate('player/player/view');
+//                break;
+//            case 'RB':
+//                $viewModel->setTemplate('player/player/');
+//                break;
+//            case 'TE':
+//                $viewModel->setTemplate('player/player/wr');
+//                break;
+//            case 'QB':
+//                $viewModel->setTemplate('player/player/qb');
+//                break;
+//            default:
+//                $viewModel->setTemplate('player/player/wr');
+//        }
         return $viewModel;
     }
 

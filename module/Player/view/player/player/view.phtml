@@ -1,12 +1,218 @@
 <?php
-$json = json_encode($this->jsVars);
-$page = <<<EOT
-<div>
-    <h5>{$player['firstName']}&nbsp;{$player['lastName']}</h5>
+$images = "";
+if (empty($player['images'])) {
+    $images = "<a class='carousel-item' href='#one!'><img src='https://sleepercdn.com/content/nfl/players/{$player['sleeper_id']}.jpg'  style='height:280px'></a>";
+} else {
+    foreach ($player['images'] as $key => $url) {
+        $images .= "<a class='carousel-item' href='#{$key}!'><img src='{$url}' style='height:280px'></a>\n";
+    }
+}
+?>
+
+<div class="section white full-height">
+    <div id="custom-templates" class="container my-2">
+        <input class="typeahead" type="text" placeholder="Oscar winners for Best Picture">
+    </div>
+    <div class="row player-header scrollspy container" id="player-header">
+        <div class="col m5 s10 profile">
+            <div class="card small player-card hoverable">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <div class="carousel carousel-slider activator">
+                        <?=$images?>
+                    </div>
+                </div>
+                <div class="card-content player-card-content center">
+                    <a class="btn-floating right halfway-fab waves-effect waves-light red activator"><i class="material-icons">arrow_upward</i></a>
+                    <span class="player-title activator white-text text-darken-4"><?= $player['first_name']." ".$player['last_name'] ?></span>
+                    <p class="player-title activator yellow-text text-darken-4">#<?=$player['team_info']['number'] ?> <?=$player['position']?> <?= $player['team']?></p>
+                </div>
+                <div class="card-reveal player-card-reveal">
+                    <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>
+                    <p>Height: <?= $player['player_info']['height']?> (<?= $player['ordinals']['heightInches'] ?> percentile)</p>
+                    <p>Weight: <?= $player['player_info']['weight']?> lbs (<?= $player['ordinals']['weight'] ?> percentile)</p>
+                    <p>Arms: <?= $player['player_info']['arms']?> inches (<?= $player['ordinals']['arms'] ?> percentile)</p>
+                    <p>BMI: <?= $player['player_info']['bmi']?> (<?= $player['ordinals']['bmi'] ?> percentile)</p>
+                    <p>College: <?= $player['player_info']['college']?></p>
+                    <p>Draft Pick: <?= $player['player_info']['draft_pick']?> | Draft Year: <?= $player['player_info']['draft_year']?> </p>
+                </div>
+            </div>
+        </div>
+        <div class="col m5 s12 measurables">
+            <div class="card player-card small hoverable">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <div id="radar-graph" style="width:400px; height:400px; margin:auto" class="scale-transition scale-out">
+
+                    </div>
+                </div>
+                <div class="card-content player-card-content center">
+                    <a class="btn-floating right halfway-fab waves-effect waves-light red activator"><i class="material-icons">arrow_upward</i></a>
+                    <span class="player-title activator white-text text-darken-4">Measurables</span>
+                </div>
+                <div class="card-reveal player-card-reveal">
+                    <span class="card-title white-text">Workout Metrics<i class="material-icons right">arrow_downward</i></span>
+                    <p>40 yd dash: <?= (!empty($player['metrics']['fortyTime'])) ? $player['metrics']['fortyTime']." seconds (".$player['ordinals']['fortyTime']." percentile)" : "Not Available"?></p>
+                    <p>Bench Press: <?= (!empty($player['metrics']['benchPress'])) ? $player['metrics']['benchPress']." reps (".$player['ordinals']['benchPress']." percentile)" : "Not Available"?></p>
+                    <p>3 cone: <?= (!empty($player['metrics']['cone'])) ? $player['metrics']['cone']." seconds (".$player['ordinals']['cone']." percentile)" : "Not Available" ?></p>
+                    <p>Shuttle: <?= (!empty($player['metrics']['shuttle'])) ? $player['metrics']['shuttle']." seconds (".$player['ordinals']['shuttle']." percentile)" : "Not Available" ?></p>
+                    <p>Vertical Jump: <?= (!empty($player['metrics']['verticalJump'])) ? $player['metrics']['verticalJump']." inches (".$player['ordinals']['verticalJump']." percentile)" : "Not Available" ?></p>
+                    <p>Broad Jump: <?= (!empty($player['metrics']['broadJump'])) ? $player['metrics']['broadJump']." inches (".$player['ordinals']['broadJump']." percentile)" : "Not Available"?></p>
+                </div>
+            </div>
+        </div>
+        <div class="col m2 s12 measurables">
+            <div class="card player-card small hoverable center">
+                <div>Rank</div>
+                <div>#1</div>
+                <div>PPG</div>
+                <div>14.4</div>
+            </div>
+        </div>
+    </div>
+    <div class="row player-prospect container scrollspy fade-in-out" id="player-prospect">
+        <a class="waves-effect waves-light btn-small right center modal-trigger" href="#modal2">Explain<i class="material-icons">live_help</i></a>
+        <div class="col s12 center row-title"><h6>Prospect Breakdown</h6></div>
+        <div class="col m9 s12 prospect z-depth-1 hoverable">
+            <div id="prospect-graph" style="margin:auto"></div>
+        </div>
+        <div class="col m3 s12 skillset z-depth-1 hoverable">
+            <div class="slot-box center">
+                <div style="margin-top:10px" class="role-one-title"></div>
+                <div class="role-one-score"></div>
+                <div class="progress role-one-bar">
+                    <div class="determinate" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="deep-box center">
+                <div style="margin-top:10px" class="role-two-title"></div>
+                <div class="role-two-score"></div>
+                <div class="progress role-two-bar">
+                    <div class="determinate" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="alpha-box center">
+                <div style="margin-top:10px" class="role-three-title"></div>
+                <div class="role-three-score"></div>
+                <div class="progress role-three-bar">
+                    <div class="determinate" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row player-situation container scrollspy fade-in-out" id="player-situation">
+        <a class="waves-effect waves-light btn-small right center modal-trigger" href="#modal1">Explain<i class="material-icons">live_help</i></a>
+        <div class="col s12 center row-title"><h6>Situation Breakdown</h6></div>
+        <div class="col m4 s12 fit z-depth-1 hoverable">
+            <div id="fit-graph"></div>
+        </div>
+        <div class="col m4 s12 volume z-depth-1 hoverable">
+            <div id="volume-graph"></div>
+        </div>
+        <div class="col m4 s12 support z-depth-1 hoverable">
+            <div id="support-graph"></div>
+        </div>
+    </div>
+    <div class="row player-stats container scrollspy hoverable fade-in-out" id="player-stats">
+        <div class="col s12 center row-title"><h6>Stats</h6></div>
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a class="active" href="#test1">NFL Stats</a></li>
+                <li class="tab col s3"><a href="#test2">NFL Game Logs</a></li>
+                <li class="tab col s3"><a href="#test3">College Stats</a></li>
+            </ul>
+        </div>
+        <div id="test1" class="col s12">
+            <div class="col-sm-12">
+                <table id="season-stats" class="display" width="100%">
+                    <tfoot>
+                    <tr>
+                        <th colspan="2">Career Average:<br>Career Total:</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div id="test2" class="col s12">
+            <div class="col-sm-12">
+                <table id="game-logs" class="display" width="100%">
+                    <tfoot>
+                    <tr>
+                        <th colspan="2">Average:<br>Total:</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div id="test3" class="col s12">
+            <div class="col-sm-12">
+                <table id="college-stats" class="display" width="100%">
+                    <tfoot>
+                    <tr>
+                        <th colspan="2">Career Average:<br>Career Total:</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="player-menu">
+        <ul class="table-of-contents">
+            <li><a href="#player-header">Measurables</a></li>
+            <li><a href="#player-prospect">Prospect</a></li>
+            <li><a href="#player-situation">Situation</a></li>
+            <li><a href="#player-stats">Stats</a></li>
+            <li><a href="#player-takes">Taeks</a></li>
+        </ul>
+    </div>
 </div>
+<?php
+switch($player['position']) {
+    case "WR":
+        $init = "rlf.initWrPage();";
+        break;
+    case "RB":
+        $init = "rlf.initRbPage();";
+        break;
+    case "TE":
+        $init = "rlf.initTePage();";
+        break;
+    default:
+        $init = "rlf.initWrPage();";
+}
+?>
 
+<script type="text/javascript">
+    var rlfData = <?=json_encode($jsVars, 512)?>;
 
-EOT;
-
-echo $page;
+    $(document).ready(function() {
+        <?= $init ?>
+        rlf.initSearch();
+        rlf.initCompareSearches();
+    });
+</script>
 

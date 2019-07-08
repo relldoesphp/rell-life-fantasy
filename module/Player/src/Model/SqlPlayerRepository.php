@@ -52,7 +52,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $sql    = new Sql($this->db);
         $select = $sql->select('player_test')->columns([
             'id',
-            'full_name' => new Expression("concat(first_name,' ',last_name,' ',position)"),
+            'full_name' => new Expression("concat(first_name,' ',last_name,' ',position,' ',team)"),
             "nohash" => new Expression("Replace(json_unquote(player_info->'$.hashtag'),'#','')")
         ]);
 
@@ -75,10 +75,11 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     public function queryPlayers($query)
     {
         // TODO: Implement queryPlayers() method.
+        $query = str_replace(' ', '', $query);
         $sql    = new Sql($this->db);
         $select = $sql->select('player_test')->columns([
             'id',
-            'full_name' => new Expression("concat(first_name,' ',last_name,' ',position)"),
+            'full_name' => new Expression("concat(first_name,' ',last_name,' ',position,' ',team)"),
             "nohash" => new Expression("Replace(json_unquote(player_info->'$.hashtag'),'#','')")
         ]);
         $select->where->like('first_name', $query."%")
@@ -135,6 +136,15 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $resultSet->initialize($result);
         $player->seasonStats = $resultSet->toArray();
 
+        $select = $sql->select('game_logs');
+        $select->where(['sleeper_id = ?' => $player->getSleeperId()]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $player->gameLogs = $resultSet->toArray();
+
         return $player;
     }
 
@@ -158,7 +168,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $player = $resultSet->current();
 
         $select = $sql->select('season_stats');
-        $select->where(['sleeper_id = ?' => $player->id]);
+        $select->where(['sleeper_id = ?' => $player->getSleeperId()]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

@@ -15,33 +15,28 @@ class Player
     /**
      * @var
      */
-    private $id;
-    private $first_name;
-    private $last_name;
+    private $id = 0;
+    private $first_name = "";
+    private $last_name = "";
     private $search_full_name;
-    private $team;
-    private $position;
-    private $player_info;
-    private $team_info;
-    private $api_info;
-    private $injury_info;
-    private $metrics;
-    private $percentiles;
-    private $college_stats;
-    private $sleeper_id;
-    public $collegeTable;
-    public $ordinals;
-    public $seasonStats;
-    public $images;
+    private $team = "";
+    private $position = "";
+    private $player_info = '{}';
+    private $team_info = '{}';
+    private $api_info = '{}';
+    private $injury_info = "{}";
+    private $metrics = "{}";
+    private $percentiles = "{}";
+    private $college_stats = "{}";
+    private $sleeper_id = "";
+    public $collegeTable = "";
+    public $ordinals = "";
+    public $seasonStats = "";
+    public $gameLogs = "";
+    public $images = "{}";
 
     public function __construct()
     {
-        $this->player_info = [
-            'arms' => '',
-            'draft_pick' => '',
-            'draft_year' => '',
-        ];
-
     }
 
     /**
@@ -99,6 +94,9 @@ class Player
         if (!empty($this->seasonStats['0']['stats'])) {
             $seasonStats = $this->seasonStats;
             foreach ($seasonStats as $seasonStat) {
+                if ($seasonStat['stats'] == null) {
+                    continue;
+                }
                 $stats = Json::decode($seasonStat['stats'], 1);
                 if ($this->position == "WR") {
                     $tableData[] = [
@@ -107,11 +105,43 @@ class Player
                         round($stats['pts_ppr']/$stats['gp'], 1),
                         $stats['rec']." (".round($stats['rec']/$stats['gp'], 1)." p/g)",
                         $stats['rec_yd']." (".round($stats['rec_yd']/$stats['gp'], 1)." p/g)",
-                        $stats['rec_td'],
+                        array_key_exists('rec_td', $stats) ? $stats['rec_td'] : "",
                         $stats['rec_tgt']." (".round($stats['rec_tgt']/$stats['gp'], 1)." p/g)",
                         $stats['rec_ypr'],
                         $stats['rec_ypt'],
                         round($stats['rec_yd']/$stats['rec'], 1)
+                    ];
+                }
+            }
+        }
+
+        return $tableData;
+    }
+
+    public function makeGameLogs()
+    {
+        $tableData = [];
+        if (!empty($this->gameLogs['0']['stats'])) {
+            $gameLogs = $this->gameLogs;
+            foreach ($gameLogs as $gameLog) {
+                if ($gameLog['stats'] == null || empty($gameLog['stats'])) {
+                    continue;
+                }
+                $stats = Json::decode($gameLog['stats'], 1);
+                if (!array_key_exists('off_snp', $stats)) {
+                    continue;
+                }
+                if ($this->position == "WR") {
+                    $tableData[] = [
+                        $gameLog['year'],
+                        $gameLog['week'],
+                        (array_key_exists('pts_ppr', $stats)) ? $stats['pts_ppr'] : "",
+                        (array_key_exists('rec', $stats)) ? $stats['rec'] : "",
+                        (array_key_exists('rec_yd', $stats)) ? $stats['rec_yd'] : "",
+                        (array_key_exists('rec_td', $stats)) ? $stats['rec_td'] : "",
+                        (array_key_exists('rec_tgt', $stats)) ? $stats['rec_tgt'] : "",
+                        (array_key_exists('rec_ypr', $stats)) ? $stats['rec_ypr'] : "",
+                        (array_key_exists('rec_ypt', $stats)) ? $stats['rec_ypt'] : "",
                     ];
                 }
             }
@@ -191,6 +221,7 @@ class Player
         $this->ordinals = $this->makeOrdinals();
         $this->collegeTable = $this->makeCollegeTable();
         $this->seasonTable = $this->makeSeasonStats();
+        $this->gameLogTable = $this->makeGameLogs();
         $this->fillEmptyValues();
         return get_object_vars($this);
     }
