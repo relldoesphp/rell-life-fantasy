@@ -10,8 +10,9 @@ namespace Player\Factory;
 
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
-use Player\Model\PlayerRepositoryInterface;
+use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Controller\PlayerController;
+use Player\Model\Player;
 
 class PlayerControllerFactory implements FactoryInterface
 {

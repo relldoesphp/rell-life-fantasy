@@ -15,11 +15,12 @@ try {
         if ($data[0] !== "Full Name") {
             $player = [];
             $searchName = str_replace(' ', '', $data[0]); // Replaces all spaces with hyphens.
+            $searchName = str_replace('.', '', $searchName);
             $player['searchName'] = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', $searchName));
 
 
             $sql = <<<EOT
-Select id, first_name, last_name, sleeper_id, met
+Select id, first_name, last_name, sleeper_id
 from player_test
 WHERE search_full_name = :searchName AND position in ('QB');
 EOT;
@@ -98,6 +99,12 @@ EOT;
                 $metrics['verticalJump'] = $data[7];
                 $metrics['throwVelocity'] = $data[5];
                 $metrics['wonderlic'] = $data[8];
+
+                foreach ($metrics as $key => $metric) {
+                    if ($metric == '-') {
+                        $metrics[$key] = "";
+                    }
+                }
 
                 $sql = <<<EOT
 Update player_test 

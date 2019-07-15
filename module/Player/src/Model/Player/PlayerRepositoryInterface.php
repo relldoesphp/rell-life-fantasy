@@ -6,7 +6,7 @@
  * Time: 4:19 PM
  */
 
-namespace Player\Model;
+namespace Player\Model\Player;
 
 
 interface PlayerRepositoryInterface

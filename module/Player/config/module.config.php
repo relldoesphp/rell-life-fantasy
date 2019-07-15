@@ -13,22 +13,23 @@ use Zend\Router\Http\Segment;
 use Zend\Db\Adapter\AdapterAbstractServiceFactory;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Player\Factory\SqlPlayerCommandFactory;
+use Player\Factory\SqlPlayerRepositoryFactory;
 
 return [
     'service_manager' => [
         'aliases' => [
             // Update this line:
-            Model\PlayerRepositoryInterface::class => Model\SqlPlayerRepository::class,
+            Model\Player\PlayerRepositoryInterface::class => Model\Player\SqlPlayerRepository::class,
             // Add Command Center
-            Model\PlayerCommandInterface::class => Model\SqlPlayerCommand::class,
+            Model\Player\PlayerCommandInterface::class => Model\Player\SqlCommands\SqlPlayerCommand::class,
         ],
         'factories' => [
             // Custom Mysql Adapter defined in configs
             'Dtw\Db\Adapter' => AdapterAbstractServiceFactory::class,
             // factory for sql repository
-            Model\SqlPlayerRepository::class => Factory\SqlPlayerRepositoryFactory::class,
+            Model\Player\SqlPlayerRepository::class => Factory\SqlPlayerRepositoryFactory::class,
             // factory for Command Center
-            Model\SqlPlayerCommand::class => Factory\SqlPlayerCommandFactory::class,
+            Model\Player\SqlCommands\SqlPlayerCommand::class => Factory\SqlPlayerCommandFactory::class,
         ],
     ],
 

@@ -6,11 +6,11 @@
  * Time: 11:55 AM
  */
 
-namespace Player\Model;
+namespace Player\Model\Player\SqlCommands;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Symfony\Component\ExpressionLanguage\Expression;
+use Zend\Db\Sql\Expression;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Adapter\Driver\ResultInterface;
@@ -18,6 +18,8 @@ use Zend\Db\ResultSet\ResultSet;
 use Zend\ProgressBar\ProgressBar;
 use Zend\ProgressBar\Adapter\Console;
 use Zend\Db\Sql\Select;
+
+
 
 class SqlPlayerAbstract
 {
@@ -33,6 +35,14 @@ class SqlPlayerAbstract
     public function calculateMetrics($type)
     {
         $posInfo = [
+            'QB' => [
+                'bmiAvg' => 27.77,
+                'weightAvg' => 220.1,
+                'heightAvg' => 75.04,
+                'benchAvg' => 18.11,
+                'broadAvg' => 111.11,
+                'agilityAvg' => 7.12 + 4.34,
+            ],
             'RB' => [
                 'bmiAvg' => 30.27,
                 'weightAvg' => 210.94,
@@ -127,7 +137,7 @@ class SqlPlayerAbstract
                 $select->where->in("position", ["C","G","OT"]);
                 break;
             case "DL":
-                $select->where->in("position", ["DT", "DE"]);
+                $select->where->in("position", ['DT','NT','DE']);
                 break;
             default:
                 $select->where(["position = ?" => $type]);
@@ -156,8 +166,12 @@ class SqlPlayerAbstract
 
             // (average bmi 26.6/ average bench 14.2) = 1.87
             // (1.87 * (wr bmi - average bmi)) + wr bench Press
+            if ($type == 'CB') {
+                $metrics->benchPress = 14;
+            }
+
             if ($metrics->benchPress != null && $metrics->benchPress != '-') {
-                $data["$.bully"] = (($posInfo[$type]['bmiAvg']/$posInfo[$type]['benchAvg']) * ($info->bmi - $posInfo[$type]['bmiAvg'])) + $metrics->benchPress;
+                $data["$.bully"] = round((($posInfo[$type]['bmiAvg']/$posInfo[$type]['benchAvg']) * ($info->bmi - $posInfo[$type]['bmiAvg'])) + $metrics->benchPress, 2);
             } else {
                 $data["$.bully"] = null;
             }
@@ -174,7 +188,7 @@ class SqlPlayerAbstract
             // agility
             if ($data['$.agility'] != null) {
                 $els = $posInfo[$type]['agilityAvg']/$posInfo[$type]['bmiAvg'];
-                $data["$.elusiveness"] = $data['$.agility'] - (($info->bmi - $posInfo[$type]['bmiAvg']) * $els);
+                $data["$.elusiveness"] = round(($data['$.agility'] - (($info->bmi - $posInfo[$type]['bmiAvg']) * $els)), 2);
             } else {
                 $data["$.elusiveness"] = null;
             }
@@ -187,7 +201,7 @@ class SqlPlayerAbstract
                 $heightAdj = $posInfo[$type]['broadAvg']/$posInfo[$type]['heightAvg'];
                 $weightBroad = ($info->weight - $posInfo[$type]['weightAvg']) * $weightAdj;
                 $heightBroad = ($info->heightInches - $posInfo[$type]['heightAvg']) * $heightAdj;
-                $data['$.power'] = $metrics->broadJump - $heightBroad + $weightBroad;
+                $data['$.power'] = round(($metrics->broadJump - $heightBroad + $weightBroad),2);
             } else {
                 $data['$.power'] = null;
             }
@@ -207,19 +221,24 @@ class SqlPlayerAbstract
                 $data['$.jumpball'] = null;
             }
 
+            //add Weight Speed Score
+            if ($metrics->fortyTime != null) {
+                $data['$.speedScore'] = round((($info->weight * $posInfo[$type]['weightAvg'])/(pow($metrics->fortyTime,4))), 2);
+            }
+
             $jsonString = "";
             foreach ($data as $key => $value) {
                 $jsonString .= ", '{$key}', '{$value}'";
             }
 
-            $sql = new Sql($this->db);
-            $update = $sql->update();
-            $update->set(['metrics' => new Expression("json_set(metrics{$jsonString})")]);
-            $update->where('id = ?', $player['id']);
-            $stmt = $sql->prepareStatementForSqlObject($update);
-            $playerUpdated = $stmt->execute();
-            $pointer++;
-            $progressBar->update($pointer);
+//            $sql = new Sql($this->db);
+//            $update = $sql->update('player_test');
+//            $update->set(['metrics' => new Expression("json_set(metrics{$jsonString})")]);
+//            $update->where('id = ?', $player['id']);
+//            $stmt = $sql->prepareStatementForSqlObject($update);
+//            $playerUpdated = $stmt->execute();
+//            $pointer++;
+//            $progressBar->update($pointer);
 
 
             $update = <<<EOT
@@ -243,7 +262,7 @@ EOT;
                 $where = "position IN ('G','C','OT')";
                 break;
             case "DL":
-                $where = "position IN ('DT','DE')";
+                $where = "position IN ('DT','NT','DE')";
                 break;
             default:
                 $where = "position = '{$type}'";
@@ -563,6 +582,26 @@ EOT;
         }
         print "power index built\n";
 
+        /*********************************************************************/
+        $sql = <<<EOT
+SELECT id, metrics->'$.speedScore', ROUND(PERCENT_RANK() OVER (ORDER BY lpad(round(json_unquote(metrics->'$.speedScore'),3),8,'0')),3) percentile_rank
+FROM player_test
+WHERE metrics->'$.speedScore' IS NOT NULL AND metrics->'$.speedScore' != '-'AND {$where}
+EOT;
+        $stmt= $this->db->query($sql);
+        $result = $stmt->execute();
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $speedScore = [];
+        foreach($resultSet as $row) {
+            $speedScore[$row->id] = $row->percentile_rank;
+        }
+        print "SpeedScore index built\n";
+
 
         $sql    = new Sql($this->db);
         $select = $sql->select();
@@ -572,7 +611,7 @@ EOT;
                 $select->where->in("position", ["C","G","OT"]);
                 break;
             case "DL":
-                $select->where->in("position", ["DT", "DE"]);
+                $select->where->in("position", ['DT','NT','DE']);
                 break;
             default:
                 $select->where(["position = ?" => $type]);
@@ -609,6 +648,7 @@ EOT;
             $data['power'] = (array_key_exists($id, $power)) ? $power[$id] * 100 : "";
             $data['elusiveness'] = (array_key_exists($id, $elusiveness)) ? $elusiveness[$id] * 100 : "";
             $data['jumpball'] = (array_key_exists($id, $jumpball)) ? $jumpball[$id] * 100 : "";
+            $data['speedScore'] = (array_key_exists($id, $speedScore)) ? $speedScore[$id] * 100 : "";
 
             $jsonString = "";
             foreach ($data as $key => $value) {

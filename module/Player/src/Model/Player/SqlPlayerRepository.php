@@ -6,19 +6,20 @@
  * Time: 4:44 PM
  */
 
-namespace Player\Model;
+namespace Player\Model\Player;
 
 use InvalidArgumentException;
 use RuntimeException;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Hydrator\HydratorInterface;
-use Player\Model\Player;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Predicate;
+use Player\Model\Player\Player;
+use Player\Model\Stats\SeasonStats;
 
 class SqlPlayerRepository implements PlayerRepositoryInterface
 {
@@ -276,7 +277,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
             return [];
         }
 
-        $resultSet = new ResultSet();
+        $resultSet = new HydratingResultSet($this->hydrator, SeasonStats::class);
         $resultSet->initialize($result);
         return $resultSet->toArray();
     }

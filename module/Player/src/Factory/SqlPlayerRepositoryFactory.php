@@ -10,10 +10,10 @@ namespace Player\Factory;
 
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
-use Player\Model\SqlPlayerRepository;
+use Player\Model\Player\SqlPlayerRepository;
+use Player\Model\Player\Player;
 // we comment out the adapter interface because we are loading in custom adapter for DB object
 //use Zend\Db\Adapter\AdapterInterface;
-use Player\Model\Player;
 use Zend\Hydrator\Reflection as ReflectionHydrator;
 
 

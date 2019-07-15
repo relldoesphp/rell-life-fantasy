@@ -6,9 +6,10 @@
  * Time: 7:59 AM
  */
 
-namespace Player\Model;
+namespace Player\Model\Player\SqlCommands;
 
 use InvalidArgumentException;
+use Player\Model\Player\SqlCommands\SqlQBCommand;
 use RuntimeException;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Sql\Expression;
@@ -22,12 +23,15 @@ use Zend\Db\Sql\Insert;
 use Zend\Http\Request;
 use Zend\Http\Client;
 use Zend\Dom\Query;
+use Player\Model\Player\PlayerCommandInterface;
+use Player\Model\Player\Player;
 
 class SqlPlayerCommand implements PlayerCommandInterface
 {
 
     private $db;
     private $consoleAdapter;
+    private $qbCommand;
     private $wrCommand;
     private $rbCommand;
     private $teCommand;
@@ -43,6 +47,7 @@ class SqlPlayerCommand implements PlayerCommandInterface
     {
         $this->db = $db;
         $this->consoleAdapter = $consoleAdapter;
+        $this->qbCommand = new SqlQBCommand($db, $consoleAdapter);
         $this->wrCommand = new SqlWrCommand($db, $consoleAdapter);
         $this->rbCommand = new SqlRbCommand($db, $consoleAdapter);
         $this->teCommand = new SqlTeCommand($db, $consoleAdapter);
@@ -80,6 +85,11 @@ class SqlPlayerCommand implements PlayerCommandInterface
     public function deletePlayer(Player $player)
     {
         // TODO: Implement deletePlayer() method.
+    }
+
+    public function getQbCommand()
+    {
+        return $this->qbCommand;
     }
 
     public function getWrCommand()

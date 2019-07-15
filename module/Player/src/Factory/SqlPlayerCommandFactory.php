@@ -11,7 +11,7 @@ namespace Player\Factory;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Controller\PlayerController;
-use Player\Model\SqlPlayerCommand;
+use Player\Model\Player\SqlCommands\SqlPlayerCommand;
 use Zend\ProgressBar\Adapter\Console;
 
 

@@ -40,7 +40,7 @@ if (empty($player['images'])) {
         <div class="col m5 s12 measurables">
             <div class="card player-card small hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
-                    <div id="radar-graph" style="width:400px; height:400px; margin:auto" class="scale-transition scale-out">
+                    <div id="radar-graph" style="width:400px; height:400px; margin:auto" class="scale-transition scale-out active">
 
                     </div>
                 </div>
@@ -192,6 +192,9 @@ if (empty($player['images'])) {
 </div>
 <?php
 switch($player['position']) {
+    case "QB":
+        $init = "rlf.initQbPage();";
+        break;
     case "WR":
         $init = "rlf.initWrPage();";
         break;
@@ -200,6 +203,22 @@ switch($player['position']) {
         break;
     case "TE":
         $init = "rlf.initTePage();";
+        break;
+    case "OT":
+    case "C":
+    case "G":
+        $init = "rlf.initOlPage();";
+        break;
+    case "NT":
+    case "DT":
+    case "DE":
+        $init = "rlf.initDlPage();";
+        break;
+    case "OLB":
+        $init = "rlf.initOlbPage();";
+        break;
+    case "ILB":
+        $init = "rlf.initIlbPage();";
         break;
     default:
         $init = "rlf.initWrPage();";

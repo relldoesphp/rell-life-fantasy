@@ -6,7 +6,7 @@
  * Time: 11:34 PM
  */
 
-namespace Player\Model;
+namespace Player\Model\Player\SqlCommands;
 
 use InvalidArgumentException;
 use RuntimeException;
@@ -28,122 +28,48 @@ class SqlWrCommand extends SqlPlayerAbstract
      * @param string $type
      * @return mixed
      */
-    public function calculateMetrics($type)
-    {
-        $sql    = new Sql($this->db);
-        $select = $sql->select();
-        $select->from(['p' => 'player_test']);
-        $select->where(['p.position = ?' => 'WR']);
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
 
+
+    public function calculateSpecialPercentiles()
+    {
+        $sql = <<<EOT
+SELECT id, first_name, last_name, lpad(json_unquote(metrics->'$.jukeAgility'),6,'0'),  PERCENT_RANK() OVER (ORDER BY lpad(json_unquote(metrics->'$.jukeAgility'),4,'0')) percentile_rank
+FROM player_test
+WHERE metrics->'$.jukeAgility' != '0' AND position = 'WR'
+EOT;
+        $stmt= $this->db->query($sql);
+        $result = $stmt->execute();
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
 
         $resultSet = new ResultSet();
         $resultSet->initialize($result);
-        $players = $resultSet->toArray();
-        print "Metrics started\n";
-        $progressBar = new ProgressBar($this->consoleAdapter, 0, $resultSet->count());
-        $pointer = 0;
-
-        foreach ($players as $player) {
-            $info = json_decode($player['player_info']);
-            $metrics = json_decode($player['metrics']);
-
-            $data = [];
-
-            // (average bmi 26.6/ average bench 14.2) = 1.87
-            // (1.87 * (wr bmi - average bmi)) + wr bench Press
-            if ($metrics->benchPress != null && $metrics->benchPress != '-') {
-                $data["$.bully"] = (1.87 * ($info->bmi - 26.6)) + $metrics->benchPress;
-            } else {
-                $data["$.bully"] = null;
-            }
-
-            if ($metrics->shuttle != null && $metrics->cone != null) {
-                $data['$.agility'] = $metrics->shuttle + $metrics->cone;
-            } else {
-                $data['$.agility'] = null;
-            }
-
-            // each full pound worth .056 seconds
-            // each full bmi unit worth .42 seconds
-            // examples: Amari = 10.69, 10.1  JuJu = 11.07, 10.3 , Golden Tate = 11.46, 10.46, Mike Evans = 11, OBJ=10.21,
-            if ($data['$.agility'] != null) {
-                $data["$.elusiveness"] = $data['$.agility'] - (($info->bmi - 26.6) * .42);
-            } else {
-                $data["$.elusiveness"] = null;
-            }
-
-            // break tackle ability
-            // each inch worth 1.69 broad jump
-            // each pound over 200 worth .61 broad jump
-            if ($metrics->broadJump != null) {
-                $base = 200;
-                switch($info->height){
-                    case $info->heightInches > 75:
-                        $base = 221;
-                        break;
-                    case $info->heightInches > 74:
-                        $base = 215;
-                        break;
-                    case $info->heightInches > 73:
-                        $base = 210;
-                        break;
-                    case $info->heightInches > 72:
-                        $base = 205;
-                        break;
-                    case $info->heightInches > 71:
-                        $base = 195;
-                        break;
-                    default:
-                }
-
-                $weightBroad = ($info->weight - $base) * .61;
-                $heightBroad = ($info->heightInches - 72) * -3.2;
-                $data['$.power'] = $metrics->broadJump + $weightBroad;
-            } else {
-                $data['$.power'] = null;
-            }
-
-            // add jumpball reach
-            if ($metrics->verticalJump != null) {
-                $data['$.jumpball'] = $info->heightInches + $info->armsInches + $metrics->verticalJump;
-                // Premium for big Hands
-                if ($info->hands > 9.5) {
-                    $data["$.jumpball"] = $data["$.jumpball"] + 3;
-                }
-                if ($info->hands > 9.99) {
-                    $data["$.jumpball"] = $data["$.jumpball"] + 2;
-                }
-
-            } else {
-                $data['$.jumpball'] = null;
-            }
-
-            $jsonString = "";
-            foreach ($data as $key => $value) {
-                $jsonString .= ", '{$key}', '{$value}'";
-            }
-
-            $update = <<<EOT
-UPDATE player_test SET metrics = json_set(metrics{$jsonString}) where id = {$player['id']};
-EOT;
-
-            $stmt   = $this->db->query($update);
-            $playerUpdated = $stmt->execute();
-            $pointer++;
-            $progressBar->update($pointer);
+        $jukeAgility = [];
+        foreach($resultSet as $row) {
+            $jukeAgility[$row->id] = $row->percentile_rank;
         }
-        $progressBar->finish();
-        print "Metrics completed\n";
-    }
+        print "juke index built\n";
 
+        /**************************************************************************/
+        $sql = <<<EOT
+SELECT id, first_name, last_name, lpad(json_unquote(metrics->'$.routeAgility'),6,'0'),  PERCENT_RANK() OVER (ORDER BY lpad(json_unquote(metrics->'$.routeAgility'),4,'0')) percentile_rank
+FROM player_test
+WHERE metrics->'$.routeAgility' != '0' AND position = 'WR'
+EOT;
+        $stmt= $this->db->query($sql);
+        $result = $stmt->execute();
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
 
-    public function calculateSpecialPercentiles()
-    {
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $routeAgility = [];
+        foreach($resultSet as $row) {
+            $routeAgility[$row->id] = $row->percentile_rank;
+        }
+        print "route index built\n";
         /**************************************************************************/
         $sql = <<<EOT
 SELECT id, metrics->'$.alpha', ROUND(PERCENT_RANK() OVER (ORDER BY lpad(round(json_unquote(metrics->'$.alpha'),3),6,'0') ASC),3) percentile_rank
@@ -265,6 +191,8 @@ EOT;
             $data['deep'] = (array_key_exists($id, $deep)) ? $deep[$id] * 100 : "";
             $data['collegeScore'] = (array_key_exists($id, $college)) ? $college[$id] * 100 : "";
             $data['yacScore'] = (array_key_exists($id, $yac)) ? $yac[$id] * 100 : "";
+            $data['jukeAgility'] = (array_key_exists($id, $jukeAgility)) ? $jukeAgility[$id] * 100 : "";
+            $data['routeAgility'] = (array_key_exists($id, $routeAgility)) ? $routeAgility[$id] * 100 : "";
 
             $jsonString = "";
             foreach ($data as $key => $value) {
@@ -311,6 +239,14 @@ EOT;
             $info = json_decode($wr['player_info']);
             $metrics = json_decode($wr['metrics']);
             $percentiles = json_decode($wr['percentiles']);
+
+            if ($metrics->shuttle != null && $metrics->cone != null) {
+                $data['jukeAgility'] = ($percentiles->shuttle * .70) + ($percentiles->cone * .30);
+                $data['routeAgility'] = ($percentiles->shuttle * .30) + ($percentiles->cone * .70);
+            } else {
+                $data['jukeAgility'] = '';
+                $data['routeAgility'] = '';
+            }
 
             $yacScore = ($percentiles->power * .35) + ($percentiles->elusiveness *.65);
 
@@ -749,6 +685,7 @@ EOT;
                 break;
             default:
         }
+
         if ($bestReturn != 0) {
             switch ($bestReturn) {
                 case $bestReturn > 1000:

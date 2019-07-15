@@ -13,7 +13,7 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractActionController;
-use Player\Model\PlayerRepositoryInterface;
+use Player\Model\Player\PlayerRepositoryInterface;
 
 class PlayerController extends AbstractActionController
 {
@@ -21,7 +21,7 @@ class PlayerController extends AbstractActionController
 
     private $playerList;
 
-    public function __construct(PlayerRepositoryInterface $playerRepository)
+    public function __construct(Player\PlayerRepositoryInterface $playerRepository)
     {
         $this->playerRepository = $playerRepository;
         $this->playerList =  $this->playerRepository->getPlayerNames('Off');
@@ -75,7 +75,7 @@ class PlayerController extends AbstractActionController
 
         $jsVars['players'] = $players;
         $jsVars['list'] = $this->playerList;
-        $jsVars['lists']['all'] = $this->playerList;
+        $sjVars['lists']['all'] = $this->playerList;
         $jsVars['lists']['WR'] = $this->playerRepository->getPlayerNames("WR");
         $jsVars['lists']['RB'] = $this->playerRepository->getPlayerNames("RB");
         $jsVars['lists']['TE'] = $this->playerRepository->getPlayerNames("TE");

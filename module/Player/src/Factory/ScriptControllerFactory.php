@@ -8,11 +8,11 @@
 
 namespace Player\Factory;
 
-use Player\Model\PlayerRepositoryInterface;
+use Player\Model\Player\PlayerRepositoryInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Controller\ScriptController;
-use Player\Model\PlayerCommandInterface;
+use Player\Model\Player\PlayerCommandInterface;
 
 class ScriptControllerFactory implements FactoryInterface
 {

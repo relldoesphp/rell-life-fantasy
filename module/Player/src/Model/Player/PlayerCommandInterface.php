@@ -6,7 +6,7 @@
  * Time: 7:48 AM
  */
 
-namespace Player\Model;
+namespace Player\Model\Player;
 
 
 /**

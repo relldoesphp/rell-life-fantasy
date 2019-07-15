@@ -6,7 +6,7 @@
  * Time: 11:34 PM
  */
 
-namespace Player\Model;
+namespace Player\Model\Player\SqlCommands;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Sql\Sql;
@@ -27,7 +27,7 @@ class SqlRbCommand extends SqlPlayerAbstract
         $sql    = new Sql($this->db);
         $select = $sql->select();
         $select->from(['p' => 'player_test']);
-        $select->where(['p.position = ?' => 'WR']);
+        $select->where(['p.position = ?' => 'RB']);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -45,6 +45,14 @@ class SqlRbCommand extends SqlPlayerAbstract
             $metrics = json_decode($rb['metrics']);
             $percentiles = json_decode($rb['percentiles']);
 
+            if ($metrics->shuttle != null && $metrics->cone != null) {
+                $data['jukeAgility'] = ($percentiles->shuttle * .70) + ($percentiles->cone * .30);
+                $data['routeAgility'] = ($percentiles->shuttle * .30) + ($percentiles->cone * .70);
+            } else {
+                $data['jukeAgility'] = '';
+                $data['routeAgility'] = '';
+            }
+
             $data['passCatcher'] = 0;
             $data['grinder'] = 0;
             /*  scat back score
@@ -53,7 +61,7 @@ class SqlRbCommand extends SqlPlayerAbstract
                 3.) College Reception share 3
                 4.) Elusiveness 2
             */
-            $collegeStats = json_decode($rb['collegeStats']);
+            $collegeStats = json_decode($rb['college_stats']);
             $bestRecDom = 0;
             $bestYPC = 0;
             if ($collegeStats != null) {
@@ -238,6 +246,93 @@ EOT;
                 2.) Scat Back Score 4
                 3.) Grinder Score 3
             */
+    }
+
+    public function calculateSpecialPercentiles(){
+
+        $sql = <<<EOT
+SELECT id, first_name, last_name, lpad(json_unquote(metrics->'$.jukeAgility'),6,'0'),  PERCENT_RANK() OVER (ORDER BY lpad(json_unquote(metrics->'$.jukeAgility'),4,'0')) percentile_rank
+FROM player_test
+WHERE metrics->'$.jukeAgility' != '0' AND position = 'RB'
+EOT;
+        $stmt= $this->db->query($sql);
+        $result = $stmt->execute();
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $jukeAgility = [];
+        foreach($resultSet as $row) {
+            $jukeAgility[$row->id] = $row->percentile_rank;
+        }
+        print "juke index built\n";
+
+        /**************************************************************************/
+        $sql = <<<EOT
+SELECT id, first_name, last_name, lpad(json_unquote(metrics->'$.routeAgility'),6,'0'),  PERCENT_RANK() OVER (ORDER BY lpad(json_unquote(metrics->'$.routeAgility'),4,'0')) percentile_rank
+FROM player_test
+WHERE metrics->'$.routeAgility' != '0' AND position = 'RB'
+EOT;
+        $stmt= $this->db->query($sql);
+        $result = $stmt->execute();
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $routeAgility = [];
+        foreach($resultSet as $row) {
+            $routeAgility[$row->id] = $row->percentile_rank;
+        }
+        print "route index built\n";
+        /**************************************************************************/
+
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['p' => 'player_test']);
+        $select->where(["position = ?" => 'RB']);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $count = $resultSet->count();
+        $players = $resultSet->toArray();
+        print "Percentages started\n";
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, $resultSet->count());
+        $pointer = 0;
+        foreach ($players as $player) {
+            $id = $player['id'];
+            $data['jukeAgility'] = (array_key_exists($id, $jukeAgility)) ? $jukeAgility[$id] * 100 : "";
+            $data['routeAgility'] = (array_key_exists($id, $routeAgility)) ? $routeAgility[$id] * 100 : "";
+
+            $jsonString = "";
+            foreach ($data as $key => $value) {
+                $jsonString .= ", '$.{$key}', '{$value}'";
+            }
+
+            try {
+                $update = <<<EOT
+UPDATE player_test SET percentiles = json_set(percentiles{$jsonString}) where id = {$id};
+EOT;
+                $stmt   = $this->db->query($update);
+                $playerUpdated = $stmt->execute();
+            } catch (\Exception $exception) {
+                $message = $exception->getMessage();
+            }
+
+            $pointer++;
+            $progressBar->update($pointer);
+        }
+        $progressBar->finish();
+        print "Percentages completed\n";
     }
 
 

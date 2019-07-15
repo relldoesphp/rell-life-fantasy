@@ -427,7 +427,7 @@ var rlf =  {
         var ordinals = rlfData.player.ordinals;
         // var avgLB = rlfData.average.LB;
 
-        var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Speed Score'];
+        var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Speed Score', 'Juke Agilty', 'Route Agiltiy'];
 
         var cone = percent.agility * .5;
         var shuttle = percent.agility * .5;
@@ -470,7 +470,7 @@ var rlf =  {
 
         var trace1 = {
             x: xValue,
-            y: [percent.fortyTime, '', percent.elusiveness, percent.power, percent.speedScore],
+            y: [percent.fortyTime, '', percent.elusiveness, percent.power, percent.speedScore, percent.jukeAgility, percent.routeAgility],
             name: 'Percentile',
             type: 'bar',
             text: [
@@ -479,6 +479,8 @@ var rlf =  {
                 metrics.elusiveness+'<br>'+ordinals.elusiveness+'%',
                 metrics.power+'<br>'+ordinals.power+'%',
                 metrics.speedScore+'<br>'+ordinals.speedScore+'%',
+                metrics.jukeAgility+'<br>'+ordinals.jukeAgility+'%',
+                metrics.routeAgility+'<br>'+ordinals.routeAgility+'%',
             ],
             textposition: 'auto',
             hoverinfo: 'none'
@@ -1015,9 +1017,10 @@ var rlf =  {
     initProsChartsWR : function(){
         var percent = rlfData.player.percentiles;
         var metrics = rlfData.player.metrics;
+        var ordinals = rlfData.player.ordinals;
        // var avgLB = rlfData.average.LB;
-        var xValue = ['Bully Score', 'Speed', 'Agility', 'Jumpball'];
-        var yValue = [percent.bully, percent.fortyTime, '', percent.jumpball];
+        var xValue = ['Bully Score', 'Speed', 'Agility', 'Jumpball', 'juke agility', 'route agility'];
+        var yValue = [percent.bully, percent.fortyTime, '', percent.jumpball, percent.jukeAgility, percent.routeAgility];
 
         var cone = percent.agility * .5;
         var shuttle = percent.agility * .5;
@@ -1065,10 +1068,10 @@ var rlf =  {
             name: 'WR Ability',
             type: 'bar',
             text: [
-                metrics.bully+'<br>'+Math.round(percent.bully)+'%',
-                metrics.fortyTime+'<br>'+Math.round(percent.fortyTime)+'%',
-                metrics.agility+'<br>'+Math.round(percent.agility)+'%',
-                metrics.jumpball+'<br>'+Math.round(percent.jumpball)+'%'
+                metrics.bully+'<br>'+ordinals.bully+'%',
+                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
+                metrics.agility+'<br>'+ordinals.agility+'%',
+                metrics.jumpball+'<br>'+ordinals.jumpball+'%'
             ],
             textposition: 'auto',
             hoverinfo: 'none',
@@ -1323,72 +1326,83 @@ var rlf =  {
         rlf.initOppChartsTE();
         rlf.initMesChartsTE();
 
-        $('#college-stats').DataTable( {
-            "paging":   false,
-            "ordering": false,
-            data: rlfData.player.collegeTable,
-            columns: [
-                { title: "Year" },
-                { title: "College" },
-                { title: "Class" },
-                { title: "GP" },
-                { title: "Rec" },
-                { title: "Rec Yds" },
-                { title: "Rec Tds" },
-                { title: "YPR Avg" },
-                { title: "% of Recs" },
-                { title: "% of Rec Yds" },
-                { title: "% of Rec Tds" }
-            ]
-        } );
+        var movePercent = Math.round((rlfData.player.metrics.move / 15) * 100);
+
+        $(".role-one-bar .determinate").css("width", movePercent + "%");
+        $(".role-one-title").text("Move Score:");
+        $(".role-one-score").text(movePercent + "%")
+        if (movePercent > 69) {
+            $(".role-one-bar .determinate").css("background-color", "green");
+        }
+
+        if (movePercent < 69 && movePercent > 40) {
+            $(".role-one-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (movePercent < 39) {
+            $(".role-one-bar .determinate").css("background-color", "red");
+        }
+
+        var inLine = Math.round((rlfData.player.metrics.inLine / 10) * 100);
+        $(".role-two-bar .determinate").css("width", inLine + "%");
+        $(".role-two-title").text("In Line Score:");
+        $(".role-two-score").text(inLine + "%")
+        if (inLine > 69) {
+            $(".role-two-bar .determinate").css("background-color", "green");
+        }
+
+        if (inLine < 69 && inLine > 40) {
+            $(".role-two-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (inLine < 39) {
+            $(".role-two-bar .determinate").css("background-color", "red");
+        }
+
+
+        var alphaPercent = Math.round((rlfData.player.metrics.alpha / 25) * 100);
+        $(".role-three-bar .determinate").css("width", alphaPercent + "%");
+        $(".role-three-title").text("Alpha Score:");
+        $(".role-three-score").text(alphaPercent + "%")
+        if (alphaPercent > 69) {
+            $(".role-three-bar .determinate").css("background-color", "green");
+        }
+
+        if (alphaPercent < 69 && alphaPercent > 40) {
+            $(".role-three-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (alphaPercent < 39) {
+            $(".role-three-bar .determinate").css("background-color", "red");
+        }
+
+        // $('#college-stats').DataTable( {
+        //     "paging":   false,
+        //     "ordering": false,
+        //     data: rlfData.player.collegeTable,
+        //     columns: [
+        //         { title: "Year" },
+        //         { title: "College" },
+        //         { title: "Class" },
+        //         { title: "GP" },
+        //         { title: "Rec" },
+        //         { title: "Rec Yds" },
+        //         { title: "Rec Tds" },
+        //         { title: "YPR Avg" },
+        //         { title: "% of Recs" },
+        //         { title: "% of Rec Yds" },
+        //         { title: "% of Rec Tds" }
+        //     ]
+        // } );
     },
 
     initProsChartsTE : function(){
         var percent = rlfData.player.percentiles;
         var metrics = rlfData.player.metrics;
+        var ordinals = rlfData.player.ordinals;
         // var avgLB = rlfData.average.LB;
-        var xValue = ['Bully Score', 'Speed', 'Agility', 'Jumpball', 'Power'];
-        var yValue = [percent.bully, percent.fortyTime, '', percent.jumpball, percent.power];
-
-        var cone = percent.agility * .5;
-        var shuttle = percent.agility * .5;
-        var agilityPercent = Math.round(cone+shuttle);
-        var coneTrace = {
-            x:['Agility'],
-            y: [cone],
-            name: '3 cone ('+Math.round(percent.cone)+'%)',
-            text: [
-                metrics.cone
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgb(158,202,225)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var shuttleTrace = {
-            x:['Agility'],
-            y: [ shuttle],
-            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
-            text: [
-                metrics.shuttle
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgba(58,200,225,.5)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
+        var xValue = ['Bully Score', 'Speed', 'Jumpball', 'Power', 'Run Block', 'Juke Agility', 'Route Agility'];
+        var yValue = [percent.bully, percent.fortyTime, percent.jumpball, percent.power, percent.runBlock, percent.jukeAgility, percent.routeAgility];
 
         var trace1 = {
             x: xValue,
@@ -1396,10 +1410,13 @@ var rlf =  {
             name: 'WR Ability',
             type: 'bar',
             text: [
-                metrics.bully+'<br>'+Math.round(percent.bully)+'%',
-                metrics.fortyTime+'<br>'+Math.round(percent.fortyTime)+'%',
-                metrics.agility+'<br>'+Math.round(percent.agility)+'%',
-                metrics.jumpball+'<br>'+Math.round(percent.jumpball)+'%'
+                metrics.bully+'<br>'+ordinals.bully+'%',
+                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
+                metrics.jumpball+'<br>'+ordinals.jumpball+'%',
+                metrics.power+'<br>'+ordinals.power+'%',
+                metrics.runBlock+'<br>'+ordinals.runBlock+'%',
+                metrics.jukeAgility+'<br>'+ordinals.jukeAgility+'%',
+                metrics.routeAgility+'<br>'+ordinals.routeAgility+'%',
             ],
             textposition: 'auto',
             hoverinfo: 'none',
@@ -1420,45 +1437,6 @@ var rlf =  {
             type: 'scatter'
         };
 
-        var yacPower = percent.power * .40;
-        var yacElusive = percent.elusiveness * .60;
-        var yacPercent = Math.round(yacPower+yacElusive);
-
-        var trace3 = {
-            x:['YAC'],
-            y: [yacPower],
-            name: 'Power ('+Math.round(percent.power)+'%)',
-            text: [
-                metrics.power
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgb(158,202,225)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var trace4 = {
-            x:['YAC'],
-            y: [yacElusive],
-            name: 'Elusiveness ('+Math.round(percent.elusiveness)+'%)',
-            text: [
-                Math.round(yacPercent)+'%<br>'+metrics.elusiveness
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgba(58,200,225,.5)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
         //
         // var trace5 = {
         //     x:['College'],
@@ -1475,7 +1453,7 @@ var rlf =  {
         //     }
         // };
 
-        var data = [trace1, trace2, trace3, trace4, coneTrace, shuttleTrace];
+        var data = [trace1, trace2];
 
         var layout = {
             font: {size: 12},
@@ -1645,6 +1623,969 @@ var rlf =  {
         layout.shapes[0].path = supportPath;
         layout.title = 'Supporting Efficiency';
         Plotly.newPlot('support-graph', data, layout, {displayModeBar: false});
+    },
+
+    /************************* OL Line **************************/
+    initOlPage : function() {
+        rlf.initProsChartsOl();
+        rlf.initOppChartsTE();
+        rlf.initMesChartsTE();
+
+        var runBlock = Math.round((rlfData.player.metrics.runBlock));
+
+        $(".role-one-bar .determinate").css("width", runBlock + "%");
+        $(".role-one-title").text("Run Block");
+        $(".role-one-score").text(runBlock + "%")
+        if (runBlock > 69) {
+            $(".role-one-bar .determinate").css("background-color", "green");
+        }
+
+        if (runBlock < 69 && runBlock > 40) {
+            $(".role-one-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (runBlock < 39) {
+            $(".role-one-bar .determinate").css("background-color", "red");
+        }
+
+        var passBlock = Math.round((rlfData.player.metrics.insideBlock ));
+        $(".role-two-bar .determinate").css("width", passBlock + "%");
+        $(".role-two-title").text("Inisde Pass Block:");
+        $(".role-two-score").text(passBlock + "%")
+        if (passBlock > 69) {
+            $(".role-two-bar .determinate").css("background-color", "green");
+        }
+
+        if (passBlock < 69 && passBlock > 40) {
+            $(".role-two-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (passBlock < 39) {
+            $(".role-two-bar .determinate").css("background-color", "red");
+        }
+
+
+        var overAll = Math.round(rlfData.player.metrics.edgeBlock);
+        $(".role-three-bar .determinate").css("width", overAll + "%");
+        $(".role-three-title").text("Edge Pass Block:");
+        $(".role-three-score").text(overAll + "%")
+        if (overAll > 69) {
+            $(".role-three-bar .determinate").css("background-color", "green");
+        }
+
+        if (overAll < 69 && overAll > 40) {
+            $(".role-three-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (overAll < 39) {
+            $(".role-three-bar .determinate").css("background-color", "red");
+        }
+    },
+
+    initProsChartsOl : function(){
+        var percent = rlfData.player.percentiles;
+        var metrics = rlfData.player.metrics;
+        var ordinals = rlfData.player.ordinals;
+        // var avgLB = rlfData.average.LB;
+        var xValue = ['Bully Score', 'Speed', 'Agility','Power', 'Speed Score'];
+        var yValue = [percent.bully, percent.fortyTime, '', percent.power, percent.speedScore];
+
+        var trace1 = {
+            x: xValue,
+            y: yValue,
+            name: 'OL Ability',
+            type: 'bar',
+            text: [
+                metrics.bully+'<br>'+ordinals.bully+'%',
+                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
+                '',
+                metrics.power+'<br>'+ordinals.power+'%',
+                metrics.speedScore+'<br>'+ordinals.speedScore+'%'
+            ],
+            textposition: 'auto',
+            hoverinfo: 'none',
+            opacity: 0.8,
+        };
+
+        var cone = percent.agility * .5;
+        var shuttle = percent.agility * .5;
+        var agilityPercent = Math.round(cone+shuttle);
+        var coneTrace = {
+            x:['Agility'],
+            y: [cone],
+            name: '3 cone ('+Math.round(percent.cone)+'%)',
+            text: [
+                metrics.cone
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var shuttleTrace = {
+            x:['Agility'],
+            y: [ shuttle],
+            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
+            text: [
+                metrics.shuttle
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var trace2 = {
+            x: xValue,
+            y: [30, 89, 74, 45, 20],
+            name: 'Average NFL Safety',
+            type: 'scatter'
+        };
+
+        var lineBacker = {
+            x: xValue,
+            y: [70, 67, 61, 22, 41],
+            name: 'Average NFL Safety',
+            type: 'scatter'
+        };
+
+        var data = [trace1, trace2, coneTrace, shuttleTrace];
+
+        var layout = {
+            font: {size: 12},
+            yaxis: {title: 'Percentile', range: [0, 100]},
+            yaxis2: {
+                titlefont: {color: 'rgb(148, 103, 189)'},
+                tickfont: {color: 'rgb(148, 103, 189)'},
+                overlaying: 'y',
+                side: 'right'
+            },
+            margin: {
+                l: 50,
+                r: 20,
+                b: 20,
+                t: 25,
+                pad: 0
+            },
+            height: 350,
+            barmode: 'stack',
+            showlegend: true,
+            legend: {
+                x: 1,
+                y: 0.5
+            }
+        };
+
+        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
+    },
+    /************************* OL Line **************************/
+    initDlPage : function() {
+        rlf.initProsChartsDl();
+        rlf.initOppChartsTE();
+        rlf.initMesChartsTE();
+
+        var runBlock = Math.round((rlfData.player.metrics.runBlock));
+
+        $(".role-one-bar .determinate").css("width", runBlock + "%");
+        $(".role-one-title").text("Run Stuff");
+        $(".role-one-score").text(runBlock + "%")
+        if (runBlock > 69) {
+            $(".role-one-bar .determinate").css("background-color", "green");
+        }
+
+        if (runBlock < 69 && runBlock > 40) {
+            $(".role-one-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (runBlock < 39) {
+            $(".role-one-bar .determinate").css("background-color", "red");
+        }
+
+        var passBlock = Math.round((rlfData.player.metrics.insideBlock ));
+        $(".role-two-bar .determinate").css("width", passBlock + "%");
+        $(".role-two-title").text("Inside Pass Rush:");
+        $(".role-two-score").text(passBlock + "%")
+        if (passBlock > 69) {
+            $(".role-two-bar .determinate").css("background-color", "green");
+        }
+
+        if (passBlock < 69 && passBlock > 40) {
+            $(".role-two-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (passBlock < 39) {
+            $(".role-two-bar .determinate").css("background-color", "red");
+        }
+
+
+        var overAll = Math.round(rlfData.player.metrics.edgeBlock);
+        $(".role-three-bar .determinate").css("width", overAll + "%");
+        $(".role-three-title").text("Edge Pass Rush:");
+        $(".role-three-score").text(overAll + "%")
+        if (overAll > 69) {
+            $(".role-three-bar .determinate").css("background-color", "green");
+        }
+
+        if (overAll < 69 && overAll > 40) {
+            $(".role-three-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (overAll < 39) {
+            $(".role-three-bar .determinate").css("background-color", "red");
+        }
+    },
+
+    initProsChartsDl : function(){
+        var percent = rlfData.player.percentiles;
+        var metrics = rlfData.player.metrics;
+        var ordinals = rlfData.player.ordinals;
+        // var avgLB = rlfData.average.LB;
+        var xValue = ['Bully Score', 'Speed', 'Agility','Power', 'Speed Score'];
+        var yValue = [percent.bully, percent.fortyTime, '', percent.power, percent.speedScore];
+
+        var trace1 = {
+            x: xValue,
+            y: yValue,
+            name: 'OL Ability',
+            type: 'bar',
+            text: [
+                metrics.bully+'<br>'+ordinals.bully+'%',
+                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
+                '',
+                metrics.power+'<br>'+ordinals.power+'%',
+                metrics.speedScore+'<br>'+ordinals.speedScore+'%'
+            ],
+            textposition: 'auto',
+            hoverinfo: 'none',
+            opacity: 0.8,
+        };
+
+        var cone = percent.agility * .5;
+        var shuttle = percent.agility * .5;
+        var agilityPercent = Math.round(cone+shuttle);
+        var coneTrace = {
+            x:['Agility'],
+            y: [cone],
+            name: '3 cone ('+Math.round(percent.cone)+'%)',
+            text: [
+                metrics.cone
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var shuttleTrace = {
+            x:['Agility'],
+            y: [ shuttle],
+            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
+            text: [
+                metrics.shuttle
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var trace2 = {
+            x: xValue,
+            y: [30, 89, 74, 45, 20],
+            name: 'Average NFL Safety',
+            type: 'scatter'
+        };
+
+        var lineBacker = {
+            x: xValue,
+            y: [70, 67, 61, 22, 41],
+            name: 'Average NFL Safety',
+            type: 'scatter'
+        };
+
+        var data = [trace1, trace2, coneTrace, shuttleTrace];
+
+        var layout = {
+            font: {size: 12},
+            yaxis: {title: 'Percentile', range: [0, 100]},
+            yaxis2: {
+                titlefont: {color: 'rgb(148, 103, 189)'},
+                tickfont: {color: 'rgb(148, 103, 189)'},
+                overlaying: 'y',
+                side: 'right'
+            },
+            margin: {
+                l: 50,
+                r: 20,
+                b: 20,
+                t: 25,
+                pad: 0
+            },
+            height: 350,
+            barmode: 'stack',
+            showlegend: true,
+            legend: {
+                x: 1,
+                y: 0.5
+            }
+        };
+
+        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
+    },
+    /************************* OLB Line **************************/
+    initOlbPage : function() {
+        rlf.initProsChartsOlb();
+        rlf.initOppChartsTE();
+        rlf.initMesChartsTE();
+
+        var runStuff = Math.round((rlfData.player.metrics.runStuff));
+
+        $(".role-one-bar .determinate").css("width", runStuff + "%");
+        $(".role-one-title").text("Run Stuff");
+        $(".role-one-score").text(runStuff + "%")
+        if (runStuff > 69) {
+            $(".role-one-bar .determinate").css("background-color", "green");
+        }
+
+        if (runStuff < 69 && runStuff > 40) {
+            $(".role-one-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (runStuff < 39) {
+            $(".role-one-bar .determinate").css("background-color", "red");
+        }
+
+        var passBlock = Math.round((rlfData.player.metrics.edgeRush ));
+        $(".role-two-bar .determinate").css("width", passBlock + "%");
+        $(".role-two-title").text("Edge Pass Rush:");
+        $(".role-two-score").text(passBlock + "%")
+        if (passBlock > 69) {
+            $(".role-two-bar .determinate").css("background-color", "green");
+        }
+
+        if (passBlock < 69 && passBlock > 40) {
+            $(".role-two-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (passBlock < 39) {
+            $(".role-two-bar .determinate").css("background-color", "red");
+        }
+
+
+        var overAll = Math.round(rlfData.player.metrics.coverage);
+        $(".role-three-bar .determinate").css("width", overAll + "%");
+        $(".role-three-title").text("Coverage");
+        $(".role-three-score").text(overAll + "%")
+        if (overAll > 69) {
+            $(".role-three-bar .determinate").css("background-color", "green");
+        }
+
+        if (overAll < 69 && overAll > 40) {
+            $(".role-three-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (overAll < 39) {
+            $(".role-three-bar .determinate").css("background-color", "red");
+        }
+    },
+
+    initProsChartsOlb : function(){
+        var percent = rlfData.player.percentiles;
+        var metrics = rlfData.player.metrics;
+        var ordinals = rlfData.player.ordinals;
+        // var avgLB = rlfData.average.LB;
+        var xValue = ['Bully Score', 'Speed', 'Agility','Power', 'Speed Score'];
+        var yValue = [percent.bully, percent.fortyTime, '', percent.power, percent.speedScore];
+
+        var trace1 = {
+            x: xValue,
+            y: yValue,
+            name: 'OL Ability',
+            type: 'bar',
+            text: [
+                metrics.bully+'<br>'+ordinals.bully+'%',
+                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
+                '',
+                metrics.power+'<br>'+ordinals.power+'%',
+                metrics.speedScore+'<br>'+ordinals.speedScore+'%'
+            ],
+            textposition: 'auto',
+            hoverinfo: 'none',
+            opacity: 0.8,
+        };
+
+        var cone = percent.agility * .5;
+        var shuttle = percent.agility * .5;
+        var agilityPercent = Math.round(cone+shuttle);
+        var coneTrace = {
+            x:['Agility'],
+            y: [cone],
+            name: '3 cone ('+Math.round(percent.cone)+'%)',
+            text: [
+                metrics.cone
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var shuttleTrace = {
+            x:['Agility'],
+            y: [ shuttle],
+            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
+            text: [
+                metrics.shuttle
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var trace2 = {
+            x: xValue,
+            y: [30, 89, 74, 45, 20],
+            name: 'Average NFL Safety',
+            type: 'scatter'
+        };
+
+        var lineBacker = {
+            x: xValue,
+            y: [70, 67, 61, 22, 41],
+            name: 'Average NFL Safety',
+            type: 'scatter'
+        };
+
+        var data = [trace1, trace2, coneTrace, shuttleTrace];
+
+        var layout = {
+            font: {size: 12},
+            yaxis: {title: 'Percentile', range: [0, 100]},
+            yaxis2: {
+                titlefont: {color: 'rgb(148, 103, 189)'},
+                tickfont: {color: 'rgb(148, 103, 189)'},
+                overlaying: 'y',
+                side: 'right'
+            },
+            margin: {
+                l: 50,
+                r: 20,
+                b: 20,
+                t: 25,
+                pad: 0
+            },
+            height: 350,
+            barmode: 'stack',
+            showlegend: true,
+            legend: {
+                x: 1,
+                y: 0.5
+            }
+        };
+
+        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
+    },
+
+    /************************* OLB Line **************************/
+    initIlbPage : function() {
+        rlf.initProsChartsIlb();
+        rlf.initOppChartsTE();
+        rlf.initMesChartsTE();
+
+        var runStuff = Math.round((rlfData.player.metrics.runStop));
+
+        $(".role-one-bar .determinate").css("width", runStuff + "%");
+        $(".role-one-title").text("Run Stuff");
+        $(".role-one-score").text(runStuff + "%")
+        if (runStuff > 69) {
+            $(".role-one-bar .determinate").css("background-color", "green");
+        }
+
+        if (runStuff < 69 && runStuff > 40) {
+            $(".role-one-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (runStuff < 39) {
+            $(".role-one-bar .determinate").css("background-color", "red");
+        }
+
+        var passBlock = Math.round((rlfData.player.metrics.insideRush ));
+        $(".role-two-bar .determinate").css("width", passBlock + "%");
+        $(".role-two-title").text("Inside Pass Rush:");
+        $(".role-two-score").text(passBlock + "%")
+        if (passBlock > 69) {
+            $(".role-two-bar .determinate").css("background-color", "green");
+        }
+
+        if (passBlock < 69 && passBlock > 40) {
+            $(".role-two-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (passBlock < 39) {
+            $(".role-two-bar .determinate").css("background-color", "red");
+        }
+
+
+        var overAll = Math.round(rlfData.player.metrics.coverage);
+        $(".role-three-bar .determinate").css("width", overAll + "%");
+        $(".role-three-title").text("Coverage");
+        $(".role-three-score").text(overAll + "%")
+        if (overAll > 69) {
+            $(".role-three-bar .determinate").css("background-color", "green");
+        }
+
+        if (overAll < 69 && overAll > 40) {
+            $(".role-three-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (overAll < 39) {
+            $(".role-three-bar .determinate").css("background-color", "red");
+        }
+    },
+
+    initProsChartsIlb : function(){
+        var percent = rlfData.player.percentiles;
+        var metrics = rlfData.player.metrics;
+        var ordinals = rlfData.player.ordinals;
+        // var avgLB = rlfData.average.LB;
+        var xValue = ['Bully Score', 'Speed', 'Agility','Power', 'Speed Score'];
+        var yValue = [percent.bully, percent.fortyTime, '', percent.power, percent.speedScore];
+
+        var trace1 = {
+            x: xValue,
+            y: yValue,
+            name: 'OL Ability',
+            type: 'bar',
+            text: [
+                metrics.bully+'<br>'+ordinals.bully+'%',
+                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
+                '',
+                metrics.power+'<br>'+ordinals.power+'%',
+                metrics.speedScore+'<br>'+ordinals.speedScore+'%'
+            ],
+            textposition: 'auto',
+            hoverinfo: 'none',
+            opacity: 0.8,
+        };
+
+        var cone = percent.agility * .5;
+        var shuttle = percent.agility * .5;
+        var agilityPercent = Math.round(cone+shuttle);
+        var coneTrace = {
+            x:['Agility'],
+            y: [cone],
+            name: '3 cone ('+Math.round(percent.cone)+'%)',
+            text: [
+                metrics.cone
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var shuttleTrace = {
+            x:['Agility'],
+            y: [ shuttle],
+            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
+            text: [
+                metrics.shuttle
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var trace2 = {
+            x: xValue,
+            y: [30, 89, 74, 45, 20],
+            name: 'Average NFL Safety',
+            type: 'scatter'
+        };
+
+        var lineBacker = {
+            x: xValue,
+            y: [70, 67, 61, 22, 41],
+            name: 'Average NFL Safety',
+            type: 'scatter'
+        };
+
+        var data = [trace1, trace2, coneTrace, shuttleTrace];
+
+        var layout = {
+            font: {size: 12},
+            yaxis: {title: 'Percentile', range: [0, 100]},
+            yaxis2: {
+                titlefont: {color: 'rgb(148, 103, 189)'},
+                tickfont: {color: 'rgb(148, 103, 189)'},
+                overlaying: 'y',
+                side: 'right'
+            },
+            margin: {
+                l: 50,
+                r: 20,
+                b: 20,
+                t: 25,
+                pad: 0
+            },
+            height: 350,
+            barmode: 'stack',
+            showlegend: true,
+            legend: {
+                x: 1,
+                y: 0.5
+            }
+        };
+
+        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
+    },
+    /************************* QB Metrics **************************/
+    initQbPage : function() {
+        rlf.initProsChartsQB();
+        rlf.initOppChartsTE();
+        rlf.initMesChartsQb();
+
+        var runBlock = Math.round((rlfData.player.metrics.runBlock));
+
+        $(".role-one-bar .determinate").css("width", runBlock + "%");
+        $(".role-one-title").text("Arm Talent");
+        $(".role-one-score").text(runBlock + "%")
+        if (runBlock > 69) {
+            $(".role-one-bar .determinate").css("background-color", "green");
+        }
+
+        if (runBlock < 69 && runBlock > 40) {
+            $(".role-one-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (runBlock < 39) {
+            $(".role-one-bar .determinate").css("background-color", "red");
+        }
+
+        var passBlock = Math.round((rlfData.player.metrics.insideBlock ));
+        $(".role-two-bar .determinate").css("width", passBlock + "%");
+        $(".role-two-title").text("Mobility:");
+        $(".role-two-score").text(passBlock + "%")
+        if (passBlock > 69) {
+            $(".role-two-bar .determinate").css("background-color", "green");
+        }
+
+        if (passBlock < 69 && passBlock > 40) {
+            $(".role-two-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (passBlock < 39) {
+            $(".role-two-bar .determinate").css("background-color", "red");
+        }
+
+
+        var overAll = Math.round(rlfData.player.metrics.edgeBlock);
+        $(".role-three-bar .determinate").css("width", overAll + "%");
+        $(".role-three-title").text("Playmaker:");
+        $(".role-three-score").text(overAll + "%")
+        if (overAll > 69) {
+            $(".role-three-bar .determinate").css("background-color", "green");
+        }
+
+        if (overAll < 69 && overAll > 40) {
+            $(".role-three-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (overAll < 39) {
+            $(".role-three-bar .determinate").css("background-color", "red");
+        }
+
+        $('#college-stats').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            "searching": false,
+            data: rlfData.player.collegeTable,
+            columns: [
+                { title: "Year" },
+                { title: "College" },
+                { title: "Class" },
+                { title: "GP" },
+                { title: "Cmp" },
+                { title: "Att" },
+                { title: "Pct" },
+                { title: "Yds" },
+                { title: "Ypa" },
+                { title: "aypa" },
+                { title: "tds" },
+                { title: "ints" },
+                { title: "rushAtt" },
+                { title: "rushYds" },
+                { title: "rushTds" }
+            ]
+        } );
+
+        $('#season-stats').DataTable({
+            "paging": false,
+            "ordering": false,
+            "searching": false,
+            data: rlfData.player.seasonTable,
+            columns: [
+                {title: "Year", searchable: true, targets: 0},
+                {title: "GP"},
+                {title: "PPG"},
+                {title: "Atts"},
+                {title: "Cmp"},
+                {title: "Yds"},
+                {title: "TDs"},
+                {title: "Ints"},
+                {title: "PassFD"},
+                {title: "RushAtts"},
+                {title: "RushYds"},
+                {title: "RushTDs"},
+                {title: "RushFDs"}
+            ],
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '').replace(/ *\([^)]*\) */g, "")*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                var rowsToSum = [2,3,4,5,6,7,8];
+                var selectedRows = api.rows('.selected').indexes();
+                rowsToSum.forEach(function(col) {
+                    // Total filtered rows on the selected column (code part added)
+                    if (selectedRows.count() == 0) {
+                        total = api
+                            .column( col, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/api.column( col, { page: 'current'} ).data().count();
+                    } else {
+                        total = api.cells( selectedRows, col, { page: 'current' } )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/selectedRows.count();
+                    }
+                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
+                });
+            }
+        });
+    },
+
+    initProsChartsQB : function(){
+        var percent = rlfData.player.percentiles;
+        var metrics = rlfData.player.metrics;
+        var ordinals = rlfData.player.ordinals;
+        // var avgLB = rlfData.average.LB;
+        var xValue = ['Speed', 'Agility','Break Tackles', 'Throw Power', 'Wonderlic'];
+        var yValue = [percent.fortyTime, '', '', percent.throwVelocity, percent.wonderlic];
+
+        var trace1 = {
+            x: xValue,
+            y: yValue,
+            name: 'QB Ability',
+            type: 'bar',
+            text: [
+                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
+                '',
+                metrics.elusiveness+'<br>'+ordinals.elusiveness+'%',
+                metrics.throwVelocity+' mph<br>'+ordinals.throwVelocity+'%',
+                metrics.wonderlic+'<br>'+ordinals.wonderlic+'%',
+            ],
+            textposition: 'auto',
+            hoverinfo: 'none',
+            opacity: 0.8,
+        };
+
+        var cone = percent.agility * .5;
+        var shuttle = percent.agility * .5;
+        var agilityPercent = Math.round(cone+shuttle);
+        var coneTrace = {
+            x:['Agility'],
+            y: [cone],
+            name: '3 cone ('+Math.round(percent.cone)+'%)',
+            text: [
+                metrics.cone
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var shuttleTrace = {
+            x:['Agility'],
+            y: [ shuttle],
+            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
+            text: [
+                metrics.shuttle
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var yacPower = percent.power * .50;
+        var yacElusive = percent.elusiveness * .50;
+        var yacPercent = Math.round(yacPower+yacElusive);
+
+        var trace3 = {
+            x:['Break Tackles'],
+            y: [yacPower],
+            name: 'Power ('+Math.round(percent.power)+'%)',
+            text: [
+                metrics.power
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgb(158,202,225)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+        var trace4 = {
+            x:['Break Tackles'],
+            y: [yacElusive],
+            name: 'Elusiveness ('+Math.round(percent.elusiveness)+'%)',
+            text: [
+                Math.round(yacPercent)+'%<br>'+metrics.elusiveness
+            ],
+            textposition: 'auto',
+            type: 'bar',
+            marker: {
+                color: 'rgba(58,200,225,.5)',
+                line: {
+                    color: 'rgb(8,48,107)',
+                    width: 1.5
+                }
+            }
+        };
+
+
+        var data = [trace1, coneTrace, shuttleTrace, trace3, trace4];
+
+        var layout = {
+            font: {size: 12},
+            yaxis: {title: 'Percentile', range: [0, 100]},
+            yaxis2: {
+                titlefont: {color: 'rgb(148, 103, 189)'},
+                tickfont: {color: 'rgb(148, 103, 189)'},
+                overlaying: 'y',
+                side: 'right'
+            },
+            margin: {
+                l: 50,
+                r: 20,
+                b: 20,
+                t: 25,
+                pad: 0
+            },
+            height: 350,
+            barmode: 'stack',
+            showlegend: true,
+            legend: {
+                x: 1,
+                y: 0.5
+            }
+        };
+
+        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
+    },
+
+    initMesChartsQb : function(){
+        var percent = rlfData.player.percentiles;
+
+        var data = [{
+            type: 'scatterpolar',
+            r: [ percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
+            theta: ['height', 'weight', 'arms', 'bmi', '40', 'vertical', 'broad', '3cone', 'shuttle'],
+            fill: 'toself'
+        }];
+
+        var layout = {
+            polar: {
+                radialaxis: {
+                    visible: true,
+                    range: [0, 100]
+                }
+            },
+            font: {size: 10},
+            autosize: false,
+            width: 400,
+            height: 300,
+            margin: {
+                l: 0,
+                r: 0,
+                b: 25,
+                t: 25,
+                pad: 0
+            },
+            showlegend: false
+        };
+
+        Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false});
+        $("#radar-graph").addClass("scale-in");
     },
 
     /******************************* Other Functions ***************************************/

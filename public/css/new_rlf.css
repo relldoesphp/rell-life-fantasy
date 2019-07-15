@@ -61,7 +61,8 @@ div.row-title {
 }
 
 #radar-graph {
-    height:256px;
+    height:100%;
+    transform: scale(1);
 }
 
 .player-card.card.small {

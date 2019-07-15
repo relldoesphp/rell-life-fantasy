@@ -6,7 +6,7 @@
  * Time: 11:34 PM
  */
 
-namespace Player\Model;
+namespace Player\Model\Player\SqlCommands;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Sql\Sql;
@@ -19,7 +19,7 @@ use Zend\Http\Request;
 use Zend\Http\Client;
 use Zend\Dom\Query;
 
-class SqlCBCommand extends SqlPlayerAbstract
+class SqlFSCommand extends SqlPlayerAbstract
 {
     public function calculateSpecialScores()
     {
