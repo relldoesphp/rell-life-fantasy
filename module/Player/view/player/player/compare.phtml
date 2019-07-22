@@ -1,13 +1,13 @@
 
-<div class="section container page-container player-container">
-    <div class="row center">
+<div class="section white full-height">
+    <div class="row center container">
         <div class="col s4">
             <div class="input-field col s12 compare-search-field">
                 <input type="text" class="typeahead right compare-search" id="compare-1" class="autocomplete" placeholder="Search for Players">
             </div>
         </div>
         <div class="col s4">
-            <button class="btn-large waves-effect waves-light" id="compare-button">Compare Players
+            <button class="btn-large waves-effect waves-light dark" id="compare-button">Compare Players
                 <i class="material-icons right">send</i>
             </button>
         </div>
@@ -17,20 +17,18 @@
             </div>
         </div>
     </div>
-    <div class="row player-header section scrollspy" id="player-header">
+    <div class="row player-header scrollspy container" id="player-header">
         <div class="col m4 s12 profile">
             <div class="card small player-card hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
                     <div class="carousel carousel-slider activator">
-                        <a class="carousel-item" href="#one!"><img  src="" style="height:280px"></a>
-                        <a class="carousel-item" href="#two!"><img src="" style="height:280px"></a>
-                        <a class="carousel-item" href="#three!"><img src="" style="height:280px"></a>
+                        <?= $players[0]['images']?>
                     </div>
                 </div>
                 <div class="card-content player-card-content center">
                     <a class="btn-floating right halfway-fab waves-effect waves-light red activator"><i class="material-icons">arrow_upward</i></a>
                     <span class="player-title activator white-text text-darken-4"><?= $players[0]['first_name']." ".$players[0]['last_name'] ?></span>
-                    <p class="player-title activator yellow-text text-darken-4">#19 <?=$players[0]['position']?> <?= $players[0]['team']?></p>
+                    <p class="player-title activator yellow-text text-darken-4"><?=$players[0]['team_info']['number'] ?> <?=$players[0]['position']?> <?= $players[0]['team']?></p>
                 </div>
                 <div class="card-reveal player-card-reveal">
                     <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>
@@ -46,7 +44,7 @@
         <div class="col m4 s12 measurables">
             <div class="card player-card small hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
-                    <div id="radar-graph" style="width:400px; height:400px; margin:auto" class="scale-transition scale-out">
+                    <div id="radar-graph" style="width:400px; height:400px; margin:auto" class="scale-transition scale-out active">
 
                     </div>
                 </div>
@@ -68,15 +66,13 @@
                 <div class="card small player-card hoverable">
                     <div class="card-image waves-effect waves-block waves-light">
                         <div class="carousel carousel-slider activator">
-                            <a class="carousel-item" href="#one!"><img  src="" style="height:280px"></a>
-                            <a class="carousel-item" href="#two!"><img src="" style="height:280px"></a>
-                            <a class="carousel-item" href="#three!"><img src="" style="height:280px"></a>
+                            <?= $players[1]['images']?>
                         </div>
                     </div>
                     <div class="card-content player-card-content center">
                         <a class="btn-floating right halfway-fab waves-effect waves-light red activator"><i class="material-icons">arrow_upward</i></a>
                         <span class="player-title activator white-text text-darken-4"><?= $players[1]['first_name']." ".$players[1]['last_name'] ?></span>
-                        <p class="player-title activator yellow-text text-darken-4">#19 <?=$players[1]['position']?> <?= $players[1]['team']?></p>
+                        <p class="player-title activator yellow-text text-darken-4"><?=$players[1]['team_info']['number'] ?> <?=$players[1]['position']?> <?= $players[1]['team']?></p>
                     </div>
                     <div class="card-reveal player-card-reveal">
                         <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>
@@ -90,8 +86,8 @@
                 </div>
             </div>
     </div>
-    <div class="row player-prospect section scrollspy" id="player-prospect">
-        <a class="waves-effect waves-light btn-small right center modal-trigger" href="#modal2">Explain<i class="material-icons">live_help</i></a>
+    <div class="row player-prospect container scrollspy" id="player-prospect" style="margin-top:50px">
+        <a class="dark waves-effect waves-light btn-small right center modal-trigger" href="#modal2">Explain<i class="material-icons">live_help</i></a>
         <div class="col s12 center row-title"><h6>Prospect Breakdown</h6></div>
         <div class="col m2 s12 skillset z-depth-1 hoverable" id="player1-skill">
             <div class="slot-box center">
@@ -116,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div class="col m8 s12 prospect z-depth-1 hoverable">
+        <div class="col m8 s12 prospect z-depth-1 hoverable waves-block">
             <div id="prospect-graph" style="margin:auto"></div>
         </div>
         <div class="col m2 s12 skillset z-depth-1 hoverable" id="player2-skill">

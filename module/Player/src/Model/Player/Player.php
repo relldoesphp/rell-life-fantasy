@@ -121,6 +121,18 @@ class Player
                     if (!array_key_exists('rush_fd', $stats)) {
                         $stats['rush_fd'] = 0;
                     }
+                    if (!array_key_exists('rush_td', $stats)) {
+                        $stats['rush_td'] = 0;
+                    }
+                    if (!array_key_exists('pass_td', $stats)) {
+                        $stats['pass_td'] = 0;
+                    }
+                    if (!array_key_exists('rush_att', $stats)) {
+                        $stats['rush_att'] = 0;
+                    }
+                    if (!array_key_exists('pass_int', $stats)) {
+                        $stats['pass_int'] = 0;
+                    }
                     $tableData[] = [
                         $seasonStat['year'],
                         $stats['gp'],
@@ -272,6 +284,7 @@ class Player
         $this->seasonTable = $this->makeSeasonStats();
         $this->gameLogTable = $this->makeGameLogs();
         $this->fillEmptyValues();
+        $this->makeImages();
         return get_object_vars($this);
     }
 
@@ -302,5 +315,18 @@ class Player
         if (!array_key_exists('draft_year', $this->player_info)) {
             $this->player_info['draft_year'] = '';
         }
+    }
+
+    private function makeImages()
+    {
+        $images = "";
+        if (empty($this->images)) {
+            $images = "<a class='carousel-item' href='#one!'><img src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px'></a>";
+        } else {
+            foreach ($this->images as $key => $url) {
+                $images .= "<a class='carousel-item' href='#{$key}!'><img src='{$url}' style='height:280px'></a>\n";
+            }
+        }
+        $this->images = $images;
     }
 }

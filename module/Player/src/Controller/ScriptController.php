@@ -58,6 +58,12 @@ class ScriptController extends AbstractActionController
 
     public function updateWrMetricsAction()
     {
+        $type = "QB";
+//        $this->qbCommand->calculateMetrics($type);
+//        $this->qbCommand->calculatePercentiles($type);
+        $this->qbCommand->calculateSpecialScores($type);
+        $this->qbCommand->calculateSpecialPercentiles($type);
+
         $type = "CB";
         $this->cbCommand->calculateMetrics($type);
         $this->cbCommand->calculatePercentiles($type);
@@ -82,11 +88,7 @@ class ScriptController extends AbstractActionController
         $this->dlCommand->calculateSpecialScores($type);
         $this->dlCommand->calculateSpecialPercentiles($type);
 
-        $type = "QB";
-//        $this->qbCommand->calculateMetrics($type);
-//        $this->qbCommand->calculatePercentiles($type);
-        $this->qbCommand->calculateSpecialScores($type);
-        $this->qbCommand->calculateSpecialPercentiles($type);
+
 
 //        $type = "DL";
 //        $this->dlCommand->calculateMetrics($type);

@@ -54,11 +54,14 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $select = $sql->select('player_test')->columns([
             'id',
             'full_name' => new Expression("concat(first_name,' ',last_name,' ',position,' ',team)"),
-            "nohash" => new Expression("Replace(json_unquote(player_info->'$.hashtag'),'#','')")
+            "nohash" => new Expression("Replace(json_unquote(player_info->'$.hashtag'),'#','')"),
+            'position'
         ]);
 
-        if (!empty($type)) {
+        if (empty($type)) {
             $select->where->in('position', ['WR','TE','RB','OB']);
+        } else {
+            $select->where(["position = ?" => $type]);
         }
 
         $stmt   = $sql->prepareStatementForSqlObject($select);
@@ -81,7 +84,8 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $select = $sql->select('player_test')->columns([
             'id',
             'full_name' => new Expression("concat(first_name,' ',last_name,' ',position,' ',team)"),
-            "nohash" => new Expression("Replace(json_unquote(player_info->'$.hashtag'),'#','')")
+            "nohash" => new Expression("Replace(json_unquote(player_info->'$.hashtag'),'#','')"),
+            'position'
         ]);
         $select->where->like('first_name', $query."%")
             ->or->like('last_name', $query."%")

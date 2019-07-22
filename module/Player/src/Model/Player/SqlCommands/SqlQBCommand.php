@@ -44,8 +44,44 @@ class SqlQBCommand extends SqlPlayerAbstract
             $info = json_decode($te['player_info']);
             $metrics = json_decode($te['metrics']);
             $percentiles = json_decode($te['percentiles']);
+            $college = json_decode($te['college_stats']);
+
+            if ($college != null) {
+                $bestYds = 0;
+                $bestYear = 0;
+                foreach ($college as $year) {
+                    if ($year->ypa > 0) {
+                        $data["depthAdjPct"] = round(($year->ypa * 7.85), 2);
+                        $data["bestPct"] = $year->pct;
+                        $data["bestYpa"] = $year->ypa;
+                    }
+                }
+            } else {
+                $data["bestPct"] = null;
+                $data["bestYpa"] = null;
+                $data["depthAdjPct"] = "";
+            }
+
 
            $data["throwVelocity"] = str_replace( " mph", "", $metrics->throwVelocity);
+
+            if ($data['throwVelocity'] == "") {
+                $throwVelocity = 50;
+            } else {
+                $throwVelocity = $percentiles->throwVelocity;
+            }
+
+            if ($data['depthAdjPct'] == "") {
+                $depthAdjPct = 50;
+            } else {
+                $depthAdjPct = $percentiles->depthAdjPct;
+            }
+
+            $data['armTalent'] = ($throwVelocity * .50) + ($depthAdjPct * .50);
+
+            $data["mobility"] = ($percentiles->elusiveness * .30) + ($percentiles->power * .30) + ($percentiles->fortyTime * .40);
+
+            $data['playmaker'] = ($data['armTalent'] + $data['mobility'])/2;
 
             $jsonString = "";
             foreach ($data as $key => $value) {
@@ -105,6 +141,25 @@ EOT;
             $throwVelocity[$row->id] = $row->percentile_rank;
         }
         print "throw velocity built\n";
+        /****************************************/
+        $sql = <<<EOT
+SELECT id, lpad(json_unquote(metrics->'$.depthAdjPct'),5,'0'),  PERCENT_RANK() OVER (ORDER BY lpad(json_unquote(metrics->'$.depthAdjPct'),5,'0')) percentile_rank
+FROM player_test
+WHERE position = 'QB' AND json_unquote(metrics->'$.depthAdjPct') is not null AND json_unquote(metrics->'$.depthAdjPct') > 0
+EOT;
+        $stmt= $this->db->query($sql);
+        $result = $stmt->execute();
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $depthAdjPct = [];
+        foreach($resultSet as $row) {
+            $depthAdjPct[$row->id] = $row->percentile_rank;
+        }
+        print "depth adjusted PCT\n";
 
         $sql    = new Sql($this->db);
         $select = $sql->select();
@@ -128,6 +183,7 @@ EOT;
             $id = $player['id'];
             $data['wonderlic'] = (array_key_exists($id, $wonderlic)) ? $wonderlic[$id] * 100 : "";
             $data['throwVelocity'] = (array_key_exists($id, $throwVelocity)) ? $throwVelocity[$id] * 100 : "";
+            $data['depthAdjPct'] = (array_key_exists($id, $depthAdjPct)) ? $depthAdjPct[$id] * 100 : "";
             $jsonString = "";
             foreach ($data as $key => $value) {
                 $jsonString .= ", '$.{$key}', '{$value}'";

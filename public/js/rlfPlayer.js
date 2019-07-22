@@ -13,11 +13,12 @@ var rlf =  {
         var compareList = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('full_name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            // `states` is an array of state names defined in "The Basics"
-            prefetch: '../../data/names.json',
             remote: {
-                url: '../query/%QUERY',
+                url: '/player/query/%QUERY',
                 wildcard: '%QUERY'
+            },
+            dupDetector: function(remoteMatch, localMatch) {
+                return remoteMatch.id === localMatch.id;
             }
         });
 
@@ -46,26 +47,25 @@ var rlf =  {
 
 
         $('.compare-search.typeahead').on('typeahead:selected', function(evt, item){
+            $(this).typeahead('val', item.nohash);
             var id = $(this).attr("id");
-            var position = item.position;
-            $(this).typeahead('val', item.first_name+" "+item.last_name+" -  "+item.team);
-            compareList.clear();
-            compareList.local = rlfData.lists[position];
-            compareList.initialize(true);
             if (id === "compare-1") {
                 $("#compare-button").attr("data-player1", item.id);
             } else {
                 $("#compare-button").attr("data-player2", item.id);
             }
+            var position = item.position;
+            compareList.clear();
+            compareList.local = rlfData.lists[position];
+            delete compareList.remote;
+            compareList.initialize(true);
         });
 
         $('#compare-button').on("click", function(){
-
             var postData = {
                 player1: $(this).data("player1"),
                 player2: $(this).data("player2")
             };
-
             window.location = "/player/compare?player1="+postData['player1']+"&player2="+postData['player2'];
         });
     },
@@ -85,7 +85,7 @@ var rlf =  {
             {
                 type: 'scatterpolar',
                 r: [percent2.height, percent2.weight, percent2.arms, percent2.bmi, percent2.fortyTime, percent2.benchPress, percent2.verticalJump, percent2.broadJump, percent2.cone, percent2.shuttle],
-                theta: ['heightInches', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
+                theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
                 fill: 'toself',
                 name: rlfData.players[1].first_name+' '+rlfData.players[1].last_name
             },
@@ -101,13 +101,13 @@ var rlf =  {
             },
             font: {size: 10},
             autosize: false,
-            width: 300,
-            height: 270,
+            width: 400,
+            height: 300,
             margin: {
                 l: 0,
-                r: 0,
-                b: 0,
-                t: 25,
+                r: 25,
+                b: 20,
+                t: 20,
                 pad: 0
             },
             showlegend: true,
@@ -2288,7 +2288,7 @@ var rlf =  {
         rlf.initOppChartsTE();
         rlf.initMesChartsQb();
 
-        var runBlock = Math.round((rlfData.player.metrics.runBlock));
+        var runBlock = Math.round((rlfData.player.metrics.armTalent));
 
         $(".role-one-bar .determinate").css("width", runBlock + "%");
         $(".role-one-title").text("Arm Talent");
@@ -2305,7 +2305,7 @@ var rlf =  {
             $(".role-one-bar .determinate").css("background-color", "red");
         }
 
-        var passBlock = Math.round((rlfData.player.metrics.insideBlock ));
+        var passBlock = Math.round((rlfData.player.metrics.mobility ));
         $(".role-two-bar .determinate").css("width", passBlock + "%");
         $(".role-two-title").text("Mobility:");
         $(".role-two-score").text(passBlock + "%")
@@ -2322,7 +2322,7 @@ var rlf =  {
         }
 
 
-        var overAll = Math.round(rlfData.player.metrics.edgeBlock);
+        var overAll = Math.round(rlfData.player.metrics.playmaker);
         $(".role-three-bar .determinate").css("width", overAll + "%");
         $(".role-three-title").text("Playmaker:");
         $(".role-three-score").text(overAll + "%")
@@ -2423,8 +2423,8 @@ var rlf =  {
         var metrics = rlfData.player.metrics;
         var ordinals = rlfData.player.ordinals;
         // var avgLB = rlfData.average.LB;
-        var xValue = ['Speed', 'Agility','Break Tackles', 'Throw Power', 'Wonderlic'];
-        var yValue = [percent.fortyTime, '', '', percent.throwVelocity, percent.wonderlic];
+        var xValue = ['Speed', 'Agility','Break Tackles', 'Throw Power', 'Accuracy', 'Wonderlic'];
+        var yValue = [percent.fortyTime, '', '', percent.throwVelocity, percent.depthAdjPct, percent.wonderlic];
 
         var trace1 = {
             x: xValue,
@@ -2436,6 +2436,7 @@ var rlf =  {
                 '',
                 metrics.elusiveness+'<br>'+ordinals.elusiveness+'%',
                 metrics.throwVelocity+' mph<br>'+ordinals.throwVelocity+'%',
+                metrics.depthAdjPct+'<br>'+ordinals.depthAdjPct+'%',
                 metrics.wonderlic+'<br>'+ordinals.wonderlic+'%',
             ],
             textposition: 'auto',
