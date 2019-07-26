@@ -26,6 +26,8 @@ class SqlPlayerAbstract
     public $db;
     public $consoleAdapter;
 
+
+
     public function __construct(AdapterInterface $db, Console $consoleAdapter)
     {
         $this->db = $db;

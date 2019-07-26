@@ -6,7 +6,7 @@
  * Time: 7:59 AM
  */
 
-namespace Player\Model\Player\SqlCommands;
+namespace Player\Model\Player\Sql;
 
 use InvalidArgumentException;
 use Player\Model\Player\SqlCommands\SqlQBCommand;

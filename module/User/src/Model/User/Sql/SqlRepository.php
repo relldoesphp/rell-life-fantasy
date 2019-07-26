@@ -12,6 +12,11 @@ use User\Model\User\RepositoryInterface;
 
 class SqlRepository implements RepositoryInterface
 {
+    private $db;
+
+    public function __construct($db){
+        $this->db = $db;
+    }
     /**
      * @param int $id
      * @return mixed

@@ -1376,6 +1376,139 @@ var rlf =  {
             $(".role-three-bar .determinate").css("background-color", "red");
         }
 
+        $('#season-stats').DataTable({
+            "paging": false,
+            "ordering": false,
+            "searching": false,
+            data: rlfData.player.seasonTable,
+            columns: [
+                {title: "Year", searchable: true, targets: 0},
+                {title: "GP"},
+                {title: "PPG"},
+                {title: "Recs"},
+                {title: "Yds"},
+                {title: "Tds"},
+                {title: "Tgts"},
+                {title: "YPR"},
+                {title: "YPT"},
+                {title: "Deep Yds"}
+            ],
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '').replace(/ *\([^)]*\) */g, "")*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                var rowsToSum = [2,3,4,5,6,7,8];
+                var selectedRows = api.rows('.selected').indexes();
+                rowsToSum.forEach(function(col) {
+                    // Total filtered rows on the selected column (code part added)
+                    if (selectedRows.count() == 0) {
+                        total = api
+                            .column( col, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/api.column( col, { page: 'current'} ).data().count();
+                    } else {
+                        total = api.cells( selectedRows, col, { page: 'current' } )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/selectedRows.count();
+                    }
+                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
+                });
+            }
+        });
+
+
+        $('#game-logs').DataTable({
+            "paging": false,
+            "ordering": false,
+            data: rlfData.player.gameLogTable,
+            columns: [
+                {title: "Year", searchable: true},
+                {title: "GP"},
+                {title: "PPG"},
+                {title: "Recs"},
+                {title: "Yds"},
+                {title: "Tds"},
+                {title: "Tgts"},
+                {title: "YPR"},
+                {title: "YPT"},
+            ],
+            initComplete: function () {
+                this.api().columns([0]).every( function () {
+                    var column = this;
+                    var select = $('<select><option value="">All</option></select>')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+
+                    column.data().unique().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+
+                    $("#game-logs_filter input").replaceWith(select);
+                    $("#game-logs_filter select").formSelect();
+                    $("#game-logs_filter select").val('2018').trigger("change");
+                });
+            },
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                var rowsToSum = [2,3,4,5,6,7,8];
+                var selectedRows = api.rows('.selected').indexes();
+                rowsToSum.forEach(function(col) {
+                    // Total filtered rows on the selected column (code part added)
+                    if (selectedRows.count() == 0) {
+                        total = api
+                            .column( col, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/api.column( col, { page: 'current'} ).data().count();
+                    } else {
+                        total = api.cells( selectedRows, col, { page: 'current' } )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/selectedRows.count();
+                    }
+                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
+                });
+            }
+        });
+
+        $('#game-logs tbody').on( 'click', 'tr', function () {
+            $(this).toggleClass('selected');
+            $('#game-logs').DataTable().draw(false);
+
+        } );
+
+
         // $('#college-stats').DataTable( {
         //     "paging":   false,
         //     "ordering": false,
@@ -2360,6 +2493,87 @@ var rlf =  {
                 { title: "rushYds" },
                 { title: "rushTds" }
             ]
+        } );
+
+        $('#game-logs').DataTable({
+            "paging": false,
+            "ordering": false,
+            data: rlfData.player.gameLogTable,
+            columns: [
+                {title: "Year", searchable: true},
+                {title: "GP"},
+                {title: "Pts"},
+                {title: "PassYds"},
+                {title: "PassTds"},
+                {title: "PassAtt"},
+                {title: "PassCmp"},
+                {title: "QBR"},
+                {title: "RushYds"},
+                {title: "RushTds"},
+                {title: "RushAtts"},
+            ],
+            initComplete: function () {
+                this.api().columns([0]).every( function () {
+                    var column = this;
+                    var select = $('<select><option value="">All</option></select>')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+
+                    column.data().unique().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+
+                    $("#game-logs_filter input").replaceWith(select);
+                    $("#game-logs_filter select").formSelect();
+                    $("#game-logs_filter select").val('2018').trigger("change");
+                });
+            },
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                var rowsToSum = [2,3,4,5,6,7,8];
+                var selectedRows = api.rows('.selected').indexes();
+                rowsToSum.forEach(function(col) {
+                    // Total filtered rows on the selected column (code part added)
+                    if (selectedRows.count() == 0) {
+                        total = api
+                            .column( col, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/api.column( col, { page: 'current'} ).data().count();
+                    } else {
+                        total = api.cells( selectedRows, col, { page: 'current' } )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/selectedRows.count();
+                    }
+                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
+                });
+            }
+        });
+
+        $('#game-logs tbody').on( 'click', 'tr', function () {
+            $(this).toggleClass('selected');
+            $('#game-logs').DataTable().draw(false);
+
         } );
 
         $('#season-stats').DataTable({

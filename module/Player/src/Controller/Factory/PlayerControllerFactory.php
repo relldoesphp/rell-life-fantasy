@@ -6,7 +6,7 @@
  * Time: 8:55 AM
  */
 
-namespace Player\Factory;
+namespace Player\Controller\Factory;
 
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;

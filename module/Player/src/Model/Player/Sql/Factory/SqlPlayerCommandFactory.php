@@ -6,7 +6,7 @@
  * Time: 5:31 PM
  */
 
-namespace Player\Factory;
+namespace Player\Model\Player\Sql\Factory;
 
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;

@@ -8,9 +8,12 @@
 
 namespace User\Service;
 
+use User\Model\User\CommandInterface;
+use User\Model\User\RepositoryInterface;
 use User\Model\User\User;
 use User\Model\User\Sql;
 use Zend\Crypt\Password\Bcrypt;
+use Exception;
 
 class UserManager
 {
@@ -19,10 +22,12 @@ class UserManager
 
     private $command;
 
-    public function __construct()
+    public function __construct(
+        RepositoryInterface $repository,
+        CommandInterface $command, $viewRender, $config)
     {
-        $this->repository = new Sql\SqlRepository();
-        $this->command = new Sql\SqlCommand();
+        $this->repository = $repository;
+        $this->command = $command;
     }
 
     /**
@@ -31,10 +36,9 @@ class UserManager
     public function addUser($data)
     {
         // Do not allow several users with the same email address.
-//        if($this->checkUserExists($data['email'])) {
-//            throw new \Exception("User with email address " .
-//                $data['$email'] . " already exists");
-//        }
+        if($this->checkUserExists($data['email'])) {
+            throw new Exception("User with email address " . $data['$email'] . " already exists");
+        }
 
         // Create new User entity.
         $user = new User();
@@ -72,6 +76,24 @@ class UserManager
         return false;
     }
 
+    public function checkUserExists($email) {
+        return $this->repository->getUserByEmail($email);
+    }
 
+    public function createAdminUserIfNotExists()
+    {
+        $user = $this->repository->getAllUsers();
+        if ($user == null) {
+            $user = new User();
+            $user->setEmail('admin@example.com');
+            $user->setFullName('Admin');
+            $bcrypt = new Bcrypt();
+            $passwordHash = $bcrypt->create('Secur1ty');
+            $user->setPassword($passwordHash);
+            $user->setStatus(User::STATUS_ACTIVE);
+            $user->setDateCreated(date('Y-m-d H:i:s'));
 
+            $this->command->save($user);
+        }
+    }
 }

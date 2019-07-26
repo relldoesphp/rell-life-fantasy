@@ -11,22 +11,45 @@
  * file.
  */
 
+use Zend\Session\Storage\SessionArrayStorage;
+use Zend\Session\Validator\RemoteAddr;
+use Zend\Session\Validator\HttpUserAgent;
+
 return [
-        'db' => [
-            'driver' => 'Pdo',
-            'adapters' => [
-                'Rlf\Db\Adapter' => [
-                    'driver' => 'Pdo',
-                    'dsn'    => 'mysql:dbname=fantasy_football;host=localhost;charset=utf8',
-                    'username' => 'rell',
-                    'password' => 'rell'
-                ],
-                'Dtw\Db\Adapter' => [
-                    'driver' => 'Pdo',
-                    'dsn'    => 'mysql:dbname=dtw_dev;host=drafttradewin.com;charset=utf8',
-                    'username' => 'rell',
-                    'password' => '3523Kaleb!'
-                ],
+    'db' => [
+        'driver' => 'Pdo',
+        'adapters' => [
+            'Rlf\Db\Adapter' => [
+                'driver' => 'Pdo',
+                'dsn'    => 'mysql:dbname=fantasy_football;host=localhost;charset=utf8',
+                'username' => 'rell',
+                'password' => 'rell'
+            ],
+            'Dtw\Db\Adapter' => [
+                'driver' => 'Pdo',
+                'dsn'    => 'mysql:dbname=dtw_dev;host=drafttradewin.com;charset=utf8',
+                'username' => 'rell',
+                'password' => '3523Kaleb!'
             ],
         ],
+    ],
+    // Session configuration.
+    'session_config' => [
+        // Session cookie will expire in 1 hour.
+        'cookie_lifetime' => 60*60*1,
+        // Session data will be stored on server maximum for 30 days.
+        'gc_maxlifetime'     => 60*60*24*30,
+    ],
+    // Session manager configuration.
+    'session_manager' => [
+        // Session validators (used for security).
+        'validators' => [
+            RemoteAddr::class,
+            HttpUserAgent::class,
+        ]
+    ],
+    // Session storage configuration.
+    'session_storage' => [
+        'type' => SessionArrayStorage::class
+    ],
 ];

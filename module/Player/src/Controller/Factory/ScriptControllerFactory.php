@@ -6,7 +6,7 @@
  * Time: 9:36 AM
  */
 
-namespace Player\Factory;
+namespace Player\Controller\Factory;
 
 use Player\Model\Player\PlayerRepositoryInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;

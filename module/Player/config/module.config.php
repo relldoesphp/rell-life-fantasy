@@ -12,24 +12,26 @@ use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\Db\Adapter\AdapterAbstractServiceFactory;
 use Zend\ServiceManager\Factory\InvokableFactory;
-use Player\Factory\SqlPlayerCommandFactory;
-use Player\Factory\SqlPlayerRepositoryFactory;
+use Player\Controller\Factory;
+use Player\Model\Player\Sql;
 
 return [
     'service_manager' => [
         'aliases' => [
-            // Update this line:
-            Model\Player\PlayerRepositoryInterface::class => Model\Player\SqlPlayerRepository::class,
-            // Add Command Center
-            Model\Player\PlayerCommandInterface::class => Model\Player\SqlCommands\SqlPlayerCommand::class,
+            Model\Player\PlayerRepositoryInterface::class => Model\Player\Sql\SqlPlayerRepository::class,
+            Model\Player\PlayerCommandInterface::class => Model\Player\Sql\SqlPlayerCommand::class,
         ],
         'factories' => [
-            // Custom Mysql Adapter defined in configs
             'Dtw\Db\Adapter' => AdapterAbstractServiceFactory::class,
-            // factory for sql repository
-            Model\Player\SqlPlayerRepository::class => Factory\SqlPlayerRepositoryFactory::class,
-            // factory for Command Center
-            Model\Player\SqlCommands\SqlPlayerCommand::class => Factory\SqlPlayerCommandFactory::class,
+            Model\Player\Sql\SqlPlayerRepository::class => Model\Player\Sql\Factory\SqlPlayerRepositoryFactory::class,
+            Model\Player\Sql\SqlPlayerCommand::class => Model\Player\Sql\Factory\SqlPlayerCommandFactory::class,
+        ],
+    ],
+
+    'controllers' => [
+        'factories' => [
+            Controller\ScriptController::class => Controller\Factory\ScriptControllerFactory::class,
+            Controller\PlayerController::class => Controller\Factory\PlayerControllerFactory::class,
         ],
     ],
 
@@ -58,6 +60,18 @@ return [
                     ],
                 ],
             ],
+        ],
+    ],
+
+    'view_manager' => [
+        'template_path_stack' => [
+            'player' => __DIR__ . '/../view',
+        ],
+        'template_map' => [
+            'layout/layout'           => __DIR__ . '/../view/layout/startupLayout.phtml',
+        ],
+        'strategies' => [
+            'ViewJsonStrategy',
         ],
     ],
 
@@ -153,27 +167,6 @@ return [
                     ],
                 ],
             ],
-        ],
-    ],
-
-    'controllers' => [
-        'factories' => [
-            // factory for script controller
-            Controller\ScriptController::class => Factory\ScriptControllerFactory::class,
-            // factory for player controller
-            Controller\PlayerController::class => Factory\PlayerControllerFactory::class
-        ],
-    ],
-
-    'view_manager' => [
-        'template_path_stack' => [
-            'player' => __DIR__ . '/../view',
-        ],
-        'template_map' => [
-            'layout/layout'           => __DIR__ . '/../view/layout/startupLayout.phtml',
-        ],
-        'strategies' => [
-            'ViewJsonStrategy',
         ],
     ],
 ];

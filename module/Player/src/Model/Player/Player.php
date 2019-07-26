@@ -99,7 +99,7 @@ class Player
                     continue;
                 }
                 $stats = Json::decode($seasonStat['stats'], 1);
-                if ($this->position == "WR" && array_key_exists('gp', $stats)) {
+                if (($this->position == "WR" || $this->position == "TE") && array_key_exists('gp', $stats)) {
                     $tableData[] = [
                         $seasonStat['year'],
                         $stats['gp'],
@@ -168,7 +168,7 @@ class Player
                 if (!array_key_exists('off_snp', $stats)) {
                     continue;
                 }
-                if ($this->position == "WR") {
+                if ($this->position == "WR" || $this->position == "TE") {
                     $tableData[] = [
                         $gameLog['year'],
                         $gameLog['week'],
@@ -181,9 +181,24 @@ class Player
                         (array_key_exists('rec_ypt', $stats)) ? $stats['rec_ypt'] : "",
                     ];
                 }
+
+                if ($this->position == "QB") {
+                    $tableData[] = [
+                        $gameLog['year'],
+                        $gameLog['week'],
+                        (array_key_exists('pts_ppr', $stats)) ? $stats['pts_ppr'] : "",
+                        (array_key_exists('pass_yd', $stats)) ? $stats['pass_yd'] : "",
+                        (array_key_exists('pass_td', $stats)) ? $stats['pass_td'] : "",
+                        (array_key_exists('pass_cmp', $stats)) ? $stats['pass_cmp'] : "",
+                        (array_key_exists('pass_att', $stats)) ? $stats['pass_att'] : "",
+                        (array_key_exists('pass_rtg', $stats)) ? $stats['pass_rtg'] : "",
+                        (array_key_exists('rush_yd', $stats)) ? $stats['rush_yd'] : "",
+                        (array_key_exists('rush_td', $stats)) ? $stats['rush_td'] : "",
+                        (array_key_exists('rush_att', $stats)) ? $stats['rush_att'] : "",
+                    ];
+                }
             }
         }
-
         return $tableData;
     }
 

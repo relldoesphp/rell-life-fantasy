@@ -13,6 +13,11 @@ use User\Model\User\User;
 
 class SqlCommand implements CommandInterface
 {
+    private $db;
+
+    public function __construct($db){
+        $this->db = $db;
+    }
     /**
      * @param User $user
      * @return mixed

@@ -36,7 +36,8 @@
     "autoload": {
         "psr-4": {
             "Application\\": "module/Application/src/",
-            "Blog\\": "module/Blog/src",
+            "User\\": "module/User/src",
+            "Podcast\\": "module/Podcast/src",
             "Player\\": "module/Player/src"
         }
     },
@@ -47,8 +48,8 @@
     },
     "extra": {
      	"installer-paths": {
-		"public/js": "twitter/typeahead.js"
-	}
+		    "public/js": "twitter/typeahead.js"
+	    }
     },
     "scripts": {
         "cs-check": "phpcs",

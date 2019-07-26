@@ -11,6 +11,19 @@ namespace User\Controller;
 
 class UserController
 {
+    private $repository;
+
+    private $command;
+
+    private $userManager;
+
+    public function __construct($repository, $command, $userManager)
+    {
+        $this->repository = $repository;
+        $this->command = $command;
+        $this->userManager = $userManager;
+    }
+
     public function indexAction(){}
 
     public function addAction(){}

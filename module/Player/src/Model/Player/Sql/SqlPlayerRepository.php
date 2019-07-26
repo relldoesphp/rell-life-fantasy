@@ -6,7 +6,7 @@
  * Time: 4:44 PM
  */
 
-namespace Player\Model\Player;
+namespace Player\Model\Player\Sql;
 
 use InvalidArgumentException;
 use RuntimeException;
@@ -20,6 +20,7 @@ use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Predicate;
 use Player\Model\Player\Player;
 use Player\Model\Stats\SeasonStats;
+use Player\Model\Player\PlayerRepositoryInterface;
 
 class SqlPlayerRepository implements PlayerRepositoryInterface
 {
