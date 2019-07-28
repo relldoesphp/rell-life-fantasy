@@ -338,87 +338,182 @@ var rlf =  {
     initCompareTables : function(){
 
     },
+
+    /************************* QB Metrics **************************/
+    initQbPage : function() {
+        rlf.initProsChartsQB();
+        rlf.initMesChartsQb();
+
+        var roleFits = [
+            {
+                "name":"Arm Talent",
+                "value": Math.round(rlfData.player.metrics.armTalent)
+            },
+            {
+                "name":"Mobility",
+                "value": Math.round(rlfData.player.metrics.mobility)
+            },
+            {
+                "name":"PlayMaker",
+                "value": Math.round(rlfData.player.metrics.playmaker)
+            }
+        ];
+
+        rlf.makeRoleFits(roleFits);
+
+        var seasonColumns = [
+            {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
+            {title: "GP", data: "stats.gp", "defaultContent":0},
+            {title: "Pts", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "Pass Yds", data: "stats.pass_yd", "defaultContent":0},
+            {title: "Pass Tds", data: "stats.pass_td", "defaultContent":0},
+            {title: "Pass Cmp", data: "stats.pass_cmp", "defaultContent":0},
+            {title: "Pass Atts", data: "stats.pass_att", "defaultContent":0},
+            {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
+            {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
+            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0}
+        ];
+
+        rlf.makeSeasonTable(seasonColumns);
+
+        var gameLogColumns = [
+            {title: "Year", searchable: true, data: "year"},
+            {title: "Week", data: "week"},
+            {title: "Pts",  data: "stats.pts_ppr", "defaultContent":0},
+            {title: "Pass Yds", data: "stats.pass_yd", "defaultContent":0},
+            {title: "Pass Tds", data: "stats.pass_td", "defaultContent":0},
+            {title: "Completions", data: "stats.pass_cmp", "defaultContent":0},
+            {title: "Pass Atts", data: "stats.pass_att", "defaultContent":0},
+            {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
+            {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
+            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
+        ];
+
+        rlf.makeGameLogTable(gameLogColumns);
+
+        var collegeColumns = [
+            { title: "Year", data: "year", "defaultContent":0},
+            { title: "College", data: "stats.college", "defaultContent": "n/a"},
+            { title: "Class", data: "stats.class", "defaultContent": "n/a" },
+            { title: "GP", data: "stats.games", "defaultContent": 0 },
+            { title: "Cmp", data: "stats.cmp", "defaultContent": 0 },
+            { title: "Att", data: "stats.att", "defaultContent": 0},
+            { title: "Pct", data: "stats.pct", "defaultContent": 0},
+            { title: "Yds", data: "stats.yds", "defaultContent": 0},
+            { title: "YPA", data: "stats.ypa", "defaultContent": 0},
+            { title: "Tds", data: "stats.tds", "defaultContent": 0},
+            { title: "Ints", data: "stats.ints", "defaultContent": 0},
+            { title: "Rush Atts", data: "stats.rushAtt", "defaultContent": 0},
+            { title: "Rush Yds", data: "stats.rushYds", "defaultContent": 0},
+            { title: "Rush Tds", data: "stats.rushTds", "defaultContent": 0}
+        ];
+
+        rlf.makeCollegeTable(collegeColumns);
+    },
+
+    initProsChartsQB : function(){
+        var percent = rlfData.player.percentiles;
+        var metrics = rlfData.player.metrics;
+        var ordinals = rlfData.player.ordinals;
+        var chartData = {
+            labels: ['Speed', 'Agility', 'Run Power', 'Elusiveness', 'Throw Power', 'Accuracy', 'Wonderlic'],
+            datasets: [{
+                type: 'bar',
+                stack: 'Stack One',
+                label: 'QB Skills',
+                borderWidth: 2,
+                fill: false,
+                data: [percent.fortyTime, percent.agility, percent.power, percent.elusiveness, percent.throwVelocity, percent.depthAdjPct, percent.wonderlic],
+                ordinals: [ordinals.fortyTime, ordinals.agility, ordinals.power, ordinals.elusiveness, ordinals.throwVelocity, ordinals.depthAdjPct, ordinals.wonderlic],
+                metrics: [metrics.fortyTime, metrics.agility, metrics.power, metrics.elusiveness, metrics.throwVelocity, metrics.depthAdjPct, metrics.wonderlic]
+            }]
+        };
+        rlf.makeProspectChart(chartData);
+    },
+
+    initMesChartsQb : function() {
+        var percent = rlfData.player.percentiles;
+        var info = [percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
+        var labels = ['height', 'weight', 'arms', 'bmi', '40', 'vertical', 'broad', '3cone', 'shuttle'];
+        rlf.makeRadarGraph(info,labels);
+    },
     /****************************************** RB stuff **************************************************************/
 
     initRbPage : function(){
-        rlf.initOppChartsRB();
+        //rlf.initOppChartsRB();
         rlf.initMesChartsRB();
         rlf.initProsChartsRB();
 
-        $('#college-stats').DataTable( {
-            "paging":   false,
-            "ordering": false,
-            "searching": false,
-            data: rlfData.player.collegeTable,
-            columns: [
-                { title: "Year" },
-                { title: "College" },
-                { title: "Class" },
-                { title: "GP" },
-                { title: "Carries" },
-                { title: "Rush Yds" },
-                { title: "YPC" },
-                { title: "Rush Tds" },
-                { title: "Recs" },
-                { title: "Rec Yds" },
-                { title: "YPR" },
-                { title: "Rec Tds" },
-                { title: "% of Carries" },
-                { title: "% of Recs" },
-                { title: "% of total yds" },
-                { title: "% of total tds" },
-            ]
-        } );
+        var collegeColumns = [
+            { title: "Year", data: "year", "defaultContent":0},
+            { title: "College", data: "college", "defaultContent": "n/a"},
+            { title: "Class", data: "class", "defaultContent": "n/a" },
+            { title: "GP", data: "games", "defaultContent": 0 },
+            { title: "Carries", data: "rushAtt", "defaultContent": 0 },
+            { title: "Rush Yds", data: "rushYds", "defaultContent": 0},
+            { title: "YPC", data: "rushAvg", "defaultContent": 0},
+            { title: "Rush Tds", data: "rushTds", "defaultContent": 0},
+            { title: "Recs", data: "recs", "defaultContent": 0},
+            { title: "Rec Yds", data: "recYds", "defaultContent": 0},
+            { title: "Rec Tds", data: "recTds", "defaultContent": 0},
+            { title: "% of Carries", data: "carryDom", "defaultContent": 0},
+            { title: "% of Recs", data: "recDom", "defaultContent": 0},
+            { title: "% of total yds", data: "ydDom", "defaultContent": 0},
+            { title: "% of total tds", data: "tdDom", "defaultContent": 0},
+        ];
+
+        rlf.makeCollegeTable(collegeColumns);
 
         var grinderPercent =(rlfData.player.metrics.grinder / 12) * 100;
-
-        $(".role-one-bar .determinate").css("width", grinderPercent + "%");
-        $(".role-one-title").text("Grinder Score:");
-        $(".role-one-score").text(Math.round(grinderPercent) + "%")
-        if (grinderPercent > 69) {
-            $(".role-one-bar .determinate").css("background-color", "green");
-        }
-
-        if (grinderPercent < 69 && grinderPercent > 40) {
-            $(".role-one-bar .determinate").css("background-color", "yellow");
-        }
-
-        if (grinderPercent < 39) {
-            $(".role-one-bar .determinate").css("background-color", "red");
-        }
-
         var passCatcherPercent = (rlfData.player.metrics.passCatcher / 12) * 100;
-        $(".role-two-bar .determinate").css("width", Math.round(passCatcherPercent) + "%");
-        $(".role-two-title").text("Pass Catcher Score:");
-        $(".role-two-score").text(Math.round(passCatcherPercent) + "%")
-        if (passCatcherPercent > 64) {
-            $(".role-two-bar .determinate").css("background-color", "green");
-        }
-
-        if (passCatcherPercent < 64 && passCatcherPercent > 40) {
-            $(".role-two-bar .determinate").css("background-color", "yellow");
-        }
-
-        if (passCatcherPercent < 39) {
-            $(".role-two-bar .determinate").css("background-color", "red");
-        }
-
         var alphaPercent = Math.round((rlfData.player.metrics.alpha / 25) * 100);
-        $(".role-three-bar .determinate").css("width", alphaPercent + "%");
-        $(".role-three-title").text("Alpha Back Score:");
-        $(".role-three-score").text(alphaPercent + "%")
 
-        if (alphaPercent > 64) {
-            $(".role-three-bar .determinate").css("background-color", "green");
-        }
+        var roleFits = [
+            {
+                "name":"Grinder Score",
+                "value":grinderPercent
+            },
+            {
+                "name":"Pass Catcher",
+                "value":passCatcherPercent
+            },
+            {
+                "name":"Alpha Score",
+                "value":alphaPercent
+            }
+        ];
 
-        if (alphaPercent < 64 && alphaPercent > 40) {
-            $(".role-three-bar .determinate").css("background-color", "yellow");
-        }
+        rlf.makeRoleFits(roleFits);
 
-        if (alphaPercent < 39) {
-            $(".role-three-bar .determinate").css("background-color", "red");
-        }
+        var seasonColumns = [
+            {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
+            {title: "GP", data: "stats.gp", "defaultContent":0},
+            {title: "PPG", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
+            {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
+            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
+            {title: "Recs", data: "stats.rec", "defaultContent":0},
+            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+            {title: "Rec Yds", data: "stats.rec_yd", "defaultContent":0},
+            {title: "Rec Tds", data: "stats.rec_td", "defaultContent":0}
+        ];
+
+        rlf.makeSeasonTable(seasonColumns);
+
+        var gameLogColumns = [
+            {title: "Year", searchable: true, data: "year"},
+            {title: "Week", data: "week"},
+            {title: "PPG",  data: "stats.pts_ppr", "defaultContent":0},
+            {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
+            {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
+            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
+            {title: "Recs", data: "stats.rec", "defaultContent":0},
+            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+            {title: "Rec Yds", data: "stats.rec_yd", "defaultContent":0},
+            {title: "Rec Tds", data: "stats.rec_td", "defaultContent":0}
+        ];
+
+        rlf.makeGameLogTable(gameLogColumns);
     },
 
     initProsChartsRB : function(){
@@ -426,1336 +521,246 @@ var rlf =  {
         var metrics = rlfData.player.metrics;
         var ordinals = rlfData.player.ordinals;
         // var avgLB = rlfData.average.LB;
-
-        var xValue = ['Speed', 'Agility', 'Elusiveness', 'Run Power', 'Speed Score', 'Juke Agilty', 'Route Agiltiy'];
-
-        var cone = percent.agility * .5;
-        var shuttle = percent.agility * .5;
-        var agilityPercent = Math.round(cone+shuttle);
-        var coneTrace = {
-            x:['Agility'],
-            y: [cone],
-            name: '3 cone ('+Math.round(percent.cone)+'%)',
-            text: [
-                metrics.cone
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgb(158,202,225)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var shuttleTrace = {
-            x:['Agility'],
-            y: [ shuttle],
-            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
-            text: [
-                metrics.shuttle
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgba(58,200,225,.5)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var trace1 = {
-            x: xValue,
-            y: [percent.fortyTime, '', percent.elusiveness, percent.power, percent.speedScore, percent.jukeAgility, percent.routeAgility],
-            name: 'Percentile',
-            type: 'bar',
-            text: [
-                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
-                metrics.agility+'<br>'+ordinals.agility+'%',
-                metrics.elusiveness+'<br>'+ordinals.elusiveness+'%',
-                metrics.power+'<br>'+ordinals.power+'%',
-                metrics.speedScore+'<br>'+ordinals.speedScore+'%',
-                metrics.jukeAgility+'<br>'+ordinals.jukeAgility+'%',
-                metrics.routeAgility+'<br>'+ordinals.routeAgility+'%',
-            ],
-            textposition: 'auto',
-            hoverinfo: 'none'
-        };
-
-        var trace2 = {
-            x: xValue,
-            y: [30, 38, 50, 60,],
-            name: 'Average NFL Linebacker',
-            type: 'scatter'
-        };
-
-        var data = [trace1, trace2, coneTrace, shuttleTrace];
-
-
-        var layout = {
-            font: {size: 12},
-            yaxis: {title: 'Percentile', range: [0, 100]},
-            yaxis2: {
-                titlefont: {color: 'rgb(148, 103, 189)'},
-                tickfont: {color: 'rgb(148, 103, 189)'},
-                overlaying: 'y',
-                side: 'right'
+        var chartData = {
+            labels: ['Speed', 'Juke Agility', 'Route Agility', 'Elusiveness', 'Run Power', 'Speed Score'],
+            datasets: [{
+                type: 'bar',
+                stack: 'Stack One',
+                label: 'RB Skills',
+                borderWidth: 2,
+                fill: false,
+                data: [percent.fortyTime, percent.jukeAgility, percent.routeAgility, percent.elusiveness, percent.power, percent.speedScore],
+                ordinals: [ordinals.fortyTime, ordinals.jukeAgility, ordinals.routeAgility, ordinals.elusiveness, ordinals.power, ordinals.speedScore],
+                metrics: [metrics.fortyTime, metrics.jukeAgility, metrics.routeAgility, metrics.elusiveness, metrics.power, metrics.speedScore]
             },
-            margin: {
-                l: 50,
-                r: 20,
-                b: 20,
-                t: 25,
-                pad: 0
-            },
-            height: 350,
-            barmode: 'stack',
-            showlegend: true,
-            legend: {
-                x: 1,
-                y: 0.5
-            }
+                {
+                    type: 'line',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: true,
+                    label: 'Average NFL Safety',
+                    data: [70, 67, 61, 22, 15, 10, 9],
+                    ordinals: ["", "", "", "", "", "", ""],
+                    metrics: ["", "", "", "", "", "", ""]
+                },
+            ]
         };
-
-        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
+        rlf.makeProspectChart(chartData);
     },
 
     initMesChartsRB : function(){
         var percent = rlfData.player.percentiles;
-
-        var data = [{
-            type: 'scatterpolar',
-            r: [ percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
-            theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
-            fill: 'toself'
-        }];
-
-        var layout = {
-            polar: {
-                radialaxis: {
-                    visible: true,
-                    range: [0, 100]
-                }
-            },
-            font: {size: 10},
-            autosize: false,
-            width: 400,
-            height: 300,
-            margin: {
-                l: 0,
-                r: 0,
-                b: 25,
-                t: 25,
-                pad: 0
-            },
-            showlegend: false
-        };
-
-        Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false});
-        $("#radar-graph").addClass("scale-in");
-    },
-
-    initOppChartsRB : function() {
-        var level = 0,
-            teamLevel = 0,
-            fitTitle = "",
-            teamTitle = "";
-
-        if (rlfData.player.role === "Alpha") {
-            level = (rlfData.player.metrics.alpha / 20) * 100;
-            teamLevel = (rlfData.player.scores.alpha_wr_score * 10);
-            fitTitle = 'Alpha WR Fit';
-            teamTitle = "Team Alpha WR Opportunity";
-        }
-
-
-        if (rlfData.player.role === "Grinder") {
-            level = rlfData.player.metrics.slot * 10;
-            teamLevel = rlfData.player.scores.slot_wr_score * 10;
-            fitTitle = 'Slot WR Fit';
-            teamTitle = "Team Grinder RB Opportunity";
-        }
-
-        if (rlfData.player.role === "Pass") {
-            level = rlfData.player.metrics.deep * 10;
-            teamLevel = rlfData.player.scores.deep_wr_score * 10;
-            fitTitle = 'Deep WR Fit';
-            teamTitle = "Team Pass Catcher RB Opportunity";
-        }
-
-        // Trig to calc meter point
-        var fitPath = rlf.getPath(level);
-        var volumePath = rlf.getPath(teamLevel);
-        var supportPath = rlf.getPath(0);
-
-        var data = [{
-            type: 'scatter',
-            x: [0], y:[0],
-            marker: {size: 20, color:'850000'},
-            showlegend: false,
-            name: 'Rating',
-            text: level,
-            hoverinfo: 'text+name'},
-            { values: [20, 20, 20, 20, 20, 100],
-                rotation: 90,
-                text: ['Smash', 'Great', 'Good', 'Meh',
-                    'Trash', ''],
-                textinfo: 'text',
-                textposition:'inside',
-                marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(107, 255, 4, .5)',
-                        'rgba(251, 255, 4, .5)', 'rgba(242, 189, 11  , .5)',
-                        'rgba(242, 51, 11, .8)',
-                        'rgba(242, 51, 11, 0)']},
-                labels: ['81-100', '61-80', '41-60', '21-40', '0-20', ''],
-                hoverinfo: 'label',
-                hole: .5,
-                type: 'pie',
-                showlegend: false
-            }];
-
-        var layout = {
-            font: {size: 10},
-            shapes:[{
-                type: 'path',
-                fillcolor: '850000',
-                line: {
-                    color: '850000'
-                }
-            }],
-            title: fitTitle,
-            Speed: '0-100',
-            height: 300,
-            margin: {
-                l: 10,
-                r: 10,
-                b: 10,
-                t: 55,
-                pad: 0
-            },
-            xaxis: {
-                zeroline:false,
-                showticklabels:false,
-                showgrid: false,
-                range: [-1, 1]
-            },
-            yaxis: {
-                zeroline:false,
-                showticklabels:false,
-                showgrid: false,
-                range: [-1, 1]
-            }
-        };
-
-        layout.shapes[0].path = fitPath;
-        Plotly.newPlot('fit-graph', data, layout, {displayModeBar: false});
-        layout.title = 'Projected Volume';
-        layout.shapes[0].path = volumePath;
-        Plotly.newPlot('volume-graph', data, layout, {displayModeBar: false});
-        layout.shapes[0].path = supportPath;
-        layout.title = 'Supporting Efficiency';
-        Plotly.newPlot('support-graph', data, layout, {displayModeBar: false});
-
-
-        var level = 0,
-            teamLevel = 0,
-            title = "",
-            teamTitle = "";
-
-        if (rlfData.player.role === "Alpha") {
-            level = rlfData.player.position_scores.alpha_score;
-            teamLevel = rlfData.player.team_scores.alpha_score;
-            title = 'Alpha WR Rating';
-            teamTitle = "Team Alpha WR Opportunity";
-        }
-
-        if (rlfData.player.role === "G") {
-            level = rlfData.player.position_scores.grinder_score;
-            teamLevel = rlfData.player.team_scores.grinder_score;
-            title = 'Grinder RB Rating';
-            teamTitle = "Team Grinder RB Opportunity";
-        }
-
-        if (rlfData.player.role === "Pass Catcher") {
-            level = rlfData.player.position_scores.pass_score;
-            teamLevel = rlfData.player.team_scores.pass_score;
-            title = 'Pass Catcher RB Rating';
-            teamTitle = "Team Pass Catcher RB Opportunity";
-        }
-
-        // Trig to calc meter point
-        var level = 0;
-        var degrees = 100 - level,
-            radius = .5;
-        var radians = degrees * Math.PI / 100;
-        var x = radius * Math.cos(radians);
-        var y = radius * Math.sin(radians);
-
-        // Path: may have to change to create a better triangle
-        var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
-            pathX = String(x),
-            space = ' ',
-            pathY = String(y),
-            pathEnd = ' Z';
-        var path = mainPath.concat(pathX,space,pathY,pathEnd);
-
-        var data = [{
-            type: 'scatter',
-            x: [0], y:[0],
-            marker: {size: 20, color:'850000'},
-            showlegend: false,
-            name: 'Rating',
-            text: level,
-            hoverinfo: 'text+name'},
-            { values: [20, 20, 20, 20, 20, 100],
-                rotation: 90,
-                text: ['Smash', 'Great', 'Good', 'Meh',
-                    'Trash', ''],
-                textinfo: 'text',
-                textposition:'inside',
-                marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(107, 255, 4, .5)',
-                        'rgba(251, 255, 4, .5)', 'rgba(242, 189, 11  , .5)',
-                        'rgba(242, 51, 11, .8)',
-                        'rgba(242, 51, 11, 0)']},
-                labels: ['81-100', '61-80', '41-60', '21-40', '0-20', ''],
-                hoverinfo: 'label',
-                hole: .5,
-                type: 'pie',
-                showlegend: false
-            }];
-
-        var layout = {
-            font: {size: 10},
-            shapes:[{
-                type: 'path',
-                path: path,
-                fillcolor: '850000',
-                line: {
-                    color: '850000'
-                }
-            }],
-            title: 'Role Fit',
-            Speed: '0-100',
-            height: 300,
-            margin: {
-                l: 10,
-                r: 10,
-                b: 10,
-                t: 55,
-                pad: 0
-            },
-            xaxis: {
-                zeroline:false,
-                showticklabels:false,
-                showgrid: false,
-                range: [-1, 1]
-            },
-            yaxis: {
-                zeroline:false,
-                showticklabels:false,
-                showgrid: false,
-                range: [-1, 1]
-            }
-        };
-
-        Plotly.newPlot('fit-graph', data, layout, {displayModeBar: false});
-        layout.title = 'Projected Volume';
-        Plotly.newPlot('volume-graph', data, layout, {displayModeBar: false});
-        layout.title = 'Supporting Efficiency';
-        Plotly.newPlot('support-graph', data, layout, {displayModeBar: false});
+        var info = [percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
+        var labels =  ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'];
+        rlf.makeRadarGraph(info,labels);
     },
 
     /****************************************** WR stuff **************************************************************/
     initWrPage : function() {
         rlf.initMesChartsWR();
         rlf.initProsChartsWR();
-        rlf.initOppChartsWR();
+        //rlf.initOppChartsWR();
 
-        var slotPercent = rlfData.player.percentiles.slot;
+        var collegeColumns = [
+            { title: "Year", data: "year", "defaultContent":0},
+            { title: "College", data: "college", "defaultContent": "n/a"},
+            { title: "Class", data: "class", "defaultContent": "n/a" },
+            { title: "GP", data: "games", "defaultContent": 0 },
+            { title: "Rec", data: "recs", "defaultContent": 0 },
+            { title: "Rec Yds", data: "recYds", "defaultContent": 0},
+            { title: "Rec Tds", data: "recTds", "defaultContent": 0},
+            { title: "% of Recs", data: "recDom", "defaultContent": 0},
+            { title: "% of Rec Yds", data: "ydsDom", "defaultContent": 0},
+            { title: "% of Rec Tds", data: "tdsDom", "defaultContent": 0}
+        ];
 
-        $(".role-one-bar .determinate").css("width", slotPercent + "%");
-        $(".role-one-title").text("Slot Score:");
-        $(".role-one-score").text(slotPercent + "%")
-        if (slotPercent > 69) {
-            $(".role-one-bar .determinate").css("background-color", "green");
-        }
+        rlf.makeCollegeTable(collegeColumns);
 
-        if (slotPercent < 69 && slotPercent > 40) {
-            $(".role-one-bar .determinate").css("background-color", "yellow");
-        }
+        var seasonColumns = [
+            {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
+            {title: "GP", data: "stats.gp", "defaultContent":0},
+            {title: "PPG", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "Recs", data: "stats.rec", "defaultContent":0},
+            {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
+            {title: "Tds", data: "stats.rec_td", "defaultContent":0},
+            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+            {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
+            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0},
+            {title: "Deep Yds", data: "stats.rec_ypt", "defaultContent":0}
+        ];
 
-        if (slotPercent < 39) {
-            $(".role-one-bar .determinate").css("background-color", "red");
-        }
+        rlf.makeSeasonTable(seasonColumns);
 
-        var deepPercent = rlfData.player.percentiles.deep;
-        $(".role-two-bar .determinate").css("width", deepPercent + "%");
-        $(".role-two-title").text("Deep Threat Score:");
-        $(".role-two-score").text(deepPercent + "%")
-        if (deepPercent > 69) {
-            $(".role-two-bar .determinate").css("background-color", "green");
-        }
+        var gameLogColumns = [
+            {title: "Year", searchable: true, data: "year"},
+            {title: "Week", data: "week"},
+            {title: "PPG",  data: "stats.pts_ppr", "defaultContent":0},
+            {title: "Recs", data: "stats.rec", "defaultContent":0},
+            {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
+            {title: "Tds", data: "stats.rec_td", "defaultContent":0},
+            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+            {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
+            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
+        ];
 
-        if (deepPercent < 69 && deepPercent > 40) {
-            $(".role-two-bar .determinate").css("background-color", "yellow");
-        }
+        rlf.makeGameLogTable(gameLogColumns);
 
-        if (deepPercent < 39) {
-            $(".role-two-bar .determinate").css("background-color", "red");
-        }
-
-
-        var alphaPercent = Math.round((rlfData.player.metrics.alpha / 30) * 100);
-        $(".role-three-bar .determinate").css("width", alphaPercent + "%");
-        $(".role-three-title").text("Alpha Score:");
-        $(".role-three-score").text(alphaPercent + "%")
-        if (alphaPercent > 69) {
-            $(".role-three-bar .determinate").css("background-color", "green");
-        }
-
-        if (alphaPercent < 69 && alphaPercent > 40) {
-            $(".role-three-bar .determinate").css("background-color", "yellow");
-        }
-
-        if (alphaPercent < 39) {
-            $(".role-three-bar .determinate").css("background-color", "red");
-        }
-
-        $('#college-stats').DataTable( {
-            "paging":   false,
-            "ordering": false,
-            "searching": false,
-            data: rlfData.player.collegeTable,
-            columns: [
-                { title: "Year" },
-                { title: "College" },
-                { title: "Class" },
-                { title: "GP" },
-                { title: "Rec" },
-                { title: "Rec Yds" },
-                { title: "Rec Tds" },
-                { title: "YPR Avg" },
-                { title: "% of Recs" },
-                { title: "% of Rec Yds" },
-                { title: "% of Rec Tds" },
-                { title: "Return Yds" },
-                { title: "Return Tds" },
-            ],
-            "footerCallback": function ( row, data, start, end, display ) {
-                var api = this.api(), data;
-
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '')*1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                var rowsToSum = [4,5,6,7,11,12];
-                var selectedRows = api.rows('.selected').indexes();
-                rowsToSum.forEach(function(col) {
-                    // Total filtered rows on the selected column (code part added)
-                    if (selectedRows.count() == 0) {
-                        total = api
-                            .column( col, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/api.column( col, { page: 'current'} ).data().count();
-                    } else {
-                        total = api.cells( selectedRows, col, { page: 'current' } )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/selectedRows.count();
-                    }
-                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
-                });
-            }
-        } );
-
-        $('#season-stats').DataTable({
-            "paging": false,
-            "ordering": false,
-            "searching": false,
-            data: rlfData.player.seasonTable,
-            columns: [
-                {title: "Year", searchable: true, targets: 0},
-                {title: "GP"},
-                {title: "PPG"},
-                {title: "Recs"},
-                {title: "Yds"},
-                {title: "Tds"},
-                {title: "Tgts"},
-                {title: "YPR"},
-                {title: "YPT"},
-                {title: "Deep Yds"}
-            ],
-            "footerCallback": function ( row, data, start, end, display ) {
-                var api = this.api(), data;
-
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '').replace(/ *\([^)]*\) */g, "")*1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                var rowsToSum = [2,3,4,5,6,7,8];
-                var selectedRows = api.rows('.selected').indexes();
-                rowsToSum.forEach(function(col) {
-                    // Total filtered rows on the selected column (code part added)
-                    if (selectedRows.count() == 0) {
-                        total = api
-                            .column( col, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/api.column( col, { page: 'current'} ).data().count();
-                    } else {
-                        total = api.cells( selectedRows, col, { page: 'current' } )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/selectedRows.count();
-                    }
-                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
-                });
-            }
-        });
-
-
-        $('#game-logs').DataTable({
-            "paging": false,
-            "ordering": false,
-            data: rlfData.player.gameLogTable,
-            columns: [
-                {title: "Year", searchable: true},
-                {title: "GP"},
-                {title: "PPG"},
-                {title: "Recs"},
-                {title: "Yds"},
-                {title: "Tds"},
-                {title: "Tgts"},
-                {title: "YPR"},
-                {title: "YPT"},
-            ],
-            initComplete: function () {
-                this.api().columns([0]).every( function () {
-                    var column = this;
-                    var select = $('<select><option value="">All</option></select>')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-
-                    column.data().unique().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-
-                    $("#game-logs_filter input").replaceWith(select);
-                    $("#game-logs_filter select").formSelect();
-                    $("#game-logs_filter select").val('2018').trigger("change");
-                });
+        var roleFits = [
+            {
+                "name":"Slot Score",
+                "value":rlfData.player.percentiles.slot,
             },
-            "footerCallback": function ( row, data, start, end, display ) {
-                var api = this.api(), data;
-
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '')*1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                var rowsToSum = [2,3,4,5,6,7,8];
-                var selectedRows = api.rows('.selected').indexes();
-                rowsToSum.forEach(function(col) {
-                    // Total filtered rows on the selected column (code part added)
-                    if (selectedRows.count() == 0) {
-                        total = api
-                            .column( col, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/api.column( col, { page: 'current'} ).data().count();
-                    } else {
-                        total = api.cells( selectedRows, col, { page: 'current' } )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/selectedRows.count();
-                    }
-                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
-                });
+            {
+                "name":"Deep Score",
+                "value":rlfData.player.percentiles.deep,
+            },
+            {
+                "name":"Alpha Score",
+                "value":rlfData.player.percentiles.alpha,
             }
-        });
+        ];
 
-        $('#game-logs tbody').on( 'click', 'tr', function () {
-            $(this).toggleClass('selected');
-            $('#game-logs').DataTable().draw(false);
-
-        } );
-
+        rlf.makeRoleFits(roleFits);
     },
-
 
     initProsChartsWR : function(){
         var percent = rlfData.player.percentiles;
         var metrics = rlfData.player.metrics;
         var ordinals = rlfData.player.ordinals;
-       // var avgLB = rlfData.average.LB;
-        var xValue = ['Bully Score', 'Speed', 'Agility', 'Jumpball', 'juke agility', 'route agility'];
-        var yValue = [percent.bully, percent.fortyTime, '', percent.jumpball, percent.jukeAgility, percent.routeAgility];
-
-        var cone = percent.agility * .5;
-        var shuttle = percent.agility * .5;
-        var agilityPercent = Math.round(cone+shuttle);
-        var coneTrace = {
-            x:['Agility'],
-            y: [cone],
-            name: '3 cone ('+Math.round(percent.cone)+'%)',
-            text: [
-                metrics.cone
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgb(158,202,225)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
+        var chartData = {
+            labels: ['College Score','Bully Score', 'Speed', 'Route Agility', 'Jumpball', 'Elusiveness', 'Run Power'],
+            datasets: [{
+                    type: 'bar',
+                    stack: 'Stack One',
+                    label: 'WR Skills',
+                    borderWidth: 2,
+                    fill: false,
+                    data: [percent.collegeScore, percent.bully, percent.fortyTime, percent.routeAgility, percent.jumpball, percent.elusiveness, percent.power],
+                    ordinals: [ordinals.collegeScore, ordinals.bully, ordinals.fortyTime, ordinals.routeAgility, ordinals.jumpball, ordinals.elusiveness, ordinals.power ],
+                    metrics: [metrics.collegeScore, metrics.bully, metrics.fortyTime, metrics.routeAgility, metrics.jumpball, metrics.elusiveness, metrics.power]
+                },
+                {
+                    type: 'line',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: true,
+                    label: 'Average Corner',
+                    data: [null, 44, 58, 54, 41, 53, 44],
+                    ordinals: ["", "", "", "", ""]
                 }
-            }
+            ]
         };
-
-        var shuttleTrace = {
-            x:['Agility'],
-            y: [ shuttle],
-            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
-            text: [
-                metrics.shuttle
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgba(58,200,225,.5)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-
-        var trace1 = {
-            x: xValue,
-            y: yValue,
-            name: 'WR Ability',
-            type: 'bar',
-            text: [
-                metrics.bully+'<br>'+ordinals.bully+'%',
-                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
-                metrics.agility+'<br>'+ordinals.agility+'%',
-                metrics.jumpball+'<br>'+ordinals.jumpball+'%'
-            ],
-            textposition: 'auto',
-            hoverinfo: 'none',
-            opacity: 0.8,
-            marker : {
-                color: 'url(#gradient-horizontal) gray',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var trace2 = {
-            x: xValue,
-            y: [44, 58, 54, 41],
-            name: 'Average NFL CB',
-            type: 'scatter'
-        };
-
-        var yacPower = percent.power * .40;
-        var yacElusive = percent.elusiveness * .60;
-        var yacPercent = Math.round(yacPower+yacElusive);
-
-        var trace3 = {
-            x:['YAC'],
-            y: [yacPower],
-            name: 'Power ('+Math.round(percent.power)+'%)',
-            text: [
-                metrics.power
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgb(158,202,225)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var trace4 = {
-            x:['YAC'],
-            y: [yacElusive],
-            name: 'Elusiveness ('+Math.round(percent.elusiveness)+'%)',
-            text: [
-                Math.round(yacPercent)+'%<br>'+metrics.elusiveness
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgba(58,200,225,.5)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var trace5 = {
-            x:['College'],
-            y: [percent.collegeScore],
-            name: 'College Score ('+Math.round(percent.collegeScore)+'%)',
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgba(58,200,225,.5)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var data = [trace1, trace2, trace3, trace4, trace5, coneTrace, shuttleTrace];
-
-        var layout = {
-            font: {size: 12},
-            yaxis: {title: 'Percentile', range: [0, 100]},
-            yaxis2: {
-                titlefont: {color: 'rgb(148, 103, 189)'},
-                tickfont: {color: 'rgb(148, 103, 189)'},
-                overlaying: 'y',
-                side: 'right'
-            },
-            margin: {
-                l: 50,
-                r: 20,
-                b: 20,
-                t: 25,
-                pad: 0
-            },
-            height: 350,
-            barmode: 'stack',
-            showlegend: true,
-            legend: {
-                x: 1,
-                y: 0.5
-            }
-        };
-
-        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
+        rlf.makeProspectChart(chartData);
     },
 
     initMesChartsWR : function(){
         var percent = rlfData.player.percentiles;
-
-        var data = [{
-            type: 'scatterpolar',
-            r: [ percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
-            theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
-            fill: 'toself'
-        }];
-
-        var layout = {
-            polar: {
-                radialaxis: {
-                    visible: true,
-                    range: [0, 100]
-                }
-            },
-            font: {size: 10},
-            autosize: false,
-            width: 400,
-            height: 300,
-            margin: {
-                l: 0,
-                r: 0,
-                b: 25,
-                t: 25,
-                pad: 0
-            },
-            plot_bgcolor:'#000',
-            showlegend: false
-        };
-
-        Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false});
-        $("#radar-graph").addClass("scale-in");
-    },
-
-    initOppChartsWR : function() {
-        var level = 0,
-            teamLevel = 0,
-            fitTitle = "",
-            teamTitle = "";
-
-        if (rlfData.player.role === "Alpha") {
-            level = (rlfData.player.metrics[0].alpha / 30) * 100;
-            teamLevel = (rlfData.player.scores[0].alpha_wr_score * 10);
-            fitTitle = 'Alpha WR Fit';
-            teamTitle = "Team Alpha WR Opportunity";
-        }
-
-        if (rlfData.player.role === "Posession") {
-            level = (rlfData.player.metrics[0].alpha / 20) * 100;
-            teamLevel = (rlfData.player.scores[0].alpha_wr_score * 10);
-            fitTitle = 'Posession WR Fit';
-            teamTitle = "Team Alpha WR Opportunity";
-        }
-
-        if (rlfData.player.role === "Slot") {
-            level = rlfData.player.metrics[0].slot * 10;
-            teamLevel = rlfData.player.scores[0].slot_wr_score * 10;
-            fitTitle = 'Slot WR Fit';
-            teamTitle = "Team Grinder RB Opportunity";
-        }
-
-        if (rlfData.player.role === "Deep") {
-            level = rlfData.player.metrics[0].deep * 10;
-            teamLevel = rlfData.player.scores[0].deep_wr_score * 10;
-            fitTitle = 'Deep WR Fit';
-            teamTitle = "Team Pass Catcher RB Opportunity";
-        }
-
-        // Trig to calc meter point
-        var fitPath = rlf.getPath(level);
-        var volumePath = rlf.getPath(teamLevel);
-        var supportPath = rlf.getPath(0);
-
-        var data = [{
-            type: 'scatter',
-            x: [0], y:[0],
-            marker: {size: 20, color:'850000'},
-            showlegend: false,
-            name: 'Rating',
-            text: level,
-            hoverinfo: 'text+name'},
-            { values: [20, 20, 20, 20, 20, 100],
-                rotation: 90,
-                text: ['Smash', 'Great', 'Good', 'Meh',
-                    'Trash', ''],
-                textinfo: 'text',
-                textposition:'inside',
-                marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(107, 255, 4, .5)',
-                        'rgba(251, 255, 4, .5)', 'rgba(242, 189, 11  , .5)',
-                        'rgba(242, 51, 11, .8)',
-                        'rgba(242, 51, 11, 0)']},
-                labels: ['81-100', '61-80', '41-60', '21-40', '0-20', ''],
-                hoverinfo: 'label',
-                hole: .5,
-                type: 'pie',
-                showlegend: false
-            }];
-
-        var layout = {
-            font: {size: 10},
-            shapes:[{
-                type: 'path',
-                fillcolor: '850000',
-                line: {
-                    color: '850000'
-                }
-            }],
-            title: fitTitle,
-            Speed: '0-100',
-            height: 300,
-            margin: {
-                l: 10,
-                r: 10,
-                b: 10,
-                t: 55,
-                pad: 0
-            },
-            xaxis: {
-                zeroline:false,
-                showticklabels:false,
-                showgrid: false,
-                range: [-1, 1]
-            },
-            yaxis: {
-                zeroline:false,
-                showticklabels:false,
-                showgrid: false,
-                range: [-1, 1]
-            }
-        };
-
-        layout.shapes[0].path = fitPath;
-        Plotly.newPlot('fit-graph', data, layout, {displayModeBar: false});
-        layout.title = 'Projected Volume';
-        layout.shapes[0].path = volumePath;
-        Plotly.newPlot('volume-graph', data, layout, {displayModeBar: false});
-        layout.shapes[0].path = supportPath;
-        layout.title = 'Supporting Efficiency';
-        Plotly.newPlot('support-graph', data, layout, {displayModeBar: false});
+        var info = [percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
+        var labels = ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'];
+        rlf.makeRadarGraph(info, labels);
     },
     /****************************************** TE stuff **************************************************************/
 
     initTePage : function(){
         rlf.initProsChartsTE();
-        rlf.initOppChartsTE();
+       // rlf.initOppChartsTE();
         rlf.initMesChartsTE();
 
-        var movePercent = Math.round((rlfData.player.metrics.move / 15) * 100);
+        var collegeColumns = [
+            { title: "Year", data: "year", "defaultContent":0},
+            { title: "College", data: "college", "defaultContent": "n/a"},
+            { title: "Class", data: "class", "defaultContent": "n/a" },
+            { title: "GP", data: "games", "defaultContent": 0 },
+            { title: "Rec", data: "recs", "defaultContent": 0 },
+            { title: "Rec Yds", data: "recYds", "defaultContent": 0},
+            { title: "Rec Tds", data: "recTds", "defaultContent": 0},
+            { title: "% of Recs", data: "recDom", "defaultContent": 0},
+            { title: "% of Rec Yds", data: "ydsDom", "defaultContent": 0},
+            { title: "% of Rec Tds", data: "tdsDom", "defaultContent": 0}
+        ];
 
-        $(".role-one-bar .determinate").css("width", movePercent + "%");
-        $(".role-one-title").text("Move Score:");
-        $(".role-one-score").text(movePercent + "%")
-        if (movePercent > 69) {
-            $(".role-one-bar .determinate").css("background-color", "green");
-        }
+        rlf.makeCollegeTable(collegeColumns);
 
-        if (movePercent < 69 && movePercent > 40) {
-            $(".role-one-bar .determinate").css("background-color", "yellow");
-        }
+        var seasonColumns = [
+            {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
+            {title: "GP", data: "stats.gp", "defaultContent":0},
+            {title: "PPG", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "Recs", data: "stats.rec", "defaultContent":0},
+            {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
+            {title: "Tds", data: "stats.rec_td", "defaultContent":0},
+            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+            {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
+            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0},
+            {title: "Deep Yds", data: "stats.rec_ypt", "defaultContent":0}
+        ];
 
-        if (movePercent < 39) {
-            $(".role-one-bar .determinate").css("background-color", "red");
-        }
+        rlf.makeSeasonTable(seasonColumns);
 
-        var inLine = Math.round((rlfData.player.metrics.inLine / 10) * 100);
-        $(".role-two-bar .determinate").css("width", inLine + "%");
-        $(".role-two-title").text("In Line Score:");
-        $(".role-two-score").text(inLine + "%")
-        if (inLine > 69) {
-            $(".role-two-bar .determinate").css("background-color", "green");
-        }
+        var gameLogColumns = [
+            {title: "Year", searchable: true, data: "year"},
+            {title: "Week", data: "week"},
+            {title: "PPG",  data: "stats.pts_ppr", "defaultContent":0},
+            {title: "Recs", data: "stats.rec", "defaultContent":0},
+            {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
+            {title: "Tds", data: "stats.rec_td", "defaultContent":0},
+            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+            {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
+            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
+        ];
 
-        if (inLine < 69 && inLine > 40) {
-            $(".role-two-bar .determinate").css("background-color", "yellow");
-        }
+        rlf.makeGameLogTable(gameLogColumns);
 
-        if (inLine < 39) {
-            $(".role-two-bar .determinate").css("background-color", "red");
-        }
-
-
-        var alphaPercent = Math.round((rlfData.player.metrics.alpha / 25) * 100);
-        $(".role-three-bar .determinate").css("width", alphaPercent + "%");
-        $(".role-three-title").text("Alpha Score:");
-        $(".role-three-score").text(alphaPercent + "%")
-        if (alphaPercent > 69) {
-            $(".role-three-bar .determinate").css("background-color", "green");
-        }
-
-        if (alphaPercent < 69 && alphaPercent > 40) {
-            $(".role-three-bar .determinate").css("background-color", "yellow");
-        }
-
-        if (alphaPercent < 39) {
-            $(".role-three-bar .determinate").css("background-color", "red");
-        }
-
-        $('#season-stats').DataTable({
-            "paging": false,
-            "ordering": false,
-            "searching": false,
-            data: rlfData.player.seasonTable,
-            columns: [
-                {title: "Year", searchable: true, targets: 0},
-                {title: "GP"},
-                {title: "PPG"},
-                {title: "Recs"},
-                {title: "Yds"},
-                {title: "Tds"},
-                {title: "Tgts"},
-                {title: "YPR"},
-                {title: "YPT"},
-                {title: "Deep Yds"}
-            ],
-            "footerCallback": function ( row, data, start, end, display ) {
-                var api = this.api(), data;
-
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '').replace(/ *\([^)]*\) */g, "")*1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                var rowsToSum = [2,3,4,5,6,7,8];
-                var selectedRows = api.rows('.selected').indexes();
-                rowsToSum.forEach(function(col) {
-                    // Total filtered rows on the selected column (code part added)
-                    if (selectedRows.count() == 0) {
-                        total = api
-                            .column( col, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/api.column( col, { page: 'current'} ).data().count();
-                    } else {
-                        total = api.cells( selectedRows, col, { page: 'current' } )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/selectedRows.count();
-                    }
-                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
-                });
-            }
-        });
-
-
-        $('#game-logs').DataTable({
-            "paging": false,
-            "ordering": false,
-            data: rlfData.player.gameLogTable,
-            columns: [
-                {title: "Year", searchable: true},
-                {title: "GP"},
-                {title: "PPG"},
-                {title: "Recs"},
-                {title: "Yds"},
-                {title: "Tds"},
-                {title: "Tgts"},
-                {title: "YPR"},
-                {title: "YPT"},
-            ],
-            initComplete: function () {
-                this.api().columns([0]).every( function () {
-                    var column = this;
-                    var select = $('<select><option value="">All</option></select>')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-
-                    column.data().unique().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-
-                    $("#game-logs_filter input").replaceWith(select);
-                    $("#game-logs_filter select").formSelect();
-                    $("#game-logs_filter select").val('2018').trigger("change");
-                });
+        var roleFits = [
+            {
+                "name":"Move Score",
+                "value":Math.round((rlfData.player.metrics.move / 15) * 100)
             },
-            "footerCallback": function ( row, data, start, end, display ) {
-                var api = this.api(), data;
-
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '')*1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                var rowsToSum = [2,3,4,5,6,7,8];
-                var selectedRows = api.rows('.selected').indexes();
-                rowsToSum.forEach(function(col) {
-                    // Total filtered rows on the selected column (code part added)
-                    if (selectedRows.count() == 0) {
-                        total = api
-                            .column( col, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/api.column( col, { page: 'current'} ).data().count();
-                    } else {
-                        total = api.cells( selectedRows, col, { page: 'current' } )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/selectedRows.count();
-                    }
-                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
-                });
+            {
+                "name":"In Line Score",
+                "value":Math.round((rlfData.player.metrics.inLine / 10) * 100)
+            },
+            {
+                "name":"Alpha Score",
+                "value":Math.round((rlfData.player.metrics.alpha / 25) * 100)
             }
-        });
+        ];
 
-        $('#game-logs tbody').on( 'click', 'tr', function () {
-            $(this).toggleClass('selected');
-            $('#game-logs').DataTable().draw(false);
-
-        } );
-
-
-        // $('#college-stats').DataTable( {
-        //     "paging":   false,
-        //     "ordering": false,
-        //     data: rlfData.player.collegeTable,
-        //     columns: [
-        //         { title: "Year" },
-        //         { title: "College" },
-        //         { title: "Class" },
-        //         { title: "GP" },
-        //         { title: "Rec" },
-        //         { title: "Rec Yds" },
-        //         { title: "Rec Tds" },
-        //         { title: "YPR Avg" },
-        //         { title: "% of Recs" },
-        //         { title: "% of Rec Yds" },
-        //         { title: "% of Rec Tds" }
-        //     ]
-        // } );
+        rlf.makeRoleFits(roleFits)
     },
 
     initProsChartsTE : function(){
         var percent = rlfData.player.percentiles;
         var metrics = rlfData.player.metrics;
         var ordinals = rlfData.player.ordinals;
-        // var avgLB = rlfData.average.LB;
-        var xValue = ['Bully Score', 'Speed', 'Jumpball', 'Power', 'Run Block', 'Juke Agility', 'Route Agility'];
-        var yValue = [percent.bully, percent.fortyTime, percent.jumpball, percent.power, percent.runBlock, percent.jukeAgility, percent.routeAgility];
-
-        var trace1 = {
-            x: xValue,
-            y: yValue,
-            name: 'WR Ability',
-            type: 'bar',
-            text: [
-                metrics.bully+'<br>'+ordinals.bully+'%',
-                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
-                metrics.jumpball+'<br>'+ordinals.jumpball+'%',
-                metrics.power+'<br>'+ordinals.power+'%',
-                metrics.runBlock+'<br>'+ordinals.runBlock+'%',
-                metrics.jukeAgility+'<br>'+ordinals.jukeAgility+'%',
-                metrics.routeAgility+'<br>'+ordinals.routeAgility+'%',
-            ],
-            textposition: 'auto',
-            hoverinfo: 'none',
-            opacity: 0.8,
-        };
-
-        var trace2 = {
-            x: xValue,
-            y: [30, 89, 74, 45, 20],
-            name: 'Average NFL Safety',
-            type: 'scatter'
-        };
-
-        var lineBacker = {
-            x: xValue,
-            y: [70, 67, 61, 22, 41],
-            name: 'Average NFL Safety',
-            type: 'scatter'
-        };
-
-        //
-        // var trace5 = {
-        //     x:['College'],
-        //     y: [percent.collegeScore],
-        //     name: 'College Score ('+Math.round(percent.collegeScore)+'%)',
-        //     textposition: 'auto',
-        //     type: 'bar',
-        //     marker: {
-        //         color: 'rgba(58,200,225,.5)',
-        //         line: {
-        //             color: 'rgb(8,48,107)',
-        //             width: 1.5
-        //         }
-        //     }
-        // };
-
-        var data = [trace1, trace2];
-
-        var layout = {
-            font: {size: 12},
-            yaxis: {title: 'Percentile', range: [0, 100]},
-            yaxis2: {
-                titlefont: {color: 'rgb(148, 103, 189)'},
-                tickfont: {color: 'rgb(148, 103, 189)'},
-                overlaying: 'y',
-                side: 'right'
+        var chartData = {
+            labels: ['Speed', 'Route Agility', 'Jumpball', 'Elusiveness', 'Run Power', 'Bully Score', 'Run Block'],
+            datasets: [{
+                type: 'bar',
+                stack: 'Stack One',
+                label: 'TE Skills',
+                borderWidth: 2,
+                fill: false,
+                data: [percent.fortyTime, percent.routeAgility, percent.jumpball, percent.elusiveness, percent.power, percent.bully, percent.runBlock],
+                ordinals: [ordinals.fortyTime, ordinals.routeAgility, ordinals.jumpball, ordinals.elusiveness, ordinals.power, ordinals.bully, ordinals.runBlock ],
+                metrics: [metrics.fortyTime, metrics.routeAgility, metrics.jumpball, metrics.elusiveness, metrics.power, metrics.bully, metrics.runBlock]
             },
-            margin: {
-                l: 50,
-                r: 20,
-                b: 20,
-                t: 25,
-                pad: 0
-            },
-            height: 350,
-            barmode: 'stack',
-            showlegend: true,
-            legend: {
-                x: 1,
-                y: 0.5
-            }
+                {
+                    type: 'line',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: true,
+                    label: 'Average NFL Safety',
+                    data: [70, 67, 61, 22, 15, 10, 9],
+                    ordinals: ["", "", "", "", "", "", ""],
+                    metrics: ["", "", "", "", "", "", ""]
+                },
+            ]
         };
-
-        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
+        rlf.makeProspectChart(chartData);
     },
 
     initMesChartsTE : function(){
         var percent = rlfData.player.percentiles;
-
-        var data = [{
-            type: 'scatterpolar',
-            r: [ percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
-            theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
-            fill: 'toself'
-        }];
-
-        var layout = {
-            polar: {
-                radialaxis: {
-                    visible: true,
-                    range: [0, 100]
-                }
-            },
-            font: {size: 10},
-            autosize: false,
-            width: 400,
-            height: 300,
-            margin: {
-                l: 0,
-                r: 0,
-                b: 25,
-                t: 25,
-                pad: 0
-            },
-            showlegend: false
-        };
-
-        Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false});
-        $("#radar-graph").addClass("scale-in");
-    },
-
-    initOppChartsTE : function(){
-        var level = 0,
-            teamLevel = 0,
-            fitTitle = "",
-            teamTitle = "";
-
-        if (rlfData.player.role === "Alpha") {
-            level = (rlfData.player.metrics[0].alpha / 30) * 100;
-            teamLevel = (rlfData.player.scores[0].alpha_wr_score * 10);
-            fitTitle = 'Alpha WR Fit';
-            teamTitle = "Team Alpha WR Opportunity";
-        }
-
-        if (rlfData.player.role === "Posession") {
-            level = (rlfData.player.metrics[0].alpha / 20) * 100;
-            teamLevel = (rlfData.player.scores[0].alpha_wr_score * 10);
-            fitTitle = 'Posession WR Fit';
-            teamTitle = "Team Alpha WR Opportunity";
-        }
-
-        if (rlfData.player.role === "Slot") {
-            level = rlfData.player.metrics[0].slot * 10;
-            teamLevel = rlfData.player.scores[0].slot_wr_score * 10;
-            fitTitle = 'Slot WR Fit';
-            teamTitle = "Team Grinder RB Opportunity";
-        }
-
-        if (rlfData.player.role === "Deep") {
-            level = rlfData.player.metrics[0].deep * 10;
-            teamLevel = rlfData.player.scores[0].deep_wr_score * 10;
-            fitTitle = 'Deep WR Fit';
-            teamTitle = "Team Pass Catcher RB Opportunity";
-        }
-
-        // Trig to calc meter point
-        var fitPath = rlf.getPath(level);
-        var volumePath = rlf.getPath(teamLevel);
-        var supportPath = rlf.getPath(0);
-
-        var data = [{
-            type: 'scatter',
-            x: [0], y:[0],
-            marker: {size: 20, color:'850000'},
-            showlegend: false,
-            name: 'Rating',
-            text: level,
-            hoverinfo: 'text+name'},
-            { values: [20, 20, 20, 20, 20, 100],
-                rotation: 90,
-                text: ['Smash', 'Great', 'Good', 'Meh',
-                    'Trash', ''],
-                textinfo: 'text',
-                textposition:'inside',
-                marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(107, 255, 4, .5)',
-                        'rgba(251, 255, 4, .5)', 'rgba(242, 189, 11  , .5)',
-                        'rgba(242, 51, 11, .8)',
-                        'rgba(242, 51, 11, 0)']},
-                labels: ['81-100', '61-80', '41-60', '21-40', '0-20', ''],
-                hoverinfo: 'label',
-                hole: .5,
-                type: 'pie',
-                showlegend: false
-            }];
-
-        var layout = {
-            font: {size: 10},
-            shapes:[{
-                type: 'path',
-                fillcolor: '850000',
-                line: {
-                    color: '850000'
-                }
-            }],
-            title: fitTitle,
-            Speed: '0-100',
-            height: 300,
-            margin: {
-                l: 10,
-                r: 10,
-                b: 10,
-                t: 55,
-                pad: 0
-            },
-            xaxis: {
-                zeroline:false,
-                showticklabels:false,
-                showgrid: false,
-                range: [-1, 1]
-            },
-            yaxis: {
-                zeroline:false,
-                showticklabels:false,
-                showgrid: false,
-                range: [-1, 1]
-            }
-        };
-
-        layout.shapes[0].path = fitPath;
-        Plotly.newPlot('fit-graph', data, layout, {displayModeBar: false});
-        layout.title = 'Projected Volume';
-        layout.shapes[0].path = volumePath;
-        Plotly.newPlot('volume-graph', data, layout, {displayModeBar: false});
-        layout.shapes[0].path = supportPath;
-        layout.title = 'Supporting Efficiency';
-        Plotly.newPlot('support-graph', data, layout, {displayModeBar: false});
+        var info = [percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
+        var labels = ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'];
+        rlf.makeRadarGraph(info,labels);
     },
 
     /************************* OL Line **************************/
@@ -2415,394 +1420,6 @@ var rlf =  {
 
         Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
     },
-    /************************* QB Metrics **************************/
-    initQbPage : function() {
-        rlf.initProsChartsQB();
-        rlf.initOppChartsTE();
-        rlf.initMesChartsQb();
-
-        var runBlock = Math.round((rlfData.player.metrics.armTalent));
-
-        $(".role-one-bar .determinate").css("width", runBlock + "%");
-        $(".role-one-title").text("Arm Talent");
-        $(".role-one-score").text(runBlock + "%")
-        if (runBlock > 69) {
-            $(".role-one-bar .determinate").css("background-color", "green");
-        }
-
-        if (runBlock < 69 && runBlock > 40) {
-            $(".role-one-bar .determinate").css("background-color", "yellow");
-        }
-
-        if (runBlock < 39) {
-            $(".role-one-bar .determinate").css("background-color", "red");
-        }
-
-        var passBlock = Math.round((rlfData.player.metrics.mobility ));
-        $(".role-two-bar .determinate").css("width", passBlock + "%");
-        $(".role-two-title").text("Mobility:");
-        $(".role-two-score").text(passBlock + "%")
-        if (passBlock > 69) {
-            $(".role-two-bar .determinate").css("background-color", "green");
-        }
-
-        if (passBlock < 69 && passBlock > 40) {
-            $(".role-two-bar .determinate").css("background-color", "yellow");
-        }
-
-        if (passBlock < 39) {
-            $(".role-two-bar .determinate").css("background-color", "red");
-        }
-
-
-        var overAll = Math.round(rlfData.player.metrics.playmaker);
-        $(".role-three-bar .determinate").css("width", overAll + "%");
-        $(".role-three-title").text("Playmaker:");
-        $(".role-three-score").text(overAll + "%")
-        if (overAll > 69) {
-            $(".role-three-bar .determinate").css("background-color", "green");
-        }
-
-        if (overAll < 69 && overAll > 40) {
-            $(".role-three-bar .determinate").css("background-color", "yellow");
-        }
-
-        if (overAll < 39) {
-            $(".role-three-bar .determinate").css("background-color", "red");
-        }
-
-        $('#college-stats').DataTable( {
-            "paging":   false,
-            "ordering": false,
-            "searching": false,
-            data: rlfData.player.collegeTable,
-            columns: [
-                { title: "Year" },
-                { title: "College" },
-                { title: "Class" },
-                { title: "GP" },
-                { title: "Cmp" },
-                { title: "Att" },
-                { title: "Pct" },
-                { title: "Yds" },
-                { title: "Ypa" },
-                { title: "aypa" },
-                { title: "tds" },
-                { title: "ints" },
-                { title: "rushAtt" },
-                { title: "rushYds" },
-                { title: "rushTds" }
-            ]
-        } );
-
-        $('#game-logs').DataTable({
-            "paging": false,
-            "ordering": false,
-            data: rlfData.player.gameLogTable,
-            columns: [
-                {title: "Year", searchable: true},
-                {title: "GP"},
-                {title: "Pts"},
-                {title: "PassYds"},
-                {title: "PassTds"},
-                {title: "PassAtt"},
-                {title: "PassCmp"},
-                {title: "QBR"},
-                {title: "RushYds"},
-                {title: "RushTds"},
-                {title: "RushAtts"},
-            ],
-            initComplete: function () {
-                this.api().columns([0]).every( function () {
-                    var column = this;
-                    var select = $('<select><option value="">All</option></select>')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-
-                    column.data().unique().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-
-                    $("#game-logs_filter input").replaceWith(select);
-                    $("#game-logs_filter select").formSelect();
-                    $("#game-logs_filter select").val('2018').trigger("change");
-                });
-            },
-            "footerCallback": function ( row, data, start, end, display ) {
-                var api = this.api(), data;
-
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '')*1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                var rowsToSum = [2,3,4,5,6,7,8];
-                var selectedRows = api.rows('.selected').indexes();
-                rowsToSum.forEach(function(col) {
-                    // Total filtered rows on the selected column (code part added)
-                    if (selectedRows.count() == 0) {
-                        total = api
-                            .column( col, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/api.column( col, { page: 'current'} ).data().count();
-                    } else {
-                        total = api.cells( selectedRows, col, { page: 'current' } )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/selectedRows.count();
-                    }
-                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
-                });
-            }
-        });
-
-        $('#game-logs tbody').on( 'click', 'tr', function () {
-            $(this).toggleClass('selected');
-            $('#game-logs').DataTable().draw(false);
-
-        } );
-
-        $('#season-stats').DataTable({
-            "paging": false,
-            "ordering": false,
-            "searching": false,
-            data: rlfData.player.seasonTable,
-            columns: [
-                {title: "Year", searchable: true, targets: 0},
-                {title: "GP"},
-                {title: "PPG"},
-                {title: "Atts"},
-                {title: "Cmp"},
-                {title: "Yds"},
-                {title: "TDs"},
-                {title: "Ints"},
-                {title: "PassFD"},
-                {title: "RushAtts"},
-                {title: "RushYds"},
-                {title: "RushTDs"},
-                {title: "RushFDs"}
-            ],
-            "footerCallback": function ( row, data, start, end, display ) {
-                var api = this.api(), data;
-
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '').replace(/ *\([^)]*\) */g, "")*1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                var rowsToSum = [2,3,4,5,6,7,8];
-                var selectedRows = api.rows('.selected').indexes();
-                rowsToSum.forEach(function(col) {
-                    // Total filtered rows on the selected column (code part added)
-                    if (selectedRows.count() == 0) {
-                        total = api
-                            .column( col, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/api.column( col, { page: 'current'} ).data().count();
-                    } else {
-                        total = api.cells( selectedRows, col, { page: 'current' } )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/selectedRows.count();
-                    }
-                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
-                });
-            }
-        });
-    },
-
-    initProsChartsQB : function(){
-        var percent = rlfData.player.percentiles;
-        var metrics = rlfData.player.metrics;
-        var ordinals = rlfData.player.ordinals;
-        // var avgLB = rlfData.average.LB;
-        var xValue = ['Speed', 'Agility','Break Tackles', 'Throw Power', 'Accuracy', 'Wonderlic'];
-        var yValue = [percent.fortyTime, '', '', percent.throwVelocity, percent.depthAdjPct, percent.wonderlic];
-
-        var trace1 = {
-            x: xValue,
-            y: yValue,
-            name: 'QB Ability',
-            type: 'bar',
-            text: [
-                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
-                '',
-                metrics.elusiveness+'<br>'+ordinals.elusiveness+'%',
-                metrics.throwVelocity+' mph<br>'+ordinals.throwVelocity+'%',
-                metrics.depthAdjPct+'<br>'+ordinals.depthAdjPct+'%',
-                metrics.wonderlic+'<br>'+ordinals.wonderlic+'%',
-            ],
-            textposition: 'auto',
-            hoverinfo: 'none',
-            opacity: 0.8,
-        };
-
-        var cone = percent.agility * .5;
-        var shuttle = percent.agility * .5;
-        var agilityPercent = Math.round(cone+shuttle);
-        var coneTrace = {
-            x:['Agility'],
-            y: [cone],
-            name: '3 cone ('+Math.round(percent.cone)+'%)',
-            text: [
-                metrics.cone
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgb(158,202,225)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var shuttleTrace = {
-            x:['Agility'],
-            y: [ shuttle],
-            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
-            text: [
-                metrics.shuttle
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgba(58,200,225,.5)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var yacPower = percent.power * .50;
-        var yacElusive = percent.elusiveness * .50;
-        var yacPercent = Math.round(yacPower+yacElusive);
-
-        var trace3 = {
-            x:['Break Tackles'],
-            y: [yacPower],
-            name: 'Power ('+Math.round(percent.power)+'%)',
-            text: [
-                metrics.power
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgb(158,202,225)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var trace4 = {
-            x:['Break Tackles'],
-            y: [yacElusive],
-            name: 'Elusiveness ('+Math.round(percent.elusiveness)+'%)',
-            text: [
-                Math.round(yacPercent)+'%<br>'+metrics.elusiveness
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgba(58,200,225,.5)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-
-        var data = [trace1, coneTrace, shuttleTrace, trace3, trace4];
-
-        var layout = {
-            font: {size: 12},
-            yaxis: {title: 'Percentile', range: [0, 100]},
-            yaxis2: {
-                titlefont: {color: 'rgb(148, 103, 189)'},
-                tickfont: {color: 'rgb(148, 103, 189)'},
-                overlaying: 'y',
-                side: 'right'
-            },
-            margin: {
-                l: 50,
-                r: 20,
-                b: 20,
-                t: 25,
-                pad: 0
-            },
-            height: 350,
-            barmode: 'stack',
-            showlegend: true,
-            legend: {
-                x: 1,
-                y: 0.5
-            }
-        };
-
-        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
-    },
-
-    initMesChartsQb : function(){
-        var percent = rlfData.player.percentiles;
-
-        var data = [{
-            type: 'scatterpolar',
-            r: [ percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle],
-            theta: ['height', 'weight', 'arms', 'bmi', '40', 'vertical', 'broad', '3cone', 'shuttle'],
-            fill: 'toself'
-        }];
-
-        var layout = {
-            polar: {
-                radialaxis: {
-                    visible: true,
-                    range: [0, 100]
-                }
-            },
-            font: {size: 10},
-            autosize: false,
-            width: 400,
-            height: 300,
-            margin: {
-                l: 0,
-                r: 0,
-                b: 25,
-                t: 25,
-                pad: 0
-            },
-            showlegend: false
-        };
-
-        Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false});
-        $("#radar-graph").addClass("scale-in");
-    },
-
     /******************************* Other Functions ***************************************/
 
     initSearch : function(){
@@ -2876,5 +1493,754 @@ var rlf =  {
             pathEnd = ' Z';
         var path = mainPath.concat(pathX,space,pathY,pathEnd);
         return path;
+    },
+
+    makeProspectChart: function(chartData) {
+        var ctx = document.getElementById('canvas').getContext('2d');
+        window.myMixedChart = new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                responsive: true,
+                title: {
+                    display: false,
+                    text: 'Chart.js Combo Bar Line Chart'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: true
+                },
+                legend: {
+                    display: true,
+                    labels: {
+                        fontColor: 'rgb(255, 99, 132)'
+                    },
+                    position: 'bottom'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            max: 100
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }],
+                    xAxes: [{
+                        stacked: true,
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                },
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 40,
+                        bottom: 0
+                    }
+                },
+                "animation": {
+                    "duration": 1,
+                    "onComplete": function() {
+                        var chartInstance = this.chart,
+                            ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        ctx.fontColor = 'black';
+
+                        this.data.datasets.forEach(function(dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function(bar, index) {
+                                var data = dataset.metrics[index]+'\n'+dataset.ordinals[index]+'%';
+                                ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                            });
+                        });
+                    }
+                },
+            }
+        });
+    },
+
+    makeCollegeTable : function(columns) {
+        $('#college-stats').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            "searching": false,
+            data: rlfData.player.collegeTable,
+            columns: columns,
+            "footerCallback": function ( row, data, start, end, display ) {
+                if (data.length === 0) {
+                    return;
+                }
+
+                var api = this.api(), data;
+
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                var rowsToSum = [4,5,6];
+                var selectedRows = api.rows('.selected').indexes();
+                rowsToSum.forEach(function(col) {
+                    // Total filtered rows on the selected column (code part added)
+                    if (selectedRows.count() == 0) {
+                        total = api
+                            .column( col, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/api.column( col, { page: 'current'} ).data().count();
+                    } else {
+                        total = api.cells( selectedRows, col, { page: 'current' } )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/selectedRows.count();
+                    }
+                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
+                });
+            }
+        } );
+    },
+
+    makeSeasonTable: function(columns) {
+        $('#season-stats').DataTable({
+            "paging": false,
+            "ordering": false,
+            "searching": false,
+            data: rlfData.player.seasonTable,
+            columns: columns,
+            "footerCallback": function ( row, data, start, end, display ) {
+                if (data.length == 0) {
+                    return;
+                }
+
+                var api = this.api(), data;
+
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '').replace(/ *\([^)]*\) */g, "")*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                var rowsToSum = [2,3,4,5,6,7,8];
+                var selectedRows = api.rows('.selected').indexes();
+                rowsToSum.forEach(function(col) {
+                    // Total filtered rows on the selected column (code part added)
+                    if (selectedRows.count() == 0) {
+                        total = api
+                            .column( col, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/api.column( col, { page: 'current'} ).data().count();
+                    } else {
+                        total = api.cells( selectedRows, col, { page: 'current' } )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/selectedRows.count();
+                    }
+                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
+                });
+            }
+        });
+    },
+
+    makeGameLogTable: function(columns) {
+        $('#game-logs').DataTable({
+            "paging": false,
+            "ordering": false,
+            data: rlfData.player.gameLogTable,
+            columns: columns,
+            initComplete: function () {
+                this.api().columns([0]).every( function () {
+                    var column = this;
+                    var select = $('<select><option value="">All</option></select>')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+
+                    column.data().unique().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+
+                    $("#game-logs_filter input").replaceWith(select);
+                    $("#game-logs_filter select").formSelect();
+                    if ( $("#game-logs_filter>select option").length > 0) {
+                        $("#game-logs_filter select").val('2018').trigger("change");
+                    }
+
+                });
+            },
+            "footerCallback": function ( row, data, start, end, display ) {
+                if (data.length === 0) {
+                    return;
+                }
+
+                var api = this.api(), data;
+
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                var rowsToSum = [2,3,4,5,6,7,8];
+                var selectedRows = api.rows('.selected').indexes();
+                rowsToSum.forEach(function(col) {
+                    // Total filtered rows on the selected column (code part added)
+                    if (selectedRows.count() == 0) {
+                        total = api
+                            .column( col, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/api.column( col, { page: 'current'} ).data().count();
+                    } else {
+                        total = api.cells( selectedRows, col, { page: 'current' } )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        average = total/selectedRows.count();
+                    }
+                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
+                });
+            }
+        });
+
+        $('#game-logs tbody').on( 'click', 'tr', function () {
+            $(this).toggleClass('selected');
+            $('#game-logs').DataTable().draw(false);
+        });
+    },
+
+    makeRoleFits : function(roleFits){
+        $(".role-one-bar .determinate").css("width", roleFits[0].value + "%");
+        $(".role-one-title").text(roleFits[0].name);
+        $(".role-one-score").text(roleFits[0].value + "%");
+        if (roleFits[0].value > 69) {
+            $(".role-one-bar .determinate").css("background-color", "green");
+        }
+
+        if (roleFits[0].value < 69 && roleFits[0].value > 40) {
+            $(".role-one-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (roleFits[0].value < 39) {
+            $(".role-one-bar .determinate").css("background-color", "red");
+        }
+
+        $(".role-two-bar .determinate").css("width", roleFits[1].value + "%");
+        $(".role-two-title").text(roleFits[1].name);
+        $(".role-two-score").text(roleFits[1].value + "%")
+        if (roleFits[1].value > 69) {
+            $(".role-two-bar .determinate").css("background-color", "green");
+        }
+
+        if (roleFits[1].value < 69 && roleFits[1].value > 40) {
+            $(".role-two-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (roleFits[1].value < 39) {
+            $(".role-two-bar .determinate").css("background-color", "red");
+        }
+
+        $(".role-three-bar .determinate").css("width", roleFits[2].value + "%");
+        $(".role-three-title").text(roleFits[2].name);
+        $(".role-three-score").text(roleFits[2].value + "%")
+        if (roleFits[2].value > 69) {
+            $(".role-three-bar .determinate").css("background-color", "green");
+        }
+
+        if (roleFits[2].value < 69 && roleFits[2].value > 40) {
+            $(".role-three-bar .determinate").css("background-color", "yellow");
+        }
+
+        if (roleFits[2].value < 39) {
+            $(".role-three-bar .determinate").css("background-color", "red");
+        }
+    },
+
+    makeRadarGraph: function(info, labels) {
+        var data = [{
+            type: 'scatterpolar',
+            r: info,
+            theta: labels,
+            fill: 'toself',
+            opacity: 0.5,
+        }];
+
+        var layout = {
+            polar: {
+                radialaxis: {
+                    visible: true,
+                    range: [0, 100]
+                }
+            },
+            font: {size: 10},
+            autosize: false,
+            width: 400,
+            height: 300,
+            margin: {
+                l: 0,
+                r: 0,
+                b: 25,
+                t: 25,
+                pad: 0
+            },
+            showlegend: false
+        };
+
+        Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false});
+        $("#radar-graph").addClass("scale-in");
     }
+
+
+    // initOppChartsRB : function() {
+    //     var level = 0,
+    //         teamLevel = 0,
+    //         fitTitle = "",
+    //         teamTitle = "";
+    //
+    //     if (rlfData.player.role === "Alpha") {
+    //         level = (rlfData.player.metrics.alpha / 20) * 100;
+    //         teamLevel = (rlfData.player.scores.alpha_wr_score * 10);
+    //         fitTitle = 'Alpha WR Fit';
+    //         teamTitle = "Team Alpha WR Opportunity";
+    //     }
+    //
+    //
+    //     if (rlfData.player.role === "Grinder") {
+    //         level = rlfData.player.metrics.slot * 10;
+    //         teamLevel = rlfData.player.scores.slot_wr_score * 10;
+    //         fitTitle = 'Slot WR Fit';
+    //         teamTitle = "Team Grinder RB Opportunity";
+    //     }
+    //
+    //     if (rlfData.player.role === "Pass") {
+    //         level = rlfData.player.metrics.deep * 10;
+    //         teamLevel = rlfData.player.scores.deep_wr_score * 10;
+    //         fitTitle = 'Deep WR Fit';
+    //         teamTitle = "Team Pass Catcher RB Opportunity";
+    //     }
+    //
+    //     // Trig to calc meter point
+    //     var fitPath = rlf.getPath(level);
+    //     var volumePath = rlf.getPath(teamLevel);
+    //     var supportPath = rlf.getPath(0);
+    //
+    //     var data = [{
+    //         type: 'scatter',
+    //         x: [0], y:[0],
+    //         marker: {size: 20, color:'850000'},
+    //         showlegend: false,
+    //         name: 'Rating',
+    //         text: level,
+    //         hoverinfo: 'text+name'},
+    //         { values: [20, 20, 20, 20, 20, 100],
+    //             rotation: 90,
+    //             text: ['Smash', 'Great', 'Good', 'Meh',
+    //                 'Trash', ''],
+    //             textinfo: 'text',
+    //             textposition:'inside',
+    //             marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(107, 255, 4, .5)',
+    //                     'rgba(251, 255, 4, .5)', 'rgba(242, 189, 11  , .5)',
+    //                     'rgba(242, 51, 11, .8)',
+    //                     'rgba(242, 51, 11, 0)']},
+    //             labels: ['81-100', '61-80', '41-60', '21-40', '0-20', ''],
+    //             hoverinfo: 'label',
+    //             hole: .5,
+    //             type: 'pie',
+    //             showlegend: false
+    //         }];
+    //
+    //     var layout = {
+    //         font: {size: 10},
+    //         shapes:[{
+    //             type: 'path',
+    //             fillcolor: '850000',
+    //             line: {
+    //                 color: '850000'
+    //             }
+    //         }],
+    //         title: fitTitle,
+    //         Speed: '0-100',
+    //         height: 300,
+    //         margin: {
+    //             l: 10,
+    //             r: 10,
+    //             b: 10,
+    //             t: 55,
+    //             pad: 0
+    //         },
+    //         xaxis: {
+    //             zeroline:false,
+    //             showticklabels:false,
+    //             showgrid: false,
+    //             range: [-1, 1]
+    //         },
+    //         yaxis: {
+    //             zeroline:false,
+    //             showticklabels:false,
+    //             showgrid: false,
+    //             range: [-1, 1]
+    //         }
+    //     };
+    //
+    //     layout.shapes[0].path = fitPath;
+    //     Plotly.newPlot('fit-graph', data, layout, {displayModeBar: false});
+    //     layout.title = 'Projected Volume';
+    //     layout.shapes[0].path = volumePath;
+    //     Plotly.newPlot('volume-graph', data, layout, {displayModeBar: false});
+    //     layout.shapes[0].path = supportPath;
+    //     layout.title = 'Supporting Efficiency';
+    //     Plotly.newPlot('support-graph', data, layout, {displayModeBar: false});
+    //
+    //
+    //     var level = 0,
+    //         teamLevel = 0,
+    //         title = "",
+    //         teamTitle = "";
+    //
+    //     if (rlfData.player.role === "Alpha") {
+    //         level = rlfData.player.position_scores.alpha_score;
+    //         teamLevel = rlfData.player.team_scores.alpha_score;
+    //         title = 'Alpha WR Rating';
+    //         teamTitle = "Team Alpha WR Opportunity";
+    //     }
+    //
+    //     if (rlfData.player.role === "G") {
+    //         level = rlfData.player.position_scores.grinder_score;
+    //         teamLevel = rlfData.player.team_scores.grinder_score;
+    //         title = 'Grinder RB Rating';
+    //         teamTitle = "Team Grinder RB Opportunity";
+    //     }
+    //
+    //     if (rlfData.player.role === "Pass Catcher") {
+    //         level = rlfData.player.position_scores.pass_score;
+    //         teamLevel = rlfData.player.team_scores.pass_score;
+    //         title = 'Pass Catcher RB Rating';
+    //         teamTitle = "Team Pass Catcher RB Opportunity";
+    //     }
+    //
+    //     // Trig to calc meter point
+    //     var level = 0;
+    //     var degrees = 100 - level,
+    //         radius = .5;
+    //     var radians = degrees * Math.PI / 100;
+    //     var x = radius * Math.cos(radians);
+    //     var y = radius * Math.sin(radians);
+    //
+    //     // Path: may have to change to create a better triangle
+    //     var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
+    //         pathX = String(x),
+    //         space = ' ',
+    //         pathY = String(y),
+    //         pathEnd = ' Z';
+    //     var path = mainPath.concat(pathX,space,pathY,pathEnd);
+    //
+    //     var data = [{
+    //         type: 'scatter',
+    //         x: [0], y:[0],
+    //         marker: {size: 20, color:'850000'},
+    //         showlegend: false,
+    //         name: 'Rating',
+    //         text: level,
+    //         hoverinfo: 'text+name'},
+    //         { values: [20, 20, 20, 20, 20, 100],
+    //             rotation: 90,
+    //             text: ['Smash', 'Great', 'Good', 'Meh',
+    //                 'Trash', ''],
+    //             textinfo: 'text',
+    //             textposition:'inside',
+    //             marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(107, 255, 4, .5)',
+    //                     'rgba(251, 255, 4, .5)', 'rgba(242, 189, 11  , .5)',
+    //                     'rgba(242, 51, 11, .8)',
+    //                     'rgba(242, 51, 11, 0)']},
+    //             labels: ['81-100', '61-80', '41-60', '21-40', '0-20', ''],
+    //             hoverinfo: 'label',
+    //             hole: .5,
+    //             type: 'pie',
+    //             showlegend: false
+    //         }];
+    //
+    //     var layout = {
+    //         font: {size: 10},
+    //         shapes:[{
+    //             type: 'path',
+    //             path: path,
+    //             fillcolor: '850000',
+    //             line: {
+    //                 color: '850000'
+    //             }
+    //         }],
+    //         title: 'Role Fit',
+    //         Speed: '0-100',
+    //         height: 300,
+    //         margin: {
+    //             l: 10,
+    //             r: 10,
+    //             b: 10,
+    //             t: 55,
+    //             pad: 0
+    //         },
+    //         xaxis: {
+    //             zeroline:false,
+    //             showticklabels:false,
+    //             showgrid: false,
+    //             range: [-1, 1]
+    //         },
+    //         yaxis: {
+    //             zeroline:false,
+    //             showticklabels:false,
+    //             showgrid: false,
+    //             range: [-1, 1]
+    //         }
+    //     };
+    //
+    //     Plotly.newPlot('fit-graph', data, layout, {displayModeBar: false});
+    //     layout.title = 'Projected Volume';
+    //     Plotly.newPlot('volume-graph', data, layout, {displayModeBar: false});
+    //     layout.title = 'Supporting Efficiency';
+    //     Plotly.newPlot('support-graph', data, layout, {displayModeBar: false});
+    // },
+
+    // initOppChartsWR : function() {
+    //     var level = 0,
+    //         teamLevel = 0,
+    //         fitTitle = "",
+    //         teamTitle = "";
+    //
+    //     if (rlfData.player.role === "Alpha") {
+    //         level = (rlfData.player.metrics[0].alpha / 30) * 100;
+    //         teamLevel = (rlfData.player.scores[0].alpha_wr_score * 10);
+    //         fitTitle = 'Alpha WR Fit';
+    //         teamTitle = "Team Alpha WR Opportunity";
+    //     }
+    //
+    //     if (rlfData.player.role === "Posession") {
+    //         level = (rlfData.player.metrics[0].alpha / 20) * 100;
+    //         teamLevel = (rlfData.player.scores[0].alpha_wr_score * 10);
+    //         fitTitle = 'Posession WR Fit';
+    //         teamTitle = "Team Alpha WR Opportunity";
+    //     }
+    //
+    //     if (rlfData.player.role === "Slot") {
+    //         level = rlfData.player.metrics[0].slot * 10;
+    //         teamLevel = rlfData.player.scores[0].slot_wr_score * 10;
+    //         fitTitle = 'Slot WR Fit';
+    //         teamTitle = "Team Grinder RB Opportunity";
+    //     }
+    //
+    //     if (rlfData.player.role === "Deep") {
+    //         level = rlfData.player.metrics[0].deep * 10;
+    //         teamLevel = rlfData.player.scores[0].deep_wr_score * 10;
+    //         fitTitle = 'Deep WR Fit';
+    //         teamTitle = "Team Pass Catcher RB Opportunity";
+    //     }
+    //
+    //     // Trig to calc meter point
+    //     var fitPath = rlf.getPath(level);
+    //     var volumePath = rlf.getPath(teamLevel);
+    //     var supportPath = rlf.getPath(0);
+    //
+    //     var data = [{
+    //         type: 'scatter',
+    //         x: [0], y:[0],
+    //         marker: {size: 20, color:'850000'},
+    //         showlegend: false,
+    //         name: 'Rating',
+    //         text: level,
+    //         hoverinfo: 'text+name'},
+    //         { values: [20, 20, 20, 20, 20, 100],
+    //             rotation: 90,
+    //             text: ['Smash', 'Great', 'Good', 'Meh',
+    //                 'Trash', ''],
+    //             textinfo: 'text',
+    //             textposition:'inside',
+    //             marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(107, 255, 4, .5)',
+    //                     'rgba(251, 255, 4, .5)', 'rgba(242, 189, 11  , .5)',
+    //                     'rgba(242, 51, 11, .8)',
+    //                     'rgba(242, 51, 11, 0)']},
+    //             labels: ['81-100', '61-80', '41-60', '21-40', '0-20', ''],
+    //             hoverinfo: 'label',
+    //             hole: .5,
+    //             type: 'pie',
+    //             showlegend: false
+    //         }];
+    //
+    //     var layout = {
+    //         font: {size: 10},
+    //         shapes:[{
+    //             type: 'path',
+    //             fillcolor: '850000',
+    //             line: {
+    //                 color: '850000'
+    //             }
+    //         }],
+    //         title: fitTitle,
+    //         Speed: '0-100',
+    //         height: 300,
+    //         margin: {
+    //             l: 10,
+    //             r: 10,
+    //             b: 10,
+    //             t: 55,
+    //             pad: 0
+    //         },
+    //         xaxis: {
+    //             zeroline:false,
+    //             showticklabels:false,
+    //             showgrid: false,
+    //             range: [-1, 1]
+    //         },
+    //         yaxis: {
+    //             zeroline:false,
+    //             showticklabels:false,
+    //             showgrid: false,
+    //             range: [-1, 1]
+    //         }
+    //     };
+    //
+    //     layout.shapes[0].path = fitPath;
+    //     Plotly.newPlot('fit-graph', data, layout, {displayModeBar: false});
+    //     layout.title = 'Projected Volume';
+    //     layout.shapes[0].path = volumePath;
+    //     Plotly.newPlot('volume-graph', data, layout, {displayModeBar: false});
+    //     layout.shapes[0].path = supportPath;
+    //     layout.title = 'Supporting Efficiency';
+    //     Plotly.newPlot('support-graph', data, layout, {displayModeBar: false});
+    // },
+
+
+    // initOppChartsTE : function(){
+    //     var level = 0,
+    //         teamLevel = 0,
+    //         fitTitle = "",
+    //         teamTitle = "";
+    //
+    //     if (rlfData.player.role === "Alpha") {
+    //         level = (rlfData.player.metrics[0].alpha / 30) * 100;
+    //         teamLevel = (rlfData.player.scores[0].alpha_wr_score * 10);
+    //         fitTitle = 'Alpha WR Fit';
+    //         teamTitle = "Team Alpha WR Opportunity";
+    //     }
+    //
+    //     if (rlfData.player.role === "Posession") {
+    //         level = (rlfData.player.metrics[0].alpha / 20) * 100;
+    //         teamLevel = (rlfData.player.scores[0].alpha_wr_score * 10);
+    //         fitTitle = 'Posession WR Fit';
+    //         teamTitle = "Team Alpha WR Opportunity";
+    //     }
+    //
+    //     if (rlfData.player.role === "Slot") {
+    //         level = rlfData.player.metrics[0].slot * 10;
+    //         teamLevel = rlfData.player.scores[0].slot_wr_score * 10;
+    //         fitTitle = 'Slot WR Fit';
+    //         teamTitle = "Team Grinder RB Opportunity";
+    //     }
+    //
+    //     if (rlfData.player.role === "Deep") {
+    //         level = rlfData.player.metrics[0].deep * 10;
+    //         teamLevel = rlfData.player.scores[0].deep_wr_score * 10;
+    //         fitTitle = 'Deep WR Fit';
+    //         teamTitle = "Team Pass Catcher RB Opportunity";
+    //     }
+    //
+    //     // Trig to calc meter point
+    //     var fitPath = rlf.getPath(level);
+    //     var volumePath = rlf.getPath(teamLevel);
+    //     var supportPath = rlf.getPath(0);
+    //
+    //     var data = [{
+    //         type: 'scatter',
+    //         x: [0], y:[0],
+    //         marker: {size: 20, color:'850000'},
+    //         showlegend: false,
+    //         name: 'Rating',
+    //         text: level,
+    //         hoverinfo: 'text+name'},
+    //         { values: [20, 20, 20, 20, 20, 100],
+    //             rotation: 90,
+    //             text: ['Smash', 'Great', 'Good', 'Meh',
+    //                 'Trash', ''],
+    //             textinfo: 'text',
+    //             textposition:'inside',
+    //             marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(107, 255, 4, .5)',
+    //                     'rgba(251, 255, 4, .5)', 'rgba(242, 189, 11  , .5)',
+    //                     'rgba(242, 51, 11, .8)',
+    //                     'rgba(242, 51, 11, 0)']},
+    //             labels: ['81-100', '61-80', '41-60', '21-40', '0-20', ''],
+    //             hoverinfo: 'label',
+    //             hole: .5,
+    //             type: 'pie',
+    //             showlegend: false
+    //         }];
+    //
+    //     var layout = {
+    //         font: {size: 10},
+    //         shapes:[{
+    //             type: 'path',
+    //             fillcolor: '850000',
+    //             line: {
+    //                 color: '850000'
+    //             }
+    //         }],
+    //         title: fitTitle,
+    //         Speed: '0-100',
+    //         height: 300,
+    //         margin: {
+    //             l: 10,
+    //             r: 10,
+    //             b: 10,
+    //             t: 55,
+    //             pad: 0
+    //         },
+    //         xaxis: {
+    //             zeroline:false,
+    //             showticklabels:false,
+    //             showgrid: false,
+    //             range: [-1, 1]
+    //         },
+    //         yaxis: {
+    //             zeroline:false,
+    //             showticklabels:false,
+    //             showgrid: false,
+    //             range: [-1, 1]
+    //         }
+    //     };
+    //
+    //     layout.shapes[0].path = fitPath;
+    //     Plotly.newPlot('fit-graph', data, layout, {displayModeBar: false});
+    //     layout.title = 'Projected Volume';
+    //     layout.shapes[0].path = volumePath;
+    //     Plotly.newPlot('volume-graph', data, layout, {displayModeBar: false});
+    //     layout.shapes[0].path = supportPath;
+    //     layout.title = 'Supporting Efficiency';
+    //     Plotly.newPlot('support-graph', data, layout, {displayModeBar: false});
+    // },
+
 };

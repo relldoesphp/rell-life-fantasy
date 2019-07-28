@@ -1,13 +1,23 @@
 body {
-    font-family: 'Titillium Web', sans-serif;
+    /*font-family: 'Titillium Web', sans-serif;*/
 }
 
 div.profile {
     height:325px;
 }
 
+div.section.full-height {
+    background-color: #161617;
+}
+
 nav .nav-wrapper, .page-footer {
-    background-color:rgba(0, 0, 0, 0.9);
+    background: #2C2C2C;
+    background: -moz-linear-gradient(to bottom, #333, #222);
+    background: -ms-linear-gradient(to bottom, #333, #222);
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#222));
+    background: -webkit-linear-gradient(to bottom, 333, #222);
+    background: -o-linear-gradient(to bottom, #333, #222);
+    background: linear-gradient(to bottom, #333, #222);
 }
 
 .page-container {
@@ -19,17 +29,25 @@ nav .nav-wrapper, .page-footer {
     height:325px;
 }
 
-.prospect {
-    height:400px;
-}
+
 
 div.fit, div.volume, div.support {
     height:200px;
 }
 div.row-title {
-    background-color:rgba(0, 0, 0, 0.8);
+    background: #2C2C2C;
+    background: -moz-linear-gradient(to bottom, #333, #222);
+    background: -ms-linear-gradient(to bottom, #333, #222);
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#222));
+    background: -webkit-linear-gradient(to bottom, 333, #222);
+    background: -o-linear-gradient(to bottom, #333, #222);
+    background: linear-gradient(to bottom, #333, #222);
     color:white;
-    padding:15px;
+    padding:30px;
+}
+
+#player-header {
+    margin-bottom:50px;
 }
 
 .player-menu {
@@ -66,7 +84,7 @@ div.row-title {
 }
 
 .player-card.card.small {
-    height:345px;
+    height:344px;
 }
 .player-card-content  .btn-floating.halfway-fab {
     bottom:48px;
@@ -77,7 +95,13 @@ div.row-title {
 }
 
 .player-card div.card-content.player-card-content,  .player-card div.card-reveal.player-card-reveal {
-    background-color:rgba(0, 0, 0, 0.8);
+    background: #2C2C2C;
+    background: -moz-linear-gradient(to bottom, #333, #222);
+    background: -ms-linear-gradient(to bottom, #333, #222);
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#222));
+    background: -webkit-linear-gradient(to bottom, 333, #222);
+    background: -o-linear-gradient(to bottom, #333, #222);
+    background: linear-gradient(to bottom, #333, #222);
     color:white;
 }
 

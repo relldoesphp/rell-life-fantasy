@@ -99,54 +99,10 @@ class Player
                     continue;
                 }
                 $stats = Json::decode($seasonStat['stats'], 1);
-                if (($this->position == "WR" || $this->position == "TE") && array_key_exists('gp', $stats)) {
+                if (($this->position == "QB" ||$this->position == "WR" || $this->position == "TE" || $this->position == "RB") && array_key_exists('gp', $stats)) {
                     $tableData[] = [
-                        $seasonStat['year'],
-                        $stats['gp'],
-                        round($stats['pts_ppr']/$stats['gp'], 1),
-                        $stats['rec']." (".round($stats['rec']/$stats['gp'], 1)." p/g)",
-                        $stats['rec_yd']." (".round($stats['rec_yd']/$stats['gp'], 1)." p/g)",
-                        array_key_exists('rec_td', $stats) ? $stats['rec_td'] : "",
-                        $stats['rec_tgt']." (".round($stats['rec_tgt']/$stats['gp'], 1)." p/g)",
-                        $stats['rec_ypr'],
-                        $stats['rec_ypt'],
-                        round($stats['rec_yd']/$stats['rec'], 1)
-                    ];
-                }
-
-                if ($this->position == "QB" && array_key_exists('gp', $stats)) {
-                    if (!array_key_exists('pass_fd', $stats)) {
-                        $stats['pass_fd'] = 0;
-                    }
-                    if (!array_key_exists('rush_fd', $stats)) {
-                        $stats['rush_fd'] = 0;
-                    }
-                    if (!array_key_exists('rush_td', $stats)) {
-                        $stats['rush_td'] = 0;
-                    }
-                    if (!array_key_exists('pass_td', $stats)) {
-                        $stats['pass_td'] = 0;
-                    }
-                    if (!array_key_exists('rush_att', $stats)) {
-                        $stats['rush_att'] = 0;
-                    }
-                    if (!array_key_exists('pass_int', $stats)) {
-                        $stats['pass_int'] = 0;
-                    }
-                    $tableData[] = [
-                        $seasonStat['year'],
-                        $stats['gp'],
-                        round($stats['pts_ppr']/$stats['gp'], 1),
-                        $stats['pass_att'],
-                        $stats['pass_cmp'],
-                        $stats['pass_yd'],
-                        $stats['pass_td'],
-                        $stats['pass_int'],
-                        $stats['pass_fd'],
-                        $stats['rush_att'],
-                        $stats['rush_yd'],
-                        $stats['rush_td'],
-                        $stats['rush_fd'],
+                        "year" => $seasonStat['year'],
+                        "stats" => $stats
                     ];
                 }
             }
@@ -168,33 +124,11 @@ class Player
                 if (!array_key_exists('off_snp', $stats)) {
                     continue;
                 }
-                if ($this->position == "WR" || $this->position == "TE") {
+                if ($this->position == "QB" || $this->position == "WR" || $this->position == "TE" || $this->position == "RB") {
                     $tableData[] = [
-                        $gameLog['year'],
-                        $gameLog['week'],
-                        (array_key_exists('pts_ppr', $stats)) ? $stats['pts_ppr'] : "",
-                        (array_key_exists('rec', $stats)) ? $stats['rec'] : "",
-                        (array_key_exists('rec_yd', $stats)) ? $stats['rec_yd'] : "",
-                        (array_key_exists('rec_td', $stats)) ? $stats['rec_td'] : "",
-                        (array_key_exists('rec_tgt', $stats)) ? $stats['rec_tgt'] : "",
-                        (array_key_exists('rec_ypr', $stats)) ? $stats['rec_ypr'] : "",
-                        (array_key_exists('rec_ypt', $stats)) ? $stats['rec_ypt'] : "",
-                    ];
-                }
-
-                if ($this->position == "QB") {
-                    $tableData[] = [
-                        $gameLog['year'],
-                        $gameLog['week'],
-                        (array_key_exists('pts_ppr', $stats)) ? $stats['pts_ppr'] : "",
-                        (array_key_exists('pass_yd', $stats)) ? $stats['pass_yd'] : "",
-                        (array_key_exists('pass_td', $stats)) ? $stats['pass_td'] : "",
-                        (array_key_exists('pass_cmp', $stats)) ? $stats['pass_cmp'] : "",
-                        (array_key_exists('pass_att', $stats)) ? $stats['pass_att'] : "",
-                        (array_key_exists('pass_rtg', $stats)) ? $stats['pass_rtg'] : "",
-                        (array_key_exists('rush_yd', $stats)) ? $stats['rush_yd'] : "",
-                        (array_key_exists('rush_td', $stats)) ? $stats['rush_td'] : "",
-                        (array_key_exists('rush_att', $stats)) ? $stats['rush_att'] : "",
+                        'year' => $gameLog['year'],
+                        'week' => $gameLog['week'],
+                        'stats' => $stats,
                     ];
                 }
             }
@@ -210,80 +144,60 @@ class Player
             foreach ($collegeStats as $year => $stats) {
                 if ($this->position == "QB") {
                     $tableData[] = [
-                        $year,
-                        $stats['college'],
-                        $stats['class'],
-                        $stats['games'],
-                        $stats['cmp'],
-                        $stats['att'],
-                        $stats['pct'],
-                        $stats['yds'],
-                        $stats['ypa'],
-                        $stats['aypa'],
-                        $stats['tds'],
-                        $stats['ints'],
-                        $stats['rushAtt'],
-                        $stats['rushYds'],
-                        $stats['rushTds']
+                        "year" => $year,
+                        "stats" => $stats
                     ];
                 }
                 if ($this->position == "WR") {
                     $tableData[] = [
-                        $year,
-                        $stats['college'],
-                        $stats['class'],
-                        $stats['games'],
-                        $stats['recs'],
-                        $stats['recYds'],
-                        $stats['recTds'],
-                        $stats['recAvg'],
-                        round($stats['recs']/$stats['totals']['recs'] * 100,1)."%",
-                        round($stats['recYds']/$stats['totals']['yds'] * 100, 1)."%",
-                        round($stats['recTds']/$stats['totals']['tds'] * 100,1)."%",
-                        0,
-                        0
+                        "year" => $year,
+                        "college" => $stats['college'],
+                        "class" => $stats['class'],
+                        "games" => $stats['games'],
+                        "recs" => $stats['recs'],
+                        "recYds" => $stats['recYds'],
+                        "recTds" => $stats['recTds'],
+                        "recAvg" => $stats['recAvg'],
+                        "recDom" => round($stats['recs']/$stats['totals']['recs'] * 100,1)."%",
+                        "ydsDom" => round($stats['recYds']/$stats['totals']['yds'] * 100, 1)."%",
+                        "tdsDom" => round($stats['recTds']/$stats['totals']['tds'] * 100,1)."%",
                     ];
                 }
 
                 if ($this->position == "RB") {
                     $tableData[] = [
-                        $year,
-                        $stats['college'],
-                        $stats['class'],
-                        $stats['games'],
-                        $stats['rushAtt'],
-                        $stats['rushYds'],
-                        $stats['rushAvg'],
-                        $stats['rushTds'],
-                        $stats['recs'],
-                        $stats['recYds'],
-                        $stats['recAvg'],
-                        $stats['recTds'],
-                        round(($stats['rushAtt'] / $stats['totals']['carries']) * 100, 1)."%",
-                        round($stats['recDominator'],1)."%",
-                        round($stats['ydsDominator'],1)."%",
-                        round($stats['tdDominator'],1)."%"
+                        "year" => $year,
+                        "college" => $stats['college'],
+                        "class" => $stats['class'],
+                        "games" => $stats['games'],
+                        "rushAtt" => $stats['rushAtt'],
+                        "rushYds" => $stats['rushYds'],
+                        "rushAvg" => $stats['rushAvg'],
+                        "rushTds" => $stats['rushTds'],
+                        "recs" => $stats['recs'],
+                        "recYds" => $stats['recYds'],
+                        "recAvg" => $stats['recAvg'],
+                        "recTds" => $stats['recTds'],
+                        "carryDom" => round(($stats['rushAtt'] / $stats['totals']['carries']) * 100, 1)."%",
+                        "recDom" => round($stats['recDominator'],1)."%",
+                        "ydDom" => round($stats['ydsDominator'],1)."%",
+                        "tdDom" => round($stats['tdDominator'],1)."%"
                     ];
                 }
 
                 if ($this->position == "TE") {
                     $tableData[] = [
-                        $year,
-                        $stats->college,
-                        $stats->class,
-                        $stats->games,
-                        $stats->rushAtt,
-                        $stats->rushYds,
-                        $stats->rushAvg,
-                        $stats->rushTds,
-                        $stats->recs,
-                        $stats->recYds,
-                        $stats->recAvg,
-                        $stats->recTds,
-                        round(($stats->rushAtt / $stats->totals->carries) * 100, 1)."%",
-                        round($stats->recDominator,1)."%",
-                        round($stats->ydsDominator,1)."%",
-                        round($stats->tdDominator,1)."%",
+                        "year" => $year,
+                        "college" => $stats['college'],
+                        "class" => $stats['class'],
+                        "games" => $stats['games'],
+                        "recs" => $stats['recs'],
+                        "recYds" => $stats['recYds'],
+                        "recTds" => $stats['recTds'],
+                        "recAvg" => $stats['recAvg'],
+                        "recDom" => round($stats['recs']/$stats['totals']['recs'] * 100,1)."%",
+                        "ydsDom" => round($stats['recYds']/$stats['totals']['yds'] * 100, 1)."%",
+                        "tdsDom" => round($stats['recTds']/$stats['totals']['tds'] * 100,1)."%",
                     ];
                 }
             }
@@ -336,7 +250,7 @@ class Player
     {
         $images = "";
         if (empty($this->images)) {
-            $images = "<a class='carousel-item' href='#one!'><img src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px'></a>";
+            $images = "<a class='carousel-item' href='#one!'><img src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; width:75%; margin:auto;'></a>";
         } else {
             foreach ($this->images as $key => $url) {
                 $images .= "<a class='carousel-item' href='#{$key}!'><img src='{$url}' style='height:280px'></a>\n";

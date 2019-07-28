@@ -4,7 +4,7 @@
         <input class="typeahead" type="text" placeholder="Oscar winners for Best Picture">
     </div>
     <div class="row player-header scrollspy container" id="player-header">
-        <div class="col m5 s10 profile">
+        <div class="col m6 s12 profile">
             <div class="card small player-card hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
                     <div class="carousel carousel-slider activator">
@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="card-content player-card-content center">
-                    <a class="btn-floating right halfway-fab waves-effect waves-light red activator"><i class="material-icons">arrow_upward</i></a>
+                    <a class="btn-floating right halfway-fab waves-effect waves-dark activator"><i class="material-icons">arrow_upward</i></a>
                     <span class="player-title activator white-text text-darken-4"><?= $player['first_name']." ".$player['last_name'] ?></span>
                     <p class="player-title activator yellow-text text-darken-4">#<?=$player['team_info']['number'] ?> <?=$player['position']?> <?= $player['team']?></p>
                 </div>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="col m5 s12 measurables">
+        <div class="col m6 s12 measurables">
             <div class="card player-card small hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
                     <div id="radar-graph" style="width:400px; height:400px; margin:auto" class="scale-transition scale-out active">
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="card-content player-card-content center">
-                    <a class="btn-floating right halfway-fab waves-effect waves-light red activator"><i class="material-icons">arrow_upward</i></a>
+                    <a class="btn-floating right halfway-fab waves-effect waves-light dark activator"><i class="material-icons">arrow_upward</i></a>
                     <span class="player-title activator white-text text-darken-4">Measurables</span>
                 </div>
                 <div class="card-reveal player-card-reveal">
@@ -49,22 +49,18 @@
                 </div>
             </div>
         </div>
-        <div class="col m2 s12 measurables">
-            <div class="card player-card small hoverable center">
-                <div>Rank</div>
-                <div>#1</div>
-                <div>PPG</div>
-                <div>14.4</div>
-            </div>
-        </div>
+<!--        <div class="col m2 s12 measurables">-->
+<!--            <div class="card player-card small hoverable center">-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
     <div class="row player-prospect container scrollspy fade-in-out" id="player-prospect">
         <a class="waves-effect waves-light btn-small right center modal-trigger" href="#modal2">Explain<i class="material-icons">live_help</i></a>
         <div class="col s12 center row-title"><h6>Draft Prospect Breakdown</h6></div>
-        <div class="col m9 s12 prospect z-depth-1 hoverable">
-            <div id="prospect-graph" style="margin:auto"></div>
+        <div class="col m9 s12 prospect z-depth-1 hoverable" style="position: relative; height:450px;">
+            <canvas id="canvas" width="75%"></canvas>
         </div>
-        <div class="col m3 s12 skillset z-depth-1 hoverable">
+        <div class="col m3 s12 skillset z-depth-1 hoverable" style="position: relative; height:450px;">
             <div class="slot-box center">
                 <div style="margin-top:10px" class="role-one-title"></div>
                 <div class="role-one-score"></div>
@@ -88,7 +84,8 @@
             </div>
         </div>
     </div>
-    <div class="row player-situation container scrollspy fade-in-out" id="player-situation">
+
+    <div class="row player-situation container scrollspy" id="player-situation" style="display:none">
         <a class="waves-effect waves-light btn-small right center modal-trigger" href="#modal1">Explain<i class="material-icons">live_help</i></a>
         <div class="col s12 center row-title"><h6>Situation Breakdown</h6></div>
         <div class="col m4 s12 fit z-depth-1 hoverable">
@@ -153,9 +150,6 @@
                     <tfoot>
                     <tr>
                         <th colspan="2">Career Average:<br>Career Total:</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
