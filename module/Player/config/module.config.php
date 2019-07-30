@@ -32,6 +32,7 @@ return [
         'factories' => [
             Controller\ScriptController::class => Controller\Factory\ScriptControllerFactory::class,
             Controller\PlayerController::class => Controller\Factory\PlayerControllerFactory::class,
+            Controller\AdminController::class  => Controller\Factory\AdminControllerFactory::class
         ],
     ],
 
@@ -57,6 +58,19 @@ return [
                     'defaults' => [
                         'controller' => Controller\PlayerController::class,
                         'action'     => 'search',
+                    ],
+                ],
+            ],
+            'admin' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/admin[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\AdminController::class,
+                        'action'     => 'index',
                     ],
                 ],
             ],

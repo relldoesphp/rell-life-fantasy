@@ -1,23 +1,29 @@
 body {
     /*font-family: 'Titillium Web', sans-serif;*/
+    background-image: url(https://image.shutterstock.com/z/stock-photo-football-play-on-a-chalkboard-16543636.jpg);
+    /*background-size:cover;*/
 }
 
 div.profile {
     height:325px;
 }
 
-div.section.full-height {
-    background-color: #161617;
+.section.white {
+    opacity: .95;
+}
+
+.btn-floating.teal {
+    background-color:#1de9c3;
 }
 
 nav .nav-wrapper, .page-footer {
     background: #2C2C2C;
-    background: -moz-linear-gradient(to bottom, #333, #222);
-    background: -ms-linear-gradient(to bottom, #333, #222);
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#222));
-    background: -webkit-linear-gradient(to bottom, 333, #222);
-    background: -o-linear-gradient(to bottom, #333, #222);
-    background: linear-gradient(to bottom, #333, #222);
+    /*background: -moz-linear-gradient(to bottom, #333, #222);*/
+    /*background: -ms-linear-gradient(to bottom, #333, #222);*/
+    /*background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#222));*/
+    /*background: -webkit-linear-gradient(to bottom, 333, #222);*/
+    /*background: -o-linear-gradient(to bottom, #333, #222);*/
+    /*background: linear-gradient(to bottom, #333, #222);*/
 }
 
 .page-container {
@@ -42,7 +48,7 @@ div.row-title {
     background: -webkit-linear-gradient(to bottom, 333, #222);
     background: -o-linear-gradient(to bottom, #333, #222);
     background: linear-gradient(to bottom, #333, #222);
-    color:white;
+    color:#1de9c3;
     padding:30px;
 }
 

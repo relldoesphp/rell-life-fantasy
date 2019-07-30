@@ -6,6 +6,8 @@ $url   = $this->url('podcast', ['action' => 'delete', 'id' => $id]);
 
 $this->headTitle($title);
 ?>
+<div class="section container full-height white">
+    <div class="row container">
 <h1><?= $this->escapeHtml($title) ?></h1>
 
 <p>
@@ -21,3 +23,6 @@ $this->headTitle($title);
         <input type="submit" class="btn btn-success" name="del" value="No" />
     </div>
 </form>
+
+    </div>
+</div>

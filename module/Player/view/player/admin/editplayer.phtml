@@ -1,0 +1,201 @@
+<?php
+// module/Album/view/album/album/edit.phtml:
+
+$title = 'Edit Player';
+$this->headTitle($title);
+?>
+<div class="section container full-height white">
+    <div class="row container">
+        <h1><?= $this->escapeHtml($title) ?></h1>
+        <?php
+        $firstName = $form->get('first_name');
+        $firstName->setAttribute('class', 'form-control');
+        $firstName->setAttribute('placeholder', 'First Name');
+
+        $lastName = $form->get('last_name');
+        $lastName->setAttribute('class', 'form-control');
+        $lastName->setAttribute('placeholder', 'Last Name');
+
+        $position = $form->get('position');
+        $position->setAttribute('class', 'form-control');
+
+        $team = $form->get('team');
+        $team->setAttribute('class', 'form-control');
+        $team->setAttribute('placeholder', 'Team');
+
+        $player_info = $form->get('player_info');
+        $player_info->setAttribute('class', 'form-control');
+        $player_info->setAttribute('placeholder', 'player info');
+
+        $team_info = $form->get('team_info');
+        $team_info->setAttribute('class', 'form-control');
+        $team_info->setAttribute('placeholder', 'player info');
+
+        $api_info = $form->get('api_info');
+        $api_info->setAttribute('class', 'form-control');
+        $api_info->setAttribute('placeholder', 'player info');
+
+        $injury_info = $form->get('injury_info');
+        $injury_info->setAttribute('class', 'form-control');
+        $injury_info->setAttribute('placeholder', 'player info');
+
+        $metrics = $form->get('metrics');
+        $metrics->setAttribute('class', 'form-control');
+        $metrics->setAttribute('placeholder', 'player info');
+
+        $percentiles = $form->get('percentiles');
+        $percentiles->setAttribute('class', 'form-control');
+        $percentiles->setAttribute('placeholder', 'percentiles');
+
+        $collegeStats = $form->get('college_stats');
+        $collegeStats->setAttribute('class', 'form-control');
+        $collegeStats->setAttribute('placeholder', 'college_stats');
+
+        $images = $form->get('images');
+        $images->setAttribute('class', 'form-control');
+        $images->setAttribute('placeholder', 'images');
+
+        $submit = $form->get('submit');
+        $submit->setAttribute('class', 'btn btn-primary');
+
+        $form->setAttribute('action', $this->url('admin', [
+            'action' => 'editPlayer',
+            'id'     => $id,
+        ]));
+        $form->prepare();
+
+        echo $this->form()->openTag($form);
+        ?>
+        <div class="form-group col m6">
+            <?= $this->formLabel($firstName) ?>
+            <?= $this->formElement($firstName) ?>
+            <?= $this->formElementErrors()->render($firstName, ['class' => 'help-block']) ?>
+        </div>
+
+        <div class="form-group col m6">
+            <?= $this->formLabel($lastName) ?>
+            <?= $this->formElement($lastName) ?>
+            <?= $this->formElementErrors()->render($lastName, ['class' => 'help-block']) ?>
+        </div>
+
+        <div class="form-group col m6">
+            <?= $this->formLabel($position) ?>
+            <?= $this->formElement($position) ?>
+            <?= $this->formElementErrors()->render($lastName, ['class' => 'help-block']) ?>
+        </div>
+
+
+        <div class="form-group col m6 my-2">
+            <?= $this->formLabel($team) ?>
+            <?= $this->formElement($team) ?>
+            <?= $this->formElementErrors()->render($team, ['class' => 'help-block']) ?>
+        </div>
+
+        <fieldset>
+            <legend>Player Info</legend>
+            <div class="form-group col m12">
+                <?= $this->formLabel($player_info) ?>
+                <?= $this->formElement($player_info) ?>
+                <?= $this->formElementErrors()->render($player_info, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Team Info</legend>
+            <div class="form-group col m12">
+                <?= $this->formLabel($team_info) ?>
+                <?= $this->formElement($team_info) ?>
+                <?= $this->formElementErrors()->render($team_info, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>API Info</legend>
+            <div class="form-group col m12">
+                <?= $this->formLabel($api_info) ?>
+                <?= $this->formElement($api_info) ?>
+                <?= $this->formElementErrors()->render($api_info, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Injury Info</legend>
+            <div class="form-group col m12">
+                <?= $this->formLabel($injury_info) ?>
+                <?= $this->formElement($injury_info) ?>
+                <?= $this->formElementErrors()->render($injury_info, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Metrics</legend>
+            <div class="form-group col m12">
+                <?= $this->formLabel($metrics) ?>
+                <?= $this->formElement($metrics) ?>
+                <?= $this->formElementErrors()->render($metrics, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Percentiles</legend>
+            <div class="form-group col m12">
+                <?= $this->formLabel($percentiles) ?>
+                <?= $this->formElement($percentiles) ?>
+                <?= $this->formElementErrors()->render($percentiles, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>College Stats</legend>
+            <div class="form-group col m12">
+                <?= $this->formLabel($collegeStats) ?>
+                <?= $this->formElement($collegeStats) ?>
+                <?= $this->formElementErrors()->render($collegeStats, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Images</legend>
+            <div class="form-group col m12">
+                <?= $this->formLabel($images) ?>
+                <?= $this->formElement($images) ?>
+                <?= $this->formElementErrors()->render($images, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+        </fieldset>
+
+        <div class="form-group col m6 my-2">
+            <?= $this->formSubmit($submit) ?>
+        </div>
+
+
+        <?php
+
+        echo $this->formHidden($form->get('id'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+
+<script>
+    function prettyPrint() {
+        var textArea = $(this).parent().find('textarea');
+
+    }
+
+    $(".prettyPrint").on("click", function(e){
+        e.preventDefault();
+        var textArea = $(this).parent().find('textarea');
+        var ugly = textArea.val();
+        var obj = JSON.parse(ugly);
+        var pretty = JSON.stringify(obj, undefined, 4);
+        textArea.val(pretty);
+    });
+</script>

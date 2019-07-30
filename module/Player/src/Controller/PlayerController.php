@@ -107,22 +107,6 @@ class PlayerController extends AbstractActionController
             'jsVars' => $jsVars,
         ]);
 
-//        switch ($playerData['position']) {
-//            case 'WR':
-//                $viewModel->setTemplate('player/player/view');
-//                break;
-//            case 'RB':
-//                $viewModel->setTemplate('player/player/');
-//                break;
-//            case 'TE':
-//                $viewModel->setTemplate('player/player/wr');
-//                break;
-//            case 'QB':
-//                $viewModel->setTemplate('player/player/qb');
-//                break;
-//            default:
-//                $viewModel->setTemplate('player/player/wr');
-//        }
         return $viewModel;
     }
 

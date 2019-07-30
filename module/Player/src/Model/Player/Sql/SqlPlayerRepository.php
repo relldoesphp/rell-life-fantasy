@@ -184,6 +184,24 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         return $player;
     }
 
+    public function findPlayerBySleeperId($sleeperId)
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['p' => 'player_test']);
+        $select->where(['sleeper_id = ?' => $sleeperId]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
+        $resultSet->initialize($result);
+        $return = $resultSet->current();
+    }
+
     /**
      * @return mixed
      */

@@ -56,6 +56,158 @@ class Player
     }
 
     /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param string $first_name
+     */
+    public function setFirstName($first_name)
+    {
+        $this->first_name = $first_name;
+    }
+
+    /**
+     * @param string $last_name
+     */
+    public function setLastName($last_name)
+    {
+        $this->last_name = $last_name;
+    }
+
+    /**
+     * @param mixed $search_full_name
+     */
+    public function setSearchFullName($search_full_name)
+    {
+        $this->search_full_name = $search_full_name;
+    }
+
+    /**
+     * @param string $team
+     */
+    public function setTeam($team)
+    {
+        $this->team = $team;
+    }
+
+    /**
+     * @param string $position
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    }
+
+    /**
+     * @param array $player_info
+     */
+    public function setPlayerInfo($player_info)
+    {
+        $this->player_info = $player_info;
+    }
+
+    /**
+     * @param array $team_info
+     */
+    public function setTeamInfo($team_info)
+    {
+        $this->team_info = $team_info;
+    }
+
+    /**
+     * @param array $api_info
+     */
+    public function setApiInfo($api_info)
+    {
+        $this->api_info = $api_info;
+    }
+
+    /**
+     * @param array $injury_info
+     */
+    public function setInjuryInfo($injury_info)
+    {
+        $this->injury_info = $injury_info;
+    }
+
+    /**
+     * @param array $metrics
+     */
+    public function setMetrics($metrics)
+    {
+        $this->metrics = $metrics;
+    }
+
+    /**
+     * @param string $percentiles
+     */
+    public function setPercentiles($percentiles)
+    {
+        $this->percentiles = $percentiles;
+    }
+
+    /**
+     * @param string $college_stats
+     */
+    public function setCollegeStats($college_stats)
+    {
+        $this->college_stats = $college_stats;
+    }
+
+    /**
+     * @param string $sleeper_id
+     */
+    public function setSleeperId($sleeper_id)
+    {
+        $this->sleeper_id = $sleeper_id;
+    }
+
+    /**
+     * @param string $collegeTable
+     */
+    public function setCollegeTable($collegeTable)
+    {
+        $this->collegeTable = $collegeTable;
+    }
+
+    /**
+     * @param string $ordinals
+     */
+    public function setOrdinals($ordinals)
+    {
+        $this->ordinals = $ordinals;
+    }
+
+    /**
+     * @param string $seasonStats
+     */
+    public function setSeasonStats($seasonStats)
+    {
+        $this->seasonStats = $seasonStats;
+    }
+
+    /**
+     * @param string $gameLogs
+     */
+    public function setGameLogs($gameLogs)
+    {
+        $this->gameLogs = $gameLogs;
+    }
+
+    /**
+     * @param string $images
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+    }
+
+    /**
      * @return mixed
      */
     public function getLastName()
@@ -63,6 +215,10 @@ class Player
         return $this->last_name;
     }
 
+    public function getSearchFullName()
+    {
+        return $this->search_full_name;
+    }
     /**
      * @return mixed
      */
@@ -88,6 +244,18 @@ class Player
         $this->college_stats = (!empty($this->college_stats)) ? Json::decode($this->college_stats, 1) : [];
         $this->images = (!empty($this->images)) ? Json::decode($this->images, 1) : [];
     }
+
+//    public function encodeJson()
+//    {
+//        $this->player_info = (is_array($this->player_info)) ? Json::encode($this->player_info) : [];
+//        $this->team_info = (!empty($this->team_info)) ? Json::encode($this->team_info) : [];
+//        $this->api_info = (!empty($this->api_info)) ? Json::decode($this->api_info, 1) : [];
+//        $this->injury_info = (!empty($this->injury_info)) ? Json::decode($this->injury_info, 1) : [];
+//        $this->metrics = (!empty($this->metrics)) ? Json::decode($this->metrics, 1) : [];
+//        $this->percentiles = (!empty($this->percentiles)) ? Json::decode($this->percentiles, 1) : [];
+//        $this->college_stats = (!empty($this->college_stats)) ? Json::decode($this->college_stats, 1) : [];
+//        $this->images = (!empty($this->images)) ? Json::decode($this->images, 1) : [];
+//    }
 
     public function makeSeasonStats()
     {
@@ -257,5 +425,24 @@ class Player
             }
         }
         $this->images = $images;
+    }
+
+    public function getArrayCopy()
+    {
+        return [
+            'id'     => $this->id,
+            'first_name'  => $this->first_name,
+            'last_name'  => $this->last_name,
+            'team' => $this->team,
+            'position' => $this->position,
+            'player_info' => $this->player_info,
+            'team_info' => $this->team_info,
+            'api_info' => $this->api_info,
+            'injury_info' => $this->injury_info,
+            'metrics' => $this->metrics,
+            'percentiles' => $this->percentiles,
+            'college_stats' => $this->college_stats,
+            'images' => $this->images
+        ];
     }
 }

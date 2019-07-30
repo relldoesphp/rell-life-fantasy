@@ -1,8 +1,14 @@
 
 <div class="section white full-height">
-    <div id="custom-templates" class="container my-2">
-        <input class="typeahead" type="text" placeholder="Oscar winners for Best Picture">
+    <div id="search-players" class="container player-search my-2 m6">
+        <input class="typeahead" type="text" placeholder="Search for Players">
     </div>
+<!--    <div class="header">-->
+<!--        <div class="col s12 m6 container header-wrapper header">-->
+<!--            <h2 class="center" style="color:#1de9c3">--><?//= $player['first_name']." ".$player['last_name'] ?><!--</h2>-->
+<!--        </div>-->
+<!--    </div>-->
+
     <div class="row player-header scrollspy container" id="player-header">
         <div class="col m6 s12 profile">
             <div class="card small player-card hoverable">
@@ -12,9 +18,9 @@
                     </div>
                 </div>
                 <div class="card-content player-card-content center">
-                    <a class="btn-floating right halfway-fab waves-effect waves-dark activator"><i class="material-icons">arrow_upward</i></a>
-                    <span class="player-title activator white-text text-darken-4"><?= $player['first_name']." ".$player['last_name'] ?></span>
-                    <p class="player-title activator yellow-text text-darken-4">#<?=$player['team_info']['number'] ?> <?=$player['position']?> <?= $player['team']?></p>
+                    <a class="btn-floating right halfway-fab waves-effect waves-dark activator teal"><i class="material-icons">arrow_upward</i></a>
+                    <span class="player-title activator row-title text-darken-4"><?= $player['first_name']." ".$player['last_name'] ?></span>
+                    <p class="player-title activator text-darken-4" style="color:#1de9c3">#<?=$player['team_info']['number'] ?> <?=$player['position']?> <?= $player['team']?></p>
                 </div>
                 <div class="card-reveal player-card-reveal">
                     <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>

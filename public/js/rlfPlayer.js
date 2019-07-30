@@ -630,6 +630,7 @@ var rlf =  {
             labels: ['College Score','Bully Score', 'Speed', 'Route Agility', 'Jumpball', 'Elusiveness', 'Run Power'],
             datasets: [{
                     type: 'bar',
+                    backgroundColor: 'rgb(29, 233, 195, 0.4)',
                     stack: 'Stack One',
                     label: 'WR Skills',
                     borderWidth: 2,
@@ -1438,7 +1439,7 @@ var rlf =  {
         });
 
 
-        $('#custom-templates .typeahead').typeahead({
+        $('.player-search .typeahead').typeahead({
                 hint: true,
                 highlight: true,
                 minLength: 1
@@ -1449,10 +1450,16 @@ var rlf =  {
                 display: 'full_name'
             });
 
-        $('#custom-templates .typeahead').on('typeahead:selected', function(evt, item){
+        $('#search-players .typeahead').on('typeahead:selected', function(evt, item){
             var url = "http://relllifefantasy/player/view/"+item.nohash;
             window.location.href=url;
         });
+
+        $('#edit-players .typeahead').on('typeahead:selected', function(evt, item){
+            var url = "http://relllifefantasy/admin/editplayer/"+item.id;
+            window.location.href=url;
+        });
+
     },
 
     substringMatcher : function(strs) {
@@ -1791,6 +1798,9 @@ var rlf =  {
             theta: labels,
             fill: 'toself',
             opacity: 0.5,
+            marker: {
+                color: 'rgb(29, 233, 195)'
+            },
         }];
 
         var layout = {
@@ -1811,6 +1821,7 @@ var rlf =  {
                 t: 25,
                 pad: 0
             },
+
             showlegend: false
         };
 

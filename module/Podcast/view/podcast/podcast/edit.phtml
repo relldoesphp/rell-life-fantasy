@@ -4,6 +4,8 @@
 $title = 'Edit Podcast';
 $this->headTitle($title);
 ?>
+<div class="section container full-height white">
+    <div class="row container">
     <h1><?= $this->escapeHtml($title) ?></h1>
 <?php
 $podcast = $form->get('title');
@@ -41,3 +43,7 @@ echo $this->form()->openTag($form);
 echo $this->formSubmit($submit);
 echo $this->formHidden($form->get('id'));
 echo $this->form()->closeTag();
+?>
+</div>
+</div>
+

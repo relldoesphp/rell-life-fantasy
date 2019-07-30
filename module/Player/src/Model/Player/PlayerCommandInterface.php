@@ -15,6 +15,8 @@ namespace Player\Model\Player;
  */
 interface PlayerCommandInterface
 {
+    public function save(Player $player);
+
     public function addPlayer(Player $player);
 
     public function updatePlayer(Player $player);
@@ -27,13 +29,8 @@ interface PlayerCommandInterface
 
     public function getTeCommand();
 
-    public function getSleeperStats();
-
     public function getSleeperGameLogs();
 
     public function makePlayerNameJson();
-
-    public function updateSleeperInfo();
-
 
 }

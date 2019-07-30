@@ -60,13 +60,55 @@ class SqlPlayerCommand implements PlayerCommandInterface
         $this->ssCommand = new SqlSSCommand($db, $consoleAdapter);
     }
 
-    /**
-     * @param Player $player
-     * @return mixed
-     */
+    public function savePlayer(Player $player)
+    {
+        if ($player->getId() != null) {
+            $this->updatePlayer($player);
+        } else {
+            $this->addPlayer($player);
+        }
+    }
+
+
     public function addPlayer(Player $player)
     {
-        // TODO: Implement addPlayer() method.
+        /** Insert new player **/
+        $sql    = new Sql($this->db);
+        // Prep Json
+        $playerInfoString = $this->makeJsonString($player->getPlayerInfo());
+        $apiInfoString = $this->makeJsonString($player->getApiInfo());
+        $teamInfoString = $this->makeJsonString($player->getTeamInfo());
+        $injuryInfoString = $this->makeJsonString($player->getInjuryInfo());
+        $metricsInfoString = $this->makeJsonString($player->getMetrics());
+        $percentilesString = $this->makeJsonString($player->getPercentiles());
+        $collegeStatsString = $this->makeJsonString($player->getCollegeStats());
+        $imagesString = $this->makeJsonString($player->getImages());
+
+        // Build Insert
+        $insert = $sql->insert('player_test');
+        $insert->values([
+            'first_name' => $player->getFirstName(),
+            'last_name' => $player->getLastName(),
+            'search_full_name' => $player->getSearchFullName(),
+            'position' => $player->getPosition(),
+            'team' => $player->getTeam(),
+            'player_info' => new Expression("json_set(player_info, {$playerInfoString})"),
+            'team_info' => new Expression("json_set(team_info, {$teamInfoString})"),
+            'api_info' => new Expression("json_set(api_info, {$apiInfoString})"),
+            'injury_info' => new Expression("json_set(injury_info, {$injuryInfoString})"),
+            'metrics' => new Expression("json_set(api_info, {$metricsInfoString})"),
+            'percentiles' => new Expression("json_set(api_info, {$percentilesString})"),
+            'college_stats' => new Expression("json_set(api_info, {$collegeStatsString})"),
+            'images' => new Expression("json_set(api_info, {$imagesString})"),
+        ]);
+
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        try {
+            $result = $stmt->execute();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -75,7 +117,42 @@ class SqlPlayerCommand implements PlayerCommandInterface
      */
     public function updatePlayer(Player $player)
     {
-        // TODO: Implement updatePlayer() method.
+        /** Prep Json **/
+        $playerInfoString = $this->makeJsonString($player->getPlayerInfo());
+        $apiInfoString = $this->makeJsonString($player->getApiInfo());
+        $teamInfoString = $this->makeJsonString($player->getTeamInfo());
+        $injuryInfoString = $this->makeJsonString($player->getInjuryInfo());
+        $metricsInfoString = $this->makeJsonString($player->getMetrics());
+        $percentilesString = $this->makeJsonString($player->getPercentiles());
+        $collegeStatsString = $this->makeJsonString($player->getCollegeStats());
+        $imagesString = $this->makeJsonString($player->getImages());
+
+        /** Update player **/
+        $sql    = new Sql($this->db);
+        $update = $sql->update('player_test');
+        $update->values([
+            'first_name' => $player->getFirstName(),
+            'last_name' => $player->getLastName(),
+            'search_full_name' => $player->getSearchFullName(),
+            'position' => $player->getPosition(),
+            'team' => $player->getTeam(),
+            'player_info' => new Expression("json_set(player_info, {$playerInfoString})"),
+            'team_info' => new Expression("json_set(team_info, {$teamInfoString})"),
+            'api_info' => new Expression("json_set(api_info, {$apiInfoString})"),
+            'injury_info' => new Expression("json_set(injury_info, {$injuryInfoString})"),
+            'metrics' => new Expression("json_set(api_info, {$metricsInfoString})"),
+            'percentiles' => new Expression("json_set(api_info, {$percentilesString})"),
+            'college_stats' => new Expression("json_set(api_info, {$collegeStatsString})"),
+            'images' => new Expression("json_set(api_info, {$imagesString})"),
+        ]);
+        $update->where(['id = ?' => $player->getId()]);
+        $stmt   = $sql->prepareStatementForSqlObject($update);
+        try {
+            $result = $stmt->execute();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -252,121 +329,7 @@ class SqlPlayerCommand implements PlayerCommandInterface
         $json = json_encode($resultSet->toArray());
     }
 
-    public function updateSleeperInfo()
-    {
-        $request = new Request();
-        $uri = "https://api.sleeper.app/v1/players/nfl";
-        $request->setUri($uri);
 
-        $client = new Client();
-        $response = $client->send($request);
-        $html = $response->getBody();
-
-        $json = (array) json_decode($html);
-
-        foreach ($json as $key => $value) {
-            $player = [];
-            $player['sleeper_id'] = $value->player_id;
-            $player['first_name'] = $value->first_name;
-            $player['last_name'] = $value->last_name;
-            $player['search_full_name'] = $value->first_name." ".$value->last_name;
-            $player['position'] = $value->position;
-            $player['team'] = $value->team;
-
-            $player['player_info'] = (array)$value;
-
-            unset($player['player_info']['espn_id']);
-            unset($player['player_info']['yahoo_id']);
-            unset($player['player_info']['rotoworld_id']);
-            unset($player['player_info']['rotowire_id']);
-            unset($player['player_info']['stats_id']);
-            unset($player['player_info']['sportradar_id']);
-            unset($player['player_info']['gsis_id']);
-            unset($player['player_info']['injury_notes']);
-            unset($player['player_info']['injury_body_part']);
-            unset($player['player_info']['injury_start_date']);
-            unset($player['player_info']['team']);
-            unset($player['player_info']['position']);
-            unset($player['player_info']['number']);
-            unset($player['player_info']['depth_chart_position']);
-            unset($player['player_info']['depth_chart_order']);
-            unset($player['player_info']['practice_participation']);
-            unset($player['player_info']['practice_description']);
-
-            $player['api_info']['espn_id'] = $value->espn_id;
-            $player['api_info']['yahoo_id'] = $value->yahoo_id;
-            $player['api_info']['rotoworld_id'] = $value->rotoworld_id;
-            $player['api_info']['rotowire_id'] = $value->rotowire_id;
-            $player['api_info']['stats_id'] = $value->stats_id;
-            $player['api_info']['sportradar_id'] = $value->sportradar_id;
-            $player['api_info']['gsis_id'] = $value->gsis_id;
-
-            $player['injury_info']['injury_status'] = $value->injury_status;
-            $player['injury_info']['injury_notes'] = $value->injury_notes;
-            $player['injury_info']['injury_body_part'] = $value->injury_body_part;
-            $player['injury_info']['injury_start_date'] = $value->injury_start_date;
-
-            $player['team_info']['team'] = $value->team;
-            $player['team_info']['position'] = $value->position;
-            $player['team_info']['number'] = $value->number;
-            $player['team_info']['depth_chart_position'] = $value->depth_chart_position;
-            $player['team_info']['depth_chart_order'] = $value->depth_chart_order;
-            $player['team_info']['practice_participation'] = $value->practice_participation;
-            $player['team_info']['practice_description'] = $value->practice_description;
-
-            $sql    = new Sql($this->db);
-            $select = $sql->select();
-            $select->from(['p' => 'player_test']);
-            $select->where(['sleeper_id = ?' =>$player['sleeper_id']]);
-            $stmt   = $sql->prepareStatementForSqlObject($select);
-            $result = $stmt->execute();
-
-            if ($result->count() != 0) {
-                /** Update existing player **/
-                // Prep Json
-                $playerInfoString = $this->makeJsonString($player['player_info']);
-                $apiInfoString = $this->makeJsonString($player['api_info']);
-                $teamInfoString = $this->makeJsonString($player['team_info']);
-                $injuryInfoString = $this->makeJsonString($player['injury_info']);
-
-                // Build Update
-                $update = $sql->update('player_test');
-                $update->set([
-                    'first_name' => $player['first_name'],
-                    'last_name' => $player['last_name'],
-                    'search_full_name' => $player['search_full_name'],
-                    'position' => $player['position'],
-                    'team' => $player['team'],
-                    'player_info' => new Expression("json_set(player_info, {$playerInfoString})"),
-                    'api_info' => new Expression("json_set(api_info, {$apiInfoString})"),
-                    'team_info' => new Expression("json_set(team_info, {$teamInfoString})"),
-                    'injury_info' => new Expression("json_set(injury_info, {$injuryInfoString})"),
-                ]);
-                $update->where(['sleeper_id = ?', $player['sleeper_id']]);
-            } else {
-                /** Insert new player **/
-                // Prep Json
-                $player['player_info'] = json_encode($player['player_info']);
-                $player['api_info'] = json_encode($player['api_info']);
-                $player['team_info'] = json_encode($player['team_info']);
-                $player['injury_info'] = json_encode($player['injury_info']);
-
-                // Build Insert
-                $insert = $sql->insert('player_test');
-                $insert->values([
-                    'first_name' => $player['first_name'],
-                    'last_name' => $player['last_name'],
-                    'search_full_name' => $player['search_full_name'],
-                    'position' => $player['position'],
-                    'team' => $player['team'],
-                    'player_info' => $player['player_info'],
-                    'api_info' => $player['api_info'],
-                    'team_info' => $player['team_info'],
-                    'injury_info' => $player['injury_info'],
-                ]);
-            }
-        }
-    }
 
     public function makeJsonString($array=[])
     {
