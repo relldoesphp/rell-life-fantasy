@@ -274,6 +274,11 @@ class Player
                     ];
                 }
             }
+        } else {
+            $tableData[] = [
+                "year" => 2018,
+                "stats" => []
+            ];
         }
 
         return $tableData;
@@ -300,6 +305,12 @@ class Player
                     ];
                 }
             }
+        } else {
+            $tableData[] = [
+                'year' => '',
+                'week' => '',
+                'stats' => []
+            ];
         }
         return $tableData;
     }
@@ -412,13 +423,54 @@ class Player
         if (!array_key_exists('draft_year', $this->player_info)) {
             $this->player_info['draft_year'] = '';
         }
+
+        $infoArray = [
+            'arms',
+            'bmi',
+            'draft_pick',
+            'draft_year',
+            'college',
+            'collegeSeasons'
+        ];
+        foreach($infoArray as $metric) {
+            if (!array_key_exists($metric, $this->player_info)) {
+                $this->metrics[$metric] = "N/A";
+                $this->percentiles[$metric] = null;
+            }
+        }
+
+
+        $metricsArray = [
+            'fortyTime',
+            'cone',
+            'shuttle',
+            'verticalJump',
+            'broadJump',
+            'benchPress',
+            'collegeScore',
+            'bully',
+            'elusiveness',
+            'power',
+            'jumpball',
+            'routeAgility',
+            'jukeAgility',
+            'breakoutClass',
+            'breakoutYears',
+            'bestDominator'
+            ];
+        foreach($metricsArray as $metric) {
+            if (!array_key_exists($metric, $this->metrics)) {
+                $this->metrics[$metric] = "N/A";
+                $this->percentiles[$metric] = null;
+            }
+        }
     }
 
     private function makeImages()
     {
         $images = "";
         if (empty($this->images)) {
-            $images = "<a class='carousel-item' href='#one!'><img src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; width:75%; margin:auto;'></a>";
+            $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; margin:auto;'></a>";
         } else {
             foreach ($this->images as $key => $url) {
                 $images .= "<a class='carousel-item' href='#{$key}!'><img src='{$url}' style='height:280px'></a>\n";

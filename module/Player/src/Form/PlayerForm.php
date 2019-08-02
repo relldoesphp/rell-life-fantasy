@@ -116,8 +116,11 @@ class PlayerForm extends Form
             'name' => 'college_stats',
             'options' => [
                 'label' => 'college_stats',
+                'rows'        => '5',
             ],
         ]);
+
+        $this->get('college_stats')->setValue('{"2014": {"recs": "", "year": "2014", "class": "", "games": "", "recAvg": "", "recTds": "", "recYds": "", "rushes": "", "totals": {"tds": "", "yds": "", "recs": "", "returnTds": "", "returnYds": ""}, "college": "", "rushAvg": "", "rushTds": "", "rushYds": "", "position": "", "conference": ""}}');
 
         $this->add([
             'type' => 'textarea',

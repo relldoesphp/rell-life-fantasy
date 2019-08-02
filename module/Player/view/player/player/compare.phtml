@@ -1,5 +1,5 @@
 
-<div class="section white full-height">
+<div class="section white full-height container">
     <div class="row center container">
         <div class="col s4">
             <div class="input-field col s12 compare-search-field">
@@ -26,9 +26,9 @@
                     </div>
                 </div>
                 <div class="card-content player-card-content center">
-                    <a class="btn-floating right halfway-fab waves-effect waves-light red activator"><i class="material-icons">arrow_upward</i></a>
+                    <a class="btn-floating right halfway-fab waves-effect waves-light activator"><i class="material-icons teal-text">arrow_upward</i></a>
                     <span class="player-title activator white-text text-darken-4"><?= $players[0]['first_name']." ".$players[0]['last_name'] ?></span>
-                    <p class="player-title activator yellow-text text-darken-4"><?=$players[0]['team_info']['number'] ?> <?=$players[0]['position']?> <?= $players[0]['team']?></p>
+                    <p class="player-title activator teal-text"><?=$players[0]['team_info']['number'] ?> <?=$players[0]['position']?> <?= $players[0]['team']?></p>
                 </div>
                 <div class="card-reveal player-card-reveal">
                     <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>
@@ -70,9 +70,9 @@
                         </div>
                     </div>
                     <div class="card-content player-card-content center">
-                        <a class="btn-floating right halfway-fab waves-effect waves-light red activator"><i class="material-icons">arrow_upward</i></a>
+                        <a class="btn-floating right halfway-fab waves-effect waves-light teal activator"><i class="material-icons">arrow_upward</i></a>
                         <span class="player-title activator white-text text-darken-4"><?= $players[1]['first_name']." ".$players[1]['last_name'] ?></span>
-                        <p class="player-title activator yellow-text text-darken-4"><?=$players[1]['team_info']['number'] ?> <?=$players[1]['position']?> <?= $players[1]['team']?></p>
+                        <p class="player-title activator teal-text"><?=$players[1]['team_info']['number'] ?> <?=$players[1]['position']?> <?= $players[1]['team']?></p>
                     </div>
                     <div class="card-reveal player-card-reveal">
                         <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>
@@ -87,66 +87,178 @@
             </div>
     </div>
     <div class="row player-prospect container scrollspy" id="player-prospect" style="margin-top:50px">
+        <div class="col m5">
+            <table>
+                <tr>
+                    <th class="player-skillz-role1 center" width="33%">Slot</th>
+                    <th class="player-skillz-role2 center" width="33%">Deep</th>
+                    <th class="player-skillz-role3 center" width="33%">Outside-X</th>
+                </tr>
+                <tr id="player1-skill">
+                    <td>
+                        <div class="role-one-score center"></div>
+                        <div class="progress role-one-bar">
+                            <div class="determinate" style="width: 0%"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="role-two-score center"></div>
+                        <div class="progress role-two-bar">
+                            <div class="determinate" style="width: 0%"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="role-three-score center"></div>
+                        <div class="progress role-three-bar">
+                            <div class="determinate" style="width: 0%"></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col m2 center">
+            <h4>VS.</h4>
+        </div>
+        <div class="col m5">
+            <table id="player-skillz">
+                <tr>
+                    <th class="player-skillz-role1 center" width="33%">Slot</th>
+                    <th class="player-skillz-role2 center" width="33%">Deep</th>
+                    <th class="player-skillz-role3 center" width="33%">Outside-X</th>
+                </tr>
+                <tr id="player2-skill">
+                    <td>
+                        <div class="role-one-score center"></div>
+                        <div class="progress role-one-bar">
+                            <div class="determinate" style="width: 0%"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="role-two-score center"></div>
+                        <div class="progress role-two-bar">
+                            <div class="determinate" style="width: 0%"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="role-three-score center"></div>
+                        <div class="progress role-three-bar">
+                            <div class="determinate" style="width: 0%"></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <a class="dark waves-effect waves-light btn-small right center modal-trigger" href="#modal2">Explain<i class="material-icons">live_help</i></a>
         <div class="col s12 center row-title"><h6>Prospect Breakdown</h6></div>
-        <div class="col m2 s12 skillset z-depth-1 hoverable" id="player1-skill">
-            <div class="slot-box center">
-                <div style="margin-top:10px" class="role-one-title"></div>
-                <div class="role-one-score"></div>
-                <div class="progress role-one-bar">
-                    <div class="determinate" style="width: 0%"></div>
-                </div>
-            </div>
-            <div class="deep-box center">
-                <div style="margin-top:10px" class="role-two-title"></div>
-                <div class="role-two-score"></div>
-                <div class="progress role-two-bar">
-                    <div class="determinate" style="width: 0%"></div>
-                </div>
-            </div>
-            <div class="alpha-box center">
-                <div style="margin-top:10px" class="role-three-title"></div>
-                <div class="role-three-score"></div>
-                <div class="progress role-three-bar">
-                    <div class="determinate" style="width: 0%"></div>
-                </div>
-            </div>
+<!--        <div class="col m1 s12 skillset z-depth-1 hoverable" id="player1-skill" style="height:450px">-->
+<!--            <div class="slot-box center">-->
+<!--                <div style="margin-top:10px " class="role-one-title"></div>-->
+<!--                <div class="role-one-score"></div>-->
+<!--                <div class="progress role-one-bar">-->
+<!--                    <div class="determinate" style="width: 0%"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="deep-box center">-->
+<!--                <div style="margin-top:10px" class="role-two-title"></div>-->
+<!--                <div class="role-two-score"></div>-->
+<!--                <div class="progress role-two-bar">-->
+<!--                    <div class="determinate" style="width: 0%"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="alpha-box center">-->
+<!--                <div style="margin-top:10px" class="role-three-title"></div>-->
+<!--                <div class="role-three-score"></div>-->
+<!--                <div class="progress role-three-bar">-->
+<!--                    <div class="determinate" style="width: 0%"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="col s12 prospect z-depth-1 hoverable waves-block" style="background:white; position: relative; height:450px;">
+            <canvas id="canvas" width="75%"></canvas>
         </div>
-        <div class="col m8 s12 prospect z-depth-1 hoverable waves-block">
-            <div id="prospect-graph" style="margin:auto"></div>
+<!--        <div class="col m1 s12 skillset z-depth-1 hoverable" id="player2-skill" style="height:450px">-->
+<!--            <div class="slot-box center">-->
+<!--                <div style="margin-top:10px" class="role-one-title"></div>-->
+<!--                <div class="role-one-score"></div>-->
+<!--                    <div class="progress role-one-bar">-->
+<!--                        <div class="determinate" style="width: 0%"></div>-->
+<!--                    </div>-->
+<!--            </div>-->
+<!--            <div class="deep-box center">-->
+<!--                <div style="margin-top:10px" class="role-two-title"></div>-->
+<!--                <div class="role-two-score"></div>-->
+<!--                <div class="progress role-two-bar">-->
+<!--                    <div class="determinate" style="width: 0%"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="alpha-box center">-->
+<!--                <div style="margin-top:10px" class="role-three-title"></div>-->
+<!--                <div class="role-three-score"></div>-->
+<!--                <div class="progress role-three-bar">-->
+<!--                    <div class="determinate" style="width: 0%"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    <div class="row container white">
+        <div class="col m6">
+            <h3>Workout Metrics</h3>
+            <table id="metrics">
+                <tr>
+                    <th style="width:20%"></th>
+                    <th style="width:40%" class="center"><?= $players[0]['first_name']." ".$players[0]['last_name'] ?></th>
+                    <th style="width:40%" class="center"><?= $players[1]['first_name']." ".$players[1]['last_name'] ?></th>
+                </tr>
+            </table>
         </div>
-        <div class="col m2 s12 skillset z-depth-1 hoverable" id="player2-skill">
-            <div class="slot-box center">
-                <div style="margin-top:10px" class="role-one-title"></div>
-                <div class="role-one-score"></div>
-                    <div class="progress role-one-bar">
-                        <div class="determinate" style="width: 0%"></div>
-                    </div>
-            </div>
-            <div class="deep-box center">
-                <div style="margin-top:10px" class="role-two-title"></div>
-                <div class="role-two-score"></div>
-                <div class="progress role-two-bar">
-                    <div class="determinate" style="width: 0%"></div>
-                </div>
-            </div>
-            <div class="alpha-box center">
-                <div style="margin-top:10px" class="role-three-title"></div>
-                <div class="role-three-score"></div>
-                <div class="progress role-three-bar">
-                    <div class="determinate" style="width: 0%"></div>
-                </div>
-            </div>
+        <div class="col m6">
+            <h3>College</h3>
+            <table id="college-table">
+            </table>
+        </div>
+    </div>
+    <div class="row container white">
+        <div class="col s12 m12">
+            <h3>2018 Season Stats</h3>
+            <table id="season-stats">
+<!--                <tr>-->
+<!--                    <th></th>-->
+<!--                    <th>PPG</th>-->
+<!--                    <th>Points</th>-->
+<!--                    <th>Recs</th>-->
+<!--                    <th>Targets</th>-->
+<!--                    <th>Yds</th>-->
+<!--                    <th>Tds</th>-->
+<!--                    <th>YPR</th>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>--><?//= $players[0]['first_name']." ".$players[0]['last_name'] ?><!--</td>-->
+<!--                    <td>--><?//= round(($players[0]['seasonTable'][0]['stats']['pts_ppr'] / $players[0]['seasonTable'][0]['stats']['gp']),1) ?><!--</td>-->
+<!--                    <td>--><?//= $players[0]['seasonTable'][0]['stats']['pts_ppr']?><!--</td>-->
+<!--                    <td>--><?//= $players[0]['seasonTable'][0]['stats']['rec']?><!--</td>-->
+<!--                    <td>--><?//= $players[0]['seasonTable'][0]['stats']['rec_tgt']?><!--</td>-->
+<!--                    <td>--><?//= $players[0]['seasonTable'][0]['stats']['rec_yd']?><!--</td>-->
+<!--                    <td>--><?//= $players[0]['seasonTable'][0]['stats']['rec_td']?><!--</td>-->
+<!--                    <td>--><?//= $players[0]['seasonTable'][0]['stats']['rec_ypt']?><!--</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>--><?//= $players[1]['first_name']." ".$players[0]['last_name'] ?><!--</td>-->
+<!--                    <td>--><?//= round(($players[1]['seasonTable'][0]['stats']['pts_ppr'] / $players[1]['seasonTable'][0]['stats']['gp']),1) ?><!--</td>-->
+<!--                    <td>--><?//= $players[1]['seasonTable'][0]['stats']['pts_ppr']?><!--</td>-->
+<!--                    <td>--><?//= $players[1]['seasonTable'][0]['stats']['rec']?><!--</td>-->
+<!--                    <td>--><?//= $players[1]['seasonTable'][0]['stats']['rec_tgt']?><!--</td>-->
+<!--                    <td>--><?//= $players[1]['seasonTable'][0]['stats']['rec_yd']?><!--</td>-->
+<!--                    <td>--><?//= $players[1]['seasonTable'][0]['stats']['rec_td']?><!--</td>-->
+<!--                    <td>--><?//= $players[1]['seasonTable'][0]['stats']['rec_ypt']?><!--</td>-->
+<!--                </tr>-->
+            </table>
         </div>
     </div>
 </div>
 <div class="player-menu">
-    <ul class="section table-of-contents">
+    <ul class="table-of-contents">
         <li><a href="#player-header">Measurables</a></li>
         <li><a href="#player-prospect">Prospect</a></li>
-        <li><a href="#player-situation">Situation</a></li>
         <li><a href="#player-stats">Stats</a></li>
-        <li><a href="#player-takes">Taeks</a></li>
     </ul>
 </div>
 

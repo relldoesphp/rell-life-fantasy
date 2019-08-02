@@ -4,12 +4,31 @@ body {
     /*background-size:cover;*/
 }
 
+a.brand-logo {
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #1de9c3;
+}
+
 div.profile {
     height:325px;
 }
 
+.teal-text {
+    color: #1de9c3 !important;
+}
+
+.teal {
+    background-color: #1de9c3 !important;
+}
+
 .section.white {
-    opacity: .95;
+    /*opacity: .95;*/
+    background: rgba(255,255,255,.98) !important;
+}
+
+.section.white.container .container {
+    width:95%;
 }
 
 .btn-floating.teal {
@@ -48,12 +67,20 @@ div.row-title {
     background: -webkit-linear-gradient(to bottom, 333, #222);
     background: -o-linear-gradient(to bottom, #333, #222);
     background: linear-gradient(to bottom, #333, #222);
-    color:#1de9c3;
+    color:white;
     padding:30px;
 }
 
 #player-header {
     margin-bottom:50px;
+}
+
+#player-header > .m4 img.sleeper_img {
+    width:100%;
+}
+
+#player-header > .m6 img.sleeper_img {
+    width:80%;
 }
 
 .player-menu {
@@ -66,6 +93,13 @@ div.row-title {
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 0px;
+    height:100px;
+    background:rgba(0,0,0,.80);
+    color:white;
+}
+
+.player-menu a {
+    color:white;
 }
 
 .player-takes {

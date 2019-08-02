@@ -51,6 +51,10 @@ $this->headTitle($title);
         $collegeStats->setAttribute('class', 'form-control');
         $collegeStats->setAttribute('placeholder', 'college_stats');
 
+        if (!$collegeStats->getValue()){
+            $collegeStats->setValue('{"2014": {"recs": "", "year": "2014", "class": "", "games": "", "recAvg": "", "recTds": "", "recYds": "", "rushes": "", "totals": {"tds": "", "yds": "", "recs": "", "returnTds": "", "returnYds": ""}, "college": "", "rushAvg": "", "rushTds": "", "rushYds": "", "position": "", "conference": ""}}');
+        };
+
         $images = $form->get('images');
         $images->setAttribute('class', 'form-control');
         $images->setAttribute('placeholder', 'images');
