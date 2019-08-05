@@ -11,6 +11,7 @@ namespace Player\Controller;
 use Player\Model\Player;
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
+use Player\Service\PlayerManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -19,36 +20,17 @@ class ScriptController extends AbstractActionController
 {
     private $command;
     private $repository;
-    private $wrCommand;
-    private $rbCommand;
-    private $teCommand;
-    private $olCommand;
-    private $dlCommand;
-    private $olbCommand;
-    private $ilbCommand;
-    private $cbCommand;
-    private $fsCommand;
-    private $ssCommand;
-
+    private $playerManager;
 
     public function __construct(
         PlayerCommandInterface $command,
-        PlayerRepositoryInterface $repository
+        PlayerRepositoryInterface $repository,
+        PlayerManager $playerManager
     )
     {
         $this->command = $command;
         $this->repository = $repository;
-        $this->qbCommand = $command->getQbCommand();
-        $this->wrCommand = $command->getWrCommand();
-        $this->rbCommand = $command->getRbCommand();
-        $this->teCommand = $command->getTeCommand();
-        $this->olCommand = $command->getOlCommand();
-        $this->dlCommand = $command->getDlCommand();
-        $this->olbCommand = $command->getOlbCommand();
-        $this->ilbCommand = $command->getIlbCommand();
-        $this->cbCommand = $command->getCbCommand();
-        $this->fsCommand = $command->getFsCommand();
-        $this->ssCommand = $command->getSsCommand();
+        $this->playerManager = $playerManager;
     }
 
     public function indexAction()
@@ -58,35 +40,36 @@ class ScriptController extends AbstractActionController
 
     public function updateWrMetricsAction()
     {
-        $type = "QB";
-//        $this->qbCommand->calculateMetrics($type);
-//        $this->qbCommand->calculatePercentiles($type);
-        $this->qbCommand->calculateSpecialScores($type);
-        $this->qbCommand->calculateSpecialPercentiles($type);
-
-        $type = "CB";
-        $this->cbCommand->calculateMetrics($type);
-        $this->cbCommand->calculatePercentiles($type);
-        $this->cbCommand->calculateSpecialScores($type);
-        $this->cbCommand->calculateSpecialPercentiles($type);
-
-        $type = "ILB";
-        $this->ilbCommand->calculateMetrics($type);
-        $this->ilbCommand->calculatePercentiles($type);
-        $this->ilbCommand->calculateSpecialScores($type);
-        $this->ilbCommand->calculateSpecialPercentiles($type);
-
-        $type = "OLB";
-        $this->olbCommand->calculateMetrics($type);
-        $this->olbCommand->calculatePercentiles($type);
-        $this->olbCommand->calculateSpecialScores($type);
-        $this->olbCommand->calculateSpecialPercentiles($type);
-
-        $type = "DL";
-        $this->dlCommand->calculateMetrics($type);
-        $this->dlCommand->calculatePercentiles($type);
-        $this->dlCommand->calculateSpecialScores($type);
-        $this->dlCommand->calculateSpecialPercentiles($type);
+        $this->playerManager->updateWrMetrics();
+//        $type = "QB";
+////        $this->qbCommand->calculateMetrics($type);
+////        $this->qbCommand->calculatePercentiles($type);
+//        $this->qbCommand->calculateSpecialScores($type);
+//        $this->qbCommand->calculateSpecialPercentiles($type);
+//
+//        $type = "CB";
+//        $this->cbCommand->calculateMetrics($type);
+//        $this->cbCommand->calculatePercentiles($type);
+//        $this->cbCommand->calculateSpecialScores($type);
+//        $this->cbCommand->calculateSpecialPercentiles($type);
+//
+//        $type = "ILB";
+//        $this->ilbCommand->calculateMetrics($type);
+//        $this->ilbCommand->calculatePercentiles($type);
+//        $this->ilbCommand->calculateSpecialScores($type);
+//        $this->ilbCommand->calculateSpecialPercentiles($type);
+//
+//        $type = "OLB";
+//        $this->olbCommand->calculateMetrics($type);
+//        $this->olbCommand->calculatePercentiles($type);
+//        $this->olbCommand->calculateSpecialScores($type);
+//        $this->olbCommand->calculateSpecialPercentiles($type);
+//
+//        $type = "DL";
+//        $this->dlCommand->calculateMetrics($type);
+//        $this->dlCommand->calculatePercentiles($type);
+//        $this->dlCommand->calculateSpecialScores($type);
+//        $this->dlCommand->calculateSpecialPercentiles($type);
 
 
 
@@ -109,43 +92,43 @@ class ScriptController extends AbstractActionController
 //        $this->ssCommand->calculateMetrics($type);
 //        $this->ssCommand->calculatePercentiles($type);
 
-        $type = "WR";
-        $this->wrCommand->calculateMetrics($type);
-        $this->wrCommand->calculatePercentiles($type);
-        $this->wrCommand->calculateSpecialScores($type);
-        $this->wrCommand->calculateSpecialPercentiles($type);
+//        $type = "WR";
+//        $this->wrCommand->calculateMetrics($type);
+//        $this->wrCommand->calculatePercentiles($type);
+//        $this->wrCommand->calculateSpecialScores($type);
+//        $this->wrCommand->calculateSpecialPercentiles($type);
     }
 
     public function updateRbMetricsAction()
     {
-        $type = "RB";
-        $this->rbCommand->calculateMetrics($type);
-        $this->rbCommand->calculatePercentiles($type);
-        $this->rbCommand->calculateSpecialScores($type);
-        $this->rbCommand->calculateSpecialPercentiles($type);
+//        $type = "RB";
+//        $this->rbCommand->calculateMetrics($type);
+//        $this->rbCommand->calculatePercentiles($type);
+//        $this->rbCommand->calculateSpecialScores($type);
+//        $this->rbCommand->calculateSpecialPercentiles($type);
     }
 
     public function updateTeMetricsAction()
     {
-        $type = "OL";
-        $this->olCommand->calculateMetrics($type);
-        $this->olCommand->calculatePercentiles($type);
-        $this->olCommand->calculateSpecialScores($type);
-        $this->olCommand->calculateSpecialPercentiles($type);
-        $type = "TE";
-        $this->teCommand->calculateMetrics($type);
-        $this->teCommand->calculatePercentiles($type);
-        $this->teCommand->calculateSpecialScores($type);
-        $this->teCommand->calculateSpecialPercentiles($type);
+//        $type = "OL";
+//        $this->olCommand->calculateMetrics($type);
+//        $this->olCommand->calculatePercentiles($type);
+//        $this->olCommand->calculateSpecialScores($type);
+//        $this->olCommand->calculateSpecialPercentiles($type);
+//        $type = "TE";
+//        $this->teCommand->calculateMetrics($type);
+//        $this->teCommand->calculatePercentiles($type);
+//        $this->teCommand->calculateSpecialScores($type);
+//        $this->teCommand->calculateSpecialPercentiles($type);
     }
 
     public function updateOLMetricsAction()
     {
-        $type = "OL";
-        $this->olCommand->calculateMetrics($type);
-        $this->olCommand->calculatePercentiles($type);
-        $this->olCommand->calculateSpecialScores($type);
-        $this->olCommand->calculateSpecialPercentiles($type);
+//        $type = "OL";
+//        $this->olCommand->calculateMetrics($type);
+//        $this->olCommand->calculatePercentiles($type);
+//        $this->olCommand->calculateSpecialScores($type);
+//        $this->olCommand->calculateSpecialPercentiles($type);
     }
 
     public function dataScrapperAction()
@@ -166,9 +149,8 @@ class ScriptController extends AbstractActionController
 
     public function updateSleeperInfoAction()
     {
-        $this->command->updateSleeperInfo();
+        $this->playerManager->updateSleeperInfo();
     }
-
 
     public function getSleeperLogsAction()
     {

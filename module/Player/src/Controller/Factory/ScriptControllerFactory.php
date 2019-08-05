@@ -13,6 +13,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Controller\ScriptController;
 use Player\Model\Player\PlayerCommandInterface;
+use Player\Service\PlayerManager;
 
 class ScriptControllerFactory implements FactoryInterface
 {
@@ -27,7 +28,9 @@ class ScriptControllerFactory implements FactoryInterface
     {
         return new ScriptController(
             $container->get(PlayerCommandInterface::class),
-            $container->get(PlayerRepositoryInterface::class)
+            $container->get(PlayerRepositoryInterface::class),
+            $container->get(PlayerManager::class)
+
         );
     }
 }

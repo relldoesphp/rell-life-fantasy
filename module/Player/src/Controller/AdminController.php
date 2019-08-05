@@ -20,10 +20,15 @@ class AdminController extends AbstractActionController
 {
     private $playerRepository;
 
+    private $playerCommand;
+
     private $playerList;
 
-    public function __construct(Player\PlayerRepositoryInterface $playerRepository)
+    public function __construct(
+        Player\PlayerRepositoryInterface $playerRepository,
+        Player\PlayerCommandInterface $playerCommand)
     {
+        $this->playerCommand = $playerCommand;
         $this->playerRepository = $playerRepository;
         $this->playerList =  $this->playerRepository->getPlayerNames('Off');
     }
@@ -60,6 +65,16 @@ class AdminController extends AbstractActionController
         $form->bind($player);
         $form->get('submit')->setAttribute('value', 'Edit');
 
+        if (!empty($player->getImages())) {
+            $images = Json::decode($player->getImages(), 1);
+            $i = 1;
+            foreach ($images as $image) {
+                $form->get("image{$i}")->setValue($image);
+                $i++;
+            }
+        }
+
+
         $request = $this->getRequest();
         $viewData = ['id' => $id, 'form' => $form];
 
@@ -68,13 +83,30 @@ class AdminController extends AbstractActionController
         }
 
         $form->setInputFilter($player->getInputFilter());
-        $form->setData($request->getPost());
+
+        $data = $request->getPost();
+        $data['images'] = [
+            $data['image1'],
+            $data['image2'],
+            $data['image3'],
+            $data['image4'],
+            $data['image5']
+        ];
+
+        foreach ($data['images'] as $key => $postImage) {
+            if (empty($postImage)) {
+                unset($data['images'][$key]);
+            }
+        }
+
+        $player->setImages(json_encode($data['images']));
+        $form->setData($data);
 
         if (! $form->isValid()) {
             return $viewData;
         }
 
-//        $this->($player);
+        $this->playerCommand->save($player);
 
         // Redirect to album list
         return $this->redirect()->toRoute('admin', ['action' => 'index']);

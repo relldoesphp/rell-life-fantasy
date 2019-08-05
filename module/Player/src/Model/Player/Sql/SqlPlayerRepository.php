@@ -112,9 +112,35 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     /**
      * @return mixed
      */
-    public function findAllPlayers()
+    public function findAllPlayers($type = "")
     {
-        // TODO: Implement findAllPlayers() method.
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['p' => 'player_test']);
+        if (!empty($type)) {
+            switch ($type) {
+                case "OL":
+                    $select->where->in("position", ["C","G","OT"]);
+                    break;
+                case "DL":
+                    $select->where->in("position", ['DT','NT','DE']);
+                    break;
+                default:
+                    $select->where(["position = ?" => $type]);
+            }
+        }
+
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
+        $resultSet->initialize($result);
+
+        return $resultSet;
     }
 
     public function findPlayerByAlias($alias){
@@ -132,6 +158,10 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
         $resultSet->initialize($result);
         $player = $resultSet->current();
+
+        if ($player == false) {
+            return false;
+        }
 
         $select = $sql->select('season_stats');
         $select->where(['sleeper_id = ?' => $player->getSleeperId()]);
@@ -189,7 +219,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $sql    = new Sql($this->db);
         $select = $sql->select();
         $select->from(['p' => 'player_test']);
-        $select->where(['sleeper_id = ?' => $sleeperId]);
+        $select->where(['p.sleeper_id = ?' => $sleeperId]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -199,7 +229,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
 
         $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
         $resultSet->initialize($result);
-        $return = $resultSet->current();
+        return $resultSet->current();
     }
 
     /**
@@ -303,5 +333,48 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $resultSet = new HydratingResultSet($this->hydrator, SeasonStats::class);
         $resultSet->initialize($result);
         return $resultSet->toArray();
+    }
+
+    public function getPercentileRanks($type, $metrics = [])
+    {
+        switch ($type) {
+            case "OL":
+                $position = ["C","G","OT"];
+                break;
+            case "DL":
+                $position = ['DT','NT','DE'];
+                break;
+            default:
+                $position = [$type];
+        }
+
+        $percentiles = [];
+        foreach ($metrics as $name => $value) {
+            $sql    = new Sql($this->db);
+            $select = $sql->select('player_test')->columns([
+                'id',
+                 $name => new Expression("json_unquote({$value['field']}->'$.{$name}')"),
+                'percentile_rank' => new Expression("PERCENT_RANK() OVER (ORDER BY lpad(json_unquote({$value['field']}->'$.{$name}'),4,'0') {$value['sort']})")
+            ]);
+            $select->where
+                ->notEqualTo(new Expression("json_unquote({$value['field']}->'$.{$name}')"), 0)
+                ->notEqualTo(new Expression("json_unquote({$value['field']}->'$.{$name}')"), null)
+                ->in("position", $position);
+
+            $stmt = $sql->prepareStatementForSqlObject($select);
+            $result = $stmt->execute();
+            if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+                return [];
+            }
+
+            $resultSet = new ResultSet();
+            $resultSet->initialize($result);
+            $percentiles[$name] = [];
+            foreach($resultSet as $row) {
+                $percentiles[$name][$row->id] = $row->percentile_rank;
+            }
+        }
+
+        return $percentiles;
     }
 }

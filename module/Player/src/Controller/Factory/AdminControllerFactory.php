@@ -21,6 +21,9 @@ class AdminControllerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new AdminController($container->get(PlayerRepositoryInterface::class));
+        return new AdminController(
+            $container->get(PlayerRepositoryInterface::class),
+            $container->get(Player\PlayerCommandInterface::class)
+        );
     }
 }

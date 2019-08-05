@@ -20,6 +20,7 @@ use Zend\ProgressBar\ProgressBar;
 use Zend\ProgressBar\Adapter\Console;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Insert;
+use Zend\Db\Sql\Update;
 use Zend\Http\Request;
 use Zend\Http\Client;
 use Zend\Dom\Query;
@@ -47,20 +48,20 @@ class SqlPlayerCommand implements PlayerCommandInterface
     {
         $this->db = $db;
         $this->consoleAdapter = $consoleAdapter;
-        $this->qbCommand = new SqlQBCommand($db, $consoleAdapter);
-        $this->wrCommand = new SqlWrCommand($db, $consoleAdapter);
-        $this->rbCommand = new SqlRbCommand($db, $consoleAdapter);
-        $this->teCommand = new SqlTeCommand($db, $consoleAdapter);
-        $this->olCommand = new SqlOlCommand($db, $consoleAdapter);
-        $this->dlCommand = new SqlDlCommand($db, $consoleAdapter);
-        $this->olbCommand = new SqlOLBCommand($db, $consoleAdapter);
-        $this->ilbCommand = new SqlILBCommand($db, $consoleAdapter);
-        $this->cbCommand = new SqlCBCommand($db, $consoleAdapter);
-        $this->fsCommand = new SqlFSCommand($db, $consoleAdapter);
-        $this->ssCommand = new SqlSSCommand($db, $consoleAdapter);
+//        $this->qbCommand = new SqlCommaSqlQBCommand($db, $consoleAdapter);
+//        $this->wrCommand = new SqlCommands\SqlWrCommand($db, $consoleAdapter);
+//        $this->rbCommand = new SqlRbCommand($db, $consoleAdapter);
+//        $this->teCommand = new SqlTeCommand($db, $consoleAdapter);
+//        $this->olCommand = new SqlOlCommand($db, $consoleAdapter);
+//        $this->dlCommand = new SqlDlCommand($db, $consoleAdapter);
+//        $this->olbCommand = new SqlOLBCommand($db, $consoleAdapter);
+//        $this->ilbCommand = new SqlILBCommand($db, $consoleAdapter);
+//        $this->cbCommand = new SqlCBCommand($db, $consoleAdapter);
+//        $this->fsCommand = new SqlFSCommand($db, $consoleAdapter);
+//        $this->ssCommand = new SqlSSCommand($db, $consoleAdapter);
     }
 
-    public function savePlayer(Player $player)
+    public function save(Player $player)
     {
         if ($player->getId() != null) {
             $this->updatePlayer($player);
@@ -72,19 +73,10 @@ class SqlPlayerCommand implements PlayerCommandInterface
 
     public function addPlayer(Player $player)
     {
+        $player->encodeJson();
+
         /** Insert new player **/
         $sql    = new Sql($this->db);
-        // Prep Json
-        $playerInfoString = $this->makeJsonString($player->getPlayerInfo());
-        $apiInfoString = $this->makeJsonString($player->getApiInfo());
-        $teamInfoString = $this->makeJsonString($player->getTeamInfo());
-        $injuryInfoString = $this->makeJsonString($player->getInjuryInfo());
-        $metricsInfoString = $this->makeJsonString($player->getMetrics());
-        $percentilesString = $this->makeJsonString($player->getPercentiles());
-        $collegeStatsString = $this->makeJsonString($player->getCollegeStats());
-        $imagesString = $this->makeJsonString($player->getImages());
-
-        // Build Insert
         $insert = $sql->insert('player_test');
         $insert->values([
             'first_name' => $player->getFirstName(),
@@ -92,14 +84,14 @@ class SqlPlayerCommand implements PlayerCommandInterface
             'search_full_name' => $player->getSearchFullName(),
             'position' => $player->getPosition(),
             'team' => $player->getTeam(),
-            'player_info' => new Expression("json_set(player_info, {$playerInfoString})"),
-            'team_info' => new Expression("json_set(team_info, {$teamInfoString})"),
-            'api_info' => new Expression("json_set(api_info, {$apiInfoString})"),
-            'injury_info' => new Expression("json_set(injury_info, {$injuryInfoString})"),
-            'metrics' => new Expression("json_set(api_info, {$metricsInfoString})"),
-            'percentiles' => new Expression("json_set(api_info, {$percentilesString})"),
-            'college_stats' => new Expression("json_set(api_info, {$collegeStatsString})"),
-            'images' => new Expression("json_set(api_info, {$imagesString})"),
+            'player_info' => $player->getPlayerInfo(),
+            'team_info' => $player->getTeamInfo(),
+            'api_info' => $player->getApiInfo(),
+            'injury_info' => $player->getInjuryInfo(),
+            'metrics' => $player->getMetrics(),
+            'percentiles' => $player->getPercentiles(),
+            'college_stats' => $player->getCollegeStats(),
+            'images' => $player->getImages(),
         ]);
 
         $stmt = $sql->prepareStatementForSqlObject($insert);
@@ -117,33 +109,25 @@ class SqlPlayerCommand implements PlayerCommandInterface
      */
     public function updatePlayer(Player $player)
     {
-        /** Prep Json **/
-        $playerInfoString = $this->makeJsonString($player->getPlayerInfo());
-        $apiInfoString = $this->makeJsonString($player->getApiInfo());
-        $teamInfoString = $this->makeJsonString($player->getTeamInfo());
-        $injuryInfoString = $this->makeJsonString($player->getInjuryInfo());
-        $metricsInfoString = $this->makeJsonString($player->getMetrics());
-        $percentilesString = $this->makeJsonString($player->getPercentiles());
-        $collegeStatsString = $this->makeJsonString($player->getCollegeStats());
-        $imagesString = $this->makeJsonString($player->getImages());
+        $player->encodeJson();
 
         /** Update player **/
         $sql    = new Sql($this->db);
         $update = $sql->update('player_test');
-        $update->values([
+        $update->set([
             'first_name' => $player->getFirstName(),
             'last_name' => $player->getLastName(),
             'search_full_name' => $player->getSearchFullName(),
             'position' => $player->getPosition(),
             'team' => $player->getTeam(),
-            'player_info' => new Expression("json_set(player_info, {$playerInfoString})"),
-            'team_info' => new Expression("json_set(team_info, {$teamInfoString})"),
-            'api_info' => new Expression("json_set(api_info, {$apiInfoString})"),
-            'injury_info' => new Expression("json_set(injury_info, {$injuryInfoString})"),
-            'metrics' => new Expression("json_set(api_info, {$metricsInfoString})"),
-            'percentiles' => new Expression("json_set(api_info, {$percentilesString})"),
-            'college_stats' => new Expression("json_set(api_info, {$collegeStatsString})"),
-            'images' => new Expression("json_set(api_info, {$imagesString})"),
+            'player_info' => $player->getPlayerInfo(),
+            'team_info' => $player->getTeamInfo(),
+            'api_info' => $player->getApiInfo(),
+            'injury_info' => $player->getInjuryInfo(),
+            'metrics' => $player->getMetrics(),
+            'percentiles' => $player->getPercentiles(),
+            'college_stats' => $player->getCollegeStats(),
+            'images' => $player->getImages(),
         ]);
         $update->where(['id = ?' => $player->getId()]);
         $stmt   = $sql->prepareStatementForSqlObject($update);

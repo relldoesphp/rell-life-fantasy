@@ -25,6 +25,7 @@ return [
             'Dtw\Db\Adapter' => AdapterAbstractServiceFactory::class,
             Model\Player\Sql\SqlPlayerRepository::class => Model\Player\Sql\Factory\SqlPlayerRepositoryFactory::class,
             Model\Player\Sql\SqlPlayerCommand::class => Model\Player\Sql\Factory\SqlPlayerCommandFactory::class,
+            Service\PlayerManager::class => Service\Factory\PlayerManagerFactory::class
         ],
     ],
 

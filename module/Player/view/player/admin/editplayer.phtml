@@ -55,9 +55,25 @@ $this->headTitle($title);
             $collegeStats->setValue('{"2014": {"recs": "", "year": "2014", "class": "", "games": "", "recAvg": "", "recTds": "", "recYds": "", "rushes": "", "totals": {"tds": "", "yds": "", "recs": "", "returnTds": "", "returnYds": ""}, "college": "", "rushAvg": "", "rushTds": "", "rushYds": "", "position": "", "conference": ""}}');
         };
 
-        $images = $form->get('images');
-        $images->setAttribute('class', 'form-control');
-        $images->setAttribute('placeholder', 'images');
+        $image1 = $form->get('image1');
+        $image1->setAttribute('class', 'form-control');
+        $image1->setAttribute('placeholder', 'image1');
+
+        $image2 = $form->get('image2');
+        $image2->setAttribute('class', 'form-control');
+        $image2->setAttribute('placeholder', 'image2');
+
+        $image3 = $form->get('image3');
+        $image3->setAttribute('class', 'form-control');
+        $image3->setAttribute('placeholder', 'image3');
+
+        $image4 = $form->get('image4');
+        $image4->setAttribute('class', 'form-control');
+        $image4->setAttribute('placeholder', 'image4');
+
+        $image5 = $form->get('image5');
+        $image5->setAttribute('class', 'form-control');
+        $image5->setAttribute('placeholder', 'image5');
 
         $submit = $form->get('submit');
         $submit->setAttribute('class', 'btn btn-primary');
@@ -167,10 +183,34 @@ $this->headTitle($title);
 
         <fieldset>
             <legend>Images</legend>
-            <div class="form-group col m12">
-                <?= $this->formLabel($images) ?>
-                <?= $this->formElement($images) ?>
-                <?= $this->formElementErrors()->render($images, ['class' => 'help-block']) ?>
+            <div class="form-group col m6">
+                <?= $this->formLabel($image1) ?>
+                <?= $this->formElement($image1) ?>
+                <?= $this->formElementErrors()->render($image1, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+            <div class="form-group col m6">
+                <?= $this->formLabel($image2) ?>
+                <?= $this->formElement($image2) ?>
+                <?= $this->formElementErrors()->render($image1, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+            <div class="form-group col m6">
+                <?= $this->formLabel($image3) ?>
+                <?= $this->formElement($image3) ?>
+                <?= $this->formElementErrors()->render($image1, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+            <div class="form-group col m6">
+                <?= $this->formLabel($image4) ?>
+                <?= $this->formElement($image4) ?>
+                <?= $this->formElementErrors()->render($image1, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+            <div class="form-group col m6">
+                <?= $this->formLabel($image5) ?>
+                <?= $this->formElement($image5) ?>
+                <?= $this->formElementErrors()->render($image1, ['class' => 'help-block']) ?>
                 <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
             </div>
         </fieldset>

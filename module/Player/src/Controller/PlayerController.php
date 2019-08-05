@@ -97,6 +97,10 @@ class PlayerController extends AbstractActionController
             $player = $this->playerRepository->findPlayerByAlias($id);
         }
 
+        if ($player == false) {
+            return $this->redirect()->toRoute('player', ['action' => 'search']);
+        }
+
         $playerData = $player->getAllInfo();
 
         $jsVars['player'] = $playerData;

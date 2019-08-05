@@ -13,7 +13,7 @@ interface PlayerRepositoryInterface
 {
     public function getPlayerNames($type);
 
-    public function findAllPlayers();
+    public function findAllPlayers($type);
 
     public function findPlayer($id);
 
@@ -30,5 +30,7 @@ interface PlayerRepositoryInterface
     public function getSeasonStats($sleeperId);
 
     public function findPlayerBySleeperId($sleeperId);
+
+    public function getPercentileRanks($position, $metrics);
 
 }

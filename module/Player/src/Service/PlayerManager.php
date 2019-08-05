@@ -9,36 +9,23 @@
 namespace Player\Service;
 
 use Player\Model\Player\Player;
-use Player\Model\Player\SqlCommands\SqlQBCommand;
-use Player\Model\Player\SqlCommands\SqlWrCommand;
-use Player\Model\Player\SqlCommands\SqlRbCommand;
-use Player\Model\Player\SqlCommands\SqlTeCommand;
-use Player\Model\Player\SqlCommands\SqlOlCommand;
-use Player\Model\Player\SqlCommands\SqlDlCommand;
-use Player\Model\Player\SqlCommands\SqlOLBCommand;
 use Zend\Db\Adapter\AdapterInterface;
+use Zend\Json\Json;
 use Zend\ProgressBar\Adapter\Console;
 use Zend\Http\Request;
 use Zend\Http\Client;
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
+use Zend\ProgressBar\ProgressBar;
+use Player\Service\Position;
 
 
 class PlayerManager
 {
     private $db;
     private $consoleAdapter;
-    private $qbCommand;
-    private $wrCommand;
-    private $rbCommand;
-    private $teCommand;
-    private $olCommand;
-    private $dlCommand;
-    private $olbCommand;
-    private $ilbCommand;
-    private $cbCommand;
-    private $fsCommand;
-    private $ssCommand;
+    private $command;
+    private $repository;
 
     public function __construct(AdapterInterface $db, 
                                 Console $consoleAdapter,         
@@ -49,13 +36,6 @@ class PlayerManager
         $this->consoleAdapter = $consoleAdapter;
         $this->repository = $repository;
         $this->command = $command;
-        $this->qbCommand = new SqlQBCommand($db, $consoleAdapter);
-        $this->wrCommand = new SqlWrCommand($db, $consoleAdapter);
-        $this->rbCommand = new SqlRbCommand($db, $consoleAdapter);
-        $this->teCommand = new SqlTeCommand($db, $consoleAdapter);
-        $this->olCommand = new SqlOlCommand($db, $consoleAdapter);
-        $this->dlCommand = new SqlDlCommand($db, $consoleAdapter);
-        $this->olbCommand = new SqlOLBCommand($db, $consoleAdapter);
     }
 
     public function updateSleeperInfo()
@@ -70,6 +50,8 @@ class PlayerManager
 
         $json = (array) json_decode($html);
 
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, count($json));
+        $pointer = 0;
         foreach ($json as $key => $value) {
             $sleeperId = $value->player_id;
             
@@ -80,65 +62,74 @@ class PlayerManager
             
             $player->setFirstName($value->first_name);
             $player->setLastName($value->last_name);
-            $player->setSearchFullName($value->first_name." ".$value->last_name);
+            $player->setSearchFullName($value->search_full_name);
             $player->setPosition($value->position);
             $player->setTeam($value->team);
 
-            $info['player_info'] = (array)$value;
+            $playerInfo = Json::decode($player->getPlayerInfo(),1);
+            $playerInfo['age'] = $value->age;
+            $playerInfo['sport'] = $value->sport;
+            $playerInfo['height'] = $value->height;
+            $playerInfo['status'] = $value->status;
+            $playerInfo['weight'] = $value->weight;
+            $playerInfo['college'] = $value->college;
+            $playerInfo['hashtag'] = $value->hashtag;
+            $playerInfo['player_id'] = $value->player_id;
+            $playerInfo['years_exp'] = $value->years_exp;
+            $playerInfo['high_school'] = $value->birth_city;
+            $playerInfo['birth_city'] = $value->birth_city;
+            $playerInfo['birth_state'] = $value->birth_state;
+            $playerInfo['birth_country'] = $value->birth_country;
+            $playerInfo['birth_date'] = $value->birth_date;
+            $playerInfo['first_name'] = $value->first_name;
+            $playerInfo['last_name'] = $value->last_name;
+            $playerInfo['search_rank'] = $value->search_rank;
+            $playerInfo['news_updated'] = $value->news_updated;
+            $playerInfo['injury_status'] = $value->injury_status;
+            $playerInfo['search_full_name'] = $value->search_full_name;
+            $playerInfo['search_first_name'] = $value->search_first_name;
+            $playerInfo['search_last_name'] = $value->search_last_name;
+            $player->setPlayerInfo($playerInfo);
 
-            unset($info['player_info']['espn_id']);
-            unset($info['player_info']['yahoo_id']);
-            unset($info['player_info']['rotoworld_id']);
-            unset($info['player_info']['rotowire_id']);
-            unset($info['player_info']['stats_id']);
-            unset($info['player_info']['sportradar_id']);
-            unset($info['player_info']['gsis_id']);
-            unset($info['player_info']['injury_notes']);
-            unset($info['player_info']['injury_body_part']);
-            unset($info['player_info']['injury_start_date']);
-            unset($info['player_info']['team']);
-            unset($info['player_info']['position']);
-            unset($info['player_info']['number']);
-            unset($info['player_info']['depth_chart_position']);
-            unset($info['player_info']['depth_chart_order']);
-            unset($info['player_info']['practice_participation']);
-            unset($info['player_info']['practice_description']);
+            $apiInfo = Json::decode($player->getApiInfo(),1);
+            $apiInfo['espn_id'] = $value->espn_id;
+            $apiInfo['yahoo_id'] = $value->yahoo_id;
+            $apiInfo['rotoworld_id'] = $value->rotoworld_id;
+            $apiInfo['rotowire_id'] = $value->rotowire_id;
+            $apiInfo['stats_id'] = $value->stats_id;
+            $apiInfo['sportradar_id'] = $value->sportradar_id;
+            $apiInfo['gsis_id'] = $value->gsis_id;
+            $player->setApiInfo($apiInfo);
 
-            $player->setPlayerInfo($info['player_info']);
+            $injuryInfo = Json::decode($player->getInjuryInfo(),1);
+            $injuryInfo['injury_status'] = $value->injury_status;
+            $injuryInfo['injury_notes'] = $value->injury_notes;
+            $injuryInfo['injury_body_part'] = $value->injury_body_part;
+            $injuryInfo['injury_start_date'] = $value->injury_start_date;
+            $player->setInjuryInfo( $injuryInfo);
 
-            $info['api_info']['espn_id'] = $value->espn_id;
-            $info['api_info']['yahoo_id'] = $value->yahoo_id;
-            $info['api_info']['rotoworld_id'] = $value->rotoworld_id;
-            $info['api_info']['rotowire_id'] = $value->rotowire_id;
-            $info['api_info']['stats_id'] = $value->stats_id;
-            $info['api_info']['sportradar_id'] = $value->sportradar_id;
-            $info['api_info']['gsis_id'] = $value->gsis_id;
-
-            $player->setApiInfo($info['api_info']);
-
-            $info['injury_info']['injury_status'] = $value->injury_status;
-            $info['injury_info']['injury_notes'] = $value->injury_notes;
-            $info['injury_info']['injury_body_part'] = $value->injury_body_part;
-            $info['injury_info']['injury_start_date'] = $value->injury_start_date;
-
-            $player->setInjuryInfo($info['injury_info']);
-
-            $info['team_info']['team'] = $value->team;
-            $info['team_info']['position'] = $value->position;
-            $info['team_info']['number'] = $value->number;
-            $info['team_info']['depth_chart_position'] = $value->depth_chart_position;
-            $info['team_info']['depth_chart_order'] = $value->depth_chart_order;
-            $info['team_info']['practice_participation'] = $value->practice_participation;
-            $info['team_info']['practice_description'] = $value->practice_description;
-
-            $player->setTeamInfo($info['team_info']);
+            $teamInfo = Json::decode($player->getTeamInfo(),1);
+            $teamInfo['team'] = $value->team;
+            $teamInfo['position'] = $value->position;
+            $teamInfo['number'] = $value->number;
+            $teamInfo['depth_chart_position'] = $value->depth_chart_position;
+            $teamInfo['depth_chart_order'] = $value->depth_chart_order;
+            $teamInfo['practice_participation'] = $value->practice_participation;
+            $teamInfo['practice_description'] = $value->practice_description;
+            $player->setTeamInfo($teamInfo);
 
             $this->command->save($player);
+            $pointer++;
+            $progressBar->update($pointer);
         }
+        $progressBar->finish();
     }
 
-
-
-
+    public function updateWrMetrics()
+    {
+        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->command, $this->repository);
+        $wrService->calculateMetrics("WR");
+        $wrService->calculatePercentiles("WR");
+    }
 
 }

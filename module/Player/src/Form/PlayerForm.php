@@ -123,12 +123,46 @@ class PlayerForm extends Form
         $this->get('college_stats')->setValue('{"2014": {"recs": "", "year": "2014", "class": "", "games": "", "recAvg": "", "recTds": "", "recYds": "", "rushes": "", "totals": {"tds": "", "yds": "", "recs": "", "returnTds": "", "returnYds": ""}, "college": "", "rushAvg": "", "rushTds": "", "rushYds": "", "position": "", "conference": ""}}');
 
         $this->add([
-            'type' => 'textarea',
-            'name' => 'images',
+            'type' => 'text',
+            'name' => 'image1',
             'options' => [
-                'label' => 'images',
+                'label' => 'image1',
             ],
         ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => 'image2',
+            'options' => [
+                'label' => 'image2',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => 'image3',
+            'options' => [
+                'label' => 'image3',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => 'image4',
+            'options' => [
+                'label' => 'image4',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => 'image5',
+            'options' => [
+                'label' => 'image5',
+            ],
+        ]);
+
+
 
         $this->add([
             'name' => 'submit',
