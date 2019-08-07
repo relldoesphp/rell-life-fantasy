@@ -339,29 +339,29 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
     {
         switch ($type) {
             case "OL":
-                $position = ["C","G","OT"];
+                $position = '"C","G","OT"';
                 break;
             case "DL":
-                $position = ['DT','NT','DE'];
+                $position = " 'DT','NT' ";
                 break;
             default:
-                $position = [$type];
+                $position = "'{$type}'";
         }
 
         $percentiles = [];
         foreach ($metrics as $name => $value) {
-            $sql    = new Sql($this->db);
-            $select = $sql->select('player_test')->columns([
-                'id',
-                 $name => new Expression("json_unquote({$value['field']}->'$.{$name}')"),
-                'percentile_rank' => new Expression("PERCENT_RANK() OVER (ORDER BY lpad(json_unquote({$value['field']}->'$.{$name}'),4,'0') {$value['sort']})")
-            ]);
-            $select->where
-                ->notEqualTo(new Expression("json_unquote({$value['field']}->'$.{$name}')"), 0)
-                ->notEqualTo(new Expression("json_unquote({$value['field']}->'$.{$name}')"), null)
-                ->in("position", $position);
 
-            $stmt = $sql->prepareStatementForSqlObject($select);
+            $sql = <<<EOT
+SELECT id, ROUND(PERCENT_RANK() OVER (ORDER BY lpad(round(json_unquote({$value['field']}->'$.{$name}'),3),7,'0') {$value['sort']}),3) percentile_rank
+FROM player_test
+WHERE {$value['field']}->'$.{$name}' IS NOT NULL 
+AND json_unquote({$value['field']}->'$.{$name}') != 'null' 
+AND json_unquote({$value['field']}->'$.{$name}') != '0' 
+AND json_unquote({$value['field']}->'$.{$name}') != '' 
+AND json_unquote({$value['field']}->'$.{$name}') != '-' 
+AND position in ({$position})
+EOT;
+            $stmt = $this->db->query($sql);
             $result = $stmt->execute();
             if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
                 return [];

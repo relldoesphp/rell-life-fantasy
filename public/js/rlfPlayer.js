@@ -771,6 +771,7 @@ var rlf =  {
             datasets: [{
                 type: 'bar',
                 stack: 'Stack One',
+                backgroundColor: 'rgb(29, 233, 195, 0.4)',
                 label: 'RB Skills',
                 borderWidth: 2,
                 fill: false,
@@ -780,10 +781,10 @@ var rlf =  {
             },
                 {
                     type: 'line',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    backgroundColor: 'rgba(174, 3, 230, 0.25)',
                     fill: true,
-                    label: 'Average NFL Safety',
-                    data: [70, 67, 61, 22, 15, 10, 9],
+                    label: 'Average NFL Inside Linebacker',
+                    data: [53, 67, 61, 50, 55, 70],
                     ordinals: ["", "", "", "", "", "", ""],
                     metrics: ["", "", "", "", "", "", ""]
                 },
@@ -794,7 +795,7 @@ var rlf =  {
 
     initMesChartsRB : function(){
         var percent = rlfData.player.percentiles;
-        var info = [percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
+        var info = [percent.heightInches, percent.weight, percent.armsInches, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
         var labels =  ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'];
         rlf.makeRadarGraph(info,labels);
     },
@@ -879,7 +880,7 @@ var rlf =  {
                     backgroundColor: 'rgba(174, 3, 230, 0.25)',
                     fill: true,
                     label: 'Average Corner',
-                    data: [null, 44, 58, 54, 41, 25, 22],
+                    data: [0, 44, 60, 54, 46, 55, 40],
                     ordinals: ["", "", "", "", "", "",""],
                     metrics: ["", "", "", "", "", "",""]
                 },
@@ -904,7 +905,7 @@ var rlf =  {
 
     initMesChartsWR : function(){
         var percent = rlfData.player.percentiles;
-        var info = [percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
+        var info = [percent.heightInches, percent.weight, percent.armsInches, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
         var labels = ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'];
         rlf.makeRadarGraph(info, labels);
     },

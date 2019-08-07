@@ -101,6 +101,7 @@ class PlayerController extends AbstractActionController
             return $this->redirect()->toRoute('player', ['action' => 'search']);
         }
 
+        $player->decodeJson();
         $playerData = $player->getAllInfo();
 
         $jsVars['player'] = $playerData;

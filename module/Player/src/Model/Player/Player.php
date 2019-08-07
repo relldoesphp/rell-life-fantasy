@@ -558,7 +558,8 @@ class Player implements InputFilterAwareInterface
             'college',
             'collegeSeasons',
             'heightInches',
-            'hands'
+            'hands',
+            "armsInches"
         ];
         foreach($infoArray as $metric) {
             if (!array_key_exists($metric, $this->player_info)) {
@@ -585,10 +586,6 @@ class Player implements InputFilterAwareInterface
             'breakoutClass',
             'breakoutYears',
             'bestDominator',
-            'bmi',
-            'heightInches',
-            'weight',
-            'arms'
             ];
         foreach($metricsArray as $metric) {
             if (!array_key_exists($metric, $this->metrics)) {
@@ -597,6 +594,8 @@ class Player implements InputFilterAwareInterface
                 $this->ordinals[$metric] = null;
             }
         }
+
+        $this->percentiles['arms'] = $this->percentiles['armsInches'];
     }
 
     private function makeImages()

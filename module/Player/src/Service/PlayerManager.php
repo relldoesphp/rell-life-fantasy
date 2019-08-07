@@ -130,6 +130,20 @@ class PlayerManager
         $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->command, $this->repository);
         $wrService->calculateMetrics("WR");
         $wrService->calculatePercentiles("WR");
-    }
+        $wrService->calculateSpecialScores();
+        $wrService->calculateSpecialPercentiles();
 
+        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->command, $this->repository);
+        $rbService->calculateMetrics("RB");
+        $rbService->calculatePercentiles("RB");
+        $rbService->calculateSpecialScores();
+        $rbService->calculateSpecialPercentiles();
+
+        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->command, $this->repository);
+        $teService->calculateMetrics("TE");
+        $teService->calculatePercentiles("TE");
+        $teService->calculateSpecialScores();
+        $teService->calculateSpecialPercentiles();
+
+    }
 }
