@@ -159,11 +159,14 @@ div.skillset > div {
     height:123px;
 }
 
-div.skillset div.progress {
-    height:25px;
-    -webkit-clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);
-    clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);
+.role-one-percentile, .role-two-percentile, .role-three-percentile {
+    font-size:12px;
 }
+/*div.skillset div.progress {*/
+    /*height:25px;*/
+    /*-webkit-clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);*/
+    /*clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);*/
+/*}*/
 
 .parallax-container {
     height: 300px;
@@ -193,4 +196,16 @@ div.skillset div.progress {
     --color-stop-1: #a770ef;
     --color-stop-2: #cf8bf3;
     --color-stop-3: #fdb99b;
+}
+
+.donut-inner {
+    margin-top: -100px;
+    margin-bottom: 100px;
+}
+.donut-inner h5 {
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+.donut-inner span {
+    font-size: 12px;
 }

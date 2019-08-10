@@ -359,6 +359,7 @@ AND json_unquote({$value['field']}->'$.{$name}') != 'null'
 AND json_unquote({$value['field']}->'$.{$name}') != '0' 
 AND json_unquote({$value['field']}->'$.{$name}') != '' 
 AND json_unquote({$value['field']}->'$.{$name}') != '-' 
+AND json_unquote({$value['field']}->'$.{$name}') != 'N/A' 
 AND position in ({$position})
 EOT;
             $stmt = $this->db->query($sql);

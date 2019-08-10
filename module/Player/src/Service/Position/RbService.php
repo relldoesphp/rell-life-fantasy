@@ -41,6 +41,14 @@ class RbService extends ServiceAbstract
         'collegeScore' => [
             'field' => 'metrics',
             'sort' => 'ASC'
+        ],
+        'bestDominator' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
+        'bestRecDominator' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
         ]
     ];
 
@@ -56,188 +64,101 @@ class RbService extends ServiceAbstract
         $this->consoleAdapter = $consoleAdapter;
     }
 
-    public function calculateSpecialMetrics()
+    public function calculateSpecialScores()
     {
         $rbs = $this->repository->findAllPlayers("RB");
         $progressBar = new ProgressBar($this->consoleAdapter, 0, count($rbs));
         $pointer = 0;
         foreach ($rbs as $rb) {
             $rb->decodeJson();
+            if (empty($rb->getMetrics())) {
+                continue;
+            }
+
             $info = $rb->getPlayerInfo();
             $metrics = $rb->getMetrics();
             $percentiles = $rb->getPercentiles();
 
-            if ($metrics->shuttle != null && $metrics->cone != null) {
-                $data['jukeAgility'] = ($percentiles->shuttle * .70) + ($percentiles->cone * .30);
-                $data['routeAgility'] = ($percentiles->shuttle * .30) + ($percentiles->cone * .70);
-            } else {
-                $data['jukeAgility'] = '';
-                $data['routeAgility'] = '';
-            }
-
-            $data['passCatcher'] = 0;
+            $data['receiver'] = 0;
             $data['grinder'] = 0;
-            /*  scat back score
-                1.) Speed  4
-                2.) Agility 3
-                3.) College Reception share 3
-                4.) Elusiveness 2
-            */
-            $collegeStats = $rb->college_stats;
-            $bestRecDom = 0;
-            $bestYPC = 0;
-            if ($collegeStats != null) {
-                foreach ($collegeStats as $stats) {
-                    if ($stats->recDominator > $bestRecDom) {
-                        $bestRecDom = $stats->recDominator;
-                    }
 
-                    if ($stats->rushAvg > $bestYPC) {
-                        $bestYPC = $stats->rushAvg;
-                    }
+            /*** Make Grinder Base ***/
+            // 1. We have elusiveness, power, and speedScore
+            if ($metrics['elusiveness'] !== null && $metrics['power'] !== null && $metrics['speedScore'] !== null) {
+                $data['grinder'] = ($percentiles['power'] * .6) + ($percentiles['elusiveness'] * .2) + ($percentiles['speedScore'] * .2);
+            }
+            // 2. No agility so no elusiveness, just broad jump and speedScore
+            if ($metrics['elusiveness'] == null && $metrics['power'] !== null && $metrics['speedScore'] !== null) {
+                $data['grinder'] = ($percentiles['power'] * .6) + ($percentiles['speedScore'] * .4);
+            }
+
+            // 3. Just speedScore
+            if ($metrics['elusiveness'] == null && $metrics['power'] == null && $metrics['speedScore'] !== null) {
+                $data['grinder'] = $percentiles['speedScore'];
+            }
+
+            // 4. Just broadJump
+            if ($metrics['elusiveness'] == null && $metrics['power'] !== null && $metrics['speedScore'] == null) {
+                $data['grinder'] = $percentiles['power'];
+            }
+
+            /*** Make Receiver Base ***/
+            // 1. We have agility scores and forty time
+            if ($metrics['routeAgility'] !== null && $metrics['jukeAgility'] !== null && $metrics['fortyTime'] !== null) {
+                $data['receiver'] = ($percentiles['routeAgility'] * .6) + ($percentiles['jukeAgility'] * .2) + ($percentiles['fortyTime'] * .2);
+            }
+            // 2. No agility scores just forty time
+            if ($metrics['routeAgility'] == null && $metrics['jukeAgility'] == null && $metrics['fortyTime'] !== null) {
+                $data['receiver'] = $percentiles['fortyTime'];
+            }
+
+            // 3. Agility but no 40 time
+            if ($metrics['routeAgility'] == null && $metrics['jukeAgility'] == null && $metrics['fortyTime'] !== null) {
+                $data['receiver'] = ($percentiles['routeAgility'] * .7) + ($percentiles['jukeAgility'] * .3);
+            }
+
+
+            if (!empty($rb->getCollegeStats())) {
+                $collegeStuff = $this->makeCollegeScore($rb);
+                $metrics['collegeScore'] = $collegeStuff['collegeScore'];
+                $metrics['breakoutSeasons'] = $collegeStuff['breakoutSeasons'];
+                $metrics['bestDominator'] = $collegeStuff['bestDominator'];
+                $metrics['bestRecDominator'] = $collegeStuff['bestRecDominator'];
+                $metrics['collegeSeasons'] = $collegeStuff['collegeSeasons'];
+                $metrics['breakoutClass'] = $collegeStuff['breakoutClass'];
+                $metrics['bestYPC'] = $collegeStuff['bestYPC'];
+                $metrics['bestCarryDominator'] = $collegeStuff['bestCarryDominator'];
+
+                /*** Use College Stats to adjust scores ***/
+
+                $data['receiver'] = ($percentiles['bestRecDominator'] * .6) + ($data['receiver'] * .4);
+
+                if ($collegeStuff['bestYPC'] < 5) {
+                    $data['grinder'] = $data['grinder'] - 10;
                 }
 
-                switch ($bestRecDom) {
-                    case $bestRecDom > 20:
-                        $data['passCatcher'] = $data['passCatcher'] + 8;
-                        break;
-                    case $bestRecDom > 15:
-                        $data['passCatcher'] = $data['passCatcher'] + 6;
-                        break;
-                    case $bestRecDom > 10:
-                        $data['passCatcher'] = $data['passCatcher'] + 4;
-                        break;
-                    case $bestRecDom > 9:
-                        $data['passCatcher'] = $data['passCatcher'] + 3;
-                        break;
-                    case $bestRecDom > 8:
-                        $data['passCatcher'] = $data['passCatcher'] + 2;
-                        break;
-                    case $bestRecDom > 6:
-                        $data['passCatcher'] = $data['passCatcher'] - 1;
-                        break;
-                    case $bestRecDom > 4:
-                        $data['passCatcher'] = $data['passCatcher'] - 2;
-                        break;
-                    case $bestRecDom > 2:
-                        $data['passCatcher'] = $data['passCatcher'] - 3;
-                        break;
-                    default:
+                if ($collegeStuff['bestCarryDominator'] < 30) {
+                    $data['grinder'] = $data['grinder'] - 10;
                 }
 
-                switch ($bestYPC) {
-                    case $bestYPC > 7:
-                        $data['grinder'] = $data['grinder'] + 3;
-                        break;
-                    case $bestYPC > 6:
-                        $data['grinder'] = $data['grinder'] + 2;
-                        break;
-                    case $bestYPC > 5:
-                        $data['grinder'] = $data['grinder'] + 1;
-                        break;
-                    case $bestYPC > 4:
-                        $data['grinder'] = $data['grinder'] - 1;
-                        break;
-                    case $bestYPC > 3:
-                        $data['grinder'] = $data['grinder'] - 2;
-                        break;
-                    case $bestYPC > 2:
-                        $data['grinder'] = $data['grinder'] - 4;
-                        break;
-                    default:
-                }
+            } else {
+                $metrics['collegeScore'] = null;
+                $metrics['breakoutSeasons'] = "N/A";
+                $metrics['bestDominator'] = "N/A";
+                $metrics['bestRecDominator'] = "N/A";
+                $metrics['collegeSeasons'] = "N/A";
+                $metrics['bestYPC'] = "N/A";
+                $metrics['bestCarryDominator'] = "N/A";
             }
 
-            switch ($metrics->fortyTime) {
-                case $metrics->fortyTime < 4.41:
-                    $data['passCatcher'] =  $data['passCatcher'] + 5;
-                    break;
-                case $metrics->fortyTime < 4.46:
-                    $data['passCatcher'] =  $data['passCatcher'] + 4;
-                    break;
-                case $metrics->fortyTime < 4.51:
-                    $data['passCatcher'] = $data['passCatcher'] + 3;
-                    break;
-                case $metrics->fortyTime < 4.56:
-                    $data['passCatcher'] = $data['passCatcher'] + 2;
-                    break;
-                case $metrics->fortyTime < 4.62:
-                    $data['passCatcher'] = $data['passCatcher'] + 1;
-                    break;
-                case $metrics->fortyTime < 4.70:
-                    $data['passCatcher'] = $data['passCatcher'] - 2;
-                    break;
-                case $metrics->fortyTime < 4.80:
-                    $data['passCatcher'] = $data['passCatcher'] - 3;
-                    break;
-                default:
-            }
+            $data['alpha'] = ($data['receiver'] * .6) + ($data['grinder'] * .4);
 
-            switch ($metrics->agility) {
-                case $metrics->agility < 10.80:
-                    $data['passCatcher'] = $data['passCatcher'] + 5;
-                    break;
-                case $metrics->agility < 11.10:
-                    $data['passCatcher'] = $data['passCatcher'] + 4;
-                    break;
-                case $metrics->agility < 11.20:
-                    $data['passCatcher'] = $data['passCatcher'] + 3;
-                    break;
-                case $metrics->agility < 11.30:
-                    $data['passCatcher'] = $data['passCatcher'] + 2;
-                    break;
-                case $metrics->agility < 11.60:
-                    $data['passCatcher'] = $data['passCatcher'] + 1;
-                    break;
-                default:
-            }
+            $metrics['alpha'] = round($data['alpha'],2);
+            $metrics['passCatcher'] = round($data['receiver'],2);
+            $metrics['grinder'] = round($data['grinder'],2);
 
-            switch ($percentiles->power) {
-                case $percentiles->power > 99:
-                    break;
-                case $percentiles->power > 90:
-                    $data['grinder'] =  $data['grinder'] + 8;
-                    break;
-                case $percentiles->power > 80:
-                    $data['grinder'] =  $data['grinder'] + 7;
-                    break;
-                case $percentiles->power > 70:
-                    $data['grinder'] =  $data['grinder'] + 5;
-                    break;
-                case $percentiles->power > 60:
-                    $data['grinder'] =  $data['grinder'] + 3;
-                    break;
-                case $percentiles->power > 20:
-                    $data['grinder'] =  $data['grinder'] + 1;
-                    break;
-                default:
-            }
-
-            switch ($percentiles->elusiveness) {
-                case $percentiles->elusiveness > 99:
-                    break;
-                case $percentiles->elusiveness > 90:
-                    $data['grinder'] =  $data['grinder'] + 6;
-                    break;
-                case $percentiles->elusiveness > 80:
-                    $data['grinder'] =  $data['grinder'] + 5;
-                    break;
-                case $percentiles->elusiveness > 70:
-                    $data['grinder'] =  $data['grinder'] + 4;
-                    break;
-                case $percentiles->elusiveness > 60:
-                    $data['grinder'] =  $data['grinder'] + 3;
-                    break;
-                case $percentiles->elusiveness > 50:
-                    $data['grinder'] =  $data['grinder'] + 2;
-                    break;
-                case $percentiles->elusiveness > 20:
-                    $data['grinder'] =  $data['grinder'] + 1;
-                    break;
-                default:
-            }
-
-            $data['alpha'] = $data['passCatcher'] + $data['grinder'];
+            $rb->setMetrics($metrics);
+            $this->command->save($rb);
 
             $pointer++;
             $progressBar->update($pointer);
@@ -245,9 +166,230 @@ class RbService extends ServiceAbstract
         $progressBar->finish();
     }
 
-    public function calculateSpecialPercentiles()
+    public function calculateSpecialPercentiles($type)
     {
+        $percentileArrays = $this->repository->getPercentileRanks($type, $this->specialMetrics);
+        $players = $this->repository->findAllPlayers($type);
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, count($players));
+        $pointer = 0;
+        foreach ($players as $player) {
+            $id = $player->getId();
+            $player->decodeJson();
+            $percentiles = $player->getPercentiles();
+            foreach ($percentileArrays as $name => $value) {
+                $percentiles[$name] = (array_key_exists($id, $percentileArrays[$name])) ? round($percentileArrays[$name][$id] * 100, 2) : "";
+            }
 
+            $player->setPercentiles($percentiles);
+
+            $this->command->save($player);
+
+            $pointer++;
+            $progressBar->update($pointer);
+        }
+        $progressBar->finish();
+        print "Percentiles completed\n";
+    }
+
+    public function makeCollegeScore($rb)
+    {
+        if ($rb->getId() == 5238) {
+            $gotHim = true;
+        } else {
+            $notHIm = true;
+        }
+
+        $i = 0;
+        $breakout = false;
+        $collegeScore = 0;
+        $bestDominator = .01;
+        $bestSeason = [];
+        $lastYear = "";
+        $breakoutClass = "None";
+        $bestRecDominator = 0;
+        $breakoutSeasons = 0;
+        $lastBreakout = 0;
+        $bestYPC = 0;
+        $bestCarryDom = 0;
+
+        $collegeStats = $rb->getCollegeStats();
+        foreach ($collegeStats as $stats) {
+            if ($stats->year != "Career") {
+                // determine dominators
+                $dominator['td'] = $stats['tdDominator'];
+                $dominator['yd'] = $stats['ydsDominator'];
+                $dominator['rec'] = $stats['recDominator'];
+                $dominator['carries'] = round(($stats['rushAtt'] / $stats['totals']['carries']) * 100, 2);
+                $breakout = 0;
+
+                foreach ($dominator as $type => $score) {
+                    if ($type == 'td') {
+                        if ($score !== 0) {
+                            switch (true) {
+                                case ($score > 10):
+                                    $breakout = $breakout + 1;
+                                    break;
+                                case ($score > 7):
+                                    $breakout = $breakout + .5;
+                                    break;
+                                default:
+                            }
+                        }
+                    }
+
+                    if ($type == 'yd') {
+                        if ($score !== 0) {
+                            switch (true) {
+                                case ($score > 20):
+                                    $breakout = $breakout + 1;
+                                    break;
+                                case ($score > 15):
+                                    $breakout = $breakout + .5;
+                                    break;
+                                default:
+                            }
+                        }
+                    }
+                }
+
+                switch ($breakout) {
+                    case 2:
+                        $breakoutSeasons = $breakoutSeasons + 1;
+                        break;
+                    case ($breakout >= 1):
+                        $breakoutSeasons = $breakoutSeasons + .5;
+                        break;
+                    default:
+                }
+
+                // determine breakout class
+                if ($breakout == 2) {
+                    if ($breakoutClass == "None") {
+                        if ($i == 0) {
+                            if ($stats['class'] == "FR") {
+                                $breakoutClass = "True Freshman";
+                            } else {
+                                $breakoutClass = $stats['class'];
+                            }
+                        } elseif ($i == 1) {
+                            if ($stats['class'] == "FR") {
+                                $breakoutClass = "Redshirt Freshman";
+                            } elseif ($stats['class'] == "SO") {
+                                $breakoutClass = "Sophomore";
+                            } else {
+                                $breakoutClass = $stats['class'];
+                            }
+                        } elseif ($i == 2) {
+                            $breakoutClass = "JR";
+                        } else {
+                            $breakoutClass = "SR";
+                        }
+                    }
+                }
+
+                // determine best dominators
+                $currentDominator = round((array_sum([$dominator['yd'], $dominator['td']])) / 2, 2);
+                if ($currentDominator > $bestDominator) {
+                    $bestDominator = $currentDominator;
+                }
+
+                if ($dominator['rec'] > $bestRecDominator) {
+                    $bestRecDominator = $dominator['rec'];
+                }
+
+                if ($stats['rushAvg'] > $bestYPC) {
+                    $bestYPC = $stats['rushAvg'];
+                }
+
+                if ($dominator['carries'] > $bestCarryDom) {
+                    $bestCarryDom = $dominator['carries'];
+                }
+            }
+            $lastBreakout = $breakout;
+            $conf = $stats['conf'];
+            if ($stats['college'] == "Notre Dame") {
+                $conf = "ACC";
+            }
+            $lastYear = $stats['class'];
+            $i++;
+        }
+
+        $collegeScore = $breakoutSeasons;
+        /**** Bonuses ****/
+        // Coming out as a junior, add last breakout to simulate senior season
+        if ($lastYear !== "SR" && $i < 3) {
+            $collegeScore = $collegeScore + $lastBreakout;
+        }
+
+        // Breakout class
+        if ($breakoutClass == "True Freshman") {
+            $collegeScore = $collegeScore + 3;
+        } elseif ($breakoutClass == "Somphomore" ||$breakoutClass == "Redshirt Freshman" ) {
+            $collegeScore = $collegeScore + 2;
+        } elseif ($breakoutClass == "Junior") {
+            $collegeScore = $collegeScore + 1;
+        } else {
+            $collegeScore = $collegeScore + 0;
+        }
+
+        //Conference bonus/penalty for not Division 1
+        $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
+        $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
+        if (in_array($conf, $power5)) {
+            $collegeScore = $collegeScore + 1;
+        } elseif (in_array($conf, $minor5)) {
+            $collegeScore = $collegeScore + 0;
+        } else {
+            $collegeScore = $collegeScore - 2;
+        }
+
+        // Best breakout score
+        switch ($bestDominator) {
+            case $bestDominator >= 30:
+                $collegeScore = $collegeScore + 3;
+                break;
+            case $bestDominator >= 20:
+                $collegeScore = $collegeScore + 2;
+                break;
+            case $bestDominator >= 15:
+                $collegeScore = $collegeScore + 1;
+                break;
+            default:
+        }
+
+        // Best Recbreakout score
+        switch ($bestRecDominator) {
+            case $bestDominator >= 15:
+                $collegeScore = $collegeScore + 3;
+                break;
+            case $bestDominator >= 12:
+                $collegeScore = $collegeScore + 2;
+                break;
+            case $bestDominator >= 9:
+                $collegeScore = $collegeScore + 1;
+                break;
+            default:
+        }
+
+        if ($breakoutClass == "JR") {
+            $breakoutClass = "Junior";
+        }
+
+        if ($breakoutClass == "SR") {
+            $breakoutClass = "Senior";
+        }
+
+        return [
+            'collegeScore' => $collegeScore,
+            'bestSeason' => $bestSeason,
+            'bestRecDominator' => $bestRecDominator,
+            'breakoutClass' => $breakoutClass,
+            'breakoutSeasons' => $breakoutSeasons,
+            "collegeSeasons" => $i,
+            "bestDominator" => $bestDominator,
+            "bestYPC" => $bestYPC,
+            "bestCarryDominator" => $bestCarryDom
+        ];
     }
 
     public function scrapCollegeStats($rb)

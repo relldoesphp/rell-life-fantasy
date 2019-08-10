@@ -434,8 +434,8 @@ var rlf =  {
                     },
                     {
                         "name": "Seasons",
-                        "metric1": player1.player_info.collegeSeasons,
-                        "metric2": player2.player_info.collegeSeasons
+                        "metric1": player1.metrics.collegeSeasons,
+                        "metric2": player2.metrics.collegeSeasons
                     },
                     {
                         "name": "Breakout Class",
@@ -444,8 +444,8 @@ var rlf =  {
                     },
                     {
                         "name": "Breakout Years",
-                        "metric1": player1.metrics.breakoutYears+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.breakoutYears+"%'></div></div>",
-                        "metric2": player2.metrics.breakoutYears+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutYears+"%'></div></div>",
+                        "metric1": player1.metrics.breakoutSeasons+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.breakoutYears+"%'></div></div>",
+                        "metric2": player2.metrics.breakoutSeasons+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutYears+"%'></div></div>",
                     },
                     {
                         "name": "Best Dominator",
@@ -709,22 +709,25 @@ var rlf =  {
 
         rlf.makeCollegeTable(collegeColumns);
 
-        var grinderpercent =(rlfData.player.metrics.grinder / 12) * 100;
-        var passCatcherpercent = (rlfData.player.metrics.passCatcher / 12) * 100;
-        var alphapercent = Math.round((rlfData.player.metrics.alpha / 25) * 100);
+        var grinderpercent =  rlfData.player.metrics.grinder;
+        var passCatcherpercent = rlfData.player.metrics.passCatcher;
+        var alphapercent = rlfData.player.metrics.alpha;
 
         var roleFits = [
             {
                 "name":"Grinder Score",
-                "value":grinderpercent
+                "value":grinderpercent,
+                "percentile":rlfData.player.ordinals.grinder
             },
             {
                 "name":"Pass Catcher",
-                "value":passCatcherpercent
+                "value":passCatcherpercent,
+                "percentile":rlfData.player.ordinals.passCatcher
             },
             {
                 "name":"Alpha Score",
-                "value":alphapercent
+                "value":alphapercent,
+                "percentile":rlfData.player.ordinals.alpha
             }
         ];
 
@@ -759,6 +762,45 @@ var rlf =  {
         ];
 
         rlf.makeGameLogTable(gameLogColumns);
+
+        $(".college-row-one p").text("Full Breakout Class: "+rlfData.player.metrics.breakoutClass);
+        $(".college-row-two p").text("Dominate Seasons: "+rlfData.player.metrics.breakoutSeasons+" out of "+rlfData.player.metrics.collegeSeasons);
+        $(".college-row-three p").text("Best Dominator: "+rlfData.player.metrics.bestDominator+"%");
+        $(".college-row-four p").text("Best Reception Dominator: "+rlfData.player.metrics.bestRecDominator+"%");
+        $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
+        $(".donut-inner span").text(rlfData.player.ordinals.collegeScore+" percentile");
+        var config = {
+            type:'doughnut',
+            data: {
+                datasets: [{
+                    data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore,2) ],
+                    backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                    label: 'College Score'
+                }],
+                labels: [
+                    'College Score',
+                    ''
+                ]
+            },
+            options: {
+                cutoutPercentage: 75,
+                legend: {
+                    position:'top'
+                },
+                title: {
+                    display:false,
+                    text: 'College Score'
+                },
+                responsive: true,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        };
+
+        var ctx = document.getElementById('college-doughnut').getContext('2d');
+        var myDoughut = new Chart(ctx, config);
     },
 
     initProsChartsRB : function(){
@@ -852,20 +894,67 @@ var rlf =  {
 
         var roleFits = [
             {
-                "name":"Slot Score",
-                "value":rlfData.player.percentiles.slot,
+                "name":"Slot:",
+                "value":rlfData.player.metrics.slot,
+                "percentile":rlfData.player.ordinals.slot,
+                "percent":rlfData.player.percentiles.slot
             },
             {
-                "name":"Deep Score",
-                "value":rlfData.player.percentiles.deep,
+                "name":"Deep:",
+                "value":rlfData.player.metrics.deep,
+                "percentile":rlfData.player.ordinals.deep,
+                "percent":rlfData.player.percentiles.deep
             },
             {
-                "name":"Alpha Score",
-                "value":rlfData.player.percentiles.alpha,
+                "name":"Alpha:",
+                "value":rlfData.player.metrics.alpha,
+                "percentile":rlfData.player.ordinals.alpha,
+                "percent":rlfData.player.percentiles.alpha
+
             }
         ];
 
         rlf.makeRoleFits(roleFits);
+
+
+        $(".college-row-one p").text("Full Breakout Class: "+rlfData.player.metrics.breakoutClass);
+        $(".college-row-two p").text("Dominate Seasons: "+rlfData.player.metrics.breakoutSeasons+" out of "+rlfData.player.metrics.collegeSeasons);
+        $(".college-row-three p").text("Best Dominator: "+rlfData.player.metrics.bestDominator+"%");
+        $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
+        $(".donut-inner span").text(rlfData.player.ordinals.collegeScore+" percentile");
+        var config = {
+          type:'doughnut',
+          data: {
+              datasets: [{
+                  data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore,2) ],
+                  backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                  label: 'College Score'
+              }],
+              labels: [
+                  'College Score',
+                  ''
+              ]
+          },
+            options: {
+                cutoutPercentage: 75,
+                legend: {
+                    position:'top'
+                },
+                title: {
+                    display:false,
+                    text: 'College Score'
+                },
+                responsive: true,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        };
+
+            var ctx = document.getElementById('college-doughnut').getContext('2d');
+            var myDoughut = new Chart(ctx, config);
+
     },
 
     initProsChartsWR : function(){
@@ -2003,46 +2092,50 @@ var rlf =  {
     makeRoleFits : function(roleFits){
         $(".role-one-bar .determinate").css("width", roleFits[0].value + "%");
         $(".role-one-title").text(roleFits[0].name);
-        $(".role-one-score").text(roleFits[0].value + "%");
-        if (roleFits[0].value > 69) {
+        $(".role-one-score").text(roleFits[0].value);
+        $(".role-one-percentile").text("("+roleFits[0].percentile + " percentile)");
+        if (roleFits[0].percent > 69) {
             $(".role-one-bar .determinate").css("background-color", "green");
         }
 
-        if (roleFits[0].value < 69 && roleFits[0].value > 40) {
+
+        if (roleFits[0].percent < 69 && roleFits[0].percent > 40) {
             $(".role-one-bar .determinate").css("background-color", "yellow");
         }
 
-        if (roleFits[0].value < 39) {
+        if (roleFits[0].percent < 39) {
             $(".role-one-bar .determinate").css("background-color", "red");
         }
 
         $(".role-two-bar .determinate").css("width", roleFits[1].value + "%");
         $(".role-two-title").text(roleFits[1].name);
-        $(".role-two-score").text(roleFits[1].value + "%")
-        if (roleFits[1].value > 69) {
+        $(".role-two-score").text(roleFits[1].value)
+        $(".role-two-percentile").text("("+roleFits[1].percentile + " percentile)");
+        if (roleFits[1].percent > 69) {
             $(".role-two-bar .determinate").css("background-color", "green");
         }
 
-        if (roleFits[1].value < 69 && roleFits[1].value > 40) {
+        if (roleFits[1].percent < 69 && roleFits[1].percent > 40) {
             $(".role-two-bar .determinate").css("background-color", "yellow");
         }
 
-        if (roleFits[1].value < 39) {
+        if (roleFits[1].percent < 39) {
             $(".role-two-bar .determinate").css("background-color", "red");
         }
 
         $(".role-three-bar .determinate").css("width", roleFits[2].value + "%");
         $(".role-three-title").text(roleFits[2].name);
-        $(".role-three-score").text(roleFits[2].value + "%")
-        if (roleFits[2].value > 69) {
+        $(".role-three-score").text(roleFits[2].value)
+        $(".role-three-percentile").text("("+roleFits[2].percentile + " percentile)");
+        if (roleFits[2].percent > 69) {
             $(".role-three-bar .determinate").css("background-color", "green");
         }
 
-        if (roleFits[2].value < 69 && roleFits[2].value > 40) {
+        if (roleFits[2].percent < 69 && roleFits[2].percent > 40) {
             $(".role-three-bar .determinate").css("background-color", "yellow");
         }
 
-        if (roleFits[2].value < 39) {
+        if (roleFits[2].percent < 39) {
             $(".role-three-bar .determinate").css("background-color", "red");
         }
     },

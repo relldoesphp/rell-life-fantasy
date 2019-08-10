@@ -321,8 +321,12 @@ class ServiceAbstract
                 $metrics['routeAgility'] = str_pad($metrics['routeAgility'], 4, '0', STR_PAD_LEFT);
             }
 
+            if ($player->getId() == 2567) {
+                $foundHim = true;
+            }
+
             // Adjust broadjump for bmi and weight to determine total power
-            if ($metrics['broadJump'] != null) {
+            if ($metrics['broadJump'] != null && $metrics['broadJump'] !== "-") {
                 $weightRate = $posInfo[$type]['broadAvg']/$posInfo[$type]['weightAvg'];
                 $broadPerPound = ($info['weight'] - $posInfo[$type]['weightAvg']) * $weightRate;
 //                $heightAdj = $posInfo[$type]['broadAvg']/$posInfo[$type]['heightAvg'];
@@ -337,7 +341,7 @@ class ServiceAbstract
             }
 
             // add jumpball reach, adds bonus for hand size
-            if ($metrics['verticalJump'] != null && array_key_exists('armsInches', $info)) {
+            if (($metrics['verticalJump'] != null && $metrics['verticalJump'] != '-') && array_key_exists('armsInches', $info)) {
                 $metrics['jumpball'] = round($info['heightInches'] + $info['armsInches'] + $metrics['verticalJump'], 2);
                 // Premium for big Hands
                 if ($info['hands'] > 9.5) {

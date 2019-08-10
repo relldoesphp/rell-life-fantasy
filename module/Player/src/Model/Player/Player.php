@@ -586,6 +586,7 @@ class Player implements InputFilterAwareInterface
             'breakoutClass',
             'breakoutYears',
             'bestDominator',
+            'armsInches'
             ];
         foreach($metricsArray as $metric) {
             if (!array_key_exists($metric, $this->metrics)) {

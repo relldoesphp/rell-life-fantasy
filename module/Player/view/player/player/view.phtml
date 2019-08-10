@@ -73,6 +73,7 @@
                 <div class="progress role-one-bar">
                     <div class="determinate" style="width: 0%"></div>
                 </div>
+                <div class="role-one-percentile"></div>
             </div>
             <div class="deep-box center">
                 <div style="margin-top:10px" class="role-two-title"></div>
@@ -80,6 +81,7 @@
                 <div class="progress role-two-bar">
                     <div class="determinate" style="width: 0%"></div>
                 </div>
+                <div class="role-two-percentile"></div>
             </div>
             <div class="alpha-box center">
                 <div style="margin-top:10px" class="role-three-title"></div>
@@ -87,6 +89,7 @@
                 <div class="progress role-three-bar">
                     <div class="determinate" style="width: 0%"></div>
                 </div>
+                <div class="role-three-percentile"></div>
             </div>
         </div>
     </div>
@@ -151,7 +154,32 @@
             </div>
         </div>
         <div id="test3" class="col s12">
-            <div class="col-sm-12">
+            <div class="col s12 black-text" >
+                <div class="col m4 offset-m2">
+                    <div style="width:350px">
+                        <canvas id="college-doughnut" width="170"></canvas>
+                        <div class="donut-inner center-align">
+                            <h5></h5>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col m4">
+                    <div class="college-row-one">
+                        <p class="black-text">Breakout Class:</p>
+                    </div>
+                    <div class="college-row-two">
+                        <p class="black-text">Breakout Seasons:</p>
+                    </div>
+                    <div class="college-row-three">
+                        <p class="black-text">Best Dominator:</p>
+                    </div>
+                    <div class="college-row-four">
+                        <p class="black-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12">
                 <table id="college-stats" class="display" width="100%">
                     <tfoot>
                     <tr>

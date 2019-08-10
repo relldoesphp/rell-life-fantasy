@@ -21,6 +21,21 @@ class TeService extends ServiceAbstract
     private $command;
     private $db;
 
+    public $specialMetrics = [
+        'move' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
+        'inLine' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
+        'alpha' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ]
+    ];
+
     public function __construct(AdapterInterface $db, Console $consoleAdapter, PlayerCommandInterface $command, PlayerRepositoryInterface $repository)
     {
         parent::__construct($db, $consoleAdapter, $command, $repository);
@@ -35,156 +50,116 @@ class TeService extends ServiceAbstract
         $progressBar = new ProgressBar($this->consoleAdapter, 0, count($tes));
         $pointer = 0;
         foreach ($tes as $te) {
-            $info = json_decode($te['player_info']);
-            $metrics = json_decode($te['metrics']);
-            $percentiles = json_decode($te['percentiles']);
-
-            if ($metrics->shuttle != null && $metrics->cone != null) {
-                $data['jukeAgility'] = ($percentiles->shuttle * .70) + ($percentiles->cone * .30);
-                $data['routeAgility'] = ($percentiles->shuttle * .30) + ($percentiles->cone * .70);
-            } else {
-                $data['jukeAgility'] = '';
-                $data['routeAgility'] = '';
+            $te->decodeJson();
+            if (empty($te->getMetrics())) {
+                continue;
             }
 
-            $data['runBlock'] = ($percentiles->bully * .30) + ($percentiles->power * .70);
-            $data['passBlock'] = ($percentiles->bully * .40) + ($percentiles->elusiveness * .60);
+            $info = $te->getPlayerInfo();
+            $metrics = $te->getMetrics();
+            $percentiles = $te->getPercentiles();
 
+            /*** Calculate Run Block ***/
+            $data['runBlock'] = null;
+            if (!in_array($metrics['benchPress'], [null, "-", "", "null"])
+                && !in_array($metrics['broadJump'], [null, "-", "", "null"]) ) {
+                $data['runBlock'] = ($percentiles['bully'] * .30) + ($percentiles['power'] * .70);
+            }
+
+            if (in_array($metrics['benchPress'], [null, "-", "", "null"])
+                && !in_array($metrics['broadJump'], [null, "-", "", "null"]) ) {
+                $data['runBlock'] = $percentiles['power'];
+            }
+
+            if (!in_array($metrics['benchPress'], [null, "-", "", "null"])
+                && in_array($metrics['broadJump'], [null, "-", "", "null"]) ) {
+                $data['runBlock'] = $percentiles['benchPress'];
+            }
+
+            /*** Calculate Pass Block ***/
+            if (!in_array($metrics['shuttle'], [null, "-", "", "null"])
+                && !in_array($metrics['benchPress'], [null, "-", "", "null"]) ) {
+                $data['passBlock'] = ($percentiles->bully * .40) + ($percentiles->elusiveness * .60);
+            }
+
+            if (in_array($metrics['shuttle'], [null, "-", "", "null"])
+                && !in_array($metrics['benchPress'], [null, "-", "", "null"]) ) {
+                $data['passBlock'] = ($percentiles->bully * .40) + ($percentiles->speedScore * .60);
+            }
+
+            /*** Calculate Move Score ***/
             //Move - TE Speed + Jumpball + Route Agility
             $data['move'] = 0;
-            switch ($metrics->fortyTime) {
-                case $metrics->fortyTime < 4.55:
-                    $data['move'] = $data["move"] + 7;
-                    break;
-                case $metrics->fortyTime < 4.60:
-                    $data['move'] = $data['move'] + 6;
-                    break;
-                case $metrics->fortyTime < 4.65:
-                    $data['move'] = $data['move'] + 5;
-                    break;
-                case $metrics->fortyTime < 4.70:
-                    $data['move'] = $data['move'] + 3;
-                    break;
-                case $metrics->fortyTime < 4.75:
-                    $data['move'] = $data['move'] + 2;
-                    break;
-                case $metrics->fortyTime < 4.80:
-                    $data['move'] = $data['move'] + 1;
-                    break;
-                default:
+
+            if (!in_array($metrics['routeAgility'], [null, "-", "", "null"])
+                && !in_array($metrics['speed'], [null, "-", "", "null"]) ) {
+                $data['move'] = ($percentiles['routeAgility'] * .70) + ($percentiles['speed'] * .30);
             }
 
-            switch ($percentiles->jumpball) {
-                case $percentiles->jumpball > 90:
-                    $data['move'] = $data["move"] + 6;
-                    break;
-                case $percentiles->jumpball > 80:
-                    $data['move'] = $data['move'] + 5;
-                    break;
-                case $percentiles->jumpball > 70:
-                    $data['move'] = $data['move'] + 4;
-                    break;
-                case $percentiles->jumpball > 60:
-                    $data['move'] = $data['move'] + 3;
-                    break;
-                case $percentiles->jumpball > 50:
-                    $data['move'] = $data['move'] + 2;
-                    break;
-                case $percentiles->jumpball > 40:
-                    $data['move'] = $data['move'] + 1;
-                    break;
-                default:
+            if (!in_array($metrics['routeAgility'], [null, "-", "", "null"])
+                && in_array($metrics['speed'], [null, "-", "", "null"]) ) {
+                $data['move'] = $percentiles['routeAgility'];
             }
 
-            switch ($data['routeAgility']) {
-                case $data['routeAgility'] > 90:
-                    $data['move'] = $data['move'] + 7;
-                    break;
-                case $data['routeAgility'] > 80:
-                    $data['move'] = $data['move'] + 6;
-                    break;
-                case $data['routeAgility'] > 70:
-                    $data['move'] = $data['move'] + 5;
-                    break;
-                case $data['routeAgility'] > 60:
-                    $data['move'] = $data['move'] + 4;
-                    break;
-                case $data['routeAgility'] > 50:
-                    $data['move'] = $data['move'] + 3;
-                    break;
-                case $data['routeAgility'] > 40:
-                    $data['move'] = $data['move'] + 2;
-                    break;
-                default:
+            if (in_array($metrics['routeAgility'], [null, "-", "", "null"])
+                && !in_array($metrics['speed'], [null, "-", "", "null"]) ) {
+                $data['move'] = $percentiles['speed'];
             }
 
-            //Line -  TE Run Block + Pass Block + Weight
-            $data['inLine'] = 0;
-            switch ($data['runBlock']) {
-                case $data['runBlock'] > 80:
-                    $data['inLine'] = $data['inLine'] + 6;
-                    break;
-                case $data['runBlock'] > 70:
-                    $data['inLine'] = $data['inLine'] + 5;
-                    break;
-                case $data['runBlock'] > 60:
-                    $data['inLine'] = $data['inLine'] + 4;
-                    break;
-                case $data['runBlock'] > 50:
-                    $data['inLine'] = $data['inLine'] + 3;
-                    break;
-                case $data['runBlock'] > 40:
-                    $data['inLine'] = $data['inLine'] + 2;
-                    break;
-                default:
+            if (!in_array($metrics['verticalJump'], [null, "-", "", "null"])) {
+                $data['move'] = ($percentiles['verticalJump'] * .25) + ($data['move'] * .75);
             }
 
-            switch ($data['runBlock']) {
-                case $data['runBlock'] > 80:
-                    $data['inLine'] = $data['inLine'] + 6;
-                    break;
-                case $data['runBlock'] > 70:
-                    $data['inLine'] = $data['inLine'] + 5;
-                    break;
-                case $data['runBlock'] > 60:
-                    $data['inLine'] = $data['inLine'] + 4;
-                    break;
-                case $data['runBlock'] > 50:
-                    $data['inLine'] = $data['inLine'] + 3;
-                    break;
-                case $data['runBlock'] > 40:
-                    $data['inLine'] = $data['inLine'] + 2;
-                    break;
-                default:
+            /*** Calculate InLine Score ***/
+            if (!in_array($data['runBlock'], [null, "-", "", "null"])
+                && !in_array($percentiles['weight'], [null, "-", "", "null"]) ) {
+                $data['inLine'] = ($percentiles['runBlock'] * .70) + ($percentiles['weight'] * .30);
             }
 
-            switch ($info->weight) {
-                case $info->weight > 265:
-                    $data['inLine'] = $data["inLine"] + 7;
-                    break;
-                case $info->weight > 260:
-                    $data['inLine'] = $data['inLine'] + 5;
-                    break;
-                case $info->weight < 250:
-                    $data['inLine'] = $data['inLine'] + 4;
-                    break;
-                case $info->weight < 245:
-                    $data['inLine'] = $data['inLine'] + 3;
-                    break;
-                case $info->weight < 235:
-                    $data['inLine'] = $data['inLine'] - 1;
-                    break;
-                default:
+            if (in_array($data['runBlock'], [null, "-", "", "null"])
+                && !in_array($percentiles['weight'], [null, "-", "", "null"]) ) {
+                $data['inLine'] = ($percentiles['speedScore'] * .70) + ($percentiles['weight'] * .30);
             }
 
             //Alpha -  Move+Line
-            $data['alpha'] = $data['inLine'] + $data['move'];
+            $data['alpha'] = ($data['inLine'] + $data['move'])/2;
+
+            $metrics['move'] = round($data['move'], 2);
+            $metrics['inLine'] = round($data['inline'], 2);
+            $metrics['alpha'] = round($data['alpha'], 2);
+
+            $te->setMetrics($metrics);
+
+            $this->command->save($te);
+            $pointer++;
+            $progressBar->update($pointer);
         }
+        $progressBar->finish();
     }
 
-    public function calculateSpecialPercentiles()
+    public function calculateSpecialPercentiles($type)
     {
+        $percentileArrays = $this->repository->getPercentileRanks($type, $this->specialMetrics);
+        $players = $this->repository->findAllPlayers($type);
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, count($players));
+        $pointer = 0;
+        foreach ($players as $player) {
+            $id = $player->getId();
+            $player->decodeJson();
+            $percentiles = $player->getPercentiles();
+            foreach ($percentileArrays as $name => $value) {
+                $percentiles[$name] = (array_key_exists($id, $percentileArrays[$name])) ? round($percentileArrays[$name][$id] * 100, 2) : "";
+            }
 
+            $player->setPercentiles($percentiles);
+
+            $this->command->save($player);
+
+            $pointer++;
+            $progressBar->update($pointer);
+        }
+        $progressBar->finish();
+        print "Percentiles completed\n";
     }
 
     public function scrapCollegeJob()
