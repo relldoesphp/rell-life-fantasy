@@ -87,8 +87,50 @@ class QbService extends ServiceAbstract
         foreach ($qbs as $qb) {
             $qb->decodeJson();
 
+            /*
+             *     $info = json_decode($te['player_info']);
+            $metrics = json_decode($te['metrics']);
+            $percentiles = json_decode($te['percentiles']);
+            $college = json_decode($te['college_stats']);
+
+            if ($college != null) {
+                $bestYds = 0;
+                $bestYear = 0;
+                foreach ($college as $year) {
+                    if ($year->ypa > 0) {
+                        $data["depthAdjPct"] = round(($year->ypa * 7.85), 2);
+                        $data["bestPct"] = $year->pct;
+                        $data["bestYpa"] = $year->ypa;
+                    }
+                }
+            } else {
+                $data["bestPct"] = null;
+                $data["bestYpa"] = null;
+                $data["depthAdjPct"] = "";
+            }
 
 
+           $data["throwVelocity"] = str_replace( " mph", "", $metrics->throwVelocity);
+
+            if ($data['throwVelocity'] == "") {
+                $throwVelocity = 50;
+            } else {
+                $throwVelocity = $percentiles->throwVelocity;
+            }
+
+            if ($data['depthAdjPct'] == "") {
+                $depthAdjPct = 50;
+            } else {
+                $depthAdjPct = $percentiles->depthAdjPct;
+            }
+
+            $data['armTalent'] = ($throwVelocity * .50) + ($depthAdjPct * .50);
+
+            $data["mobility"] = ($percentiles->elusiveness * .30) + ($percentiles->power * .30) + ($percentiles->fortyTime * .40);
+
+            $data['playmaker'] = ($data['armTalent'] + $data['mobility'])/2;
+             *
+             */
 
             $this->command->save($qb);
 
