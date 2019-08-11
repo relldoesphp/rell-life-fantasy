@@ -1051,16 +1051,19 @@ var rlf =  {
 
         var roleFits = [
             {
-                "name":"Move Score",
-                "value":Math.round((rlfData.player.metrics.move / 15) * 100)
+                "name":"Move TE",
+                "value":Math.round(rlfData.player.metrics.move),
+                "percentile": rlfData.player.ordinals.move
             },
             {
-                "name":"In Line Score",
-                "value":Math.round((rlfData.player.metrics.inLine / 10) * 100)
+                "name":"In Line TE",
+                "value":Math.round(rlfData.player.metrics.inLine),
+                "percentile": rlfData.player.ordinals.inLine
             },
             {
-                "name":"Alpha Score",
-                "value":Math.round((rlfData.player.metrics.alpha / 25) * 100)
+                "name":"2 Way TE",
+                "value":Math.round(rlfData.player.metrics.alpha),
+                "percentile": rlfData.player.ordinals.alpha
             }
         ];
 

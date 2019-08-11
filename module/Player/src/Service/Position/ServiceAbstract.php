@@ -375,9 +375,13 @@ class ServiceAbstract
         print "Metrics completed\n";
     }
 
-    public function calculatePercentiles($type)
+    public function calculatePercentiles($type, $array)
     {
-        $percentileArrays = $this->repository->getPercentileRanks($type, $this->percentileMetrics);
+        if (empty($array)) {
+            $array = $this->percentileMetrics;
+        }
+
+        $percentileArrays = $this->repository->getPercentileRanks($type, $array);
         $players = $this->repository->findAllPlayers($type);
         $progressBar = new ProgressBar($this->consoleAdapter, 0, count($players));
         $pointer = 0;

@@ -142,8 +142,8 @@ class PlayerManager
         $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->command, $this->repository);
         $teService->calculateMetrics("TE");
         $teService->calculatePercentiles("TE");
-        $teService->calculateSpecialScores();
-        $teService->calculateSpecialPercentiles();
+        $teService->calculateSpecialScores("TE");
+        $teService->calculateSpecialPercentiles("TE");
 
 
 
