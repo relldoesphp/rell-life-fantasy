@@ -138,7 +138,5 @@ class QbService extends ServiceAbstract
             $progressBar->update($pointer);
         }
         $progressBar->finish();
-
     }
-
 }

@@ -20,12 +20,15 @@ return [
         'aliases' => [
             Model\Player\PlayerRepositoryInterface::class => Model\Player\Sql\SqlPlayerRepository::class,
             Model\Player\PlayerCommandInterface::class => Model\Player\Sql\SqlPlayerCommand::class,
+            Model\Stats\StatsRepositoryInterface::class => Model\Stats\Sql\SqlStatsRepository::class,
+            Model\Stats\StatsCommandInterface::class => Model\Stats\Sql\SqlStatsCommand::class
         ],
         'factories' => [
             'Dtw\Db\Adapter' => AdapterAbstractServiceFactory::class,
             Model\Player\Sql\SqlPlayerRepository::class => Model\Player\Sql\Factory\SqlPlayerRepositoryFactory::class,
             Model\Player\Sql\SqlPlayerCommand::class => Model\Player\Sql\Factory\SqlPlayerCommandFactory::class,
-            Service\PlayerManager::class => Service\Factory\PlayerManagerFactory::class
+            Service\PlayerManager::class => Service\Factory\PlayerManagerFactory::class,
+            Model\Stats\Sql\SqlStatsRepository::class => Model\Stats\Sql\Factory\SqlStatRepositoryFactory::class,
         ],
     ],
 
