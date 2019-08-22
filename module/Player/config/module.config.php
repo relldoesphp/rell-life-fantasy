@@ -29,6 +29,8 @@ return [
             Model\Player\Sql\SqlPlayerCommand::class => Model\Player\Sql\Factory\SqlPlayerCommandFactory::class,
             Service\PlayerManager::class => Service\Factory\PlayerManagerFactory::class,
             Model\Stats\Sql\SqlStatsRepository::class => Model\Stats\Sql\Factory\SqlStatRepositoryFactory::class,
+            Model\Stats\Sql\SqlStatsCommand::class => Model\Stats\Sql\Factory\SqlStatCommandFactory::class,
+            Service\StatsManager::class => Service\Factory\StatsManagerFactory::class
         ],
     ],
 

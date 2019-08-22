@@ -79,7 +79,7 @@ var rlf =  {
         var data = [
             {
                 type: 'scatterpolar',
-                r: [percent1.height, percent1.weight, percent1.arms, percent1.bmi, percent1.fortyTime, percent1.benchPress, percent1.verticalJump, percent1.broadJump, percent1.cone, percent1.shuttle],
+                r: [percent1.height, percent1.weight, percent1.armsInches, percent1.bmi, percent1.fortyTime, percent1.benchPress, percent1.verticalJump, percent1.broadJump, percent1.cone, percent1.shuttle],
                 theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
                 fill: 'toself',
                 name: rlfData.players[0].first_name+' '+rlfData.players[0].last_name,
@@ -90,7 +90,7 @@ var rlf =  {
             },
             {
                 type: 'scatterpolar',
-                r: [percent2.height, percent2.weight, percent2.arms, percent2.bmi, percent2.fortyTime, percent2.benchPress, percent2.verticalJump, percent2.broadJump, percent2.cone, percent2.shuttle],
+                r: [percent2.height, percent2.weight, percent2.armsInches, percent2.bmi, percent2.fortyTime, percent2.benchPress, percent2.verticalJump, percent2.broadJump, percent2.cone, percent2.shuttle],
                 theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
                 fill: 'toself',
                 name: rlfData.players[1].first_name+' '+rlfData.players[1].last_name,
@@ -151,7 +151,7 @@ var rlf =  {
                     {
                         type: 'bar',
                         backgroundColor: 'rgb(29, 233, 195, 0.4)',
-                        label: 'WR Skills',
+                        label: rlfData.players[0].first_name+" "+rlfData.players[0].last_name,
                         borderWidth: 2,
                         fill: false,
                         data: [percent1.collegeScore, percent1.bully, percent1.fortyTime, percent1.routeAgility, percent1.jumpball, percent1.elusiveness, percent1.power],
@@ -161,7 +161,7 @@ var rlf =  {
                     {
                         type: 'bar',
                         backgroundColor: 'rgba(174, 3, 230, 0.4)',
-                        label: 'WR Skills',
+                        label: rlfData.players[1].first_name+" "+rlfData.players[1].last_name,
                         borderWidth: 2,
                         fill: false,
                         data: [percent2.collegeScore, percent2.bully, percent2.fortyTime, percent2.routeAgility, percent2.jumpball, percent2.elusiveness, percent2.power],
@@ -180,7 +180,7 @@ var rlf =  {
                     {
                         type: 'bar',
                         backgroundColor: 'rgb(29, 233, 195, 0.4)',
-                        label: 'WR Skills',
+                        label: rlfData.players[0].first_name+" "+rlfData.players[0].last_name,
                         borderWidth: 2,
                         fill: false,
                         data: [percent1.fortyTime, percent1.jukeAgility, percent1.routeAgility, percent1.elusiveness, percent1.power, percent1.speedScore],
@@ -190,7 +190,7 @@ var rlf =  {
                     {
                         type: 'bar',
                         backgroundColor: 'rgba(174, 3, 230, 0.4)',
-                        label: 'WR Skills',
+                        label: rlfData.players[1].first_name+" "+rlfData.players[1].last_name,
                         borderWidth: 2,
                         fill: false,
                         data: [percent2.fortyTime, percent2.jukeAgility, percent2.routeAgility, percent2.elusiveness, percent2.power, percent2.speedScore],
@@ -236,9 +236,9 @@ var rlf =  {
     initCompareSkillset : function(position){
         if (position == "WR") {
 
-            $(".player-skillz-role1").text("Grinder:");
-            $(".player-skillz-role2").text("Pass Catcher:");
-            $(".player-skillz-role3").text("Alpha:");
+            $(".player-skillz-role1").text("Slot:");
+            $(".player-skillz-role2").text("Deep Threat:");
+            $(".player-skillz-role3").text("Outside X:");
 
             var slotpercent = Math.round(rlfData.players[0].percentiles.slot);
             var deeppercent = Math.round(rlfData.players[0].percentiles.deep);
@@ -256,9 +256,9 @@ var rlf =  {
             $("#player1-skill .role-three-score").text(alphapercent + "%")
 
             /*** Player2 ***/
-            var slotpercent = rlfData.players[1].percentiles.slot;
-            var deeppercent = rlfData.players[1].percentiles.deep;
-            var alphapercent = Math.round((rlfData.players[1].metrics.alpha / 30) * 100);
+            var slotpercent = Math.round(rlfData.players[1].percentiles.slot);
+            var deeppercent = Math.round(rlfData.players[1].percentiles.deep);
+            var alphapercent = Math.round(rlfData.players[1].metrics.alpha);
 
             $("#player2-skill .role-one-bar .determinate").css("width", slotpercent + "%");
             $("#player2-skill .role-one-score").text(slotpercent + "%")
@@ -271,13 +271,13 @@ var rlf =  {
         }
 
         if (position == "RB") {
-            var grinderpercent1 = Math.round((rlfData.players[0].metrics.grinder / 12) * 100);
-            var passCatcherpercent1 = Math.round((rlfData.players[0].metrics.passCatcher / 12) * 100);
-            var alphapercent1 = Math.round((rlfData.players[0].metrics.alpha / 25) * 100);
+            var grinderpercent1 = Math.round(rlfData.players[0].metrics.grinder);
+            var passCatcherpercent1 = Math.round(rlfData.players[0].metrics.passCatcher);
+            var alphapercent1 = Math.round(rlfData.players[0].metrics.alpha);
 
             $(".player-skillz-role1").text("Grinder:");
-            $(".player-skillz-role2").text("Pass Catcher:");
-            $(".player-skillz-role3").text("Alpha:");
+            $(".player-skillz-role2").text("Receiver:");
+            $(".player-skillz-role3").text("3 Down:");
 
             $("#player1-skill .role-one-bar .determinate").css("width", grinderpercent1 + "%");
             $("#player1-skill .role-one-score").text(grinderpercent1 + "%")
@@ -289,9 +289,9 @@ var rlf =  {
             $("#player1-skill .role-three-score").text(alphapercent1 + "%")
 
             /*** Player2 ***/
-            var grinderpercent2 = Math.round((rlfData.players[1].metrics.grinder / 12) * 100);
-            var passCatcherpercent2 = Math.round((rlfData.players[1].metrics.passCatcher / 12) * 100);
-            var alphapercent2 = Math.round((rlfData.players[1].metrics.alpha / 25) * 100);
+            var grinderpercent2 = Math.round(rlfData.players[1].metrics.grinder);
+            var passCatcherpercent2 = Math.round(rlfData.players[1].metrics.passCatcher);
+            var alphapercent2 = Math.round(rlfData.players[1].metrics.alpha);
 
             $("#player2-skill .role-one-bar .determinate").css("width", grinderpercent2 + "%");
             $("#player2-skill .role-one-score").text(grinderpercent2 + "%")
@@ -304,13 +304,13 @@ var rlf =  {
         }
 
         if (position == "TE") {
-            var move1 = Math.round((rlfData.players[0].metrics.move / 15) * 100)
-            var inline1 = Math.round((rlfData.players[0].metrics.inLine / 10) * 100);
-            var alpha1 = Math.round((rlfData.players[0].metrics.alpha / 25) * 100);
+            var move1 = Math.round(rlfData.players[0].metrics.move)
+            var inline1 = Math.round(rlfData.players[0].metrics.inLine);
+            var alpha1 = Math.round(rlfData.players[0].metrics.alpha);
 
             $(".player-skillz-role1").text("Move:");
             $(".player-skillz-role2").text("In Line:");
-            $(".player-skillz-role3").text("Alpha:");
+            $(".player-skillz-role3").text("2 Way TE:");
 
             $("#player1-skill .role-one-bar .determinate").css("width", move1 + "%");
             $("#player1-skill .role-one-score").text(move1 + "%")
@@ -318,13 +318,13 @@ var rlf =  {
             $("#player1-skill .role-two-bar .determinate").css("width", inline1 + "%");
             $("#player1-skill .role-two-score").text(inline1 + "%")
 
-            $("#player1-skill .role-three-bar .determinate").css("width", alphapercent1 + "%");
+            $("#player1-skill .role-three-bar .determinate").css("width", alpha1 + "%");
             $("#player1-skill .role-three-score").text(alpha1 + "%")
 
             /*** Player2 ***/
-            var move2 = Math.round((rlfData.players[1].metrics.move / 15) * 100)
-            var inline2 = Math.round((rlfData.players[1].metrics.inLine / 10) * 100);
-            var alpha2 = Math.round((rlfData.players[1].metrics.alpha / 25) * 100);
+            var move2 = Math.round(rlfData.players[1].metrics.move)
+            var inline2 = Math.round(rlfData.players[1].metrics.inLine);
+            var alpha2 = Math.round(rlfData.players[1].metrics.alpha);
 
             $("#player2-skill .role-one-bar .determinate").css("width", move2 + "%");
             $("#player2-skill .role-one-score").text(move2 + "%")
@@ -554,8 +554,8 @@ var rlf =  {
                     },
                     {
                         "name": "Seasons",
-                        "metric1": player1.player_info.collegeSeasons,
-                        "metric2": player2.player_info.collegeSeasons
+                        "metric1": player1.metrics.collegeSeasons,
+                        "metric2": player2.metrics.collegeSeasons
                     },
                     {
                         "name": "Breakout Class",
@@ -569,8 +569,13 @@ var rlf =  {
                     },
                     {
                         "name": "Best Dominator",
-                        "metric1": player1.metrics.bestDominator+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.breakoutDominator+"%'></div></div>",
-                        "metric2": player2.metrics.bestDominator+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutDominator+"%'></div></div>",
+                        "metric1": player1.metrics.bestDominator+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.bestDominator+"%'></div></div>",
+                        "metric2": player2.metrics.bestDominator+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.bestDominator+"%'></div></div>",
+                    },
+                    {
+                        "name": "Best Reception Share",
+                        "metric1": player1.metrics.bestRecDominator+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.bestRecDominator+"%'></div></div>",
+                        "metric2": player2.metrics.bestRecDominator+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.bestRecDominator+"%'></div></div>",
                     },
                     {
                         "name": "College Score",
@@ -665,6 +670,7 @@ var rlf =  {
             datasets: [{
                 type: 'bar',
                 stack: 'Stack One',
+                backgroundColor: 'rgb(29, 233, 195, 0.4)',
                 label: 'QB Skills',
                 borderWidth: 2,
                 fill: false,
@@ -678,7 +684,7 @@ var rlf =  {
 
     initMesChartsQb : function() {
         var percent = rlfData.player.percentiles;
-        var info = [percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
+        var info = [percent.heightInches, percent.weight, percent.armsInches, percent.bmi, percent.fortyTime, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
         var labels = ['height', 'weight', 'arms', 'bmi', '40', 'vertical', 'broad', '3cone', 'shuttle'];
         rlf.makeRadarGraph(info,labels);
     },
@@ -763,44 +769,46 @@ var rlf =  {
 
         rlf.makeGameLogTable(gameLogColumns);
 
-        $(".college-row-one p").text("Full Breakout Class: "+rlfData.player.metrics.breakoutClass);
-        $(".college-row-two p").text("Dominate Seasons: "+rlfData.player.metrics.breakoutSeasons+" out of "+rlfData.player.metrics.collegeSeasons);
-        $(".college-row-three p").text("Best Dominator: "+rlfData.player.metrics.bestDominator+"%");
-        $(".college-row-four p").text("Best Reception Dominator: "+rlfData.player.metrics.bestRecDominator+"%");
-        $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
-        $(".donut-inner span").text(rlfData.player.ordinals.collegeScore+" percentile");
-        var config = {
-            type:'doughnut',
-            data: {
-                datasets: [{
-                    data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore,2) ],
-                    backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
-                    label: 'College Score'
-                }],
-                labels: [
-                    'College Score',
-                    ''
-                ]
-            },
-            options: {
-                cutoutPercentage: 75,
-                legend: {
-                    position:'top'
+        if (rlfData.player.metrics.collegeScore !== null) {
+            $(".college-row-one p").text("Full Breakout Class: " + rlfData.player.metrics.breakoutClass);
+            $(".college-row-two p").text("Dominate Seasons: " + rlfData.player.metrics.breakoutSeasons + " out of " + rlfData.player.metrics.collegeSeasons);
+            $(".college-row-three p").text("Best Dominator: " + rlfData.player.metrics.bestDominator + "%");
+            $(".college-row-four p").text("Best Reception Dominator: " + rlfData.player.metrics.bestRecDominator + "%");
+            $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
+            $(".donut-inner span").text(rlfData.player.ordinals.collegeScore + " percentile");
+            var config = {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore, 2)],
+                        backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                        label: 'College Score'
+                    }],
+                    labels: [
+                        'College Score',
+                        ''
+                    ]
                 },
-                title: {
-                    display:false,
-                    text: 'College Score'
-                },
-                responsive: true,
-                animation: {
-                    animateScale: true,
-                    animateRotate: true
+                options: {
+                    cutoutPercentage: 75,
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: false,
+                        text: 'College Score'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
                 }
-            }
-        };
+            };
 
-        var ctx = document.getElementById('college-doughnut').getContext('2d');
-        var myDoughut = new Chart(ctx, config);
+            var ctx = document.getElementById('college-doughnut').getContext('2d');
+            var myDoughut = new Chart(ctx, config);
+        }
     },
 
     initProsChartsRB : function(){
@@ -873,7 +881,7 @@ var rlf =  {
             {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
             {title: "YPT", data: "stats.rec_ypt", "defaultContent":0},
-            {title: "Deep Yds", data: "stats.rec_ypt", "defaultContent":0}
+            {title: "Rank", data: "ranks.pts_ppr", "defaultContent":0}
         ];
 
         rlf.makeSeasonTable(seasonColumns);
@@ -906,7 +914,7 @@ var rlf =  {
                 "percent":rlfData.player.percentiles.deep
             },
             {
-                "name":"Alpha:",
+                "name":"Outside X:",
                 "value":rlfData.player.metrics.alpha,
                 "percentile":rlfData.player.ordinals.alpha,
                 "percent":rlfData.player.percentiles.alpha
@@ -916,44 +924,45 @@ var rlf =  {
 
         rlf.makeRoleFits(roleFits);
 
-
-        $(".college-row-one p").text("Full Breakout Class: "+rlfData.player.metrics.breakoutClass);
-        $(".college-row-two p").text("Dominate Seasons: "+rlfData.player.metrics.breakoutSeasons+" out of "+rlfData.player.metrics.collegeSeasons);
-        $(".college-row-three p").text("Best Dominator: "+rlfData.player.metrics.bestDominator+"%");
-        $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
-        $(".donut-inner span").text(rlfData.player.ordinals.collegeScore+" percentile");
-        var config = {
-          type:'doughnut',
-          data: {
-              datasets: [{
-                  data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore,2) ],
-                  backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
-                  label: 'College Score'
-              }],
-              labels: [
-                  'College Score',
-                  ''
-              ]
-          },
-            options: {
-                cutoutPercentage: 75,
-                legend: {
-                    position:'top'
+        if (rlfData.player.metrics.collegeScore !== null) {
+            $(".college-row-one p").text("Full Breakout Class: " + rlfData.player.metrics.breakoutClass);
+            $(".college-row-two p").text("Dominate Seasons: " + rlfData.player.metrics.breakoutSeasons + " out of " + rlfData.player.metrics.collegeSeasons);
+            $(".college-row-three p").text("Best Dominator: " + rlfData.player.metrics.bestDominator + "%");
+            $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
+            $(".donut-inner span").text(rlfData.player.ordinals.collegeScore + " percentile");
+            var config = {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore, 2)],
+                        backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                        label: 'College Score'
+                    }],
+                    labels: [
+                        'College Score',
+                        ''
+                    ]
                 },
-                title: {
-                    display:false,
-                    text: 'College Score'
-                },
-                responsive: true,
-                animation: {
-                    animateScale: true,
-                    animateRotate: true
+                options: {
+                    cutoutPercentage: 75,
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: false,
+                        text: 'College Score'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
                 }
-            }
-        };
+            };
 
             var ctx = document.getElementById('college-doughnut').getContext('2d');
             var myDoughut = new Chart(ctx, config);
+        }
 
     },
 
@@ -1067,7 +1076,47 @@ var rlf =  {
             }
         ];
 
-        rlf.makeRoleFits(roleFits)
+        rlf.makeRoleFits(roleFits);
+
+        if (rlfData.player.metrics.collegeScore !== null) {
+            $(".college-row-one p").text("Full Breakout Class: "+rlfData.player.metrics.breakoutClass);
+            $(".college-row-two p").text("Dominate Seasons: "+rlfData.player.metrics.breakoutSeasons+" out of "+rlfData.player.metrics.collegeSeasons);
+            $(".college-row-three p").text("Best Dominator: "+rlfData.player.metrics.bestDominator+"%");
+            $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
+            $(".donut-inner span").text(rlfData.player.ordinals.collegeScore+" percentile");
+            var config = {
+                type:'doughnut',
+                data: {
+                    datasets: [{
+                        data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore,2) ],
+                        backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                        label: 'College Score'
+                    }],
+                    labels: [
+                        'College Score',
+                        ''
+                    ]
+                },
+                options: {
+                    cutoutPercentage: 75,
+                    legend: {
+                        position:'top'
+                    },
+                    title: {
+                        display:false,
+                        text: 'College Score'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            var ctx = document.getElementById('college-doughnut').getContext('2d');
+            var myDoughut = new Chart(ctx, config);
+        }
     },
 
     initProsChartsTE : function(){
@@ -1080,6 +1129,7 @@ var rlf =  {
                 type: 'bar',
                 stack: 'Stack One',
                 label: 'TE Skills',
+                backgroundColor: 'rgb(29, 233, 195, 0.4)',
                 borderWidth: 2,
                 fill: false,
                 data: [percent.fortyTime, percent.routeAgility, percent.jumpball, percent.elusiveness, percent.power, percent.bully, percent.runBlock],
@@ -1088,7 +1138,7 @@ var rlf =  {
             },
                 {
                     type: 'line',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    backgroundColor: 'rgba(174, 3, 230, 0.25)',
                     fill: true,
                     label: 'Average NFL Safety',
                     data: [70, 67, 61, 22, 15, 10, 9],
@@ -1771,7 +1821,6 @@ var rlf =  {
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('full_name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             // `states` is an array of state names defined in "The Basics"
-            prefetch: '../../data/names.json',
             remote: {
                 url: '/player/query/%QUERY',
                 wildcard: '%QUERY'
@@ -1794,7 +1843,7 @@ var rlf =  {
             });
 
         $('#search-players .typeahead').on('typeahead:selected', function(evt, item){
-            var url = "http://relllifefantasy/player/view/"+item.nohash;
+            var url = "http://relllifefantasy/player/view/"+item.id;
             window.location.href=url;
         });
 

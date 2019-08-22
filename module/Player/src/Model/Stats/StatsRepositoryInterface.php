@@ -14,7 +14,21 @@ interface StatsRepositoryInterface
 
     public function getGameLogsBySleeperId($sleeperId);
 
-    public function makeSeasonRanks($year, $position, $types);
+    public function makeSeasonRanks($year, $position);
 
-    public function makeWeeklyRanks($week, $position, $types);
+    public function makeWeeklyRanks($week, $year, $position);
+
+    public function getSeasonStatsByPosition($position, $year);
+
+    public function getGameLogsByPosition($position, $year, $week);
+
+    public function getGameLogsByWeekYearSleeper($week, $year, $sleeperId);
+
+    public function getSeasonStatsByPlayerId($playerId);
+
+    public function getSeasonStatsBySleeperId($sleeperId);
+
+    public function getSeasonStatsByWhere($where);
+
+    public function getGameLogsByPlayerId($playerId);
 }

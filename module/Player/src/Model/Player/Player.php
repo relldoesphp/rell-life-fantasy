@@ -392,24 +392,26 @@ class Player implements InputFilterAwareInterface
     public function makeSeasonStats()
     {
         $tableData = [];
-        if (!empty($this->seasonStats['0']['stats'])) {
+        if (!empty($this->seasonStats)) {
             $seasonStats = $this->seasonStats;
-            foreach ($seasonStats as $seasonStat) {
+            foreach ($seasonStats as $year => $seasonStat) {
                 if ($seasonStat['stats'] == null) {
                     continue;
                 }
-                $stats = Json::decode($seasonStat['stats'], 1);
-                if (($this->position == "QB" ||$this->position == "WR" || $this->position == "TE" || $this->position == "RB") && array_key_exists('gp', $stats)) {
+
+                if (($this->position == "QB" ||$this->position == "WR" || $this->position == "TE" || $this->position == "RB") && array_key_exists('gp', $seasonStat['stats'])) {
                     $tableData[] = [
-                        "year" => $seasonStat['year'],
-                        "stats" => $stats
+                        "year" => $year,
+                        "stats" => $seasonStat['stats'],
+                        "ranks" => $seasonStat['ranks']
                     ];
                 }
             }
         } else {
             $tableData[] = [
                 "year" => 2018,
-                "stats" => []
+                "stats" => [],
+                "ranks" => []
             ];
         }
 
@@ -419,20 +421,21 @@ class Player implements InputFilterAwareInterface
     public function makeGameLogs()
     {
         $tableData = [];
-        if (!empty($this->gameLogs['0']['stats'])) {
+        if (!empty($this->gameLogs)) {
             $gameLogs = $this->gameLogs;
             foreach ($gameLogs as $gameLog) {
-                if ($gameLog['stats'] == null || empty($gameLog['stats'])) {
+                $stats = $gameLog->getStats();
+                if ($stats == null || empty($stats)) {
                     continue;
                 }
-                $stats = Json::decode($gameLog['stats'], 1);
                 if (!array_key_exists('off_snp', $stats)) {
                     continue;
                 }
+
                 if ($this->position == "QB" || $this->position == "WR" || $this->position == "TE" || $this->position == "RB") {
                     $tableData[] = [
-                        'year' => $gameLog['year'],
-                        'week' => $gameLog['week'],
+                        'year' => $gameLog->getYear(),
+                        'week' => $gameLog->getWeek(),
                         'stats' => $stats,
                     ];
                 }
@@ -502,11 +505,11 @@ class Player implements InputFilterAwareInterface
                         "college" => $stats['college'],
                         "class" => $stats['class'],
                         "games" => $stats['games'],
-                        "recs" => $stats['recs'],
+                        "recs" => $stats['receptions'],
                         "recYds" => $stats['recYds'],
                         "recTds" => $stats['recTds'],
                         "recAvg" => $stats['recAvg'],
-                        "recDom" => round($stats['recs']/$stats['totals']['recs'] * 100,1)."%",
+                        "recDom" => round($stats['receptions']/$stats['totals']['recs'] * 100,1)."%",
                         "ydsDom" => round($stats['recYds']/$stats['totals']['yds'] * 100, 1)."%",
                         "tdsDom" => round($stats['recTds']/$stats['totals']['tds'] * 100,1)."%",
                     ];
@@ -549,7 +552,6 @@ class Player implements InputFilterAwareInterface
 
     public function fillEmptyValues()
     {
-
         $infoArray = [
             'arms',
             'bmi',
@@ -559,7 +561,6 @@ class Player implements InputFilterAwareInterface
             'collegeSeasons',
             'heightInches',
             'hands',
-            "armsInches"
         ];
         foreach($infoArray as $metric) {
             if (!array_key_exists($metric, $this->player_info)) {
@@ -586,7 +587,6 @@ class Player implements InputFilterAwareInterface
             'breakoutClass',
             'breakoutYears',
             'bestDominator',
-            'armsInches'
             ];
         foreach($metricsArray as $metric) {
             if (!array_key_exists($metric, $this->metrics)) {
@@ -596,7 +596,7 @@ class Player implements InputFilterAwareInterface
             }
         }
 
-        $this->percentiles['arms'] = $this->percentiles['armsInches'];
+
     }
 
     private function makeImages()

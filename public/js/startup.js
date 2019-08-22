@@ -520,7 +520,7 @@
                 $('html, body').animate({scrollTop: originalOffset + (window.innerHeight * 2 * index) }, 1200);
               });
 
-              var device = $this.find('.phone-preview-sizer');
+              var device = $this.find('.desktop-preview-sizer');
               var wrappers = $this.find('.horizontal-half-wrapper');
 
 

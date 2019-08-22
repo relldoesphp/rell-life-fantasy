@@ -23,14 +23,6 @@ interface PlayerCommandInterface
 
     public function deletePlayer(Player $player);
 
-    public function getWrCommand();
-
-    public function getRbCommand();
-
-    public function getTeCommand();
-
-    public function getSleeperGameLogs();
-
     public function makePlayerNameJson();
 
 }

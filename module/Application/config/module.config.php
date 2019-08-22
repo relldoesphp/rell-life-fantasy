@@ -24,6 +24,16 @@ return [
                     ],
                 ],
             ],
+            'threads' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/threads',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'threads',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [

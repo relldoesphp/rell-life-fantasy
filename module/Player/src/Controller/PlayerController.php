@@ -14,16 +14,22 @@ use Zend\View\Model\JsonModel;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractActionController;
 use Player\Model\Player\PlayerRepositoryInterface;
+use Player\Service\PlayerManager;
 
 class PlayerController extends AbstractActionController
 {
     private $playerRepository;
+    private $playerManager;
 
     private $playerList;
 
-    public function __construct(Player\PlayerRepositoryInterface $playerRepository)
+    public function __construct(
+        Player\PlayerRepositoryInterface $playerRepository,
+        PlayerManager $playerManager
+    )
     {
         $this->playerRepository = $playerRepository;
+        $this->playerManager = $playerManager;
         $this->playerList =  $this->playerRepository->getPlayerNames('Off');
     }
 
@@ -40,6 +46,11 @@ class PlayerController extends AbstractActionController
         ]);
 
         return $viewModel;
+    }
+
+    public function rankingsAction()
+    {
+
     }
 
     public function compareAction()
@@ -61,7 +72,7 @@ class PlayerController extends AbstractActionController
 
         if (!empty($players)) {
             foreach ($players as $key => $player) {
-                $playerObject = $this->playerRepository->findPlayer($player['id']);
+                $playerObject = $this->playerManager->getPlayer($player['id']);
                 if ($playerObject == false ) {
                     $playerObject = new Player();
                 }
@@ -90,18 +101,15 @@ class PlayerController extends AbstractActionController
 
     public function viewAction()
     {
+
         $id = $this->params()->fromRoute('id', 0);
-        if (is_numeric($id)) {
-            $player = $this->playerRepository->findPlayer($id);
-        } else {
-            $player = $this->playerRepository->findPlayerByAlias($id);
-        }
+
+        $player = $this->playerManager->getPlayer($id);
 
         if ($player == false) {
             return $this->redirect()->toRoute('player', ['action' => 'search']);
         }
 
-        $player->decodeJson();
         $playerData = $player->getAllInfo();
 
         $jsVars['player'] = $playerData;

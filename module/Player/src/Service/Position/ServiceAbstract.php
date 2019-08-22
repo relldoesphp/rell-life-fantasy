@@ -259,6 +259,10 @@ class ServiceAbstract
         $pointer = 0;
 
         foreach ($players as $player) {
+            if ($player->getId() == "4334") {
+                $goedert = true;
+            }
+
             $player->decodeJson();
             $metrics = $player->getMetrics();
             if (empty($metrics)) {
@@ -272,7 +276,7 @@ class ServiceAbstract
                 $metrics['benchPress'] = 14;
             }
 
-            if ($metrics['benchPress'] != null && $metrics['benchPress'] != '-') {
+            if (array_key_exists("benchPress", $metrics) && $metrics['benchPress'] != null && $metrics['benchPress'] != '-') {
                 $bmiRate = ($posInfo[$type]['benchAvg'])/($posInfo[$type]['bmiAvg']);
                 $bmiAdj = $bmiRate * ($info['bmi'] - $posInfo[$type]['bmiAvg']);
                 $metrics['bully'] = round( $bmiAdj + $metrics['benchPress'], 2);
@@ -356,7 +360,7 @@ class ServiceAbstract
             }
 
             //add Weight Speed Score
-            if ($metrics['fortyTime'] != null) {
+            if ($metrics['fortyTime'] != null && $metrics['fortyTime'] != "-") {
                 $metrics['speedScore'] = round((($info['weight'] * $posInfo[$type]['weightAvg'])/(pow($metrics['fortyTime'],4))), 2);
             } else {
                 $metrics['speedScore'] = null;

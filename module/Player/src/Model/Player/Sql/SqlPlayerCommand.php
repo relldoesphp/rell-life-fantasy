@@ -48,17 +48,6 @@ class SqlPlayerCommand implements PlayerCommandInterface
     {
         $this->db = $db;
         $this->consoleAdapter = $consoleAdapter;
-//        $this->qbCommand = new SqlCommaSqlQBCommand($db, $consoleAdapter);
-//        $this->wrCommand = new SqlCommands\SqlWrCommand($db, $consoleAdapter);
-//        $this->rbCommand = new SqlRbCommand($db, $consoleAdapter);
-//        $this->teCommand = new SqlTeCommand($db, $consoleAdapter);
-//        $this->olCommand = new SqlOlCommand($db, $consoleAdapter);
-//        $this->dlCommand = new SqlDlCommand($db, $consoleAdapter);
-//        $this->olbCommand = new SqlOLBCommand($db, $consoleAdapter);
-//        $this->ilbCommand = new SqlILBCommand($db, $consoleAdapter);
-//        $this->cbCommand = new SqlCBCommand($db, $consoleAdapter);
-//        $this->fsCommand = new SqlFSCommand($db, $consoleAdapter);
-//        $this->ssCommand = new SqlSSCommand($db, $consoleAdapter);
     }
 
     public function save(Player $player)
@@ -201,85 +190,6 @@ class SqlPlayerCommand implements PlayerCommandInterface
     public function getSsCommand()
     {
         return $this->ssCommand;
-    }
-
-    public function getSleeperStats()
-    {
-        $request = new Request();
-        $uri = "https://api.sleeper.app/v1/stats/nfl/regular/2016";
-        $request->setUri($uri);
-
-        $client = new Client();
-        $response = $client->send($request);
-        $html = $response->getBody();
-
-        $json = (array) json_decode($html);
-
-        $progressBar = new ProgressBar($this->consoleAdapter, 0, count($json));
-        $pointer = 0;
-        foreach ($json as $key => $value) {
-            $data = [];
-
-            $sql = new Sql($this->db);
-            $insert = $sql->insert('season_stats');
-            $data = [
-                'sleeper_id' => $key,
-                'year' => '2016'
-            ];
-
-            if (!empty((array) $value)) {
-                $data['stats'] = json_encode($value);
-            }
-
-            $insert->values($data);
-            $stmt   = $sql->prepareStatementForSqlObject($insert);
-            $result = $stmt->execute();
-            $pointer++;
-            $progressBar->update($pointer);
-        }
-        $progressBar->finish();
-    }
-
-    public function getSleeperGameLogs()
-    {
-        $week = 1;
-        while ($week < 18) {
-            $request = new Request();
-            $uri = "https://api.sleeper.app/v1/stats/nfl/regular/2017/{$week}";
-            $request->setUri($uri);
-
-            $client = new Client();
-            $response = $client->send($request);
-            $html = $response->getBody();
-
-            $json = (array) json_decode($html);
-            print("week {$week} \n");
-            $progressBar = new ProgressBar($this->consoleAdapter, 0, count($json));
-            $pointer = 0;
-            foreach ($json as $key => $value) {
-                $data = [];
-
-                $sql = new Sql($this->db);
-                $insert = $sql->insert('game_logs');
-                $data = [
-                    'sleeper_id' => $key,
-                    'week' => $week,
-                    'year' => '2017'
-                ];
-
-                if (!empty((array) $value)) {
-                    $data['stats'] = json_encode($value);
-                }
-
-                $insert->values($data);
-                $stmt   = $sql->prepareStatementForSqlObject($insert);
-                $result = $stmt->execute();
-                $pointer++;
-                $progressBar->update($pointer);
-            }
-            $progressBar->finish();
-            $week++;
-        }
     }
 
 

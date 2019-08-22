@@ -12,6 +12,7 @@ use Player\Model\Player;
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Service\PlayerManager;
+use Player\Service\StatsManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -21,16 +22,19 @@ class ScriptController extends AbstractActionController
     private $command;
     private $repository;
     private $playerManager;
+    private $statsManager;
 
     public function __construct(
         PlayerCommandInterface $command,
         PlayerRepositoryInterface $repository,
-        PlayerManager $playerManager
+        PlayerManager $playerManager,
+        StatsManager $statsManager
     )
     {
         $this->command = $command;
         $this->repository = $repository;
         $this->playerManager = $playerManager;
+        $this->statsManager = $statsManager;
     }
 
     public function indexAction()
@@ -133,12 +137,20 @@ class ScriptController extends AbstractActionController
 
     public function dataScrapperAction()
     {
-        $this->qbCommand->scrapCollegeJob();
+        $this->playerManager->scrapCollegeJob();
     }
 
     public function getSleeperStatsAction()
     {
-        $this->command->getSleeperStats();
+//        $this->statsManager->getSleeperStats("2018");
+//        $this->statsManager->makeSeasonAverages("WR", "2018");
+//        $this->statsManager->makeSeasonRanks("WR", "2018");
+//        $this->statsManager->makeSeasonAverages("RB", "2018");
+//        $this->statsManager->makeSeasonRanks("RB", "2018");
+//        $this->statsManager->makeSeasonAverages("TE", "2018");
+//        $this->statsManager->makeSeasonRanks("TE", "2018");
+//        $this->statsManager->makeSeasonAverages("QB", "2018");
+        $this->statsManager->makeSeasonRanks("QB", "2018");
     }
 
     public function makeNameJsonAction()
@@ -154,6 +166,8 @@ class ScriptController extends AbstractActionController
 
     public function getSleeperLogsAction()
     {
-        $this->command->getSleeperGameLogs();
+        $this->statsManager->getSleeperGameLogs("2018");
+       // $this->statsManager->makeSeasonRanks("WR", "2018");
+
     }
 }

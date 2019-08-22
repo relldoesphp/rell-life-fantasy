@@ -163,7 +163,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
             return false;
         }
 
-        $select = $sql->select('season_stats');
+        $select = $sql->select('season_stat');
         $select->where(['sleeper_id = ?' => $player->getSleeperId()]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -172,7 +172,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $resultSet->initialize($result);
         $player->seasonStats = $resultSet->toArray();
 
-        $select = $sql->select('game_logs');
+        $select = $sql->select('game_log');
         $select->where(['sleeper_id = ?' => $player->getSleeperId()]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();

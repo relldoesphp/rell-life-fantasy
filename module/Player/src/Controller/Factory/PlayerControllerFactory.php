@@ -13,6 +13,7 @@ use Interop\Container\ContainerInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Controller\PlayerController;
 use Player\Model\Player;
+use Player\Service\PlayerManager;
 
 class PlayerControllerFactory implements FactoryInterface
 {
@@ -21,6 +22,9 @@ class PlayerControllerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new PlayerController($container->get(PlayerRepositoryInterface::class));
+        return new PlayerController(
+            $container->get(PlayerRepositoryInterface::class),
+            $container->get(PlayerManager::class)
+        );
     }
 }

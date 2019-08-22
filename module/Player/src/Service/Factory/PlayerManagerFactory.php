@@ -9,6 +9,8 @@
 namespace Player\Service\Factory;
 
 use Player\Model\Player\Sql\SqlPlayerCommand;
+use Player\Model\Stats\StatsCommandInterface;
+use Player\Model\Stats\StatsRepositoryInterface;
 use Zend\ProgressBar\Adapter\Console;
 use Player\Service\PlayerManager;
 use Player\Model\Player\PlayerCommandInterface;
@@ -28,7 +30,9 @@ class PlayerManagerFactory implements FactoryInterface
             $container->get('Dtw\Db\Adapter'),
             new Console(),
             $container->get(PlayerCommandInterface::class),
-            $container->get(PlayerRepositoryInterface::class)
+            $container->get(PlayerRepositoryInterface::class),
+            $container->get(StatsCommandInterface::class),
+            $container->get(StatsRepositoryInterface::class)
         );
     }
 }

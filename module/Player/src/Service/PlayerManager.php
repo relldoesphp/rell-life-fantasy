@@ -16,6 +16,8 @@ use Zend\Http\Request;
 use Zend\Http\Client;
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
+use Player\Model\Stats\StatsCommandInterface;
+use Player\Model\Stats\StatsRepositoryInterface;
 use Zend\ProgressBar\ProgressBar;
 use Player\Service\Position;
 
@@ -24,19 +26,69 @@ class PlayerManager
 {
     private $db;
     private $consoleAdapter;
-    private $command;
-    private $repository;
+    private $playerCommand;
+    private $playerRepository;
+    private $statsCommand;
+    private $statsRepository;
 
-    public function __construct(AdapterInterface $db, 
-                                Console $consoleAdapter,         
-                                PlayerCommandInterface $command,
-                                PlayerRepositoryInterface $repository)
+    public function __construct(
+        AdapterInterface $db,
+        Console $consoleAdapter,
+        PlayerCommandInterface $playerCommand,
+        PlayerRepositoryInterface $playerRepository,
+        StatsCommandInterface $statsCommand,
+        StatsRepositoryInterface $statsRepository
+    )
     {
         $this->db = $db;
         $this->consoleAdapter = $consoleAdapter;
-        $this->repository = $repository;
-        $this->command = $command;
+        $this->playerRepository = $playerRepository;
+        $this->playerCommand = $playerCommand;
+        $this->statsCommand = $statsCommand;
+        $this->statsRepository = $statsRepository;
     }
+
+    public function getPlayer($id)
+    {
+        if (is_numeric($id)) {
+            $player = $this->playerRepository->findPlayer($id);
+        } else {
+            $player = $this->playerRepository->findPlayerByAlias($id);
+        }
+
+        if ($player == false) {
+            return false;
+        }
+
+        $player->decodeJson();
+
+        $seasonStats = $this->statsRepository->getSeasonStatsBySleeperId($player->getSleeperId());
+        if ($seasonStats !== false) {
+            $stats = [];
+            foreach ($seasonStats as $seasonStat) {
+                $seasonStat->decodeJson();
+                $stats[$seasonStat->year] = [
+                    'stats' => $seasonStat->stats,
+                    'ranks' => $seasonStat->ranks
+                ];
+            }
+            $player->setSeasonStats($stats);
+        }
+
+        $gameLogs = $this->statsRepository->getGameLogsByPlayerId($player->getId());
+        if ($gameLogs !== false && count($gameLogs) != 0) {
+            foreach ($gameLogs as $gameLog) {
+                $gameLog->decodeJson();
+                $logs[] = $gameLog;
+            }
+            $player->setGameLogs($logs);
+        } else {
+            $player->setGameLogs([]);
+        }
+
+        return $player;
+    }
+
 
     public function updateSleeperInfo()
     {
@@ -127,25 +179,34 @@ class PlayerManager
 
     public function updateWrMetrics()
     {
-        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->command, $this->repository);
-        $wrService->calculateMetrics("WR");
-        $wrService->calculatePercentiles("WR");
-        $wrService->calculateSpecialScores("WR");
-        $wrService->calculateSpecialPercentiles("WR");
+//        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $wrService->calculateMetrics();
+//        $wrService->calculatePercentiles();
+//        $wrService->calculateSpecialScores();
+//        $wrService->calculateSpecialPercentiles();
+//
+//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $rbService->calculateMetrics();
+//        $rbService->calculatePercentiles();
+//        $rbService->calculateSpecialScores();
+//        $rbService->calculateSpecialPercentiles();
 
-        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->command, $this->repository);
-        $rbService->calculateMetrics("RB");
-        $rbService->calculatePercentiles("RB");
-        $rbService->calculateSpecialScores("RB");
-        $rbService->calculateSpecialPercentiles("RB");
-
-        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->command, $this->repository);
-        $teService->calculateMetrics("TE");
-        $teService->calculatePercentiles("TE");
+        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $teService->calculateMetrics("TE");
+//        $teService->calculatePercentiles("TE");
         $teService->calculateSpecialScores("TE");
         $teService->calculateSpecialPercentiles("TE");
 
+//        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $qbService->calculateMetrics("QB");
+//        $qbService->calculatePercentiles("QB");
+//        $qbService->calculateSpecialScores("QB");
+//        $qbService->calculateSpecialPercentiles("QB");
+    }
 
-
+    public function scrapCollegeJob()
+    {
+        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $teService->scrapCollegeJob();
     }
 }
