@@ -1843,7 +1843,7 @@ var rlf =  {
             });
 
         $('#search-players .typeahead').on('typeahead:selected', function(evt, item){
-            var url = "http://relllifefantasy/player/view/"+item.id;
+            var url = "/player/view/"+item.id+"?"+item.nohash;
             window.location.href=url;
         });
 
