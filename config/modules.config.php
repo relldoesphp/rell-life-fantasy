@@ -29,4 +29,5 @@ return [
     'User',
     'Podcast',
     'Player',
+    'Neilime\MobileDetect',
 ];

@@ -59,7 +59,16 @@
 <!--    </script>-->
 <!--    <script src="https://kit.fontawesome.com/4e552e909b.js"></script>-->
 </head>
-<body>
+<?php
+$mobileDetect = $this->mobileDetect(); //Retrieve "\Mobile_Detect" object
+if ($mobileDetect->isMobile() == true) {
+    $mobileClass = "mobile";
+} else {
+    $mobileClass = "";
+}
+?>
+
+<body class="<?=$mobileClass?>">
 
 <!-- Navbar -->
 <nav class="dark">

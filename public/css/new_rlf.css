@@ -241,6 +241,11 @@ div.skillset > div {
     font-size: 30px;
 }
 
+#radar-graph {
+    width:400px;
+    height:400px;
+    margin:auto;
+}
 @media only screen and (max-width: 600px) {
     .twitter-typeahead {
         width:300px;
@@ -260,5 +265,11 @@ div.skillset > div {
 
     a.brand-logo, .header h1.brand-logo {
         font-size:20px;
+    }
+
+    #radar-graph {
+        width:97%;
+        margin:auto;
+        height:100%;
     }
 }

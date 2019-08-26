@@ -1897,7 +1897,7 @@ var rlf =  {
 
     makeProspectChart: function(chartData) {
         var ctx = document.getElementById('canvas').getContext('2d');
-        window.myMixedChart = new Chart(ctx, {
+        var options = {
             type: 'bar',
             data: chartData,
             options: {
@@ -1959,7 +1959,7 @@ var rlf =  {
                         this.data.datasets.forEach(function(dataset, i) {
                             var meta = chartInstance.controller.getDatasetMeta(i);
                             meta.data.forEach(function(bar, index) {
-                                if (dataset.metrics[index] != "") {
+                                if (dataset.metrics[index] != "" && $("body").hasClass("mobile") === false) {
                                     var data = dataset.metrics[index]+'\n'+dataset.ordinals[index]+'%';
                                     ctx.fillText(data, bar._model.x, bar._model.y - 7);
                                 }
@@ -1968,7 +1968,9 @@ var rlf =  {
                     }
                 },
             }
-        });
+        };
+
+        window.myMixedChart = new Chart(ctx, options);
     },
 
     makeCollegeTable : function(columns) {
@@ -2226,6 +2228,15 @@ var rlf =  {
 
             showlegend: false
         };
+
+        if ($("body").hasClass("mobile")) {
+            layout.width = 275;
+            layout.height = 275;
+            layout.font.size = 8;
+            layout.margin.b = 40;
+            layout.margin.t = 40;
+            // layout.autosize = true;
+        }
 
         Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false});
         $("#radar-graph").addClass("scale-in");
