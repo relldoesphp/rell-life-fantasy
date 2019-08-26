@@ -207,7 +207,13 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
 
         $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
         $resultSet->initialize($result);
-        $player = $resultSet->current();
+        try {
+            $player = $resultSet->current();
+        } catch (\Exception $e) {
+            print_r($result);
+            die();
+        }
+
 
         $select = $sql->select('season_stats');
         $select->where(['sleeper_id = ?' => $player->getSleeperId()]);
