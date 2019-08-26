@@ -56,7 +56,10 @@
             </div>
         </div>
         <?php
-            if (array_key_exists("pts_ppr_avg", $player['seasonStats']['2018']['ranks']) && $player['seasonStats']['2018']['ranks']['pts_ppr_avg'] != "") {
+            if (array_key_exists('2018', $player['seasonStats'])
+                && array_key_exists("pts_ppr_avg", $player['seasonStats']['2018']['ranks'])
+                && $player['seasonStats']['2018']['ranks']['pts_ppr_avg'] != "")
+            {
                 $rank = $player['position'].$player['seasonStats']['2018']['ranks']['pts_ppr_avg'];
                 $ppg =  $player['seasonStats']['2018']['stats']['pts_ppr_avg'];
             } else {

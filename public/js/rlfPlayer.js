@@ -1831,7 +1831,8 @@ var rlf =  {
         });
 
 
-        $('.player-search .typeahead').typeahead({
+        $('.player-search .typeahead').typeahead(
+            {
                 hint: true,
                 highlight: true,
                 minLength: 1

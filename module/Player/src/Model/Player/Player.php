@@ -565,7 +565,7 @@ class Player implements InputFilterAwareInterface
         foreach($infoArray as $metric) {
             if (!array_key_exists($metric, $this->player_info)) {
                 $this->player_info[$metric] = "N/A";
-                $this->player_info[$metric] = null;
+                $this->ordinals[$metric] = null;
             }
         }
 
@@ -587,6 +587,7 @@ class Player implements InputFilterAwareInterface
             'breakoutClass',
             'breakoutYears',
             'bestDominator',
+            'arms',
             ];
         foreach($metricsArray as $metric) {
             if (!array_key_exists($metric, $this->metrics)) {

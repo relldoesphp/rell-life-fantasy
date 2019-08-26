@@ -88,9 +88,15 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
             "nohash" => new Expression("Replace(json_unquote(player_info->'$.hashtag'),'#','')"),
             'position'
         ]);
-        $select->where->like('first_name', $query."%")
-            ->or->like('last_name', $query."%")
-            ->or->like('search_full_name', $query."%");
+        $select->where->nest()
+            ->like('first_name', $query."%")
+            ->or
+            ->like('last_name', $query."%")
+            ->or
+            ->like('search_full_name', $query."%")
+            ->unnest()
+            ->and
+            ->in("position", ["QB","RB","WR","TE"]);
 
         $select->order([
             new Expression("json_unquote(player_info->'$.active') DESC"),
