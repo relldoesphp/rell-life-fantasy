@@ -201,7 +201,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult() || $result->count() == 0) {
             return [];
         }
 
