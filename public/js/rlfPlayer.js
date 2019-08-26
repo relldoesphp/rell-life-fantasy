@@ -1959,7 +1959,7 @@ var rlf =  {
                         this.data.datasets.forEach(function(dataset, i) {
                             var meta = chartInstance.controller.getDatasetMeta(i);
                             meta.data.forEach(function(bar, index) {
-                                if (dataset.metrics[index] != "" && $("body").hasClass("mobile") === false) {
+                                if (dataset.metrics[index] != "" && $("body").hasClass("mobile") === false && dataset.metrics[index] != null) {
                                     var data = dataset.metrics[index]+'\n'+dataset.ordinals[index]+'%';
                                     ctx.fillText(data, bar._model.x, bar._model.y - 7);
                                 }
