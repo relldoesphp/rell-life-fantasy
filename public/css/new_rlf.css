@@ -235,3 +235,30 @@ div.skillset > div {
 .dark .tt-suggestion {
     color: #0b0b0b;
 }
+
+.header h1.brand-logo {
+    color: #1de9c3;
+    font-size: 30px;
+}
+
+@media only screen and (max-width: 600px) {
+    .twitter-typeahead {
+        width:300px;
+    }
+
+    .player-card.card.small {
+        height: 295px;
+    }
+
+    .player-menu {
+        display:none;
+    }
+
+    .player-stats {
+        overflow:auto;
+    }
+
+    a.brand-logo, .header h1.brand-logo {
+        font-size:20px;
+    }
+}
