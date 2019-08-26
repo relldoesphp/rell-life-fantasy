@@ -246,9 +246,14 @@ div.skillset > div {
     height:400px;
     margin:auto;
 }
+
+.section.full-height.search-section {
+    height:800px;
+}
 @media only screen and (max-width: 600px) {
     .twitter-typeahead {
         width:300px;
+        margin-bottom:80px;
     }
 
     .player-card.card.small {
@@ -272,4 +277,9 @@ div.skillset > div {
         margin:auto;
         height:100%;
     }
+
+    .section.full-height.search-section {
+        height:auto;
+    }
+
 }
