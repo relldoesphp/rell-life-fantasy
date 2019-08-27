@@ -45,6 +45,7 @@ class PlayerController extends AbstractActionController
             'jsVars' => $jsVars,
         ]);
 
+
         return $viewModel;
     }
 
