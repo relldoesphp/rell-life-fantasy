@@ -248,25 +248,29 @@ class StatsManager
 
     public function makeGameLogRanks($position, $year)
     {
-        $wrGameLogs = $this->statsRepository->getSeasonStatsByPosition("WR", "2018");
-        $ranks = $this->statsRepository->makeSeasonRanks("2018", "WR");
-        $progressBar = new ProgressBar($this->consoleAdapter, 0, count($wrGameLogs));
-        $pointer = 0;
-        foreach ($wrGameLogs as $wrGameLog) {
-            $newRanks = [];
-            $id = $wrGameLog->getId();
-            $wrGameLog->decodeJson();
-            $wrGameLogRanks = $wrGameLog->getRanks();
-            foreach ($ranks as $name => $value) {
-                $newRanks[$name] = (array_key_exists($id, $ranks[$name])) ? $ranks[$name][$id] : "";
-            }
+        $week = 1;
+        while ($week < 18) {
+            $wrGameLogs = $this->statsRepository->getGameLogsByPosition($position, $year, $week);
+            $ranks = $this->statsRepository->makeWeeklyRanks($week, $year, $position);
+            $progressBar = new ProgressBar($this->consoleAdapter, 0, count($wrGameLogs));
+            $pointer = 0;
+            foreach ($wrGameLogs as $wrGameLog) {
+                $newRanks = [];
+                $id = $wrGameLog->getId();
+                $wrGameLog->decodeJson();
+                $wrGameLogRanks = $wrGameLog->getRanks();
+                foreach ($ranks as $name => $value) {
+                    $newRanks[$name] = (array_key_exists($id, $ranks[$name])) ? $ranks[$name][$id] : "";
+                }
 
-            $wrGameLog->setRanks($newRanks);
-            $this->statsCommand->save($wrGameLog);
-            $pointer++;
-            $progressBar->update($pointer);
+                $wrGameLog->setRanks($newRanks);
+                $this->statsCommand->saveGameLog($wrGameLog);
+                $pointer++;
+                $progressBar->update($pointer);
+            }
+            $week++;
+            $progressBar->finish();
+            print "Percentiles completed\n";
         }
-        $progressBar->finish();
-        print "Percentiles completed\n";
     }
 }

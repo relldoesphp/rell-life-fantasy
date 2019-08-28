@@ -247,6 +247,31 @@ class SqlStatsRepository implements StatsRepositoryInterface
     }
 
     /**
+     * @param $id
+     * @return mixed
+     */
+    public function getGameLogsByWeekYearPosition($week, $year, $position)
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select($this->gameLogTable);
+        $select->where([
+            "week = ?" => $week,
+            "year = ?" => $year,
+            "position = ?" => $position
+        ]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->gameLogPrototype);
+        $resultSet->initialize($result);
+        return $resultSet;
+    }
+
+    /**
      * @param $sleeperId
      * @return mixed
      */
@@ -414,7 +439,7 @@ EOT;
         foreach ($rankArrays[$position] as $stat) {
 
             $sql = <<<EOT
-Select gl.id, rank() over (ORDER BY lpad(format(json_unquote(stats->'$.{$stat}'),3),5,'0') DESC)
+Select gl.id, rank() over (ORDER BY lpad(format(json_unquote(stats->'$.{$stat}'),3),5,'0') DESC) ranking
 from {$this->gameLogTable} gl
 join player_test p on (p.sleeper_id = gl.sleeper_id)
 where
@@ -431,7 +456,7 @@ EOT;
             $resultSet->initialize($result);
             $ranks[$stat] = [];
             foreach($resultSet as $row) {
-                $ranks[$stat][$row->id] = $row->rank;
+                $ranks[$stat][$row->id] = $row->ranking;
             }
         }
         return $ranks;
