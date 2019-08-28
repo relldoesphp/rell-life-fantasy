@@ -597,15 +597,22 @@ var rlf =  {
         var roleFits = [
             {
                 "name":"Arm Talent",
-                "value": Math.round(rlfData.player.metrics.armTalent)
+                "value": rlfData.player.metrics.armTalent,
+                "percentile":rlfData.player.ordinals.armTalent,
+                "percent":rlfData.player.percentiles.armTalent
             },
             {
                 "name":"Mobility",
-                "value": Math.round(rlfData.player.metrics.mobility)
+                "value": rlfData.player.metrics.mobility,
+                "percentile":rlfData.player.ordinals.mobility,
+                "percent":rlfData.player.percentiles.mobility
+
             },
             {
                 "name":"PlayMaker",
-                "value": Math.round(rlfData.player.metrics.playmaker)
+                "value": rlfData.player.metrics.playmaker,
+                "percentile":rlfData.player.ordinals.playmaker,
+                "percent":rlfData.player.percentiles.playmaker
             }
         ];
 

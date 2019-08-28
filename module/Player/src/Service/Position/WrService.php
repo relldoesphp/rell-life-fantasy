@@ -398,53 +398,38 @@ class WrService extends ServiceAbstract
 
     public function scrapCollegeJob()
     {
-        $sql =<<<EOT
-Select * from player_test
-where position = 'WR'
-      and player_info->'$.active'
-      and college_stats is null
-      and team is not null
-      and json_unquote(player_info->'$.college') not in ('-', 'None')
-EOT;
-
-        $stmt   = $this->db->query($sql);
-        $result = $stmt->execute();
-
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-
-        $resultSet = new ResultSet();
-        $resultSet->initialize($result);
-        $count = $resultSet->count();
-        $wrs = $resultSet->toArray();
-
-        $progressBar = new ProgressBar($this->consoleAdapter, 0, $resultSet->count());
+        $wrs = $this->repository->findAllPlayers("WR");
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
         $pointer = 0;
 
         foreach ($wrs as $wr) {
-            $result = $this->scrapCollegeStats($wr);
-            if ($result == false) {
-                continue;
+            if ($wr->getCollegeStats() == "[]") {
+                $wr->decodeJson();
+                $result = $this->scrapCollegeStats($wr);
+                if ($result == false) {
+                    continue;
+                }
             }
             $pointer++;
             $progressBar->update($pointer);
+
         }
         $progressBar->finish();
     }
 
     public function scrapCollegeStats($wr)
     {
-        $info = json_decode($wr['player_info']);
-        $api = json_decode($wr['api_info']);
         $request = new Request();
-        if (empty($api->cfbAlias)) {
-            return false;
-//            $cleanFirst = preg_replace('/[^A-Za-z0-9\-]/', '', $wr['first_name']);
-//            $cleanLast = preg_replace('/[^A-Za-z0-9\-]/', '', $wr['last_name']);
-//            $cfb = strtolower("{$cleanFirst}-{$cleanLast}")."-3";
+        $apiInfo = $wr->getApiInfo();
+        if ($wr->getId() == 1785) {
+            $githim = true;
+        }
+        if (!array_key_exists('cfb-alias', $apiInfo) || $apiInfo['cfb-alias'] == null) {
+            $firstName = strtolower($wr->getFirstName());
+            $lastName = strtolower($wr->getLastName());
+            $cfb = "{$firstName}-{$lastName}-1";
         } else {
-            $cfb = $api->cfbAlias;
+            $cfb = $apiInfo['cfb-alias'];
         }
         $request->setUri("https://www.sports-reference.com/cfb/players/{$cfb}.html");
 
@@ -464,13 +449,13 @@ EOT;
             $rowChildren = $result->childNodes;
             $firstItem = $rowChildren->item(1)->nodeValue;
 
-            if (!empty($firstItem) && $firstItem != 'Year') {
+            if (!empty($firstItem) && $firstItem != 'Year' && $firstItem != 'Overall') {
 //                if ($rowChildren->item(1)->nodeValue != $info->college) {
 //                    return false;
 //                }
                 $year = $rowChildren->item(0)->nodeValue;
                 $year = str_replace("*", "", $year);
-                if (! $rowChildren->item(1)->firstChild instanceof \DOMElement) {
+                if (! $rowChildren->item(1)->firstChild instanceof \DOMElement && $year) {
                     return false;
                 }
                 $collegeHref = $rowChildren->item(1)->firstChild->getAttribute("href");
@@ -520,19 +505,8 @@ EOT;
             }
         }
 
-        unset($collegeStats["Career"]);
-        $collegeJson = json_encode($collegeStats);
-
-        try {
-            $update = <<<EOT
-UPDATE player_test SET college_stats = '{$collegeJson}', api_info = JSON_SET(api_info, '$.cfbAlias', '{$cfb}') where id = {$wr['id']};
-EOT;
-            $stmt   = $this->db->query($update);
-            $playerUpdated = $stmt->execute();
-        } catch (\Exception $exception) {
-            $message = $exception->getMessage();
-            return false;
-        }
+        $wr->setCollegeStats($collegeStats);
+        $this->command->save($wr);
         return true;
     }
 

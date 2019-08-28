@@ -85,6 +85,10 @@ class QbService extends ServiceAbstract
         $progressBar = new ProgressBar($this->consoleAdapter, 0, count($qbs));
         $pointer = 0;
         foreach ($qbs as $qb) {
+
+            if ($qb->getId() == 2678) {
+                $got = true;
+            }
             $qb->decodeJson();
 
             $info = $qb->getPlayerInfo();
@@ -97,54 +101,60 @@ class QbService extends ServiceAbstract
                 $bestYear = 0;
                 foreach ($college as $year) {
                     if ($year['ypa'] > 0) {
-                        $data["depthAdjPct"] = $year['pct'] + round(7.85 * ($year['ypa'] - 8.40), 2);
-                        $data["bestPct"] = $year['pct'];
-                        $data["bestYpa"] = $year['ypa'];
+                        $metrics["depthAdjPct"] = $year['pct'] + round(7.85 * ($year['ypa'] - 8.40), 2);
+                        $metrics["bestPct"] = $year['pct'];
+                        $metrics["bestYpa"] = $year['ypa'];
                     }
                 }
             } else {
-                $data["bestPct"] = null;
-                $data["bestYpa"] = null;
-                $data["depthAdjPct"] = "";
+                $metrics["bestPct"] = null;
+                $metrics["bestYpa"] = null;
+                $metrics["depthAdjPct"] = "";
+            }
+
+            if (array_key_exists('throwVelocity', $metrics)) {
+                $metrics["throwVelocity"] = str_replace( " mph", "", $metrics['throwVelocity']);
+            } else {
+                $metrics["throwVelocity"] = "";
             }
 
 
-            $data["throwVelocity"] = str_replace( " mph", "", $metrics->throwVelocity);
-
-            if ($data['throwVelocity'] == "") {
+            if ($metrics['throwVelocity'] == "") {
                 $throwVelocity = 50;
             } else {
-                $throwVelocity = $percentiles->throwVelocity;
+                $throwVelocity = $percentiles['throwVelocity'];
             }
 
-            if ($data['depthAdjPct'] == "") {
+            if ($metrics['depthAdjPct'] == "") {
                 $depthAdjPct = 50;
             } else {
-                $depthAdjPct = $percentiles->depthAdjPct;
+                $depthAdjPct = $percentiles['depthAdjPct'];
             }
 
 
-            $data['armTalent'] = ($throwVelocity * .50) + ($depthAdjPct * .50);
+            $metrics['armTalent'] = ($throwVelocity * .50) + ($depthAdjPct * .50);
 
-            $data['mobility'] = 40;
+            $metrics['mobility'] = 40;
 
-            if ($percentiles->elusiveness != "" && $percentiles->power != "" && $percentiles->fortyTime != "") {
-                $data["mobility"] = ($percentiles->elusiveness * .30) + ($percentiles->power * .30) + ($percentiles->fortyTime * .40);
+            if ($percentiles['elusiveness'] != "" && $percentiles['power'] != "" && $percentiles['fortyTime'] != "") {
+                $metrics["mobility"] = ($percentiles['elusiveness'] * .30) + ($percentiles['power'] * .30) + ($percentiles['fortyTime'] * .40);
             }
 
-            if ($percentiles->elusiveness == "" && $percentiles->power != "" && $percentiles->fortyTime != "") {
-                $data["mobility"] = ($percentiles->power * .30) + ($percentiles->fortyTime * .70);
+            if ($percentiles['elusiveness'] == "" && $percentiles['power'] != "" && $percentiles['fortyTime'] != "") {
+                $metrics["mobility"] = ($percentiles['power'] * .30) + ($percentiles['fortyTime'] * .70);
             }
 
-            if ($percentiles->elusiveness == "" && $percentiles->power == "" && $percentiles->fortyTime != "") {
-                $data["mobility"] = $percentiles->fortyTime;
+            if ($percentiles['elusiveness'] == "" && $percentiles['power'] == "" && $percentiles['fortyTime'] != "") {
+                $metrics["mobility"] = $percentiles['fortyTime'];
             }
 
-            if ($percentiles->elusiveness != "" && $percentiles->power != "" && $percentiles->fortyTime == "") {
-                $data["mobility"] = ($percentiles->elusiveness * .60) + ($percentiles->power * .40);
+            if ($percentiles['elusiveness'] != "" && $percentiles['power'] != "" && $percentiles['fortyTime'] == "") {
+                $metrics["mobility"] = ($percentiles['elusiveness'] * .60) + ($percentiles['power'] * .40);
             }
 
-            $data['playmaker'] = ($data['armTalent'] + $data['mobility'])/2;
+            $metrics['playmaker'] = ($metrics['armTalent'] + $metrics['mobility'])/2;
+
+            $qb->setMetrics($metrics);
 
             $this->command->save($qb);
 
