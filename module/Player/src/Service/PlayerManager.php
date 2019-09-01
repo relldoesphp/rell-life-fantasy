@@ -185,11 +185,11 @@ class PlayerManager
 //        $wrService->calculateSpecialScores();
 //        $wrService->calculateSpecialPercentiles();
 //
-//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $rbService->calculateMetrics();
-//        $rbService->calculatePercentiles();
-//        $rbService->calculateSpecialScores();
-//        $rbService->calculateSpecialPercentiles();
+        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $rbService->calculateMetrics("RB");
+        $rbService->calculatePercentiles("RB");
+        $rbService->calculateSpecialScores("RB");
+        $rbService->calculateSpecialPercentiles("RB");
 
 //        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $teService->calculateMetrics("TE");
@@ -197,16 +197,16 @@ class PlayerManager
 //        $teService->calculateSpecialScores("TE");
 //        $teService->calculateSpecialPercentiles("TE");
 
-        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $qbService->calculateMetrics("QB");
 //        $qbService->calculatePercentiles("QB");
-        $qbService->calculateSpecialScores("QB");
-        $qbService->calculateSpecialPercentiles("QB");
+//        $qbService->calculateSpecialScores("QB");
+//        $qbService->calculateSpecialPercentiles("QB");
     }
 
     public function scrapCollegeJob()
     {
-        $teService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $teService->scrapCollegeJob();
+        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $rbService->scrapCollegeJob();
     }
 }

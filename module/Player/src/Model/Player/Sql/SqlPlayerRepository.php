@@ -149,6 +149,40 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         return $resultSet;
     }
 
+    public function findAllPlayersNoCollege($type = "")
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['p' => 'player_test']);
+        if (!empty($type)) {
+            switch ($type) {
+                case "OL":
+                    $select->where->in("position", ["C","G","OT"]);
+                    break;
+                case "DL":
+                    $select->where->in("position", ['DT','NT','DE']);
+                    break;
+                default:
+                    $select->where([
+                        "position = ?" => $type,
+                        new Expression("json_unquote(college_stats)") => "[]"
+                    ]);
+            }
+        }
+
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
+        $resultSet->initialize($result);
+
+        return $resultSet;
+    }
+
     public function findPlayerByAlias($alias){
         $alias = "#{$alias}";
         $sql    = new Sql($this->db);

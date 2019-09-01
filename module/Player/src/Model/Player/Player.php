@@ -395,7 +395,15 @@ class Player implements InputFilterAwareInterface
         if (!empty($this->seasonStats)) {
             $seasonStats = $this->seasonStats;
             foreach ($seasonStats as $year => $seasonStat) {
-                if ($seasonStat['stats'] == null) {
+                if (empty($seasonStat['stats'])) {
+                    $tableData[] = [
+                        "year" => 2018,
+                        "stats" => [],
+                        "ranks" => []
+                    ];
+                }
+
+                if ($seasonStat['stats'] == nul) {
                     continue;
                 }
 
