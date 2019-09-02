@@ -203,7 +203,7 @@ $this->headTitle("{$players[0]['first_name']} {$players[0]['last_name']} vs {$pl
 <!--        </div>-->
     <div class="row container white">
         <div class="col m6">
-            <h3>Workout Metrics</h3>
+            <h5>Workout Metrics</h5>
             <table id="metrics">
                 <tr>
                     <th style="width:20%"></th>
@@ -213,14 +213,14 @@ $this->headTitle("{$players[0]['first_name']} {$players[0]['last_name']} vs {$pl
             </table>
         </div>
         <div class="col m6">
-            <h3>College</h3>
+            <h5>College</h5>
             <table id="college-table">
             </table>
         </div>
     </div>
     <div class="row container white">
         <div class="col s12 m12">
-            <h3>2018 Season Stats</h3>
+            <h5>2018 Season Stats</h5>
             <table id="season-stats">
 <!--                <tr>-->
 <!--                    <th></th>-->
@@ -256,6 +256,21 @@ $this->headTitle("{$players[0]['first_name']} {$players[0]['last_name']} vs {$pl
         </div>
     </div>
 </div>
+    <div id="modal2" class="modal">
+        <div class="modal-content black-text">
+            <h4>Metrics Glossary</h4>
+            <p class="black-text">Bully Score: The is based on the player's bench press but factors in the players BMI (body mass index). This metric predicts how well a player gets off press coverage and fights for position.</p>
+            <p class="black-text">Speed: Simply based on the players 40 yard dash. For WRs not only predicts if they can get past defenders but also if they will command cushion or not.</p>
+            <p class="black-text">Route Agility: A combination of the player's 3 cone drill and 20 yard shuttle, however it is heavily weighted toward the 3 cone time.</p>
+            <p class="black-text">Juke Agility: A combination of the player's 3 cone drill and 20 yard shuttle, however it is heavily weighted toward the 20 yard shuttle.</p>
+            <p class="black-text">Jumpball: A combination of the player's height, vertical jump, and arm length. Bonus is also given for above average hand size. Predicts how well a player will do with contested catches.</p>
+            <p class="black-text">Elusiveness: Based on the juke agility but is adjusted based on BMI (body mass index). Used to predict how difficult a player will be to tackle.</p>
+            <p class="black-text">Run Power: Based on the broad jump but is adjusted for weight. The more weight a player can move shows how much power they really have in their lower body</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
 <div class="player-menu">
     <ul class="table-of-contents">
         <li><a href="#player-header">Measurables</a></li>

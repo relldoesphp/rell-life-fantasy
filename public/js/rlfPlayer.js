@@ -563,9 +563,9 @@ var rlf =  {
                         "metric2": player2.metrics.breakoutClass+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutClass+"%'></div></div>",
                     },
                     {
-                        "name": "Breakout Years",
-                        "metric1": player1.metrics.breakoutYears+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.breakoutYears+"%'></div></div>",
-                        "metric2": player2.metrics.breakoutYears+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutYears+"%'></div></div>",
+                        "name": "Breakout Seasons",
+                        "metric1": player1.metrics.breakoutSeasons+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.breakoutSeasons+"%'></div></div>",
+                        "metric2": player2.metrics.breakoutSeasons+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutSeasons+"%'></div></div>",
                     },
                     {
                         "name": "Best Dominator",
@@ -574,8 +574,8 @@ var rlf =  {
                     },
                     {
                         "name": "Best Reception Share",
-                        "metric1": player1.metrics.bestRecDominator+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.bestRecDominator+"%'></div></div>",
-                        "metric2": player2.metrics.bestRecDominator+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.bestRecDominator+"%'></div></div>",
+                        "metric1": player1.metrics.bestRecDominator.toFixed(2)+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.bestRecDominator+"%'></div></div>",
+                        "metric2": player2.metrics.bestRecDominator.toFixed(2)+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.bestRecDominator+"%'></div></div>",
                     },
                     {
                         "name": "College Score",
