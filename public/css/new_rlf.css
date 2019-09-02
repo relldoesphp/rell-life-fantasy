@@ -4,10 +4,6 @@ body {
     background-size:cover;
 }
 
-.section.full-height.page {
-    height: 90%;
-}
-
 .horizontal-half-transition .desktop-preview-sizer {
     position: absolute;
     top: 50%;

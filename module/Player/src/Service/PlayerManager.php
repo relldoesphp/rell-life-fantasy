@@ -107,7 +107,7 @@ class PlayerManager
         foreach ($json as $key => $value) {
             $sleeperId = $value->player_id;
             
-            $player = $this->repository->findPlayerBySleeperId($sleeperId);
+            $player = $this->playerRepository->findPlayerBySleeperId($sleeperId);
             if (empty($player)) {
                 $player = new Player();
             }
@@ -170,7 +170,7 @@ class PlayerManager
             $teamInfo['practice_description'] = $value->practice_description;
             $player->setTeamInfo($teamInfo);
 
-            $this->command->save($player);
+            $this->playerCommand->save($player);
             $pointer++;
             $progressBar->update($pointer);
         }
