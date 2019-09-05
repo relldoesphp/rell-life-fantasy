@@ -1159,7 +1159,7 @@ var rlf =  {
 
     initMesChartsTE : function(){
         var percent = rlfData.player.percentiles;
-        var info = [percent.heightInches, percent.weight, percent.arms, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
+        var info = [percent.heightInches, percent.weight, percent.armsInches, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
         var labels = ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'];
         rlf.makeRadarGraph(info,labels);
     },
