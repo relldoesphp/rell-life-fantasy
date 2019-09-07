@@ -67,19 +67,19 @@ return [
                     ],
                 ],
             ],
-            'admin' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route' => '/admin[/:action[/:id]]',
-                    'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    ],
-                    'defaults' => [
-                        'controller' => Controller\AdminController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-            ],
+//            'admin' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route' => '/admin[/:action[/:id]]',
+//                    'constraints' => [
+//                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+//                    ],
+//                    'defaults' => [
+//                        'controller' => Controller\AdminController::class,
+//                        'action'     => 'index',
+//                    ],
+//                ],
+//            ],
         ],
     ],
 
