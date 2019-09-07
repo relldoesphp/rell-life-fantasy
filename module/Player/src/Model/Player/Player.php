@@ -396,14 +396,10 @@ class Player implements InputFilterAwareInterface
             $seasonStats = $this->seasonStats;
             foreach ($seasonStats as $year => $seasonStat) {
                 if (empty($seasonStat['stats'])) {
-                    $tableData[] = [
-                        "year" => 2018,
-                        "stats" => [],
-                        "ranks" => []
-                    ];
+                    continue;
                 }
 
-                if ($seasonStat['stats'] == nul) {
+                if ($seasonStat['stats'] == null) {
                     continue;
                 }
 
@@ -445,6 +441,7 @@ class Player implements InputFilterAwareInterface
                         'year' => $gameLog->getYear(),
                         'week' => $gameLog->getWeek(),
                         'stats' => $stats,
+                        'ranks' => $gameLog->getRanks()
                     ];
                 }
             }

@@ -9,7 +9,11 @@
 namespace Player\Model\Team;
 
 
-class team
+class Team
 {
+    private $id;
+    public $team;
+    public $city;
+    public $name;
 
 }

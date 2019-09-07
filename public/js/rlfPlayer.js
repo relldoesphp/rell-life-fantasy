@@ -756,7 +756,9 @@ var rlf =  {
             {title: "Recs", data: "stats.rec", "defaultContent":0},
             {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "Rec Yds", data: "stats.rec_yd", "defaultContent":0},
-            {title: "Rec Tds", data: "stats.rec_td", "defaultContent":0}
+            {title: "Rec Tds", data: "stats.rec_td", "defaultContent":0},
+            {title: "Rec 1st Downs", data: "stats.rec_fd", "defaultContent":0},
+            {title: "Rush 1st Downs", data: "stats.rush_fd", "defaultContent":0}
         ];
 
         rlf.makeSeasonTable(seasonColumns);
@@ -771,7 +773,9 @@ var rlf =  {
             {title: "Recs", data: "stats.rec", "defaultContent":0},
             {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "Rec Yds", data: "stats.rec_yd", "defaultContent":0},
-            {title: "Rec Tds", data: "stats.rec_td", "defaultContent":0}
+            {title: "Rec Tds", data: "stats.rec_td", "defaultContent":0},
+            {title: "Rec 1st Downs", data: "stats.rec_fd", "defaultContent":0},
+            {title: "Rush 1st Downs", data: "stats.rush_fd", "defaultContent":0}
         ];
 
         rlf.makeGameLogTable(gameLogColumns);
@@ -888,7 +892,8 @@ var rlf =  {
             {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
             {title: "YPT", data: "stats.rec_ypt", "defaultContent":0},
-            {title: "Rank", data: "ranks.pts_ppr", "defaultContent":0}
+            {title: "Rank", data: "ranks.pts_ppr", "defaultContent":0},
+            {title: "1st Downs", data: "stats.rec_fd", "defaultContent":0}
         ];
 
         rlf.makeSeasonTable(seasonColumns);
@@ -902,7 +907,8 @@ var rlf =  {
             {title: "Tds", data: "stats.rec_td", "defaultContent":0},
             {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
-            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
+            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0},
+            {title: "1st Downs", data: "stats.rec_fd", "defaultContent":0}
         ];
 
         rlf.makeGameLogTable(gameLogColumns);

@@ -179,12 +179,12 @@ class PlayerManager
 
     public function updateWrMetrics()
     {
-//        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $wrService->calculateMetrics();
-//        $wrService->calculatePercentiles();
-//        $wrService->calculateSpecialScores();
-//        $wrService->calculateSpecialPercentiles();
-//
+        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $wrService->calculateMetrics();
+        $wrService->calculatePercentiles();
+        $wrService->calculateSpecialScores();
+        $wrService->calculateSpecialPercentiles();
+
         $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
         $rbService->calculateMetrics("RB");
         $rbService->calculatePercentiles("RB");
@@ -208,5 +208,12 @@ class PlayerManager
     {
         $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
         $rbService->scrapCollegeJob();
+    }
+
+    public function getSalaries()
+    {
+        //Dk - https://www.draftkings.com/lineup/getavailableplayerscsv?contestTypeId=21&draftGroupId=28598
+        //yahoo - https://dfyql-ro.sports.yahoo.com/v2/external/playersFeed/nfl
+        //
     }
 }

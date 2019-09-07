@@ -161,7 +161,7 @@ class SqlStatsRepository implements StatsRepositoryInterface
     {
         $sql    = new Sql($this->db);
         $select = $sql->select(['gl' => $this->gameLogTable]);
-        $select->join(['p' => 'player_test'],"gl.sleeper_id = p.sleeper_id");
+        $select->join(['p' => 'player_test'],"gl.sleeper_id = p.sleeper_id", ["position"]);
         $select->where([
             "p.position = ?" => $position,
             "gl.year = ?" => $year,
@@ -183,7 +183,7 @@ class SqlStatsRepository implements StatsRepositoryInterface
     {
         $sql    = new Sql($this->db);
         $select = $sql->select(['ss' => $this->seasonStatTable]);
-        $select->join(['p' => 'player_test'],"ss.sleeper_id = p.sleeper_id", ["position"]);
+        $select->join(['p' => 'player_test'],"ss.sleeper_id = p.sleeper_id", ["position"], $select::JOIN_OUTER);
         $select->where([
             "p.position = ?" => $position,
             "ss.year = ?" => $year,
@@ -439,7 +439,7 @@ EOT;
         foreach ($rankArrays[$position] as $stat) {
 
             $sql = <<<EOT
-Select gl.id, rank() over (ORDER BY lpad(format(json_unquote(stats->'$.{$stat}'),3),5,'0') DESC) ranking
+Select gl.id, rank() over (ORDER BY lpad(format(json_unquote(stats->'$.{$stat}'),4),7,'0') DESC) ranking
 from {$this->gameLogTable} gl
 join player_test p on (p.sleeper_id = gl.sleeper_id)
 where

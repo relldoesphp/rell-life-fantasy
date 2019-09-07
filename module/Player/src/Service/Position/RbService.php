@@ -391,7 +391,7 @@ class RbService extends ServiceAbstract
         $pointer = 0;
 
         foreach ($rbs as $rb) {
-            if ($rb->getId() == 2401) {
+            if ($rb->getId() == 5418) {
                 $rb->decodeJson();
                 $result = $this->scrapCollegeStats($rb);
                 if ($result == false) {

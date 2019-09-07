@@ -86,7 +86,7 @@ class StatsManager
         $progressBar->finish();
     }
 
-    public function getSleeperGameLogs($year = 2018)
+    public function getSleeperGameLogs($year)
     {
         $week = 1;
         while ($week < 18) {
@@ -257,6 +257,9 @@ class StatsManager
             foreach ($wrGameLogs as $wrGameLog) {
                 $newRanks = [];
                 $id = $wrGameLog->getId();
+                if ($id==826) {
+                    $hopWk1 = true;
+                }
                 $wrGameLog->decodeJson();
                 $wrGameLogRanks = $wrGameLog->getRanks();
                 foreach ($ranks as $name => $value) {
@@ -270,7 +273,7 @@ class StatsManager
             }
             $week++;
             $progressBar->finish();
-            print "Percentiles completed\n";
+            print "Ranks completed\n";
         }
     }
 }
