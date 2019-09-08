@@ -622,14 +622,22 @@ var rlf =  {
             {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
             {title: "GP", data: "stats.gp", "defaultContent":0},
             {title: "Pts", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PPG", data: "stats.pts_ppr_avg", "defaultContent":0},
+            {title: "Rank", data: "ranks.pts_ppr_avg", "defaultContent":0},
             {title: "Pass Yds", data: "stats.pass_yd", "defaultContent":0},
             {title: "Pass Tds", data: "stats.pass_td", "defaultContent":0},
             {title: "Pass Cmp", data: "stats.pass_cmp", "defaultContent":0},
             {title: "Pass Atts", data: "stats.pass_att", "defaultContent":0},
+            {title: "Pass Rating", data: "stats.pass_rtg_avg", "defaultContent":0},
+            {title: "Int", data: "stats.pass_int", "defaultContent":0},
+            {title: "Sacks", data: "stats.pass_sack", "defaultContent":0},
+            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
             {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
             {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
-            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0}
+            {title: "Pass FDs", data: "stats.pass_fd", "defaultContent":0},
+            {title: "Rush FDs", data: "stats.rush_fd", "defaultContent":0}
         ];
+        $('#season-stats').append("<tfoot><th colspan=\"2\">Career Average:<br>Career Total:</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tfoot>");
 
         rlf.makeSeasonTable(seasonColumns);
 
@@ -730,17 +738,20 @@ var rlf =  {
             {
                 "name":"Grinder Score",
                 "value":grinderpercent,
-                "percentile":rlfData.player.ordinals.grinder
+                "percentile":rlfData.player.ordinals.grinder,
+                "percent":rlfData.player.percentiles.grinder
             },
             {
                 "name":"Pass Catcher",
                 "value":passCatcherpercent,
-                "percentile":rlfData.player.ordinals.passCatcher
+                "percentile":rlfData.player.ordinals.passCatcher,
+                "percent":rlfData.player.percentiles.passCatcher
             },
             {
                 "name":"Alpha Score",
                 "value":alphapercent,
-                "percentile":rlfData.player.ordinals.alpha
+                "percentile":rlfData.player.ordinals.alpha,
+                "percent":rlfData.player.percentiles.alpha
             }
         ];
 
@@ -749,27 +760,30 @@ var rlf =  {
         var seasonColumns = [
             {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
             {title: "GP", data: "stats.gp", "defaultContent":0},
-            {title: "PPG", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PPR Points", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PPR PPG", data: "stats.pts_ppr_avg", "defaultContent":0},
+            {title: "Rank", data: "ranks.pts_ppr", "defaultContent":0},
+            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
             {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
             {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
-            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
             {title: "Recs", data: "stats.rec", "defaultContent":0},
             {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "Rec Yds", data: "stats.rec_yd", "defaultContent":0},
             {title: "Rec Tds", data: "stats.rec_td", "defaultContent":0},
-            {title: "Rec 1st Downs", data: "stats.rec_fd", "defaultContent":0},
-            {title: "Rush 1st Downs", data: "stats.rush_fd", "defaultContent":0}
+            {title: "Rec Fds", data: "stats.rec_fd", "defaultContent":"N/A"},
+            {title: "Rush Fds", data: "stats.rush_fd", "defaultContent":"N/A"},
         ];
-
+        $('#season-stats').append("<tfoot><th colspan=\"2\">Career Average:<br>Career Total:</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tfoot>");
         rlf.makeSeasonTable(seasonColumns);
 
         var gameLogColumns = [
             {title: "Year", searchable: true, data: "year"},
             {title: "Week", data: "week"},
-            {title: "PPG",  data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PPR Points",  data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PRR Rank", data: "ranks.pts_ppr", "defaultContent":0},
+            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
             {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
             {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
-            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
             {title: "Recs", data: "stats.rec", "defaultContent":0},
             {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "Rec Yds", data: "stats.rec_yd", "defaultContent":0},
@@ -885,30 +899,32 @@ var rlf =  {
         var seasonColumns = [
             {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
             {title: "GP", data: "stats.gp", "defaultContent":0},
-            {title: "PPG", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "Points", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PPG", data:"stats.pts_ppr_avg", "defaultContent":0},
+            {title: "Rank", data: "ranks.pts_ppr", "defaultContent":0},
             {title: "Recs", data: "stats.rec", "defaultContent":0},
+            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
             {title: "Tds", data: "stats.rec_td", "defaultContent":0},
-            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+            {title: "Fds", data: "stats.rec_fd", "defaultContent":0},
             {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
-            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0},
-            {title: "Rank", data: "ranks.pts_ppr", "defaultContent":0},
-            {title: "1st Downs", data: "stats.rec_fd", "defaultContent":0}
+            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
         ];
-
+        $('#season-stats').append("<tfoot><th colspan=\"2\">Career Average:<br>Career Total:</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tfoot>");
         rlf.makeSeasonTable(seasonColumns);
 
         var gameLogColumns = [
             {title: "Year", searchable: true, data: "year"},
             {title: "Week", data: "week"},
-            {title: "PPG",  data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PPR Points",  data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PPR Rank", data: "ranks.pts_ppr"},
             {title: "Recs", data: "stats.rec", "defaultContent":0},
+            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
             {title: "Tds", data: "stats.rec_td", "defaultContent":0},
-            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+            {title: "Fds", data: "stats.rec_fd", "defaultContent":0},
             {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
-            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0},
-            {title: "1st Downs", data: "stats.rec_fd", "defaultContent":0}
+            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
         ];
 
         rlf.makeGameLogTable(gameLogColumns);
@@ -1045,26 +1061,30 @@ var rlf =  {
         var seasonColumns = [
             {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
             {title: "GP", data: "stats.gp", "defaultContent":0},
-            {title: "PPG", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "Points", data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PPG", data:"stats.pts_ppr_avg", "defaultContent":0},
+            {title: "Rank", data: "ranks.pts_ppr", "defaultContent":0},
             {title: "Recs", data: "stats.rec", "defaultContent":0},
+            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
             {title: "Tds", data: "stats.rec_td", "defaultContent":0},
-            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+            {title: "Fds", data: "stats.rec_fd", "defaultContent":0},
             {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
-            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0},
-            {title: "Deep Yds", data: "stats.rec_ypt", "defaultContent":0}
+            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
         ];
-
+        $('#season-stats').append("<tfoot><th colspan=\"2\">Career Average:<br>Career Total:</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tfoot>");
         rlf.makeSeasonTable(seasonColumns);
 
         var gameLogColumns = [
             {title: "Year", searchable: true, data: "year"},
             {title: "Week", data: "week"},
-            {title: "PPG",  data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PPR Points",  data: "stats.pts_ppr", "defaultContent":0},
+            {title: "PPR Rank", data: "ranks.pts_ppr"},
             {title: "Recs", data: "stats.rec", "defaultContent":0},
+            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
             {title: "Tds", data: "stats.rec_td", "defaultContent":0},
-            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+            {title: "Fds", data: "stats.rec_fd", "defaultContent":0},
             {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
             {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
         ];
@@ -1075,17 +1095,21 @@ var rlf =  {
             {
                 "name":"Move TE",
                 "value":Math.round(rlfData.player.metrics.move),
-                "percentile": rlfData.player.ordinals.move
+                "percentile": rlfData.player.ordinals.move,
+                "percent": rlfData.player.percentiles.move
             },
             {
                 "name":"In Line TE",
                 "value":Math.round(rlfData.player.metrics.inLine),
-                "percentile": rlfData.player.ordinals.inLine
+                "percentile": rlfData.player.ordinals.inLine,
+                "percent": rlfData.player.percentiles.inLine
+
             },
             {
                 "name":"2 Way TE",
                 "value":Math.round(rlfData.player.metrics.alpha),
-                "percentile": rlfData.player.ordinals.alpha
+                "percentile": rlfData.player.ordinals.alpha,
+                "percent": rlfData.player.percentiles.move
             }
         ];
 
@@ -2054,7 +2078,18 @@ var rlf =  {
                             i : 0;
                 };
 
-                var rowsToSum = [2,3,4,5,6,7,8];
+                if (rlfData.player.position == "WR" || rlfData.player.position == "TE") {
+                    var rowsToSum = [2,3,5,6,7,8,9,10,11];
+                }
+
+                if (rlfData.player.position == "RB") {
+                    var rowsToSum = [2,3,5,6,7,8,9,10,11,12,13];
+                }
+
+                if (rlfData.player.position == "QB") {
+                    var rowsToSum = [2,3,5,6,7,8,9,10,11,12,13,14,15,16];
+                }
+
                 var selectedRows = api.rows('.selected').indexes();
                 rowsToSum.forEach(function(col) {
                     // Total filtered rows on the selected column (code part added)
@@ -2086,6 +2121,27 @@ var rlf =  {
             "ordering": false,
             data: rlfData.player.gameLogTable,
             columns: columns,
+           // createdRow: function ( row, data, index ) {
+            //     var newrow = this.api().row(index);
+            //     newrow.child('<div><div id="rec-split"</div>').show();
+            //     var recSplit = new Chart(ctx, {
+            //         type: 'pie',
+            //         data: {
+            //             datasets: [{
+            //                 data: [10, 20, 30]
+            //             }],
+            //
+            //             // These labels appear in the legend and in the tooltips when hovering different arcs
+            //             labels: [
+            //                 'Red',
+            //                 'Yellow',
+            //                 'Blue'
+            //             ]
+            //         },
+            //         options: {}
+            //     });
+            // },
+
             initComplete: function () {
                 this.api().columns([0]).every( function () {
                     var column = this;

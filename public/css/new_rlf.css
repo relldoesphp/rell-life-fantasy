@@ -205,7 +205,7 @@ div.skillset > div {
     padding:5px;
 }
 
-#college-stats_wrapper {
+#college-stats_wrapper, #season-stats_wrapper, #game-logs_wrapper {
     overflow-x:scroll;
     font-size:12px;
 }
