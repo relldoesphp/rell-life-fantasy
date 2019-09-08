@@ -917,7 +917,7 @@ var rlf =  {
             {title: "Year", searchable: true, data: "year"},
             {title: "Week", data: "week"},
             {title: "PPR Points",  data: "stats.pts_ppr", "defaultContent":0},
-            {title: "PPR Rank", data: "ranks.pts_ppr"},
+            {title: "PPR Rank", data: "ranks.pts_ppr", "defaultContent":0},
             {title: "Recs", data: "stats.rec", "defaultContent":0},
             {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
             {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
