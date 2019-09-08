@@ -171,6 +171,9 @@ class StatsManager
             if (array_key_exists("gp", $stats) && $stats["gp"] > 0) {
                 if (array_key_exists('pts_ppr', $stats)) {
                     $stats['pts_ppr_avg'] = round($stats['pts_ppr']/$stats['gp'],2);
+                }
+
+                if (array_key_exists('pts_std', $stats)) {
                     $stats['pts_std_avg'] = round($stats['pts_std']/$stats['gp'],2);
                 }
 

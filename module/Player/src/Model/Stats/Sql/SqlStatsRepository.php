@@ -183,7 +183,7 @@ class SqlStatsRepository implements StatsRepositoryInterface
     {
         $sql    = new Sql($this->db);
         $select = $sql->select(['ss' => $this->seasonStatTable]);
-        $select->join(['p' => 'player_test'],"ss.sleeper_id = p.sleeper_id", ["position"], $select::JOIN_OUTER);
+        $select->join(['p' => 'player_test'],"ss.sleeper_id = p.sleeper_id", ["position"]);
         $select->where([
             "p.position = ?" => $position,
             "ss.year = ?" => $year,
