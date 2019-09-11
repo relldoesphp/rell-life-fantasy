@@ -206,7 +206,7 @@ class WrService extends ServiceAbstract
     public function makeCollegeScore($wr)
     {
         $collegeStats = $wr->college_stats;
-        if ($wr->getId() == 3805) {
+        if ($wr->getId() == 3617) {
             $gotHim = true;
         }
         $i = 0;
@@ -403,7 +403,7 @@ class WrService extends ServiceAbstract
         $pointer = 0;
 
         foreach ($wrs as $wr) {
-            if ($wr->getCollegeStats() == "[]") {
+            if ($wr->getId() == 3617 ) {
                 $wr->decodeJson();
                 $result = $this->scrapCollegeStats($wr);
                 if ($result == false) {

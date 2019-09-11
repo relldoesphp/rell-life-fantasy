@@ -66,7 +66,7 @@ return [
                         'action'     => 'search',
                     ],
                 ],
-            ],
+          ],
 //            'admin' => [
 //                'type'    => Segment::class,
 //                'options' => [

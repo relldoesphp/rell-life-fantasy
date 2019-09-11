@@ -142,16 +142,16 @@ class ScriptController extends AbstractActionController
 
     public function getSleeperStatsAction()
     {
-//        $this->statsManager->getSleeperStats("2018");
-//        $this->statsManager->makeSeasonAverages("WR", "2018");
-//        $this->statsManager->makeSeasonRanks("WR", "2018");
-//        $this->statsManager->makeSeasonAverages("RB", "2018");
-//        $this->statsManager->makeSeasonRanks("RB", "2018");
-        $this->statsManager->makeSeasonAverages("TE", "2016");
-        $this->statsManager->makeSeasonRanks("TE", "2016");
-        $this->statsManager->makeSeasonAverages("QB", "2016");
-        $this->statsManager->makeSeasonRanks("QB", "2016");
-        $this->statsManager->makeGameLogRanks("WR", "2018");
+        $this->statsManager->getSleeperStats("2019");
+        $this->statsManager->makeSeasonAverages("WR", "2019");
+        $this->statsManager->makeSeasonRanks("WR", "2019");
+        $this->statsManager->makeSeasonAverages("RB", "2019");
+        $this->statsManager->makeSeasonRanks("RB", "2019");
+        $this->statsManager->makeSeasonAverages("TE", "2019");
+        $this->statsManager->makeSeasonRanks("TE", "2019");
+        $this->statsManager->makeSeasonAverages("QB", "2019");
+        $this->statsManager->makeSeasonRanks("QB", "2019");
+
     }
 
     public function makeNameJsonAction()
@@ -167,10 +167,11 @@ class ScriptController extends AbstractActionController
 
     public function getSleeperLogsAction()
     {
-        //$this->statsManager->getSleeperGameLogs("2017");
-//        $this->statsManager->makeGameLogRanks("RB", "2018");
-//        $this->statsManager->makeGameLogRanks("TE", "2018");
-//        $this->statsManager->makeGameLogRanks("QB", "2018");
+//        $this->statsManager->getSleeperGameLogs("2019");
+        $this->statsManager->makeGameLogRanks("RB", "2019");
+        $this->statsManager->makeGameLogRanks("TE", "2019");
+        $this->statsManager->makeGameLogRanks("QB", "2019");
+        $this->statsManager->makeGameLogRanks("WR", "2019");
 //
 //        $this->statsManager->getSleeperGameLogs("2017");
 //        $this->statsManager->makeGameLogRanks("QB", "2017");
