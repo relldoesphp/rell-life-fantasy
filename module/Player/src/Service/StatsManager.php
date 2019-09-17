@@ -99,6 +99,9 @@ class StatsManager
             $html = $response->getBody();
 
             $json = (array) json_decode($html);
+            if (empty($json)) {
+                break;
+            }
             print("week {$week} \n");
             $progressBar = new ProgressBar($this->consoleAdapter, 0, count($json));
             $pointer = 0;
@@ -254,6 +257,9 @@ class StatsManager
         $week = 1;
         while ($week < 18) {
             $wrGameLogs = $this->statsRepository->getGameLogsByPosition($position, $year, $week);
+            if ($wrGameLogs->count() == 0) {
+                break;
+            }
             $ranks = $this->statsRepository->makeWeeklyRanks($week, $year, $position);
             $progressBar = new ProgressBar($this->consoleAdapter, 0, count($wrGameLogs));
             $pointer = 0;

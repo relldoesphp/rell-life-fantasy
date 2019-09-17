@@ -13,6 +13,7 @@ use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Service\PlayerManager;
 use Player\Service\StatsManager;
+use Player\Service\TeamManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -23,18 +24,21 @@ class ScriptController extends AbstractActionController
     private $repository;
     private $playerManager;
     private $statsManager;
+    private $teamManager;
 
     public function __construct(
         PlayerCommandInterface $command,
         PlayerRepositoryInterface $repository,
         PlayerManager $playerManager,
-        StatsManager $statsManager
+        StatsManager $statsManager,
+        TeamManager $teamManager
     )
     {
         $this->command = $command;
         $this->repository = $repository;
         $this->playerManager = $playerManager;
         $this->statsManager = $statsManager;
+        $this->teamManager = $teamManager;
     }
 
     public function indexAction()
@@ -167,7 +171,7 @@ class ScriptController extends AbstractActionController
 
     public function getSleeperLogsAction()
     {
-//        $this->statsManager->getSleeperGameLogs("2019");
+        ///$this->statsManager->getSleeperGameLogs("2019");
         $this->statsManager->makeGameLogRanks("RB", "2019");
         $this->statsManager->makeGameLogRanks("TE", "2019");
         $this->statsManager->makeGameLogRanks("QB", "2019");
@@ -184,11 +188,10 @@ class ScriptController extends AbstractActionController
 //        $this->statsManager->makeGameLogRanks("RB", "2016");
 //        $this->statsManager->makeGameLogRanks("TE", "2016");
 //        $this->statsManager->makeGameLogRanks("QB", "2016");
+    }
 
-
-
-
-
-
+    public function buildDepthChartsAction()
+    {
+       $team = $this->teamManager->buildDepthCharts();
     }
 }

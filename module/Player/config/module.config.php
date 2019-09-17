@@ -21,7 +21,9 @@ return [
             Model\Player\PlayerRepositoryInterface::class => Model\Player\Sql\SqlPlayerRepository::class,
             Model\Player\PlayerCommandInterface::class => Model\Player\Sql\SqlPlayerCommand::class,
             Model\Stats\StatsRepositoryInterface::class => Model\Stats\Sql\SqlStatsRepository::class,
-            Model\Stats\StatsCommandInterface::class => Model\Stats\Sql\SqlStatsCommand::class
+            Model\Stats\StatsCommandInterface::class => Model\Stats\Sql\SqlStatsCommand::class,
+            Model\Team\TeamRepositoryInterface::class => Model\Team\Sql\SqlTeamRepository::class,
+            Model\Team\TeamCommandInterface::class => Model\Team\Sql\SqlTeamCommand::class
         ],
         'factories' => [
             'Dtw\Db\Adapter' => AdapterAbstractServiceFactory::class,
@@ -30,7 +32,10 @@ return [
             Service\PlayerManager::class => Service\Factory\PlayerManagerFactory::class,
             Model\Stats\Sql\SqlStatsRepository::class => Model\Stats\Sql\Factory\SqlStatRepositoryFactory::class,
             Model\Stats\Sql\SqlStatsCommand::class => Model\Stats\Sql\Factory\SqlStatCommandFactory::class,
-            Service\StatsManager::class => Service\Factory\StatsManagerFactory::class
+            Service\StatsManager::class => Service\Factory\StatsManagerFactory::class,
+            Model\Team\Sql\SqlTeamRepository::class => Model\Team\Sql\Factory\SqlTeamRepositoryFactory::class,
+            Model\Team\Sql\SqlTeamCommand::class => Model\Team\Sql\Factory\SqlTeamCommandFactory::class,
+            Service\TeamManager::class => Service\Factory\TeamManagerFactory::class,
         ],
     ],
 
@@ -38,7 +43,8 @@ return [
         'factories' => [
             Controller\ScriptController::class => Controller\Factory\ScriptControllerFactory::class,
             Controller\PlayerController::class => Controller\Factory\PlayerControllerFactory::class,
-            Controller\AdminController::class  => Controller\Factory\AdminControllerFactory::class
+            Controller\AdminController::class  => Controller\Factory\AdminControllerFactory::class,
+            Controller\TeamController::class  => Controller\Factory\TeamControllerFactory::class
         ],
     ],
 
@@ -66,7 +72,20 @@ return [
                         'action'     => 'search',
                     ],
                 ],
-          ],
+            ],
+//            'team' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route' => '/team[/:action[/:id]]',
+//                    'constraints' => [
+//                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+//                    ],
+//                    'defaults' => [
+//                        'controller' => Controller\TeamController::class,
+//                        'action'     => 'index',
+//                    ],
+//                ],
+//            ],
 //            'admin' => [
 //                'type'    => Segment::class,
 //                'options' => [
@@ -183,6 +202,17 @@ return [
                         'defaults' => [
                             'controller' => Controller\ScriptController::class,
                             'action'     => 'getSleeperLogs',
+                        ],
+                    ],
+                ],
+                'depth-charts' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'build-depth-charts',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'buildDepthCharts',
                         ],
                     ],
                 ],

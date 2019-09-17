@@ -10,6 +10,7 @@ namespace Player\Controller\Factory;
 
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Service\StatsManager;
+use Player\Service\TeamManager;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Controller\ScriptController;
@@ -31,7 +32,8 @@ class ScriptControllerFactory implements FactoryInterface
             $container->get(PlayerCommandInterface::class),
             $container->get(PlayerRepositoryInterface::class),
             $container->get(PlayerManager::class),
-            $container->get(StatsManager::class)
+            $container->get(StatsManager::class),
+            $container->get(TeamManager::class)
         );
     }
 }

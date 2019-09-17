@@ -99,17 +99,23 @@ class QbService extends ServiceAbstract
             if ($college != null) {
                 $bestYds = 0;
                 $bestYear = 0;
+                $bestRush = 0;
                 foreach ($college as $year) {
                     if ($year['ypa'] > 0) {
                         $metrics["depthAdjPct"] = $year['pct'] + round(7.85 * ($year['ypa'] - 8.40), 2);
                         $metrics["bestPct"] = $year['pct'];
                         $metrics["bestYpa"] = $year['ypa'];
                     }
+
+                    if ($year['rush_yds'] > $metrics["bestRush"]) {
+                        $metrics["bestRush"] = $year['rush_yds'];
+                    }
                 }
             } else {
                 $metrics["bestPct"] = null;
                 $metrics["bestYpa"] = null;
                 $metrics["depthAdjPct"] = "";
+                $metrics["bestRush"] = null;
             }
 
             if (array_key_exists('throwVelocity', $metrics)) {
@@ -134,7 +140,7 @@ class QbService extends ServiceAbstract
 
             $metrics['armTalent'] = ($throwVelocity * .50) + ($depthAdjPct * .50);
 
-            $metrics['mobility'] = 40;
+            $metrics["mobility"] = null;
 
             if ($percentiles['elusiveness'] != "" && $percentiles['power'] != "" && $percentiles['fortyTime'] != "") {
                 $metrics["mobility"] = ($percentiles['elusiveness'] * .30) + ($percentiles['power'] * .30) + ($percentiles['fortyTime'] * .40);
@@ -151,6 +157,15 @@ class QbService extends ServiceAbstract
             if ($percentiles['elusiveness'] != "" && $percentiles['power'] != "" && $percentiles['fortyTime'] == "") {
                 $metrics["mobility"] = ($percentiles['elusiveness'] * .60) + ($percentiles['power'] * .40);
             }
+
+            if ($metrics["mobility"] == null) {
+                if ($metrics["bestRush"] != null) {
+
+                }
+            } else {
+                $metrics['mobility'] = 40;
+            }
+
 
             $metrics['playmaker'] = ($metrics['armTalent'] + $metrics['mobility'])/2;
 

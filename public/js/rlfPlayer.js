@@ -2309,6 +2309,172 @@ var rlf =  {
 
         Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false});
         $("#radar-graph").addClass("scale-in");
+    },
+
+    initMatchupPage() {
+        var oline = rlfData.OL;
+        var dline = rlfData.DL;
+        var lb = rlfData.LB;
+        // var metrics = rlfData.player.metrics;
+        // var ordinals = rlfData.player.ordinals;
+        var chartData = {
+            labels: [
+                oline.LT.last_name+'-LT',
+                oline.LG.last_name+'-LG',
+                oline.C.last_name+'-C',
+                oline.RG.last_name+'-RG',
+                oline.RT.last_name+'-RT'
+            ],
+            datasets: [
+                {
+                    type: 'bubble',
+                    stack: 'Stack One',
+                    backgroundColor: 'rgb(29, 233, 195, 0.4)',
+                    label: 'QB Skills',
+                    radius: 40,
+                    borderWidth: 2,
+                    fill: false,
+                    data: [
+                        oline.LT.percentiles.runBlock,
+                        oline.LG.percentiles.runBlock,
+                        oline.C.percentiles.runBlock,
+                        oline.RG.percentiles.runBlock,
+                        oline.RT.percentiles.runBlock
+                    ],
+                    ordinals: [
+                        oline.LT.ordinals.runBlock,
+                        oline.LG.ordinals.runBlock,
+                        oline.C.ordinals.runBlock,
+                        oline.RG.ordinals.runBlock,
+                        oline.RT.ordinals.runBlock
+                    ],
+                    metrics: [
+                        oline.LT.metrics.runBlock,
+                        oline.LG.metrics.runBlock,
+                        oline.C.metrics.runBlock,
+                        oline.RG.metrics.runBlock,
+                        oline.RT.metrics.runBlock
+                    ]
+                },
+                {
+                    type: 'bubble',
+                    stack: 'Stack One',
+                    backgroundColor: 'rgba(174, 3, 230, 0.25)',
+                    label: 'QB Skills',
+                    radius: 40,
+                    borderWidth: 2,
+                    fill: false,
+                    data: [
+                        lb.LOLB.percentiles.runBlock,
+                        dline.LDE.percentiles.runBlock,
+                        dline.NT.percentiles.runBlock,
+                        dline.RDE.percentiles.runBlock,
+                        lb.ROLB.percentiles.runBlock
+                    ],
+                    ordinals: [
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    ],
+                    metrics: [
+                        lb.LOLB.last_name,
+                        dline.LDE.last_name,
+                        dline.NT.last_name,
+                        dline.RDE.last_name,
+                        lb.ROLB.last_name
+                    ]
+                }]
+        };
+        rlf.makeProspectChart(chartData);
+
+        var metricsDefault = "Not Available<div class='progress'><div class='determinate' style='width:0%'></div></div>";
+
+        $('#LWR').DataTable({
+            "paging": false,
+            "ordering": false,
+            "searching": false,
+            "columns": [
+                {title: "", data: "name", "defaultContent":0},
+                {title: rlfData.WR.LWR.first_name+" "+rlfData.WR.LWR.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+                {title: rlfData.CB.LCB[1].first_name+" "+rlfData.CB.LCB[1].last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            ],
+            data:[
+                {
+                    "name": "Speed",
+                    "metric1": rlfData.WR.LWR.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+rlfData.WR.LWR.percentiles.fortyTime+"%'></div></div>",
+                    "metric2": rlfData.CB.LCB[1].metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+rlfData.CB.LCB[1].percentiles.fortyTime+"%'></div></div>",
+                },
+                {
+                    "name": "JumpBall",
+                    "metric1": rlfData.WR.LWR.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+rlfData.WR.LWR.percentiles.jumpball+"%'></div></div>",
+                    "metric2": rlfData.CB.LCB[1].metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+rlfData.CB.LCB[1].percentiles.jumpball+"%'></div></div>",
+                },
+                {
+                    "name": "Agility",
+                    "metric1": rlfData.WR.LWR.metrics.routeAgility+"<div class='progress'><div class='determinate' style='width:"+rlfData.WR.LWR.percentiles.routeAgility+"%'></div></div>",
+                    "metric2": rlfData.CB.LCB[1].metrics.agility+"<div class='progress'><div class='determinate' style='width:"+rlfData.CB.LCB[1].percentiles.agility+"%'></div></div>",
+                },
+            ]
+        });
+
+
+        $('#RWR').DataTable({
+            "paging": false,
+            "ordering": false,
+            "searching": false,
+            "columns": [
+                {title: "", data: "name", "defaultContent":0},
+                {title: rlfData.WR.RWR.first_name+" "+rlfData.WR.RWR.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+                {title: rlfData.CB.RCB[1].first_name+" "+rlfData.CB.RCB[1].last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            ],
+            data:[
+                {
+                    "name": "Speed",
+                    "metric1": rlfData.WR.RWR.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+rlfData.WR.RWR.percentiles.fortyTime+"%'></div></div>",
+                    "metric2": rlfData.CB.RCB[1].metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+rlfData.CB.RCB[1].percentiles.fortyTime+"%'></div></div>",
+                },
+                {
+                    "name": "JumpBall",
+                    "metric1": rlfData.WR.RWR.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+rlfData.WR.RWR.percentiles.jumpball+"%'></div></div>",
+                    "metric2": rlfData.CB.RCB[1].metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+rlfData.CB.RCB[1].percentiles.jumpball+"%'></div></div>",
+                },
+                {
+                    "name": "Agility",
+                    "metric1": rlfData.WR.RWR.metrics.routeAgility+"<div class='progress'><div class='determinate' style='width:"+rlfData.WR.RWR.percentiles.routeAgility+"%'></div></div>",
+                    "metric2": rlfData.CB.RCB[1].metrics.agility+"<div class='progress'><div class='determinate' style='width:"+rlfData.CB.RCB[1].percentiles.agility+"%'></div></div>",
+                },
+            ]
+        });
+
+        $('#SWR').DataTable({
+            "paging": false,
+            "ordering": false,
+            "searching": false,
+            "columns": [
+                {title: "", data: "name", "defaultContent":0},
+                {title: rlfData.WR.SWR.first_name+" "+rlfData.WR.SWR.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+                {title: rlfData.CB.LCB[2].first_name+" "+rlfData.CB.LCB[2].last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            ],
+            data:[
+                {
+                    "name": "Speed",
+                    "metric1": rlfData.WR.SWR.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+rlfData.WR.SWR.percentiles.fortyTime+"%'></div></div>",
+                    "metric2": rlfData.CB.LCB[2].metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+rlfData.CB.LCB[2].percentiles.fortyTime+"%'></div></div>",
+                },
+                {
+                    "name": "JumpBall",
+                    "metric1": rlfData.WR.SWR.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+rlfData.WR.SWR.percentiles.jumpball+"%'></div></div>",
+                    "metric2": rlfData.CB.LCB[2].metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+rlfData.CB.LCB[2].percentiles.jumpball+"%'></div></div>",
+                },
+                {
+                    "name": "Agility",
+                    "metric1": rlfData.WR.SWR.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+rlfData.WR.SWR.percentiles.agility+"%'></div></div>",
+                    "metric2": rlfData.CB.LCB[2].metrics.agility+"<div class='progress'><div class='determinate' style='width:"+rlfData.CB.LCB[2].percentiles.agility+"%'></div></div>",
+                },
+            ]
+        });
     }
 
 

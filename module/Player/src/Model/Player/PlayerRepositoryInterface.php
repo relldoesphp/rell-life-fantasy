@@ -33,4 +33,6 @@ interface PlayerRepositoryInterface
 
     public function getPercentileRanks($position, $metrics);
 
+    public function getPlayersByTeam($team);
+
 }

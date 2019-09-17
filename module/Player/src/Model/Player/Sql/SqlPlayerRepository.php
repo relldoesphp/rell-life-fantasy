@@ -424,4 +424,22 @@ EOT;
 
         return $percentiles;
     }
+
+    public function getPlayersByTeam($team)
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['p' => 'player_test']);
+        $select->where(['p.team = ?' => $team]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
+        $resultSet->initialize($result);
+        return $resultSet;
+    }
 }
