@@ -29,10 +29,38 @@ class PodcastForm extends Form
             ],
         ]);
         $this->add([
-            'name' => 'artist',
+            'name' => 'description',
+            'type' => 'textarea',
+            'options' => [
+                'label' => 'description',
+            ],
+        ]);
+        $this->add([
+            'name' => 'filepath',
             'type' => 'text',
             'options' => [
-                'label' => 'Artist',
+                'label' => 'File Path',
+            ],
+        ]);
+        $this->add([
+            'name' => 'shorttitle',
+            'type' => 'text',
+            'options' => [
+                'label' => 'shorttitle',
+            ],
+        ]);
+        $this->add([
+            'name' => 'pubDate',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Publish Date',
+            ],
+        ]);
+        $this->add([
+            'name' => 'duration',
+            'type' => 'text',
+            'options' => [
+                'label' => 'duration',
             ],
         ]);
         $this->add([

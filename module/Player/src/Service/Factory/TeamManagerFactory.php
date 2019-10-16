@@ -38,7 +38,8 @@ class TeamManagerFactory implements FactoryInterface
         return new TeamManager(
             $container->get(TeamRepositoryInterface::class),
             $container->get(TeamCommandInterface::class),
-            $container->get(PlayerRepositoryInterface::class)
+            $container->get(PlayerRepositoryInterface::class),
+            new Console()
         );
     }
 }

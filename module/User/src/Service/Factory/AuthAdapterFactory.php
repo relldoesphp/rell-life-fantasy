@@ -14,6 +14,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Session\SessionManager;
 use Zend\Authentication\Storage\Session as SessionStorage;
 use User\Service\AuthAdapter;
+use User\Model\User\RepositoryInterface;
 
 class AuthAdapterFactory implements FactoryInterface
 {

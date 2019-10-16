@@ -9,13 +9,24 @@
 namespace User\Model\User\Sql;
 
 use User\Model\User\RepositoryInterface;
+use Zend\Db\Adapter\AdapterInterface;
+use Zend\Hydrator\HydratorInterface;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
+use Zend\Db\Adapter\Driver\ResultInterface;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\ResultSet\HydratingResultSet;
 
 class SqlRepository implements RepositoryInterface
 {
     private $db;
+    private $hydrator;
+    private $userPrototype;
 
-    public function __construct($db){
+    public function __construct($db, $hydrator, $userPrototype){
         $this->db = $db;
+        $this->hydrator = $hydrator;
+        $this->userPrototype = $userPrototype;
     }
     /**
      * @param int $id
@@ -23,7 +34,19 @@ class SqlRepository implements RepositoryInterface
      */
     public function getUserById($id)
     {
-        // TODO: Implement getUserById() method.
+        $sql    = new Sql($this->db);
+        $select = $sql->select('user');
+        $select->where(["id = ?" => $id]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->userPrototype);
+        $resultSet->initialize($result);
+        return $resultSet->current();
     }
 
     /**
@@ -32,7 +55,19 @@ class SqlRepository implements RepositoryInterface
      */
     public function getUserByEmail($email)
     {
-        // TODO: Implement getUserByEmail() method.
+        $sql    = new Sql($this->db);
+        $select = $sql->select('user');
+        $select->where(["email = ?" => $email]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->userPrototype);
+        $resultSet->initialize($result);
+        return $resultSet->current();
     }
 
     /**
@@ -40,7 +75,17 @@ class SqlRepository implements RepositoryInterface
      */
     public function getAllUsers()
     {
-        // TODO: Implement getAllUser() method.
-    }
+        $sql    = new Sql($this->db);
+        $select = $sql->select('user');
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
 
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->userPrototype);
+        $resultSet->initialize($result);
+        return $resultSet;
+    }
 }

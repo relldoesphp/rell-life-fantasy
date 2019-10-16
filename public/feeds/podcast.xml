@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:itunesu="http://www.itunesu.com/feed" version="2.0">
+    <channel>
+        <link>https://www.YourSite.com</link>
+        <language>en-us</language>
+        <copyright>&#xA9;2019</copyright>
+        <webMaster>onesockrell@gmail.com (Tyrell Cook)</webMaster>
+        <managingEditor>onesockrell@gmail.com (Tyrell Cook)</managingEditor>
+        <image>
+            <url>https://www.YourSite.com/ImageSize300X300.jpg</url>
+            <title>Draft Trade Win Logo</title>
+            <link>https://www.YourSite.com</link>
+        </image>
+        <itunes:owner>
+            <itunes:name>Tyrell Cook</itunes:name>
+            <itunes:email>onesockrell@gmail.com</itunes:email>
+        </itunes:owner>
+        <itunes:category text="Education">
+            <itunes:category text="Higher Education" />
+        </itunes:category>
+        <itunes:keywords>separate, by, comma, and, space</itunes:keywords>
+        <itunes:explicit>no</itunes:explicit>
+        <itunes:image href="http://www.YourSite.com/ImageSize300X300.jpg" />
+        <atom:link href="https://www.YourSite.com/feed.xml" rel="self" type="application/rss+xml" />
+        <pubDate>Fri, 05 Oct 2018 09:00:00 GMT</pubDate>
+        <title>Verbose title of the podcast</title>
+        <itunes:author>College, school, or department owning the podcast</itunes:author>
+        <description>Verbose description of the podcast.</description>
+        <itunes:summary>Duplicate of above verbose description.</itunes:summary>
+        <itunes:subtitle>Short description of the podcast - 255 character max.</itunes:subtitle>
+        <lastBuildDate>Fri, 05 Oct 2018 09:00:00 GMT</lastBuildDate>
+
+        <!--REPEAT THIS BLOCK FOR EACH EPISODE-->
+        <item>
+            <title>Verbose title of the episode</title>
+            <description>Verbose description of the episode.</description>
+            <itunes:summary>Duplicate of above verbose description.</itunes:summary>
+            <itunes:subtitle>Short description of the episode - 255 character max.</itunes:subtitle>
+            <itunesu:category itunesu:code="112" />
+            <enclosure url="https://www.YourSite.com/FILE.EXT" type="audio/mpeg" length="1" />
+            <guid>https://www.YourSite.com/FILE.EXT</guid>
+            <itunes:duration>H:MM:SS</itunes:duration>
+            <pubDate>Fri, 05 Oct 2018 09:00:00 GMT</pubDate>
+        </item>
+        <!--END REPEAT-->
+
+    </channel>
+</rss>

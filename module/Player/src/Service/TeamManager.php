@@ -11,26 +11,33 @@ namespace Player\Service;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Model\Team\TeamCommandInterface;
 use Player\Model\Team\TeamRepositoryInterface;
+use Zend\ProgressBar\Adapter\Console;
+use Zend\ProgressBar\ProgressBar;
 
 class TeamManager
 {
     public $teamRepository;
     public $playerRepository;
     public $teamCommand;
+    private $consoleAdapter;
 
     public function __construct(
         TeamRepositoryInterface $teamRepository,
         TeamCommandInterface $teamCommand,
-        PlayerRepositoryInterface $playerRepository
+        PlayerRepositoryInterface $playerRepository,
+        Console $consoleAdapter
     ){
         $this->teamRepository = $teamRepository;
         $this->teamCommand = $teamCommand;
         $this->playerRepository = $playerRepository;
+        $this->consoleAdapter = $consoleAdapter;
     }
 
     public function buildDepthCharts()
     {
         $teams = $this->teamRepository->getTeams();
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, count($teams));
+        $pointer = 0;
         foreach ($teams as $team) {
             $players = $this->playerRepository->getPlayersByTeam($team->getTeam());
             $depthChart = [];
@@ -49,7 +56,10 @@ class TeamManager
             }
             $team->setDepthChart($depthChart);
             $this->teamCommand->saveTeam($team);
+            $pointer++;
+            $progressBar->update($pointer);
         }
+        $progressBar->finish();
     }
 
     public function getTeam($name)

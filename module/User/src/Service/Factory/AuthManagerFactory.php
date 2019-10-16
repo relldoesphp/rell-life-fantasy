@@ -12,6 +12,7 @@ use User\Model\User\RepositoryInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use User\Service\AuthManager;
+use Zend\Session\SessionManager;
 
 class AuthManagerFactory implements FactoryInterface
 {

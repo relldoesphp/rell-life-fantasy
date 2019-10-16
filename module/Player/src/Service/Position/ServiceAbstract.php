@@ -331,6 +331,11 @@ class ServiceAbstract
 
             // Adjust broadjump for bmi and weight to determine total power
             if ($metrics['broadJump'] != null && $metrics['broadJump'] !== "-") {
+                if ($metrics['verticalJump'] != null && $metrics['verticalJump'] !== "-") {
+                    $totalJump = $metrics['verticalJump'] + $metrics['broadJump'];
+                } else {
+                    $totalJump = round(($metrics['broadJump'] * 1.30),2);
+                }
                 $weightRate = $posInfo[$type]['broadAvg']/$posInfo[$type]['weightAvg'];
                 $broadPerPound = ($info['weight'] - $posInfo[$type]['weightAvg']) * $weightRate;
 //                $heightAdj = $posInfo[$type]['broadAvg']/$posInfo[$type]['heightAvg'];
@@ -339,7 +344,7 @@ class ServiceAbstract
                 $bmiRate = $posInfo[$type]['broadAvg']/$posInfo[$type]['bmiAvg'];
                 $broadPerBmi = $bmiRate * ($info['bmi'] - $posInfo[$type]['bmiAvg']);
 
-                $metrics['power'] = round(($metrics['broadJump'] + $broadPerBmi + $broadPerPound),2);
+                $metrics['power'] = str_pad(round(($totalJump + $broadPerBmi + $broadPerPound),2),0,STR_PAD_LEFT);
             } else {
                 $metrics['power'] = null;
             }

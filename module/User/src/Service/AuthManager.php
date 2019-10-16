@@ -10,6 +10,7 @@ namespace User\Service;
 
 use Zend\Authentication\Result;
 use Zend\Session;
+use \Exception;
 
 class AuthManager
 {
@@ -73,5 +74,52 @@ class AuthManager
 
         // Remove identity from session.
         $this->authService->clearIdentity();
+    }
+
+    /**
+     * This is a simple access control filter. It allows vistors to visit certain pages only,
+     * the rest requiring the user to be authenticated.
+     *
+     * This method uses the 'access_filter' key in the config file and determines
+     * whenther the current visitor is allowed to access the given controller action
+     * or not. It returns true if allowed; otherwise false.
+     */
+    public function filterAccess($controllerName, $actionName)
+    {
+        // Determine mode - 'restrictive' (default) or 'permissive'. In restrictive
+        // mode all controller actions must be explicitly listed under the 'access_filter'
+        // config key, and access is denied to any not listed action for unauthenticated users.
+        // In permissive mode, if an action is not listed under the 'access_filter' key,
+        // access to it is permitted to anyone (even for not logged in users.
+        // Restrictive mode is more secure and recommended to use.
+        $mode = isset($this->config['options']['mode'])?$this->config['options']['mode']:'restrictive';
+        if ($mode!='restrictive' && $mode!='permissive')
+            throw new \Exception('Invalid access filter mode (expected either restrictive or permissive mode');
+
+        if (isset($this->config['access_filter']['controllers'][$controllerName])) {
+            $items = $this->config['access_filter']['controllers'][$controllerName];
+            foreach ($items as $item) {
+                $actionList = $item['actions'];
+                $allow = $item['allow'];
+                if (is_array($actionList) && in_array($actionName, $actionList) ||
+                    $actionList=='*') {
+                    if ($allow=='*')
+                        return true; // Anyone is allowed to see the page.
+                    else if ($allow=='@' && $this->authService->hasIdentity()) {
+                        return true; // Only authenticated user is allowed to see the page.
+                    } else {
+                        return false; // Access denied.
+                    }
+                }
+            }
+        }
+
+        // In restrictive mode, we forbid access for authenticated users to any
+        // action not listed under 'access_filter' key (for security reasons).
+        if ($mode=='restrictive' && !$this->authService->hasIdentity())
+            return false;
+
+        // Permit access to this page.
+        return true;
     }
 }

@@ -10,7 +10,7 @@ namespace User\Controller\Factory;
 
 use User\Controller\UserController;
 use Interop\Container\ContainerInterface;
-use User\Model\User\RepositoryInterface;
+use User;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 class UserControllerFactory implements FactoryInterface
@@ -20,8 +20,7 @@ class UserControllerFactory implements FactoryInterface
     {
         // TODO: Implement __invoke() method.
         return new UserController(
-            $container->get(RepositoryInterface::class)
+            $container->get(User\Service\UserManager::class)
         );
     }
-
 }

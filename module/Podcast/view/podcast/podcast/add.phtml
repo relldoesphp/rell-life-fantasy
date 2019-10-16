@@ -1,20 +1,33 @@
 <?php
-$title = 'Add new album';
+$title = 'Add new podcast';
 $this->headTitle($title);
 ?>
     <div class="section container full-height white">
     <div class="row container">
-    <h1><?= $this->escapeHtml($title) ?></h1>
+        <div class="col s10">
+    <h4><?= $this->escapeHtml($title) ?></h4>
 <?php
 // This provides a default CSS class and placeholder text for the title element:
-$album = $form->get('title');
-$album->setAttribute('class', 'form-control');
-$album->setAttribute('placeholder', 'Album title');
+$title = $form->get('title');
+$title->setAttribute('class', 'form-control');
+$title->setAttribute('placeholder', 'Podcast title');
 
 // This provides a default CSS class and placeholder text for the artist element:
-$artist = $form->get('artist');
-$artist->setAttribute('class', 'form-control');
-$artist->setAttribute('placeholder', 'Artist');
+$description = $form->get('description');
+$description->setAttribute('class', 'form-control');
+$description->setAttribute('placeholder', 'Description');
+
+$shortTitle = $form->get('shorttitle');
+$shortTitle->setAttribute('class', 'form-control');
+$shortTitle->setAttribute('placeholder', 'Short Title');
+
+$filePath = $form->get('filepath');
+$filePath->setAttribute('class', 'form-control');
+$filePath->setAttribute('placeholder', 'File Path');
+
+$publishDate = $form->get('pubDate');
+$publishDate->setAttribute('class', 'form-control');
+$publishDate->setAttribute('placeholder', 'Publish Date');
 
 // This provides CSS classes for the submit button:
 $submit = $form->get('submit');
@@ -28,21 +41,40 @@ echo $this->form()->openTag($form);
 <?php // Wrap the elements in divs marked as form groups, and render the
 // label, element, and errors separately within ?>
     <div class="form-group">
-        <?= $this->formLabel($album) ?>
-        <?= $this->formElement($album) ?>
-        <?= $this->formElementErrors()->render($album, ['class' => 'help-block']) ?>
+        <?= $this->formLabel($title) ?>
+        <?= $this->formElement($title) ?>
+        <?= $this->formElementErrors()->render($title, ['class' => 'help-block']) ?>
     </div>
 
     <div class="form-group">
-        <?= $this->formLabel($artist) ?>
-        <?= $this->formElement($artist) ?>
-        <?= $this->formElementErrors()->render($artist, ['class' => 'help-block']) ?>
+        <?= $this->formLabel($description) ?>
+        <?= $this->formElement($description) ?>
+        <?= $this->formElementErrors()->render($description, ['class' => 'help-block']) ?>
     </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($shortTitle) ?>
+            <?= $this->formElement($shortTitle) ?>
+            <?= $this->formElementErrors()->render($shortTitle, ['class' => 'help-block']) ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($filePath) ?>
+            <?= $this->formElement($filePath) ?>
+            <?= $this->formElementErrors()->render($filePath, ['class' => 'help-block']) ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($publishDate) ?>
+            <?= $this->formElement($publishDate) ?>
+            <?= $this->formElementErrors()->render($publishDate, ['class' => 'help-block']) ?>
+        </div>
 
 <?php
 echo $this->formSubmit($submit);
 echo $this->formHidden($form->get('id'));
 echo $this->form()->closeTag();
 ?>
+        </div>
     </div>
     </div>

@@ -167,6 +167,7 @@ class SqlStatsRepository implements StatsRepositoryInterface
             "gl.year = ?" => $year,
             "gl.week = ?" => $week
         ]);
+
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -280,6 +281,9 @@ class SqlStatsRepository implements StatsRepositoryInterface
         $sql    = new Sql($this->db);
         $select = $sql->select($this->gameLogTable);
         $select->where(["sleeper_id = ?" => $sleeperId]);
+        $select
+            ->order('year DESC')
+            ->order('week ASC');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -297,6 +301,9 @@ class SqlStatsRepository implements StatsRepositoryInterface
         $sql    = new Sql($this->db);
         $select = $sql->select($this->gameLogTable);
         $select->where(["player_id = ?" => $playerId]);
+        $select
+            ->order('year DESC')
+            ->order('week ASC');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -340,6 +347,7 @@ class SqlStatsRepository implements StatsRepositoryInterface
         $sql    = new Sql($this->db);
         $select = $sql->select($this->seasonStatTable);
         $select->where($where);
+        $select->order('year DESC');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -361,6 +369,7 @@ class SqlStatsRepository implements StatsRepositoryInterface
         $sql    = new Sql($this->db);
         $select = $sql->select($this->seasonStatTable);
         $select->where(["sleeper_id = ?" => $sleeperId]);
+        $select->order('year DESC');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -378,6 +387,7 @@ class SqlStatsRepository implements StatsRepositoryInterface
         $sql    = new Sql($this->db);
         $select = $sql->select($this->seasonStatTable);
         $select->where(["player_id = ?" => $playerId]);
+        $select->order('year DESC');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

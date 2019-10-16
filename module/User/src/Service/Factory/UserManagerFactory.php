@@ -9,6 +9,7 @@
 namespace User\Service\Factory;
 
 use User\Model\User\RepositoryInterface;
+use User\Model\User\CommandInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use User\Service\UserManager;
@@ -21,7 +22,7 @@ class UserManagerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $repository = $container->get(RepositoryInterface::class);
-        $command = $container->get(ContainerInterface::class);
+        $command = $container->get(CommandInterface::class);
         $viewRenderer = $container->get('ViewRenderer');
         $config = $container->get('Config');
 

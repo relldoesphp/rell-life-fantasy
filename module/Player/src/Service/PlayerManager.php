@@ -179,9 +179,29 @@ class PlayerManager
 
     public function updateWrMetrics()
     {
+
+//        $lbService = new Position\LBService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $lbService->calculateMetrics();
+//        $lbService->calculatePercentiles();
+//        $lbService->calculateSpecialScores();
+//        $lbService->calculateSpecialPercentiles();
+//
+//        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $dlService->calculateMetrics();
+//        $dlService->calculatePercentiles();
+//        $dlService->calculateSpecialScores();
+//        $dlService->calculateSpecialPercentiles();
+//
+//
+//        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $olService->calculateMetrics();
+//        $olService->calculatePercentiles();
+//        $olService->calculateSpecialScores();
+//        $olService->calculateSpecialPercentiles();
+
         $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $wrService->calculateMetrics();
-//        $wrService->calculatePercentiles();
+        $wrService->calculateMetrics();
+        $wrService->calculatePercentiles();
         $wrService->calculateSpecialScores();
         $wrService->calculateSpecialPercentiles();
 
@@ -190,13 +210,13 @@ class PlayerManager
 //        $rbService->calculatePercentiles("RB");
 //        $rbService->calculateSpecialScores("RB");
 //        $rbService->calculateSpecialPercentiles("RB");
-
+//
 //        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $teService->calculateMetrics("TE");
 //        $teService->calculatePercentiles("TE");
 //        $teService->calculateSpecialScores("TE");
 //        $teService->calculateSpecialPercentiles("TE");
-
+//
 //        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $qbService->calculateMetrics("QB");
 //        $qbService->calculatePercentiles("QB");

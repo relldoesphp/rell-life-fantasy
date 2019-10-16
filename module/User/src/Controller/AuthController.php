@@ -15,6 +15,8 @@ use Zend\Uri\Uri;
 use User\Form\LoginForm;
 use User\Model\User;
 use User\Service\AuthManager;
+use User\Model\User\RepositoryInterface;
+
 
 class AuthController extends AbstractActionController
 {

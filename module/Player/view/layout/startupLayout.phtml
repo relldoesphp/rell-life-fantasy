@@ -37,8 +37,9 @@
     <?= $this->headScript()
         ->appendFile($this->basePath('js/materialize.js'))
         ->appendFile($this->basePath('js/startup.js'))
-       ->appendFile($this->basePath('js/init.js'))
-        ->appendFile($this->basePath("/js/rlfPlayer.js"));
+        ->appendFile($this->basePath('js/init.js'))
+        ->appendFile($this->basePath("/js/rlfPlayer.js"))
+        ->appendFile($this->basePath("/js/rlfMatchup.js"));
     ?>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-41VYVC57MQ"></script>

@@ -9,6 +9,10 @@
 namespace Player;
 
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Controller\AbstractActionController;
+use User\Controller\AuthController;
+use User\Service\AuthManager;
 
 class Module implements ConfigProviderInterface
 {
