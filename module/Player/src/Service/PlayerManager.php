@@ -180,17 +180,17 @@ class PlayerManager
     public function updateWrMetrics()
     {
 
-//        $lbService = new Position\LBService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $lbService->calculateMetrics();
-//        $lbService->calculatePercentiles();
-//        $lbService->calculateSpecialScores();
-//        $lbService->calculateSpecialPercentiles();
-//
-//        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $dlService->calculateMetrics();
-//        $dlService->calculatePercentiles();
-//        $dlService->calculateSpecialScores();
-//        $dlService->calculateSpecialPercentiles();
+        $lbService = new Position\LBService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $lbService->calculateMetrics();
+        $lbService->calculatePercentiles();
+        $lbService->calculateSpecialScores();
+        $lbService->calculateSpecialPercentiles();
+
+        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $dlService->calculateMetrics();
+        $dlService->calculatePercentiles();
+        $dlService->calculateSpecialScores();
+        $dlService->calculateSpecialPercentiles();
 //
 //
 //        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
@@ -199,11 +199,11 @@ class PlayerManager
 //        $olService->calculateSpecialScores();
 //        $olService->calculateSpecialPercentiles();
 
-        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $wrService->calculateMetrics();
-        $wrService->calculatePercentiles();
-        $wrService->calculateSpecialScores();
-        $wrService->calculateSpecialPercentiles();
+//        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $wrService->calculateMetrics();
+//        $wrService->calculatePercentiles();
+//        $wrService->calculateSpecialScores();
+//        $wrService->calculateSpecialPercentiles();
 
 //        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $rbService->calculateMetrics("RB");

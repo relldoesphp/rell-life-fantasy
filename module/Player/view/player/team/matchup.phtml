@@ -8,15 +8,15 @@
                 <li class="tab col s3"><a href="#team2"><?= $team2->name ?></a></li>
             </ul>
         </div>
-        <div id="team1" class="col s12 <?= $team1->name ?>">
+        <div id="team1" class="col s12 container <?= $team1->name ?>">
             <div class="row">
                 <h4 class="center">Offensive Line</h4>
-                <div class="col s11 prospect z-depth-1 hoverable waves-block" style="background:white; position: relative; height:450px;">
-                    <canvas id="team1-canvas" width="75%"></canvas>
-                </div>
-                <div class="col s1">
+                <div class="col s12">
                     <a class="waves-effect waves-light btn-small active" id="team1-runBlock">RunBlock</a>
                     <a class="waves-effect waves-light btn-small" id="team1-passBlock">PassRush</a>
+                </div>
+                <div class="col s11 prospect z-depth-1 hoverable waves-block" style="background:white; position: relative; height:500px; margin-bottom:15px; padding:5px">
+                    <canvas id="team1-canvas" width="75%"></canvas>
                 </div>
                 <h4 class="center">Receiver Matchups</h4>
                 <div class="row container">
@@ -39,10 +39,11 @@
                             <table id="team1-WR1" width="100%"></table>
                         </div>
                         <div class="team1-CB-container" class="col s10">
-                            <div class="col s5">
+                            <div class="col s6">
                                 <ul class="team1-tabs tabs">
-                                    <li id="team1-CB1-link" class="tab col"><a href="#team1-WR1-CB1-container" class="active">LCB</a></li>
-                                    <li id="team1-CB2-link" class="tab col"><a href="#team1-WR1-CB2-container">RCB</a></li>
+                                    <li id="team1-WR1-CB1-link" class="tab col"><a href="#team1-WR1-CB1-container">LCB</a></li>
+                                    <li id="team1-WR1-CB2-link" class="tab col"><a href="#team1-WR1-CB2-container" class="active">RCB</a></li>
+                                    <li id="team1-WR1-CB3-link" class="tab col"><a href="#team1-WR1-CB3-container">NB</a></li>
                                 </ul>
                             </div>
                             <div id="team1-WR1-CB1-container" class="col s6">
@@ -50,6 +51,9 @@
                             </div>
                             <div id="team1-WR1-CB2-container" class="col s6">
                                 <table id="team1-WR1-CB2" class="team1-CB2"></table>
+                            </div>
+                            <div id="team1-WR1-CB3-container" class="col s6">
+                                <table id="team1-WR1-CB3" class="team1-slot-CB"></table>
                             </div>
                         </div>
                     </div>
@@ -59,17 +63,21 @@
                             <table id="team1-WR2" width="100%"></table>
                         </div>
                         <div class="team1-CB-container" class="col s10">
-                            <div class="col s5">
+                            <div class="col s6">
                                 <ul class="team1-tabs tabs">
-                                    <li id="team1-CB1-link" class="tab col"><a href="#team1-WR2-CB1-container">LCB</a></li>
-                                    <li id="team1-CB2-link" class="tab col"><a href="#team1-WR2-CB2-container" class="active" >RCB</a></li>
+                                    <li id="team1-WR2-CB1-link" class="tab col"><a href="#team1-WR2-CB1-container" class="active">LCB</a></li>
+                                    <li id="team1-WR2-link" class="tab col"><a href="#team1-WR2-CB2-container">RCB</a></li>
+                                    <li id="team1-WR2-CB3-link" class="tab col"><a href="#team1-WR2-CB3-container">NB</a></li>
                                 </ul>
                             </div>
                             <div id="team1-WR2-CB1-container" class="col s6">
-                                <table id="team1-WR1-CB1" class="team1-CB1"></table>
+                                <table id="team1-WR-CB1" class="team1-CB1"></table>
                             </div>
                             <div id="team1-WR2-CB2-container" class="col s6">
-                                <table id="team1-WR1-CB1" class="team1-CB2"></table>
+                                <table id="team1-WR1-CB2" class="team1-CB2"></table>
+                            </div>
+                            <div id="team1-WR2-CB3-container" class="col s6">
+                                <table id="team1-WR1-CB3" class="team1-slot-CB"></table>
                             </div>
                         </div>
                     </div>
@@ -81,18 +89,22 @@
                             <h5 class="center">Slot</h5>
                             <table id="team1-slot" width="100%"></table>
                         </div>
-                        <div class="team1-slot-CB-container" class="col s10">
-                            <div class="col s5">
+                        <div class="team1-CB-container" class="col s10">
+                            <div class="col s6">
                                 <ul class="team1-tabs tabs">
-                                    <li id="team1-slot-CB-link" class="tab col"><a href="#team1-slot-CB1-container" class="active">Slot CB</a></li>
-                                    <li id="team1-slot-SS-link" class="tab col"><a href="#team1-slot-SS1-container">SS</a></li>
+                                    <li id="team1-WR3-CB1-link" class="tab col"><a href="#team1-WR3-CB1-container">LCB</a></li>
+                                    <li id="team1-WR3-CB2-link" class="tab col"><a href="#team1-WR3-CB2-container">RCB</a></li>
+                                    <li id="team1-WR3-CB3-link" class="tab col"><a href="#team1-WR3-CB3-container" class="active">NB</a></li>
                                 </ul>
                             </div>
-                            <div id="team1-slot-CB1-container" class="col s6">
-                                <table id="team1-slot-CB" class="team1-slot-CB"></table>
+                            <div id="team1-WR3-CB1-container" class="col s6">
+                                <table id="team1-WR-CB1" class="team1-CB1"></table>
                             </div>
-                            <div id="team1-slot-SS1-container" class="col s6">
-                                <table id="team1-SS" class="team1-SS"></table>
+                            <div id="team1-WR3-CB2-container" class="col s6">
+                                <table id="team1-WR1-CB2" class="team1-CB2"></table>
+                            </div>
+                            <div id="team1-WR3-CB3-container" class="col s6">
+                                <table id="team1-WR1-CB3" class="team1-slot-CB"></table>
                             </div>
                         </div>
                     </div>
@@ -148,81 +160,155 @@
 
                 </div>
             </div>
-        </div>
-        <div id="team2" class="col s12 <?= $team2->name ?>">
-            <div class="row">
-                <h4 class="center">Offensive Line</h4>
-                <div class="col s11 prospect z-depth-1 hoverable waves-block" style="background:white; position: relative; height:450px;">
-                    <canvas id="team2-canvas" width="75%"></canvas>
+        <div id="team2" class="col s12 container <?= $team2->name ?>">
+        <div class="row">
+            <h4 class="center">Offensive Line</h4>
+            <div class="col s12">
+                <a class="waves-effect waves-light btn-small active" id="team2-runBlock">RunBlock</a>
+                <a class="waves-effect waves-light btn-small" id="team2-passBlock">PassRush</a>
+            </div>
+            <div class="col s12 prospect z-depth-1 hoverable waves-block" style="background:white; position: relative; height:500px; margin-bottom:15px; padding:5px">
+                <canvas id="team2-canvas" width="75%"></canvas>
+            </div>
+            <h4 class="center">Receiver Matchups</h4>
+            <div class="row container">
+                <div class="col s2"></div>
+                <div class="col s4 card">
+                    <h5 class="center">Free Safety</h5>
+                    <table id="team2-FS"></table>
                 </div>
-                <div class="col s1">
-                    <a class="waves-effect waves-light btn-small active" id="team2-runBlock">RunBlock</a>
-                    <a class="waves-effect waves-light btn-small" id="team2-passBlock">PassRush</a>
+                <div class="col s4 card">
+                    <h5 class="center">Strong Safety</h5>
+                    <table class="team2-SS"></table>
                 </div>
-                <h4 class="center">Receiver Matchups</h4>
-                <div class="row container">
-                    <div class="col s2"></div>
-                    <div class="col s4 card">
-                        <h5 class="center">Free Safety</h5>
-                        <table id="team2-FS"></table>
+                <div class="col s2"></div>
+            </div>
+            <div class="row container">
+                <hr>
+                <div class="col s6 team2-WRs card">
+                    <div id="team2-WR1-container" class="col s6">
+                        <h5 class="center">LWR</h5>
+                        <table id="team2-WR1" width="100%"></table>
                     </div>
-                    <div class="col s4 card">
-                        <h5 class="center">Strong Safety</h5>
-                        <table id="team2-SS"></table>
-                    </div>
-                    <div class="col s2"></div>
-                </div>
-                <div class="row container">
-                    <div class="col s6 card">
-                        <h5>X WR</h5>
-                        <table id="team2-LWR">
-                        </table>
-                    </div>
-                    <div class="col s6 card">
-                        <h5>Z WR</h5>
-                        <table id="team2-RWR">
-                        </table>
-                    </div>
-                    <div class="col s6 card">
-                        <h5>Slot</h5>
-                        <table id="team2-SWR">
-                        </table>
-                    </div>
-
-                    <div class="col s6 card">
-                        <h5>TE</h5>
-                        <table id="team2-TE">
-                        </table>
-                    </div>
-                </div>
-                <h4 class="center">Rushing Matchups</h4>
-                <div class="row container">
-                    <div class="col s4 team2-RBs">
-                        <div class="col s12">
+                    <div class="team2-CB-container" class="col s10">
+                        <div class="col s6">
                             <ul class="team2-tabs tabs">
-                                <li id="team2-RB1-link" class="tab col s3"><a href="#team2-RB1-container" class="active">RB1</a></li>
-                                <li id="team2-RB2-link" class="tab col s3"><a href="#team2-RB2-container">RB2</a></li>
+                                <li id="team2-WR1-CB1-link" class="tab col"><a href="#team2-WR1-CB1-container" class="active">LCB</a></li>
+                                <li id="team2-WR1-CB2-link" class="tab col"><a href="#team2-WR1-CB2-container">RCB</a></li>
+                                <li id="team2-WR1-CB3-link" class="tab col"><a href="#team2-WR1-CB3-container">NB</a></li>
                             </ul>
                         </div>
-                        <div id="team2-RB1-container" class="col s12">
-                            <h5 class="center">RB1</h5>
-                            <table id="team2-RB1" width="100%"></table>
+                        <div id="team2-WR1-CB1-container" class="col s6">
+                            <table id="team2-WR1-CB1" class="team2-CB1"></table>
                         </div>
-                        <div id="team2-RB2-container" class="col s12">
-                            <h5 class="center">RB2</h5>
-                            <table id="team2-RB2" width="100%"></table>
+                        <div id="team2-WR1-CB2-container" class="col s6">
+                            <table id="team2-WR1-CB2" class="team2-CB2"></table>
+                        </div>
+                        <div id="team2-WR1-CB3-container" class="col s6">
+                            <table id="team2-WR1-CB3" class="team2-slot-CB"></table>
                         </div>
                     </div>
-                    <div class="col s2">
-                        <h5 class="center">VS.</h5>
+                </div>
+                <div class="col s6 team2-WRs card">
+                    <div id="team2-WR2-container" class="col s6">
+                        <h5 class="center">RWR</h5>
+                        <table id="team2-WR2" width="100%"></table>
                     </div>
-                    <div class="col s6 card">
-                        <h5 class="center">Linebackers</h5>
-                        <table id="team2-LBs" width="100%"></table>
+                    <div class="team2-CB-container" class="col s10">
+                        <div class="col s6">
+                            <ul class="team2-tabs tabs">
+                                <li id="team2-WR2-CB1-link" class="tab col"><a href="#team2-WR2-CB1-container">LCB</a></li>
+                                <li id="team2-WR2-CB2-link" class="tab col"><a href="#team2-WR2-CB2-container" class="active">RCB</a></li>
+                                <li id="team2-WR2-CB3-link" class="tab col"><a href="#team2-WR2-CB3-container">NB</a></li>
+                            </ul>
+                        </div>
+                        <div id="team2-WR2-CB1-container" class="col s6">
+                            <table id="team2-WR-CB1" class="team2-CB1"></table>
+                        </div>
+                        <div id="team2-WR2-CB2-container" class="col s6">
+                            <table id="team2-WR1-CB2" class="team2-CB2"></table>
+                        </div>
+                        <div id="team2-WR2-CB3-container" class="col s6">
+                            <table id="team2-WR1-CB3" class="team2-slot-CB"></table>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="row container">
+                <hr>
+                <div class="col s6 team2-WRs card">
+                    <div id="team2-slot-container" class="col s6">
+                        <h5 class="center">Slot</h5>
+                        <table id="team2-slot" width="100%"></table>
+                    </div>
+                    <div class="team2-CB-container" class="col s10">
+                        <div class="col s6">
+                            <ul class="team2-tabs tabs">
+                                <li id="team2-WR3-CB1-link" class="tab col"><a href="#team2-WR3-CB1-container">LCB</a></li>
+                                <li id="team2-WR3-CB2-link" class="tab col"><a href="#team2-WR3-CB2-container">RCB</a></li>
+                                <li id="team2-WR3-CB3-link" class="tab col"><a href="#team2-WR3-CB3-container" class="active">NB</a></li>
+                            </ul>
+                        </div>
+                        <div id="team2-WR3-CB1-container" class="col s6">
+                            <table id="team2-WR-CB1" class="team2-CB1"></table>
+                        </div>
+                        <div id="team2-WR3-CB2-container" class="col s6">
+                            <table id="team2-WR1-CB2" class="team2-CB2"></table>
+                        </div>
+                        <div id="team2-WR3-CB3-container" class="col s6">
+                            <table id="team2-WR1-CB3" class="team2-slot-CB"></table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s6 team2-WRs card">
+                    <div id="team2-TE1-container" class="col s6">
+                        <h5 class="center">TE</h5>
+                        <table id="team2-TE1" width="100%"></table>
+                    </div>
+                    <div class="team2-CB-container" class="col s10">
+                        <div class="col s5">
+                            <ul class="team2-tabs tabs">
+                                <li id="team2-MLB-link" class="tab col"><a href="#team2-TE-MLB-container" class="active">MLB</a></li>
+                                <li id="team2-SS-link" class="tab col"><a href="#team2-TE-SS-container">SS</a></li>
+                            </ul>
+                        </div>
+                        <div id="team2-TE-MLB-container" class="col s6">
+                            <table id="team2-MLB" class="team2-MLB"></table>
+                        </div>
+                        <div id="team2-TE-SS-container" class="col s6">
+                            <table id="team2-SS" class="team2-SS"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="center">Rushing Matchups</h4>
+            <div class="row container">
+                <div class="col s4">
+                    <div class="col s12">
+                        <ul class="tabs">
+                            <li class="tab col s3"><a class="active" href="#team2-RB1-container">RB1</a></li>
+                            <li class="tab col s3"><a href="#team2-RB2-container">RB2</a></li>
+                        </ul>
+                    </div>
+                    <div id="team2-RB1-container" class="col s12">
+                        <h5 class="center">RB1</h5>
+                        <table id="team2-RB1" width="100%"></table>
+                    </div>
+                    <div id="team2-RB2-container" class="col s12">
+                        <h5 class="center">RB2</h5>
+                        <table id="team2-RB2" width="100%"></table>
+                    </div>
+                </div>
+                <div class="col s2">
+                    <h5 class="center">VS.</h5>
+                </div>
+                <div class="col s6 card">
+                    <h5 class="center">Linebackers</h5>
+                    <table id="team2-LBs" width="100%"></table>
+                </div>
+            </div>
         </div>
+    </div>
     </div>
 </div>
 

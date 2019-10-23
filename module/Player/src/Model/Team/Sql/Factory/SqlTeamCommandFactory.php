@@ -11,8 +11,6 @@ namespace Player\Model\Team\Sql\Factory;
 use Player\Model\Team\Sql\SqlTeamCommand;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
-use Player\Controller\PlayerController;
-use Player\Model\Team\Team;
 use Zend\ProgressBar\Adapter\Console;
 
 class SqlTeamCommandFactory implements FactoryInterface

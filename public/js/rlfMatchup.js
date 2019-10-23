@@ -12,30 +12,58 @@ rlf.makeOlineChart = function(chartData, id){
                         bottom: 0
                     }
                 },
-                "animation": {
-                    "duration": 5,
-                    "onComplete": function() {
-                        var chartInstance = this.chart,
-                            ctx = chartInstance.ctx;
+                animation: {
+                    duration: 250 * 1.5,
+                    easing: 'easeInQuad',
+                        "onComplete": function() {
+                            var chartInstance = this.chart,
+                                ctx = chartInstance.ctx;
 
-                        //ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontFamily);
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'bottom';
-                        ctx.fillStyle = "purple";
-                        ctx.textBaseline = 'bottom';
-                        ctx.fontSize = "14";
+                            //ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontFamily);
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+                            ctx.fillStyle = "purple";
+                            ctx.textBaseline = 'bottom';
+                            ctx.fontSize = "14";
 
-                        this.data.datasets.forEach(function(dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function(bar, index) {
-                                if (dataset.metrics[index] != "" && $("body").hasClass("mobile") === false && dataset.metrics[index] != null) {
-                                    var data = dataset.metrics[index]+'\n'+dataset.ordinals[index]+'';
-                                    ctx.fillText(data, bar._model.x, bar._model.y - 7);
-                                }
+                            this.data.datasets.forEach(function(dataset, i) {
+                                var meta = chartInstance.controller.getDatasetMeta(i);
+                                meta.data.forEach(function(bar, index) {
+                                    if (dataset.metrics[index] != "" && $("body").hasClass("mobile") === false && dataset.metrics[index] != null) {
+                                        var data = dataset.metrics[index]+'\n'+dataset.ordinals[index]+'';
+                                        ctx.fillText(data, bar._model.x, bar._model.y - 7);
+                                    }
+                                });
                             });
-                        });
-                    }
+                        }
                 },
+                // "animation": {
+                //     "duration": 5,
+                //     "onProgress": function(animation) {
+                //         progress.value = animation.animationObject.currentStep / animation.animationObject.numSteps;
+                //     },
+                //     "onComplete": function() {
+                //         var chartInstance = this.chart,
+                //             ctx = chartInstance.ctx;
+                //
+                //         //ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontFamily);
+                //         ctx.textAlign = 'center';
+                //         ctx.textBaseline = 'bottom';
+                //         ctx.fillStyle = "purple";
+                //         ctx.textBaseline = 'bottom';
+                //         ctx.fontSize = "14";
+                //
+                //         this.data.datasets.forEach(function(dataset, i) {
+                //             var meta = chartInstance.controller.getDatasetMeta(i);
+                //             meta.data.forEach(function(bar, index) {
+                //                 if (dataset.metrics[index] != "" && $("body").hasClass("mobile") === false && dataset.metrics[index] != null) {
+                //                     var data = dataset.metrics[index]+'\n'+dataset.ordinals[index]+'';
+                //                     ctx.fillText(data, bar._model.x, bar._model.y - 7);
+                //                 }
+                //             });
+                //         });
+                //     }
+                // },
                 scales: {
                     xAxes: [{
                         display: true,
@@ -93,7 +121,7 @@ rlf.makeOlineChart = function(chartData, id){
 
 rlf.initMatchup = function(off, def, id) {
     var elementId = '#'+id;
-    var oline = off.depth_chart;
+    var oline = off.oline;
     var dline = def.dfront;
     var lb = def.LB;
 
@@ -124,16 +152,18 @@ rlf.initMatchup = function(off, def, id) {
 
     if (def.def_base === "4-3") {
         defPos = fourThree;
+        dline.RT.metrics.runStuff = null;
+        dline.RT.metrics.passRush = null;
     }
 
     runData[id] = {
             labels: [
                 "",
-                oline.LT[1].last_name+' #'+oline.LT[1].team_info.number,
-                oline.LG[1].last_name+' #'+oline.LG[1].team_info.number,
-                oline.C[1].last_name+' #'+oline.C[1].team_info.number,
-                oline.RG[1].last_name+' #'+oline.RG[1].team_info.number,
-                oline.RT[1].last_name+' #'+oline.RT[1].team_info.number,
+                oline.LT.last_name+' #'+oline.LT.team_info.number,
+                oline.LG.last_name+' #'+oline.LG.team_info.number,
+                oline.C.last_name+' #'+oline.C.team_info.number,
+                oline.RG.last_name+' #'+oline.RG.team_info.number,
+                oline.RT.last_name+' #'+oline.RT.team_info.number,
                 ""
             ],
             datasets: [{
@@ -142,11 +172,11 @@ rlf.initMatchup = function(off, def, id) {
                 radius: 50,
                 data: [
                     "",
-                    oline.LT[1].metrics.runBlock,
-                    oline.LG[1].metrics.runBlock,
-                    oline.C[1].metrics.runBlock,
-                    oline.RG[1].metrics.runBlock,
-                    oline.RT[1].metrics.runBlock,
+                    oline.LT.metrics.runBlock,
+                    oline.LG.metrics.runBlock,
+                    oline.C.metrics.runBlock,
+                    oline.RG.metrics.runBlock,
+                    oline.RT.metrics.runBlock,
                     ""
                 ],
                 ordinals: [
@@ -223,11 +253,11 @@ rlf.initMatchup = function(off, def, id) {
     passData[id] = {
         labels: [
             "",
-            oline.LT[1].last_name+'-LT',
-            oline.LG[1].last_name+'-LG',
-            oline.C[1].last_name+'-C',
-            oline.RG[1].last_name+'-RG',
-            oline.RT[1].last_name+'-RT',
+            oline.LT.last_name+'-LT',
+            oline.LG.last_name+'-LG',
+            oline.C.last_name+'-C',
+            oline.RG.last_name+'-RG',
+            oline.RT.last_name+'-RT',
             ""
         ],
         datasets: [
@@ -238,11 +268,11 @@ rlf.initMatchup = function(off, def, id) {
                 fill: false,
                 data: [
                     "",
-                    oline.LT[1].metrics.edgeBlock,
-                    oline.LG[1].metrics.passBlock,
-                    oline.C[1].metrics.passBlock,
-                    oline.RG[1].metrics.passBlock,
-                    oline.RT[1].metrics.edgeBlock,
+                    oline.LT.metrics.edgeBlock,
+                    oline.LG.metrics.passBlock,
+                    oline.C.metrics.passBlock,
+                    oline.RG.metrics.passBlock,
+                    oline.RT.metrics.edgeBlock,
                     ""
                 ],
                 ordinals: [
@@ -275,7 +305,7 @@ rlf.initMatchup = function(off, def, id) {
                 fill: true,
                 data: [
                     {
-                        "y":dline.LT.metrics.passRush,
+                        "y":dline.LT.metrics.edgeRush,
                         "x":defPos["LT"]
                     },
                     {
@@ -283,11 +313,11 @@ rlf.initMatchup = function(off, def, id) {
                         "x":defPos["LG"]
                     },
                     {
-                        "y":dline.C.percentiles.speedScore,
+                        "y":dline.C.percentiles.passRush,
                         "x":defPos["C"]
                     },
                     {
-                        "y":dline.RG.percentiles.speedScore,
+                        "y":dline.RG.metrics.passRush,
                         "x":defPos["RG"]
                     },
                     {
@@ -494,6 +524,7 @@ rlf.initMatchup = function(off, def, id) {
         "paging": false,
         "ordering": false,
         "searching": false,
+        "info": false,
         "columns": [
             {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+FS.sleeper_id+".jpg'/><br>"+FS.first_name+" "+FS.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
@@ -601,35 +632,35 @@ rlf.initMatchup = function(off, def, id) {
 
    // $("."+id+"-tabs").tabs();
 
-    var LBs = def.LBs;
-    $('#'+id+'-LBs').DataTable({
-        "paging": false,
-        "ordering": false,
-        "searching": false,
-        "info":false,
-        "columns": [
-            {title: "", data: "name", "defaultContent":0},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.middle.sleeper_id+".jpg'/><br>"+LBs.middle.first_name+" "+LBs.middle.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.weak.sleeper_id+".jpg'/><br>"+LBs.weak.first_name+" "+LBs.weak.last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-        ],
-        data:[
-            {
-                "name": "Speed",
-                "metric1": LBs.middle.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+LBs.middle.percentiles.fortyTime+"%'></div></div>",
-                "metric2": LBs.weak.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+LBs.weak.percentiles.fortyTime+"%'></div></div>",
-            },
-            {
-                "name": "Agility",
-                "metric1": LBs.middle.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+LBs.middle.percentiles.agility+"%'></div></div>",
-                "metric2": LBs.weak.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+LBs.weak.percentiles.agility+"%'></div></div>",
-            },
-            {
-                "name": "Power",
-                "metric1": LBs.middle.metrics.power+"<div class='progress'><div class='determinate' style='width:"+LBs.middle.percentiles.power+"%'></div></div>",
-                "metric2": LBs.weak.metrics.power+"<div class='progress'><div class='determinate' style='width:"+LBs.weak.percentiles.power+"%'></div></div>",
-            }
-        ]
-    });
+    // var LBs = def.LBs;
+    // $('#'+id+'-LBs').DataTable({
+    //     "paging": false,
+    //     "ordering": false,
+    //     "searching": false,
+    //     "info":false,
+    //     "columns": [
+    //         {title: "", data: "name", "defaultContent":0},
+    //         {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.middle.sleeper_id+".jpg'/><br>"+LBs.middle.first_name+" "+LBs.middle.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+    //         {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.strong.sleeper_id+".jpg'/><br>"+LBs.strong.first_name+" "+LBs.strong.last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+    //     ],
+    //     data:[
+    //         {
+    //             "name": "Speed",
+    //             "metric1": LBs.middle.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+LBs.middle.percentiles.fortyTime+"%'></div></div>",
+    //             "metric2": LBs.weak.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+LBs.weak.percentiles.fortyTime+"%'></div></div>",
+    //         },
+    //         {
+    //             "name": "Agility",
+    //             "metric1": LBs.middle.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+LBs.middle.percentiles.agility+"%'></div></div>",
+    //             "metric2": LBs.weak.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+LBs.weak.percentiles.agility+"%'></div></div>",
+    //         },
+    //         {
+    //             "name": "Power",
+    //             "metric1": LBs.middle.metrics.power+"<div class='progress'><div class='determinate' style='width:"+LBs.middle.percentiles.power+"%'></div></div>",
+    //             "metric2": LBs.weak.metrics.power+"<div class='progress'><div class='determinate' style='width:"+LBs.weak.percentiles.power+"%'></div></div>",
+    //         }
+    //     ]
+    // });
 
 
     var WR1 = off.depth_chart.LWR[1];
@@ -649,7 +680,7 @@ rlf.initMatchup = function(off, def, id) {
                 "metric1": "Jumpball-"+WR1.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.jumpball+"%'></div></div>",
             },
             {
-                "metric1": "Agility-"+WR1.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.agility+"%'></div></div>",
+                "metric1": "Route Agility-"+WR1.metrics.routeAgility+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.routeAgility+"%'></div></div>",
             },
             {
                 "metric1": "Bully-"+WR1.metrics.bully+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.bully+"%'></div></div>",
@@ -674,7 +705,7 @@ rlf.initMatchup = function(off, def, id) {
                 "metric1": "Jumpball-"+WR1.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.jumpball+"%'></div></div>",
             },
             {
-                "metric1": "Agility-"+WR1.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.agility+"%'></div></div>",
+                 "metric1": "Route Agility-"+WR1.metrics.routeAgility+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.routeAgility+"%'></div></div>",
             },
             {
                 "metric1": "Bully-"+WR1.metrics.bully+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.bully+"%'></div></div>",
@@ -699,7 +730,7 @@ rlf.initMatchup = function(off, def, id) {
                 "metric1": "Jumpball-"+WR1.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.jumpball+"%'></div></div>",
             },
             {
-                "metric1": "Agility-"+WR1.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.agility+"%'></div></div>",
+                "metric1": "Route Agility-"+WR1.metrics.routeAgility+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.routeAgility+"%'></div></div>",
             },
             {
                 "metric1": "Bully-"+WR1.metrics.bully+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.bully+"%'></div></div>",
@@ -724,7 +755,7 @@ rlf.initMatchup = function(off, def, id) {
                 "metric1": "Jumpball-"+WR1.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.jumpball+"%'></div></div>",
             },
             {
-                "metric1": "Agility-"+WR1.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.agility+"%'></div></div>",
+                "metric1": "Route Agility-"+WR1.metrics.routeAgility+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.routeAgility+"%'></div></div>", 
             },
             {
                 "metric1": "Block-"+WR1.metrics.runBlock+"<div class='progress'><div class='determinate' style='width:"+WR1.percentiles.runBlock+"%'></div></div>",
@@ -857,5 +888,7 @@ rlf.initMatchupPage = function() {
             $(this).css("background-color", "red");
         }
     });
+
+    $(".tab").tabs();
 
 };

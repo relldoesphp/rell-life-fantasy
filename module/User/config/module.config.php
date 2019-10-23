@@ -139,10 +139,12 @@ return [
         'factories' => [
             View\Helper\Menu::class => View\Helper\Factory\MenuFactory::class,
             View\Helper\Breadcrumbs::class => InvokableFactory::class,
+            View\Helper\CurrentUser::class => View\Helper\Factory\CurrentUserFactory::class,
         ],
         'aliases' => [
             'mainMenu' => View\Helper\Menu::class,
             'pageBreadcrumbs' => View\Helper\Breadcrumbs::class,
+            'currentUser' => View\Helper\CurrentUser::class
         ],
     ],
     // The following key allows to define custom styling for FlashMessenger view helper.

@@ -8,7 +8,6 @@
 
 namespace Player\Service\Factory;
 
-use Player\Model\Player\Sql\SqlPlayerCommand;
 use Player\Model\Stats\StatsCommandInterface;
 use Player\Model\Stats\StatsRepositoryInterface;
 use Zend\ProgressBar\Adapter\Console;

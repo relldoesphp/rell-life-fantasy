@@ -12,6 +12,7 @@ use Zend\Session\SessionManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use User\Controller\AuthController;
 use User\Service\AuthManager;
+use Player\Controller\ScriptController;
 
 class Module
 {
@@ -41,6 +42,22 @@ class Module
         // The following line instantiates the SessionManager and automatically
         // makes the SessionManager the 'default' one.
         $serviceManager->get(SessionManager::class);
+
+        $this->forgetInvalidSession($serviceManager->get(SessionManager::class));
+    }
+
+    protected function forgetInvalidSession($sessionManager) {
+        try {
+            $sessionManager->start();
+            return;
+        } catch (\Exception $e) {
+        }
+        /**
+         * Session validation failed: toast it and carry on.
+         */
+        // @codeCoverageIgnoreStart
+        session_unset();
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -66,6 +83,7 @@ class Module
         // Execute the access filter on every controller except AuthController
         // (to avoid infinite redirect).
         if ($controllerName!=AuthController::class &&
+            $controllerName!=ScriptController::class &&
             !$authManager->filterAccess($controllerName, $actionName)) {
 
             // Remember the URL of the page the user tried to access. We will

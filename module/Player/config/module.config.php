@@ -23,7 +23,9 @@ return [
             Model\Stats\StatsRepositoryInterface::class => Model\Stats\Sql\SqlStatsRepository::class,
             Model\Stats\StatsCommandInterface::class => Model\Stats\Sql\SqlStatsCommand::class,
             Model\Team\TeamRepositoryInterface::class => Model\Team\Sql\SqlTeamRepository::class,
-            Model\Team\TeamCommandInterface::class => Model\Team\Sql\SqlTeamCommand::class
+            Model\Team\TeamCommandInterface::class => Model\Team\Sql\SqlTeamCommand::class,
+            Model\Matchup\MatchupRepositoryInterface::class =>  Model\Matchup\Sql\SqlMatchupRepository::class,
+            Model\Matchup\MatchupCommandInterface::class => Model\Matchup\Sql\SqlMatchupCommand::class
         ],
         'factories' => [
             'Dtw\Db\Adapter' => AdapterAbstractServiceFactory::class,
@@ -36,6 +38,9 @@ return [
             Model\Team\Sql\SqlTeamRepository::class => Model\Team\Sql\Factory\SqlTeamRepositoryFactory::class,
             Model\Team\Sql\SqlTeamCommand::class => Model\Team\Sql\Factory\SqlTeamCommandFactory::class,
             Service\TeamManager::class => Service\Factory\TeamManagerFactory::class,
+            Model\Matchup\Sql\SqlMatchupCommand::class => Model\Matchup\Sql\Factory\SqlMatchupCommandFactory::class,
+            Model\Matchup\Sql\SqlMatchupRepository::class => Model\Matchup\Sql\Factory\SqlMatchupRepositoryFactory::class,
+            Service\MatchupManager::class
         ],
     ],
 

@@ -12,8 +12,6 @@ use Player\Model\Team\Sql\SqlTeamRepository;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Model\Team\Team;
-// we comment out the adapter interface because we are loading in custom adapter for DB object
-//use Zend\Db\Adapter\AdapterInterface;
 use Zend\Hydrator\Reflection as ReflectionHydrator;
 
 

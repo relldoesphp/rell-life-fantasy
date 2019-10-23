@@ -734,6 +734,56 @@ var rlf =  {
         var passCatcherpercent = rlfData.player.metrics.passCatcher;
         var alphapercent = rlfData.player.metrics.alpha;
 
+        var currentStats = rlfData.player.seasonStats["2019"];
+        $('#summary-stats').DataTable({
+            "paging": false,
+            "ordering": false,
+            "searching": false,
+            "info":false,
+            "columns": [
+                {title: "2019", data: "name", "defaultContent":"n/a", "width": "50%"},
+                {title: "Stat",  data: "stat", "defaultContent":0, "width": "10%"},
+                {title: "Rank", data: "rank", "defaultContent":0, "width": "10%"}
+            ],
+            "data":[
+                {
+                    "name":"PPR Points",
+                    "stat":currentStats.stats.pts_ppr_avg,
+                    "rank":currentStats.ranks.pts_ppr_avg
+                },
+                {
+                    "name":"Carries",
+                    "stat":currentStats.stats.rush_att_avg,
+                    "rank":currentStats.ranks.rush_att_avg
+                },
+                {
+                    "name":"Rush Yards Per",
+                    "stat":currentStats.stats.rush_yd_avg,
+                    "rank":currentStats.ranks.rush_yd_avg
+                },
+                {
+                    "name":"YPC",
+                    "stat":currentStats.stats.rush_ypa,
+                    "rank":currentStats.ranks.rush_ypa
+                },
+                {
+                    "name":"TDs",
+                    "stat":currentStats.stats.rush_td,
+                    "rank":currentStats.ranks.rush_td
+                },
+                {
+                    "name":"Recs Per",
+                    "stat":currentStats.stats.rec_avg,
+                    "rank":currentStats.ranks.rec_avg
+                },
+                {
+                    "name":"Targets per",
+                    "stat":currentStats.stats.tgt_avg,
+                    "rank":currentStats.ranks.tgt_avg
+                }
+            ]
+        });
+
         var roleFits = [
             {
                 "name":"Grinder Score",
@@ -929,6 +979,58 @@ var rlf =  {
 
         rlf.makeGameLogTable(gameLogColumns);
 
+        var currentStats = rlfData.player.seasonStats["2019"];
+        $('#summary-stats').DataTable({
+            "paging": false,
+            "ordering": false,
+            "searching": false,
+            "info":false,
+            "columns": [
+                {title: "2019", data: "name", "defaultContent":"n/a", "width": "50%"},
+                {title: "Stat",  data: "stat", "defaultContent":0, "width": "10%"},
+                {title: "Rank", data: "rank", "defaultContent":0, "width": "10%"}
+            ],
+            "data":[
+                {
+                    "name":"PPR Points",
+                    "stat":currentStats.stats.pts_ppr_avg,
+                    "rank":currentStats.ranks.pts_ppr_avg
+                },
+                {
+                    "name":"Receptions Per",
+                    "stat":currentStats.stats.rec_avg,
+                    "rank":currentStats.ranks.rec_avg
+                },
+                {
+                    "name":"Targets Per",
+                    "stat":(currentStats.stats.rec_tgt/currentStats.stats.gp).toFixed(1),
+                    "rank":currentStats.ranks.rec_tgt
+                },
+                {
+                    "name":"Rec Yds Per",
+                    "stat":currentStats.stats.rec_yd_avg,
+                    "rank":currentStats.ranks.rec_yd_avg
+                },
+                {
+                    "name":"TDs",
+                    "stat":currentStats.stats.rec_td,
+                    "rank":currentStats.ranks.rec_td
+                },
+                {
+                    "name":"YPR",
+                    "stat":currentStats.stats.rec_ypr,
+                    "rank":currentStats.ranks.rec_ypr
+                },
+                {
+                    "name":"YPT",
+                    "stat":currentStats.stats.rec_ypt,
+                    "rank":currentStats.ranks.rec_ypt
+                }
+            ]
+        });
+
+
+
         var roleFits = [
             {
                 "name":"Slot:",
@@ -1090,6 +1192,56 @@ var rlf =  {
         ];
 
         rlf.makeGameLogTable(gameLogColumns);
+
+        var currentStats = rlfData.player.seasonStats["2019"];
+        $('#summary-stats').DataTable({
+            "paging": false,
+            "ordering": false,
+            "searching": false,
+            "info":false,
+            "columns": [
+                {title: "2019", data: "name", "defaultContent":"n/a", "width": "50%"},
+                {title: "Stat",  data: "stat", "defaultContent":0, "width": "10%"},
+                {title: "Rank", data: "rank", "defaultContent":0, "width": "10%"}
+            ],
+            "data":[
+                {
+                    "name":"PPR Points",
+                    "stat":currentStats.stats.pts_ppr_avg,
+                    "rank":currentStats.ranks.pts_ppr_avg
+                },
+                {
+                    "name":"Receptions Per",
+                    "stat":currentStats.stats.rec_avg,
+                    "rank":currentStats.ranks.rec_avg
+                },
+                {
+                    "name":"Targets Per",
+                    "stat":(currentStats.stats.rec_tgt/currentStats.stats.gp).toFixed(1),
+                    "rank":currentStats.ranks.rec_tgt
+                },
+                {
+                    "name":"Rec Yds Per",
+                    "stat":currentStats.stats.rec_yd_avg,
+                    "rank":currentStats.ranks.rec_yd_avg
+                },
+                {
+                    "name":"TDs",
+                    "stat":currentStats.stats.rec_td,
+                    "rank":currentStats.ranks.rec_td
+                },
+                {
+                    "name":"YPR",
+                    "stat":currentStats.stats.rec_ypr,
+                    "rank":currentStats.ranks.rec_ypr
+                },
+                {
+                    "name":"YPT",
+                    "stat":currentStats.stats.rec_ypt,
+                    "rank":currentStats.ranks.rec_ypt
+                }
+            ]
+        });
 
         var roleFits = [
             {
@@ -1684,7 +1836,7 @@ var rlf =  {
             }
         };
 
-        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
+        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false, animation: {duration: 250 * 1.5, easing: 'easeInQuad'}});
     },
 
     /************************* OLB Line **************************/
@@ -1981,7 +2133,8 @@ var rlf =  {
                     }
                 },
                 "animation": {
-                    "duration": 5,
+                    "duration": 250 * 1.5,
+                    "easing": 'easeInQuad',
                     "onComplete": function() {
                         var chartInstance = this.chart,
                             ctx = chartInstance.ctx;
