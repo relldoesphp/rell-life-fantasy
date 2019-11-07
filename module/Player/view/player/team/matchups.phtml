@@ -1,0 +1,21 @@
+<?php
+/**
+ * Created by IntelliJ IDEA.
+ * User: tcook
+ * Date: 10/25/19
+ * Time: 8:01 PM
+ */
+?>
+<div class="section white full-height container">
+    <div class="row container">
+        <h1>GAMES</h1>
+        <?php foreach ($matchups as $matchup): ?>
+            <div class="col s3 card">
+                <h5> <?= $this->escapeHtml($matchup->away); ?></h5>
+                <p class="black-text">vs.</p>
+                <h5><?= $this->escapeHtml($matchup->home); ?></h5>
+                <a href="<?= $this->url('matchup', ['action'=>'view', 'id'=>$matchup->id()]); ?>">View Matchup</a>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

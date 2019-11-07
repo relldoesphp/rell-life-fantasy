@@ -42,6 +42,9 @@ $this->headTitle($title);
         $metrics = $form->get('metrics');
         $metrics->setAttribute('class', 'form-control');
         $metrics->setAttribute('placeholder', 'player info');
+        if (!$metrics->getValue()){
+            $form->get('metrics')->setValue('{"fortyTime": "","broadJump": "","verticalJump": "","shuttle": "","cone":"", "benchPress":""}');
+        };
 
         $percentiles = $form->get('percentiles');
         $percentiles->setAttribute('class', 'form-control');
@@ -153,6 +156,7 @@ $this->headTitle($title);
 
         <fieldset>
             <legend>Metrics</legend>
+
             <div class="form-group col m12">
                 <?= $this->formLabel($metrics) ?>
                 <?= $this->formElement($metrics) ?>

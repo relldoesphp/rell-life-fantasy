@@ -8,9 +8,22 @@ rlf.makeOlineChart = function(chartData, id){
                     padding: {
                         left: 0,
                         right: 0,
-                        top: 0,
+                        top: 50,
+                        bottom: 0
+                    },
+                    margin: {
+                        left: 0,
+                        right: 0,
+                        top: 30,
                         bottom: 0
                     }
+                },
+                legend: {
+                    display: false,
+                    labels: {
+                        fontColor: 'rgba(174, 3, 230)'
+                    },
+                    position: 'bottom'
                 },
                 animation: {
                     duration: 250 * 1.5,
@@ -145,12 +158,12 @@ rlf.initMatchup = function(off, def, id) {
 
     var defPos = {};
 
-    if (def.def_base === "3-4") {
+    if (def.def_base === "3-4" || def.team === "SF" || def.team === "ATL") {
         defPos = threeFour;
     }
 
 
-    if (def.def_base === "4-3") {
+    if (def.def_base === "4-3" && def.team !== "SF" && def.team !== "ATL") {
         defPos = fourThree;
         dline.RT.metrics.runStuff = null;
         dline.RT.metrics.passRush = null;
@@ -384,7 +397,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "columns": [
             {title: "", data: "name", "defaultContent":0},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LWR.sleeper_id+".jpg'/><br>"+LWR.first_name+" "+LWR.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LWR.sleeper_id+".jpg'/><br><a href='/player/"+LWR.sleeper_id+"'>"+LWR.first_name+" "+LWR.last_name+"</a>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
             {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RCB.sleeper_id+".jpg'/><br>"+RCB.first_name+" "+RCB.last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
         ],
         data:[
@@ -485,7 +498,7 @@ rlf.initMatchup = function(off, def, id) {
 
 
     var TE = off.depth_chart.TE[1];
-    var MLB = def.LBs.middle;
+    var MLB = def.LBs.middle[0];
     $('#'+id+'-TE').DataTable({
         "paging": false,
         "ordering": false,
@@ -530,13 +543,13 @@ rlf.initMatchup = function(off, def, id) {
         ],
         data:[
             {
-                "metric1": "Speed<br>"+FS.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+FS.percentiles.fortyTime+"%'></div></div>",
+                "metric1": "Speed -"+FS.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+FS.percentiles.fortyTime+"%'></div></div>",
             },
             {
-                "metric1": "Jumpball<br>"+FS.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+FS.percentiles.jumpball+"%'></div></div>",
+                "metric1": "Jumpball -"+FS.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+FS.percentiles.jumpball+"%'></div></div>",
             },
             {
-                "metric1": "Agility<br>"+FS.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+FS.percentiles.agility+"%'></div></div>",
+                "metric1": "Agility -"+FS.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+FS.percentiles.agility+"%'></div></div>",
             }
         ]
     });
@@ -553,13 +566,13 @@ rlf.initMatchup = function(off, def, id) {
         ],
         data:[
             {
-                "metric1": "Speed<br>"+SS.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+SS.percentiles.fortyTime+"%'></div></div>",
+                "metric1": "Speed -"+SS.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+SS.percentiles.fortyTime+"%'></div></div>",
             },
             {
-                "metric1": "Jumpball<br>"+SS.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+SS.percentiles.jumpball+"%'></div></div>",
+                "metric1": "Jumpball -"+SS.metrics.jumpball+"<div class='progress'><div class='determinate' style='width:"+SS.percentiles.jumpball+"%'></div></div>",
             },
             {
-                "metric1": "Agility<br>"+SS.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+SS.percentiles.agility+"%'></div></div>",
+                "metric1": "Agility -"+SS.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+SS.percentiles.agility+"%'></div></div>",
             }
         ]
     });
@@ -632,35 +645,35 @@ rlf.initMatchup = function(off, def, id) {
 
    // $("."+id+"-tabs").tabs();
 
-    // var LBs = def.LBs;
-    // $('#'+id+'-LBs').DataTable({
-    //     "paging": false,
-    //     "ordering": false,
-    //     "searching": false,
-    //     "info":false,
-    //     "columns": [
-    //         {title: "", data: "name", "defaultContent":0},
-    //         {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.middle.sleeper_id+".jpg'/><br>"+LBs.middle.first_name+" "+LBs.middle.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-    //         {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.strong.sleeper_id+".jpg'/><br>"+LBs.strong.first_name+" "+LBs.strong.last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-    //     ],
-    //     data:[
-    //         {
-    //             "name": "Speed",
-    //             "metric1": LBs.middle.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+LBs.middle.percentiles.fortyTime+"%'></div></div>",
-    //             "metric2": LBs.weak.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+LBs.weak.percentiles.fortyTime+"%'></div></div>",
-    //         },
-    //         {
-    //             "name": "Agility",
-    //             "metric1": LBs.middle.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+LBs.middle.percentiles.agility+"%'></div></div>",
-    //             "metric2": LBs.weak.metrics.agility+"<div class='progress'><div class='determinate' style='width:"+LBs.weak.percentiles.agility+"%'></div></div>",
-    //         },
-    //         {
-    //             "name": "Power",
-    //             "metric1": LBs.middle.metrics.power+"<div class='progress'><div class='determinate' style='width:"+LBs.middle.percentiles.power+"%'></div></div>",
-    //             "metric2": LBs.weak.metrics.power+"<div class='progress'><div class='determinate' style='width:"+LBs.weak.percentiles.power+"%'></div></div>",
-    //         }
-    //     ]
-    // });
+    var LBs = def.LBs;
+    $('#'+id+'-LBs').DataTable({
+        "paging": false,
+        "ordering": false,
+        "searching": false,
+        "info":false,
+        "columns": [
+            {title: "", data: "name", "defaultContent":0},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.middle[0].sleeper_id+".jpg'/><br>"+LBs.middle[0].first_name+" "+LBs.middle[0].last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.weak[0].sleeper_id+".jpg'/><br>"+LBs.weak[0].first_name+" "+LBs.weak[0].last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+        ],
+        data:[
+            {
+                "name": "Speed",
+                "metric1": LBs.middle[0].metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+LBs.middle[0].percentiles.fortyTime+"%'></div></div>",
+                "metric2": LBs.weak[0].metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+LBs.weak[0].percentiles.fortyTime+"%'></div></div>",
+            },
+            {
+                "name": "Agility",
+                "metric1": LBs.middle[0].metrics.agility+"<div class='progress'><div class='determinate' style='width:"+LBs.middle[0].percentiles.agility+"%'></div></div>",
+                "metric2": LBs.weak[0].metrics.agility+"<div class='progress'><div class='determinate' style='width:"+LBs.weak[0].percentiles.agility+"%'></div></div>",
+            },
+            {
+                "name": "Power",
+                "metric1": LBs.middle[0].metrics.power+"<div class='progress'><div class='determinate' style='width:"+LBs.middle[0].percentiles.power+"%'></div></div>",
+                "metric2": LBs.weak[0].metrics.power+"<div class='progress'><div class='determinate' style='width:"+LBs.weak[0].percentiles.power+"%'></div></div>",
+            }
+        ]
+    });
 
 
     var WR1 = off.depth_chart.LWR[1];
@@ -838,7 +851,7 @@ rlf.initMatchup = function(off, def, id) {
         ]
     });
 
-    var MLB = def.LBs.middle;
+    var MLB = def.LBs.middle[0];
     $("."+id+"-MLB").DataTable({
         "paging": false,
         "ordering": false,
@@ -889,6 +902,11 @@ rlf.initMatchupPage = function() {
         }
     });
 
-    $(".tab").tabs();
+    $(".tab a").css("font-size", "12px");
+
+    $("img").on("error", function () {
+        $(this).unbind("error").attr("src", "/images/placeholder.jpeg").css("height", "80px");
+    });
+
 
 };

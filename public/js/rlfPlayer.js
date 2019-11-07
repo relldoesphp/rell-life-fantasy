@@ -741,7 +741,7 @@ var rlf =  {
             "searching": false,
             "info":false,
             "columns": [
-                {title: "2019", data: "name", "defaultContent":"n/a", "width": "50%"},
+                {title: "2019", data: "name", "defaultContent":"n/a", "width": "60%"},
                 {title: "Stat",  data: "stat", "defaultContent":0, "width": "10%"},
                 {title: "Rank", data: "rank", "defaultContent":0, "width": "10%"}
             ],
@@ -762,25 +762,25 @@ var rlf =  {
                     "rank":currentStats.ranks.rush_yd_avg
                 },
                 {
-                    "name":"YPC",
-                    "stat":currentStats.stats.rush_ypa,
-                    "rank":currentStats.ranks.rush_ypa
+                    "name": "YPC",
+                    "stat": currentStats.stats.rush_ypa,
+                    "rank": currentStats.ranks.rush_ypa
                 },
                 {
-                    "name":"TDs",
+                    "name":"Rush Tds/ Rec Tds",
                     "stat":currentStats.stats.rush_td,
                     "rank":currentStats.ranks.rush_td
                 },
                 {
-                    "name":"Recs Per",
-                    "stat":currentStats.stats.rec_avg,
-                    "rank":currentStats.ranks.rec_avg
+                    "name":"Recs / Tgts",
+                    "stat":currentStats.stats.rec_avg+" / "+currentStats.stats.tgt_avg,
+                    "rank":currentStats.ranks.rec_avg+" / "+currentStats.ranks.tgt_avg
                 },
                 {
-                    "name":"Targets per",
-                    "stat":currentStats.stats.tgt_avg,
-                    "rank":currentStats.ranks.tgt_avg
-                }
+                    "name":"Rec Yards Per",
+                    "stat":currentStats.stats.rec_yd_avg,
+                    "rank":currentStats.ranks.rec_yd_avg
+                },
             ]
         });
 
@@ -915,6 +915,7 @@ var rlf =  {
                 },
             ]
         };
+        rlf.makeProspectChart({});
         rlf.makeProspectChart(chartData);
     },
 
@@ -2133,7 +2134,7 @@ var rlf =  {
                     }
                 },
                 "animation": {
-                    "duration": 250 * 1.5,
+                    "duration": 600 * 1.5,
                     "easing": 'easeInQuad',
                     "onComplete": function() {
                         var chartInstance = this.chart,
@@ -2438,12 +2439,12 @@ var rlf =  {
             },
             font: {size: 10},
             autosize: false,
-            width: 400,
-            height: 300,
+            width: 330,
+            height: 270,
             margin: {
                 l: 0,
                 r: 0,
-                b: 25,
+                b: 15,
                 t: 25,
                 pad: 0
             },

@@ -1,0 +1,471 @@
+<?php
+?>
+<div class="section white full-height container">
+    <div class="row container">
+        <a href="/matchup/index?week=10&year=2019"><<< Back to week 10 matchups</a>
+        <br>
+        <br>
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a class="active" href="#team1"><?= $team1->name ?></a></li>
+                <li class="tab col s3"><a href="#team2"><?= $team2->name ?></a></li>
+            </ul>
+        </div>
+        <div id="team1" class="col s12 container <?= $team1->name ?>">
+            <div class="row">
+                <h4 class="center">Offensive Line</h4>
+                <div class="col s11 prospect z-depth-1 hoverable waves-block">
+                    <div class="col s12">
+                        <a class="waves-effect waves-light btn-small active" id="team1-runBlock">RunBlock</a>
+                        <a class="waves-effect waves-light btn-small" id="team1-passBlock">PassRush</a>
+                    </div>
+                    <div class="col s11">
+                        <?php if ($team2->def_base == "3-4" || $team2->team == "SF" || $team2->team == "ATL"): ?>
+                        <div class="col offset-s2 s2">
+                            <?php else: ?>
+                            <div class="col offset-s3 s2">
+                                <?php endif; ?>
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->dfront["LT"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team2->dfront["LT"]["first_name"]." ".$team2->dfront["LT"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->dfront["LG"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team2->dfront["LG"]["first_name"]." ".$team2->dfront["LG"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->dfront["C"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team2->dfront["C"]["first_name"]." ".$team2->dfront["C"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->dfront["RG"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team2->dfront["RG"]["first_name"]." ".$team2->dfront["RG"]["last_name"] ?>
+                        </div>
+                        <?php if ($team2->def_base == "3-4" || $team2->team == "SF"): ?>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->dfront["RT"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team2->dfront["RT"]["first_name"]." ".$team2->dfront["RT"]["last_name"] ?>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="col s12" style="background:white; position: relative; height:460px; margin-bottom:15px; padding:5px">
+                        <canvas id="team1-canvas" width="75%"></canvas>
+                    </div>
+                    <div class="col s11">
+                        <div class="col offset-s2 s2">
+                            <img class="responsive-img" style="width:100px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->oline["LT"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team1->oline["LT"]["first_name"]." ".$team1->oline["LT"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:100px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->oline["LG"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team1->oline["LG"]["first_name"]." ".$team1->oline["LG"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:100px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->oline["C"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team1->oline["C"]["first_name"]." ".$team1->oline["C"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:100px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->oline["RG"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team1->oline["RG"]["first_name"]." ".$team1->oline["RG"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:100px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->oline["RT"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team1->oline["RT"]["first_name"]." ".$team1->oline["RT"]["last_name"] ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row container">
+                    <div class="col s12">
+                        <h4 class="center title">Receiver Matchups</h4>
+                    </div>
+                    <div class="col s2"></div>
+                    <div class="col s4 card">
+                        <h5 class="center">Free Safety</h5>
+                        <table id="team1-FS"></table>
+                    </div>
+                    <div class="col s4 card">
+                        <h5 class="center">Strong Safety</h5>
+                        <table class="team1-SS"></table>
+                    </div>
+                    <div class="col s2"></div>
+                </div>
+                <div class="row container">
+                    <hr>
+                    <div class="col s6 team1-WRs card">
+                        <div id="team1-WR1-container" class="col s6">
+                            <h5 class="center">LWR</h5>
+                            <table id="team1-WR1" width="100%"></table>
+                        </div>
+                        <div class="team1-CB-container" class="col s10">
+                            <div class="col s6">
+                                <ul class="team1-tabs tabs">
+                                    <li id="team1-WR1-CB1-link" class="tab col"><a href="#team1-WR1-CB1-container">LCB</a></li>
+                                    <li id="team1-WR1-CB2-link" class="tab col"><a href="#team1-WR1-CB2-container" class="active">RCB</a></li>
+                                    <li id="team1-WR1-CB3-link" class="tab col"><a href="#team1-WR1-CB3-container">NB</a></li>
+                                </ul>
+                            </div>
+                            <div id="team1-WR1-CB1-container" class="col s6">
+                                <table id="team1-WR1-CB1" class="team1-CB1"></table>
+                            </div>
+                            <div id="team1-WR1-CB2-container" class="col s6">
+                                <table id="team1-WR1-CB2" class="team1-CB2"></table>
+                            </div>
+                            <div id="team1-WR1-CB3-container" class="col s6">
+                                <table id="team1-WR1-CB3" class="team1-slot-CB"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s6 team1-WRs card">
+                        <div id="team1-WR2-container" class="col s6">
+                            <h5 class="center">RWR</h5>
+                            <table id="team1-WR2" width="100%"></table>
+                        </div>
+                        <div class="team1-CB-container" class="col s10">
+                            <div class="col s6">
+                                <ul class="team1-tabs tabs">
+                                    <li id="team1-WR2-CB1-link" class="tab col"><a href="#team1-WR2-CB1-container" class="active">LCB</a></li>
+                                    <li id="team1-WR2-link" class="tab col"><a href="#team1-WR2-CB2-container">RCB</a></li>
+                                    <li id="team1-WR2-CB3-link" class="tab col"><a href="#team1-WR2-CB3-container">NB</a></li>
+                                </ul>
+                            </div>
+                            <div id="team1-WR2-CB1-container" class="col s6">
+                                <table id="team1-WR-CB1" class="team1-CB1"></table>
+                            </div>
+                            <div id="team1-WR2-CB2-container" class="col s6">
+                                <table id="team1-WR1-CB2" class="team1-CB2"></table>
+                            </div>
+                            <div id="team1-WR2-CB3-container" class="col s6">
+                                <table id="team1-WR1-CB3" class="team1-slot-CB"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row container">
+                    <hr>
+                    <div class="col s6 team1-WRs card">
+                        <div id="team1-slot-container" class="col s6">
+                            <h5 class="center">Slot</h5>
+                            <table id="team1-slot" width="100%"></table>
+                        </div>
+                        <div class="team1-CB-container" class="col s10">
+                            <div class="col s6">
+                                <ul class="team1-tabs tabs">
+                                    <li id="team1-WR3-CB1-link" class="tab col"><a href="#team1-WR3-CB1-container">LCB</a></li>
+                                    <li id="team1-WR3-CB2-link" class="tab col"><a href="#team1-WR3-CB2-container">RCB</a></li>
+                                    <li id="team1-WR3-CB3-link" class="tab col"><a href="#team1-WR3-CB3-container" class="active">NB</a></li>
+                                </ul>
+                            </div>
+                            <div id="team1-WR3-CB1-container" class="col s6">
+                                <table id="team1-WR-CB1" class="team1-CB1"></table>
+                            </div>
+                            <div id="team1-WR3-CB2-container" class="col s6">
+                                <table id="team1-WR1-CB2" class="team1-CB2"></table>
+                            </div>
+                            <div id="team1-WR3-CB3-container" class="col s6">
+                                <table id="team1-WR1-CB3" class="team1-slot-CB"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s6 team1-WRs card">
+                        <div id="team1-TE1-container" class="col s6">
+                            <h5 class="center">TE</h5>
+                            <table id="team1-TE1" width="100%"></table>
+                        </div>
+                        <div class="team1-CB-container" class="col s10">
+                            <div class="col s5">
+                                <ul class="team1-tabs tabs">
+                                    <li id="team1-MLB-link" class="tab col"><a href="#team1-TE-MLB-container" class="active">MLB</a></li>
+                                    <li id="team1-SS-link" class="tab col"><a href="#team1-TE-SS-container">SS</a></li>
+                                </ul>
+                            </div>
+                            <div id="team1-TE-MLB-container" class="col s6">
+                                <table id="team1-MLB" class="team1-MLB"></table>
+                            </div>
+                            <div id="team1-TE-SS-container" class="col s6">
+                                <table id="team1-SS" class="team1-SS"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="center">Rushing Matchups</h4>
+                <div class="row container">
+                    <div class="col s4">
+                        <div class="col s12">
+                            <ul class="tabs">
+                                <li class="tab col"><a class="active" href="#team1-RB1-container">RB1</a></li>
+                                <li class="tab col"><a href="#team1-RB2-container">RB2</a></li>
+                            </ul>
+                        </div>
+                        <div id="team1-RB1-container" class="col s12">
+                            <h5 class="center">RB1</h5>
+                            <table id="team1-RB1" width="100%"></table>
+                        </div>
+                        <div id="team1-RB2-container" class="col s12">
+                            <h5 class="center">RB2</h5>
+                            <table id="team1-RB2" width="100%"></table>
+                        </div>
+                    </div>
+                    <div class="col s2">
+                        <h5 class="center">VS.</h5>
+                    </div>
+                    <div class="col s6 card">
+                        <h5 class="center">Linebackers</h5>
+                        <table id="team1-LBs" width="100%"></table>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+        <div id="team2" class="col s12 container <?= $team2->name ?>">
+            <div class="row">
+                <h4 class="center">Offensive Line</h4>
+                <div class="col s11 prospect z-depth-1 hoverable waves-block">
+                    <div class="col s12">
+                        <a class="waves-effect waves-light btn-small active" id="team2-runBlock">RunBlock</a>
+                        <a class="waves-effect waves-light btn-small" id="team2-passBlock">PassRush</a>
+                    </div>
+                    <div class="col s11">
+                        <?php if ($team1->def_base == "3-4" || $team1->name == "49ers"): ?>
+                        <div class="col offset-s2 s2">
+                            <?php else: ?>
+                            <div class="col offset-s3 s2">
+                                <?php endif; ?>
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->dfront["LT"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team1->dfront["LT"]["first_name"]." ".$team1->dfront["LT"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->dfront["LG"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team1->dfront["LG"]["first_name"]." ".$team1->dfront["LG"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->dfront["C"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team1->dfront["C"]["first_name"]." ".$team1->dfront["C"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->dfront["RG"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team1->dfront["RG"]["first_name"]." ".$team1->dfront["RG"]["last_name"] ?>
+                        </div>
+                        <?php if ($team1->def_base == "3-4" || $team1->team == "SF"): ?>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->dfront["RT"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team1->dfront["RT"]["first_name"]." ".$team1->dfront["RT"]["last_name"] ?>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="col s12" style="background:white; position: relative; height:430px; margin-bottom:15px; padding:5px">
+                        <canvas id="team2-canvas" width="75%"></canvas>
+                    </div>
+                    <div class="col s11">
+                        <div class="col offset-s2 s2">
+                            <img class="responsive-img" style="width:100px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->oline["LT"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team2->oline["LT"]["first_name"]." ".$team2->oline["LT"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:100px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->oline["LG"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team2->oline["LG"]["first_name"]." ".$team2->oline["LG"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:100px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->oline["C"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team2->oline["C"]["first_name"]." ".$team2->oline["C"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:100px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->oline["RG"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team2->oline["RG"]["first_name"]." ".$team2->oline["RG"]["last_name"] ?>
+                        </div>
+                        <div class="col s2">
+                            <img class="responsive-img" style="width:100px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->oline["RT"]["sleeper_id"] ?>.jpg">
+                            <br>
+                            <?= $team2->oline["RT"]["first_name"]." ".$team2->oline["RT"]["last_name"] ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row container">
+                    <div class="col s12">
+                        <h4 class="center title">Receiver Matchups</h4>
+                    </div>
+                    <div class="col s2"></div>
+                    <div class="col s4 card">
+                        <h5 class="center">Free Safety</h5>
+                        <table id="team2-FS"></table>
+                    </div>
+                    <div class="col s4 card">
+                        <h5 class="center">Strong Safety</h5>
+                        <table class="team2-SS"></table>
+                    </div>
+                    <div class="col s2"></div>
+                </div>
+                <div class="row container">
+                    <hr>
+                    <div class="col s6 team2-WRs card">
+                        <div id="team2-WR1-container" class="col s6">
+                            <h5 class="center">LWR</h5>
+                            <table id="team2-WR1" width="100%"></table>
+                        </div>
+                        <div class="team2-CB-container" class="col s10">
+                            <div class="col s6">
+                                <ul class="team2-tabs tabs">
+                                    <li id="team2-WR1-CB1-link" class="tab col"><a href="#team2-WR1-CB1-container" class="active">LCB</a></li>
+                                    <li id="team2-WR1-CB2-link" class="tab col"><a href="#team2-WR1-CB2-container">RCB</a></li>
+                                    <li id="team2-WR1-CB3-link" class="tab col"><a href="#team2-WR1-CB3-container">NB</a></li>
+                                </ul>
+                            </div>
+                            <div id="team2-WR1-CB1-container" class="col s6">
+                                <table id="team2-WR1-CB1" class="team2-CB1"></table>
+                            </div>
+                            <div id="team2-WR1-CB2-container" class="col s6">
+                                <table id="team2-WR1-CB2" class="team2-CB2"></table>
+                            </div>
+                            <div id="team2-WR1-CB3-container" class="col s6">
+                                <table id="team2-WR1-CB3" class="team2-slot-CB"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s6 team2-WRs card">
+                        <div id="team2-WR2-container" class="col s6">
+                            <h5 class="center">RWR</h5>
+                            <table id="team2-WR2" width="100%"></table>
+                        </div>
+                        <div class="team2-CB-container" class="col s10">
+                            <div class="col s6">
+                                <ul class="team2-tabs tabs">
+                                    <li id="team2-WR2-CB1-link" class="tab col"><a href="#team2-WR2-CB1-container">LCB</a></li>
+                                    <li id="team2-WR2-CB2-link" class="tab col"><a href="#team2-WR2-CB2-container" class="active">RCB</a></li>
+                                    <li id="team2-WR2-CB3-link" class="tab col"><a href="#team2-WR2-CB3-container">NB</a></li>
+                                </ul>
+                            </div>
+                            <div id="team2-WR2-CB1-container" class="col s6">
+                                <table id="team2-WR-CB1" class="team2-CB1"></table>
+                            </div>
+                            <div id="team2-WR2-CB2-container" class="col s6">
+                                <table id="team2-WR1-CB2" class="team2-CB2"></table>
+                            </div>
+                            <div id="team2-WR2-CB3-container" class="col s6">
+                                <table id="team2-WR1-CB3" class="team2-slot-CB"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row container">
+                    <hr>
+                    <div class="col s6 team2-WRs card">
+                        <div id="team2-slot-container" class="col s6">
+                            <h5 class="center">Slot</h5>
+                            <table id="team2-slot" width="100%"></table>
+                        </div>
+                        <div class="team2-CB-container" class="col s10">
+                            <div class="col s6">
+                                <ul class="team2-tabs tabs">
+                                    <li id="team2-WR3-CB1-link" class="tab col"><a href="#team2-WR3-CB1-container">LCB</a></li>
+                                    <li id="team2-WR3-CB2-link" class="tab col"><a href="#team2-WR3-CB2-container">RCB</a></li>
+                                    <li id="team2-WR3-CB3-link" class="tab col"><a href="#team2-WR3-CB3-container" class="active">NB</a></li>
+                                </ul>
+                            </div>
+                            <div id="team2-WR3-CB1-container" class="col s6">
+                                <table id="team2-WR-CB1" class="team2-CB1"></table>
+                            </div>
+                            <div id="team2-WR3-CB2-container" class="col s6">
+                                <table id="team2-WR1-CB2" class="team2-CB2"></table>
+                            </div>
+                            <div id="team2-WR3-CB3-container" class="col s6">
+                                <table id="team2-WR1-CB3" class="team2-slot-CB"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s6 team2-WRs card">
+                        <div id="team2-TE1-container" class="col s6">
+                            <h5 class="center">TE</h5>
+                            <table id="team2-TE1" width="100%"></table>
+                        </div>
+                        <div class="team2-CB-container" class="col s10">
+                            <div class="col s5">
+                                <ul class="team2-tabs tabs">
+                                    <li id="team2-MLB-link" class="tab col"><a href="#team2-TE-MLB-container" class="active">MLB</a></li>
+                                    <li id="team2-SS-link" class="tab col"><a href="#team2-TE-SS-container">SS</a></li>
+                                </ul>
+                            </div>
+                            <div id="team2-TE-MLB-container" class="col s6">
+                                <table id="team2-MLB" class="team2-MLB"></table>
+                            </div>
+                            <div id="team2-TE-SS-container" class="col s6">
+                                <table id="team2-SS" class="team2-SS"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="center">Rushing Matchups</h4>
+                <div class="row container">
+                    <div class="col s4">
+                        <div class="col s12">
+                            <ul class="tabs">
+                                <li class="tab col"><a class="active" href="#team2-RB1-container">RB1</a></li>
+                                <li class="tab col"><a href="#team2-RB2-container">RB2</a></li>
+                            </ul>
+                        </div>
+                        <div id="team2-RB1-container" class="col s12">
+                            <h5 class="center">RB1</h5>
+                            <table id="team2-RB1" width="100%"></table>
+                        </div>
+                        <div id="team2-RB2-container" class="col s12">
+                            <h5 class="center">RB2</h5>
+                            <table id="team2-RB2" width="100%"></table>
+                        </div>
+                    </div>
+                    <div class="col s2">
+                        <h5 class="center">VS.</h5>
+                    </div>
+                    <div class="col s6 card">
+                        <h5 class="center">Linebackers</h5>
+                        <table id="team2-LBs" width="100%"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var rlfData = <?=json_encode($jsVars, 512)?>;
+    rlf.initMatchupPage();
+    $(document).ready(function() {
+        $("img").on("error", function () {
+            $(this).unbind("error").attr("src", "/images/placeholder.jpeg");
+        });
+        $(".determinate").each(function(){
+            var width = $(this).width()/$(this).parent().width();
+            if (width > .69) {
+                $(this).css("background-color", "green");
+            }
+
+            if (width < .69 && width > .40) {
+                $(this).css("background-color", "yellow");
+            }
+
+            if (width < .40) {
+                $(this).css("background-color", "red");
+            }
+        });
+
+    });
+</script>

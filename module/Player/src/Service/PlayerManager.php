@@ -180,12 +180,12 @@ class PlayerManager
     public function updateWrMetrics()
     {
 
-        $lbService = new Position\LBService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $lbService->calculateMetrics();
-        $lbService->calculatePercentiles();
-        $lbService->calculateSpecialScores();
-        $lbService->calculateSpecialPercentiles();
-
+//        $lbService = new Position\LBService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $lbService->calculateMetrics();
+//        $lbService->calculatePercentiles();
+//        $lbService->calculateSpecialScores();
+//        $lbService->calculateSpecialPercentiles();
+//
         $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
         $dlService->calculateMetrics();
         $dlService->calculatePercentiles();
@@ -193,11 +193,11 @@ class PlayerManager
         $dlService->calculateSpecialPercentiles();
 //
 //
-//        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $olService->calculateMetrics();
-//        $olService->calculatePercentiles();
-//        $olService->calculateSpecialScores();
-//        $olService->calculateSpecialPercentiles();
+        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $olService->calculateMetrics();
+        $olService->calculatePercentiles();
+        $olService->calculateSpecialScores();
+        $olService->calculateSpecialPercentiles();
 
 //        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $wrService->calculateMetrics();
@@ -226,7 +226,7 @@ class PlayerManager
 
     public function scrapCollegeJob()
     {
-        $rbService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
         $rbService->scrapCollegeJob();
     }
 

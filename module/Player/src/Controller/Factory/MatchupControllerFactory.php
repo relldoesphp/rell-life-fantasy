@@ -2,25 +2,27 @@
 /**
  * Created by IntelliJ IDEA.
  * User: tcook
- * Date: 9/15/19
- * Time: 1:47 AM
+ * Date: 10/27/19
+ * Time: 6:09 PM
  */
 
 namespace Player\Controller\Factory;
 
-
-use Player\Controller\TeamController;
+use Player\Controller\MatchupController;
 use Player\Service\MatchupManager;
 use Player\Service\TeamManager;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 
 
-class TeamControllerFactory implements FactoryInterface
+class MatchupControllerFactory implements FactoryInterface
 {
+    /**
+     * @return MatchupController
+     */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new TeamController(
+        return new MatchupController(
             $container->get(TeamManager::class),
             $container->get(MatchupManager::class)
         );

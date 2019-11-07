@@ -87,6 +87,9 @@ class DefLineService extends ServiceAbstract
 
             /*** Calculate Run Block ***/
             $metrics['runStuff'] = null;
+            if (!array_key_exists('benchPress', $metrics)) {
+                $found = true;
+            }
             if (!in_array($metrics['benchPress'], [null, "-", "", "null"])
                 && !in_array($metrics['broadJump'], [null, "-", "", "null"])) {
                 $metrics['runStuff'] = round(($percentiles['bully'] * .30) + ($percentiles['power'] * .70), 2);

@@ -51,11 +51,9 @@ class PlayerForm extends Form
                     'RB' => 'RB',
                     'WR' => 'WR',
                     'TE' => 'TE',
-                    'LT' => 'LT',
-                    "LG" => 'LG',
+                    'OT' => 'OT',
+                    "G" => 'G',
                     'C' => 'C',
-                    'RG' => 'RG',
-                    'RT' => 'RT',
                     'DE' => 'DE',
                     'DT' => 'DT',
                     'NT' => 'NT',
@@ -105,6 +103,62 @@ class PlayerForm extends Form
             'name' => 'injury_info',
             'options' => [
                 'label' => 'injury_info',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => 'fortyTime',
+            'options' => [
+                'label' => '40 time',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => 'benchPress',
+            'options' => [
+                'label' => 'bench',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => 'shuttle',
+            'options' => [
+                'label' => 'Shuttle',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => '3cone',
+            'options' => [
+                'label' => '3 cone',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => 'broadJump',
+            'options' => [
+                'label' => 'broadJump',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => 'verticalJump',
+            'options' => [
+                'label' => 'verticalJump',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'textarea',
+            'name' => 'metrics',
+            'options' => [
+                'label' => 'metrics',
             ],
         ]);
 

@@ -40,7 +40,7 @@ return [
             Service\TeamManager::class => Service\Factory\TeamManagerFactory::class,
             Model\Matchup\Sql\SqlMatchupCommand::class => Model\Matchup\Sql\Factory\SqlMatchupCommandFactory::class,
             Model\Matchup\Sql\SqlMatchupRepository::class => Model\Matchup\Sql\Factory\SqlMatchupRepositoryFactory::class,
-            Service\MatchupManager::class
+            Service\MatchupManager::class => Service\Factory\MatchupManagerFactory::class
         ],
     ],
 
@@ -49,7 +49,8 @@ return [
             Controller\ScriptController::class => Controller\Factory\ScriptControllerFactory::class,
             Controller\PlayerController::class => Controller\Factory\PlayerControllerFactory::class,
             Controller\AdminController::class  => Controller\Factory\AdminControllerFactory::class,
-            Controller\TeamController::class  => Controller\Factory\TeamControllerFactory::class
+            Controller\TeamController::class  => Controller\Factory\TeamControllerFactory::class,
+            Controller\MatchupController::class => Controller\Factory\MatchupControllerFactory::class
         ],
     ],
 
@@ -91,6 +92,19 @@ return [
                     ],
                 ],
             ],
+            'matchup' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/matchup[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\MatchupController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
             'admin' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -124,16 +138,19 @@ return [
                 // Allow authorized users to visit "settings" action
                 ['actions' => '*', 'allow' => '@']
             ],
-
             Controller\ScriptController::class => [
                 // Allow authorized users to visit "settings" action
                 ['actions' => '*', 'allow' => '@']
             ],
-            Controller\TeamController::class => [
-                // Allow anyone to visit "index" and "about" actions
-                ['actions' => ['index', 'about'], 'allow' => '*'],
+            Controller\ScriptController::class => [
                 // Allow authorized users to visit "settings" action
-                ['actions' => ['settings'], 'allow' => '@']
+                ['actions' => '*', 'allow' => '@']
+            ],
+            Controller\MatchupController::class => [
+                // Allow anyone to visit "index" and "about" actions
+                //['actions' => ['index', 'about'], 'allow' => '*'],
+                // Allow authorized users to visit "settings" action
+                ['actions' => '*', 'allow' => '@']
             ],
             Controller\PlayerController::class => [
                 // Allow anyone to visit "index" and "about" actions

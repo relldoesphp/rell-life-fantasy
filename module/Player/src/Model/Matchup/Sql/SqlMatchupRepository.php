@@ -10,6 +10,14 @@ namespace Player\Model\Matchup\Sql;
 
 
 use Player\Model\Matchup\MatchupRepositoryInterface;
+use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Adapter\AdapterInterface;
+use Zend\Hydrator\HydratorInterface;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
+use Zend\Db\Adapter\Driver\ResultInterface;
+use Zend\Db\ResultSet\ResultSet;
+
 
 
 class SqlMatchupRepository implements MatchupRepositoryInterface
@@ -24,7 +32,7 @@ class SqlMatchupRepository implements MatchupRepositoryInterface
      * @param $db
      * @param $prototype
      */
-    public function __construct($db, $hydrator, $prototype)
+    public function __construct(AdapterInterface $db, HydratorInterface $hydrator, $prototype)
     {
         $this->db = $db;
         $this->prototype = $prototype;
@@ -38,7 +46,23 @@ class SqlMatchupRepository implements MatchupRepositoryInterface
      */
     public function getMatchupsByWeekYear($week, $year)
     {
-        // TODO: Implement getMatchupsByWeekYear() method.
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['m' => 'matchups']);
+        $select->where([
+            'm.week = ?' => $week,
+            'm.year = ?' => $year
+        ]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
+        $resultSet->initialize($result);
+        return $resultSet;
     }
 
     /**
@@ -47,7 +71,22 @@ class SqlMatchupRepository implements MatchupRepositoryInterface
      */
     public function getMatchupById($id)
     {
-        // TODO: Implement getMatchupById() method.
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['m' => 'matchups']);
+        $select->where([
+            'm.id = ?' => $id,
+        ]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
+        $resultSet->initialize($result);
+        return $resultSet->current();
     }
 
     /**

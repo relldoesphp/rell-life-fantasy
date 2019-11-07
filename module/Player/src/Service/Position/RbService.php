@@ -391,7 +391,7 @@ class RbService extends ServiceAbstract
         $pointer = 0;
 
         foreach ($rbs as $rb) {
-            if ($rb->getId() == 5418) {
+            if ($rb->getId() == 3643) {
                 $rb->decodeJson();
                 $result = $this->scrapCollegeStats($rb);
                 if ($result == false) {
@@ -453,31 +453,32 @@ class RbService extends ServiceAbstract
                 } catch (\Exception $e) {
                     return false;
                 }
-                $collegeStats[$year]['totals'] = $totals;
-                $collegeStats[$year]['year'] = $year;
-                $collegeStats[$year]['college'] = $rowChildren->item(1)->nodeValue;
-                $collegeStats[$year]['conf'] = $rowChildren->item(2)->nodeValue;
-                $collegeStats[$year]['class'] = $rowChildren->item(3)->nodeValue;
-                $collegeStats[$year]['position'] = $rowChildren->item(4)->nodeValue;
-                $collegeStats[$year]['games'] = $rowChildren->item(5)->nodeValue;
-                $collegeStats[$year]['rushAtt'] = $rowChildren->item(6)->nodeValue;
-                $collegeStats[$year]['rushYds'] = $rowChildren->item(7)->nodeValue;
-                $collegeStats[$year]['rushAvg'] = $rowChildren->item(8)->nodeValue;
-                $collegeStats[$year]['rushTds'] = $rowChildren->item(9)->nodeValue;
-                $collegeStats[$year]['recs'] = $rowChildren->item(10)->nodeValue;
-                $collegeStats[$year]['recYds'] = $rowChildren->item(11)->nodeValue;
-                $collegeStats[$year]['recAvg'] = $rowChildren->item(12)->nodeValue;
-                $collegeStats[$year]['recTds'] = $rowChildren->item(13)->nodeValue;
-                $collegeStats[$year]['scrimmageYds'] = $rowChildren->item(15)->nodeValue;
-                $collegeStats[$year]['scrimmageTds'] = $rowChildren->item(16)->nodeValue;
-                $collegeStats[$year]['ydsDominator'] = (round($collegeStats[$year]['scrimmageYds'] / $totals['yds'], 4)) * 100;
-                $collegeStats[$year]['recDominator'] = (round($collegeStats[$year]['recs'] / $totals['recs'], 4)) * 100;
-                $collegeStats[$year]['tdDominator'] = (round($collegeStats[$year]['scrimmageTds'] / $totals['tds'], 4)) * 100;
+                if (!empty($year)) {
+                    $collegeStats[$year]['totals'] = $totals;
+                    $collegeStats[$year]['year'] = $year;
+                    $collegeStats[$year]['college'] = $rowChildren->item(1)->nodeValue;
+                    $collegeStats[$year]['conf'] = $rowChildren->item(2)->nodeValue;
+                    $collegeStats[$year]['class'] = $rowChildren->item(3)->nodeValue;
+                    $collegeStats[$year]['position'] = $rowChildren->item(4)->nodeValue;
+                    $collegeStats[$year]['games'] = $rowChildren->item(5)->nodeValue;
+                    $collegeStats[$year]['rushAtt'] = $rowChildren->item(6)->nodeValue;
+                    $collegeStats[$year]['rushYds'] = $rowChildren->item(7)->nodeValue;
+                    $collegeStats[$year]['rushAvg'] = $rowChildren->item(8)->nodeValue;
+                    $collegeStats[$year]['rushTds'] = $rowChildren->item(9)->nodeValue;
+                    $collegeStats[$year]['recs'] = $rowChildren->item(10)->nodeValue;
+                    $collegeStats[$year]['recYds'] = $rowChildren->item(11)->nodeValue;
+                    $collegeStats[$year]['recAvg'] = $rowChildren->item(12)->nodeValue;
+                    $collegeStats[$year]['recTds'] = $rowChildren->item(13)->nodeValue;
+                    $collegeStats[$year]['scrimmageYds'] = $rowChildren->item(15)->nodeValue;
+                    $collegeStats[$year]['scrimmageTds'] = $rowChildren->item(16)->nodeValue;
+                    $collegeStats[$year]['ydsDominator'] = (round($collegeStats[$year]['scrimmageYds'] / $totals['yds'], 4)) * 100;
+                    $collegeStats[$year]['recDominator'] = (round($collegeStats[$year]['recs'] / $totals['recs'], 4)) * 100;
+                    $collegeStats[$year]['tdDominator'] = (round($collegeStats[$year]['scrimmageTds'] / $totals['tds'], 4)) * 100;
+                }
             }
             // $result is a DOMElement
         }
 
-        unset($collegeStats["Career"]);
         $rb->setCollegeStats($collegeStats);
         $this->command->save($rb);
         return true;

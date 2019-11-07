@@ -88,7 +88,7 @@ class StatsManager
 
     public function getSleeperGameLogs($year)
     {
-        $week = 1;
+        $week = 7;
         while ($week < 18) {
             $request = new Request();
             $uri = "https://api.sleeper.app/v1/stats/nfl/regular/{$year}/{$week}";

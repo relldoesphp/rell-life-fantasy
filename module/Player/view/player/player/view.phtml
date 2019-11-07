@@ -12,7 +12,7 @@ $this->headTitle($player['first_name']." ".$player['last_name'], 'PREPEND');
     </div>
 
     <div class="row player-header scrollspy container" id="player-header">
-        <div class="col m4 s12 profile">
+        <div class="col m5 s12 profile">
             <div class="card small player-card hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
                     <div class="carousel carousel-slider activator">
@@ -28,14 +28,14 @@ $this->headTitle($player['first_name']." ".$player['last_name'], 'PREPEND');
                     <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>
                     <p>Height: <?= $player['player_info']['height']?> (<?= $player['ordinals']['heightInches'] ?> percentile)</p>
                     <p>Weight: <?= $player['player_info']['weight']?> lbs (<?= $player['ordinals']['weight'] ?> percentile)</p>
-                    <p>Arms: <?= $player['player_info']['arms']?> inches (<?= $player['ordinals']['arms'] ?> percentile)</p>
+                    <p>Arms: <?= $player['player_info']['arms']?> inches (<?= $player['ordinals']['armsInches'] ?> percentile)</p>
                     <p>BMI: <?= $player['player_info']['bmi']?> (<?= $player['ordinals']['bmi'] ?> percentile)</p>
                     <p>College: <?= $player['player_info']['college']?></p>
                     <p>Draft Pick: <?= $player['player_info']['draft_pick']?></p>
                 </div>
             </div>
         </div>
-        <div class="col m5 s12 measurables">
+        <div class="col m4 s12 measurables">
             <div class="card player-card small hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
                     <div id="radar-graph" class="scale-transition scale-out active">
