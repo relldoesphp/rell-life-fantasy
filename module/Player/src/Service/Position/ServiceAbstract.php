@@ -371,6 +371,8 @@ class ServiceAbstract
                 $metrics['speedScore'] = null;
             }
 
+            
+
             if ($metrics == false) {
                 $metrics = [];
             }

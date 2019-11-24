@@ -110,6 +110,11 @@ class PlayerManager
             $player = $this->playerRepository->findPlayerBySleeperId($sleeperId);
             if (empty($player)) {
                 $player = new Player();
+                $player->setSleeperId($value->player_id);
+            }
+
+            if ($player->getSleeperId() == 6311) {
+                $foundHim = true;
             }
             
             $player->setFirstName($value->first_name);
@@ -186,18 +191,18 @@ class PlayerManager
 //        $lbService->calculateSpecialScores();
 //        $lbService->calculateSpecialPercentiles();
 //
-        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $dlService->calculateMetrics();
-        $dlService->calculatePercentiles();
-        $dlService->calculateSpecialScores();
-        $dlService->calculateSpecialPercentiles();
+//        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $dlService->calculateMetrics();
+//        $dlService->calculatePercentiles();
+//        $dlService->calculateSpecialScores();
+//        $dlService->calculateSpecialPercentiles();
 //
 //
-        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $olService->calculateMetrics();
-        $olService->calculatePercentiles();
-        $olService->calculateSpecialScores();
-        $olService->calculateSpecialPercentiles();
+//        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $olService->calculateMetrics();
+//        $olService->calculatePercentiles();
+//        $olService->calculateSpecialScores();
+//        $olService->calculateSpecialPercentiles();
 
 //        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $wrService->calculateMetrics();
@@ -205,11 +210,11 @@ class PlayerManager
 //        $wrService->calculateSpecialScores();
 //        $wrService->calculateSpecialPercentiles();
 
-//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $rbService->calculateMetrics("RB");
-//        $rbService->calculatePercentiles("RB");
-//        $rbService->calculateSpecialScores("RB");
-//        $rbService->calculateSpecialPercentiles("RB");
+        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $rbService->calculateMetrics("RB");
+        $rbService->calculatePercentiles("RB");
+        $rbService->calculateSpecialScores("RB");
+        $rbService->calculateSpecialPercentiles("RB");
 //
 //        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $teService->calculateMetrics("TE");

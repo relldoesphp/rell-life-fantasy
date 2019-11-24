@@ -325,11 +325,11 @@ class MatchupController extends AbstractActionController
 //                    $LBs["strong"][] = array_values($depthChart["SLB"][2]);
                     break;
                 case "OAK":
-                    $dfront["LT"] = array_values($depthChart["LDE"]);
-                    $dfront["LG"] = array_values($depthChart["LDT"]);
-                    $dfront["C"] = array_values($depthChart["RDT"]);
-                    $dfront["RG"] = array_values($depthChart["RDE"]);
-                    $dfront["RT"] = array_values($depthChart["SLB"]);
+                    $dfront["LT"][] = $depthChart["LDE"][2];
+                    $dfront["LG"] = array_values($depthChart["LDE"]);
+                    $dfront["C"] = array_values($depthChart["LDT"]);
+                    $dfront["RG"] = array_values($depthChart["RDT"]);
+                    $dfront["RT"] = array_values($depthChart["RDE"]);
                     $LBs["middle"] = array_values($depthChart["MLB"]);
                     $LBs["weak"] = array_values($depthChart["WLB"]);
                     $cb["slot"] = $depthChart["LCB"][2];
@@ -453,7 +453,7 @@ class MatchupController extends AbstractActionController
 //                    $LBs["strong"][] = array_values($depthChart["SLB"][2]);
                     break;
                 case "KC":
-                    $dfront["LT"] = array_values($depthChart["LDE"]);
+                    $dfront["LT"][] = $depthChart["RDE"][2];
                     $dfront["LG"] = array_values($depthChart["NT"]);
                     $dfront["C"] = array_values($depthChart["DT"]);
                     $dfront["RG"] = array_values($depthChart["RDE"]);
@@ -523,6 +523,15 @@ class MatchupController extends AbstractActionController
                 } else {
                     $jsVars['CB']['slot'] = array_shift($depthChart["CB"]);
                 }
+            }
+
+            //get weak LB
+            if (array_key_exists("SWR", $depthChart)) {
+                $jsVars['WR']['slot'] = array_shift($depthChart["NB"]);
+            }
+
+            if (!array_key_exists("SWR", $depthChart)) {
+                $team->depth_chart["SWR"][1] = $depthChart["LWR"][2];
             }
 
             $team->CB = $jsVars['CB'];

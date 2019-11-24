@@ -103,8 +103,8 @@ rlf.makeOlineChart = function(chartData, id){
                         display: true,
                         stacked: true,
                         scaleLabel: {
-                            display: true,
-                            labelString: 'Dollar Amount'
+                            display: false,
+                            labelString: ''
                         },
                         ticks: {
                             beginAtZero: true,
@@ -158,12 +158,12 @@ rlf.initMatchup = function(off, def, id) {
 
     var defPos = {};
 
-    if (def.def_base === "3-4" || def.team === "SF" || def.team === "ATL") {
+    if (def.def_base === "3-4" || def.team === "SF" || def.team === "ATL" || def.team === "OAK") {
         defPos = threeFour;
     }
 
 
-    if (def.def_base === "4-3" && def.team !== "SF" && def.team !== "ATL") {
+    if (def.def_base === "4-3" && def.team !== "SF" && def.team !== "ATL" && def.team !== "OAK") {
         defPos = fourThree;
         dline.RT.metrics.runStuff = null;
         dline.RT.metrics.passRush = null;
@@ -187,7 +187,7 @@ rlf.initMatchup = function(off, def, id) {
                     "",
                     oline.LT.metrics.runBlock,
                     oline.LG.metrics.runBlock,
-                    oline.C.metrics.runBlock,
+                    Math.round((oline.C.percentiles.speedScore * .4) + (oline.C.metrics.runBlock * .6)),
                     oline.RG.metrics.runBlock,
                     oline.RT.metrics.runBlock,
                     ""
@@ -247,11 +247,11 @@ rlf.initMatchup = function(off, def, id) {
                     ""
                 ],
                 metrics: [
-                    dline.LT.position+'-'+dline.LT.last_name+' #'+dline.LT.team_info.number,//3
-                    dline.LG.position+"-"+dline.LG.last_name+' #'+dline.LG.team_info.number,//1
-                    dline.C.position+"-"+dline.C.last_name+' #'+dline.C.team_info.number,//1
-                    dline.RG.position+"-"+dline.RG.last_name+' #'+dline.RG.team_info.number,//3
-                    dline.RT.position+"-"+dline.RT.last_name+' #'+dline.RT.team_info.number
+                    dline.LT.last_name+' #'+dline.LT.team_info.number,//3
+                    dline.LG.last_name+' #'+dline.LG.team_info.number,//1
+                    dline.C.last_name+' #'+dline.C.team_info.number,//1
+                    dline.RG.last_name+' #'+dline.RG.team_info.number,//3
+                    dline.RT.last_name+' #'+dline.RT.team_info.number
                 ],
                 xAxisID: 'invoice-time',
                 yAxisID: 'invoice-amount',
@@ -905,7 +905,7 @@ rlf.initMatchupPage = function() {
     $(".tab a").css("font-size", "12px");
 
     $("img").on("error", function () {
-        $(this).unbind("error").attr("src", "/images/placeholder.jpeg").css("height", "80px");
+        $(this).unbind("error").attr("src", "/images/placeholder.jpeg").css("height", "60px");
     });
 
 

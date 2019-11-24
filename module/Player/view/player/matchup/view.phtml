@@ -20,7 +20,7 @@
                         <a class="waves-effect waves-light btn-small" id="team1-passBlock">PassRush</a>
                     </div>
                     <div class="col s11">
-                        <?php if ($team2->def_base == "3-4" || $team2->team == "SF" || $team2->team == "ATL"): ?>
+                        <?php if ($team2->def_base == "3-4" || in_array($team2->team,["SF","ATL","OAK"])): ?>
                         <div class="col offset-s2 s2">
                             <?php else: ?>
                             <div class="col offset-s3 s2">
@@ -44,7 +44,7 @@
                             <br>
                             <?= $team2->dfront["RG"]["first_name"]." ".$team2->dfront["RG"]["last_name"] ?>
                         </div>
-                        <?php if ($team2->def_base == "3-4" || $team2->team == "SF"): ?>
+                        <?php if ($team2->def_base == "3-4" || in_array($team2->team,["SF","ATL","OAK"])): ?>
                         <div class="col s2">
                             <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team2->dfront["RT"]["sleeper_id"] ?>.jpg">
                             <br>
@@ -237,7 +237,7 @@
                         <a class="waves-effect waves-light btn-small" id="team2-passBlock">PassRush</a>
                     </div>
                     <div class="col s11">
-                        <?php if ($team1->def_base == "3-4" || $team1->name == "49ers"): ?>
+                        <?php if ($team1->def_base == "3-4" || in_array($team1->team,["SF","ATL","OAK"])): ?>
                         <div class="col offset-s2 s2">
                             <?php else: ?>
                             <div class="col offset-s3 s2">
@@ -261,7 +261,7 @@
                             <br>
                             <?= $team1->dfront["RG"]["first_name"]." ".$team1->dfront["RG"]["last_name"] ?>
                         </div>
-                        <?php if ($team1->def_base == "3-4" || $team1->team == "SF"): ?>
+                        <?php if ($team1->def_base == "3-4" || in_array($team1->team,["SF","ATL","OAK"])): ?>
                         <div class="col s2">
                             <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->dfront["RT"]["sleeper_id"] ?>.jpg">
                             <br>
@@ -450,7 +450,7 @@
     rlf.initMatchupPage();
     $(document).ready(function() {
         $("img").on("error", function () {
-            $(this).unbind("error").attr("src", "/images/placeholder.jpeg");
+            $(this).unbind("error").attr("src", "/images/placeholder.jpeg").css("height", "60px");
         });
         $(".determinate").each(function(){
             var width = $(this).width()/$(this).parent().width();

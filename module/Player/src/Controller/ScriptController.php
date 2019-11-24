@@ -141,6 +141,7 @@ class ScriptController extends AbstractActionController
 
     public function dataScrapperAction()
     {
+
         $this->playerManager->scrapCollegeJob();
     }
 
