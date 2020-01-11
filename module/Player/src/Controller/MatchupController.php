@@ -74,7 +74,12 @@ class MatchupController extends AbstractActionController
             $injured = [];
 
             //build oline
-            $offLine["LT"] = array_values($depthChart["LT"]);
+            if (array_key_exists("LT", $depthChart)) {
+                $offLine["LT"] = array_values($depthChart["LT"]);
+            } else {
+                $offLine["LT"] = array_values($depthChart["OT"]["bench"]);
+            }
+
             $offLine["LG"] = array_values($depthChart["LG"]);
             $offLine["C"] = array_values($depthChart["C"]);
             $offLine["RG"] = array_values($depthChart["RG"]);
@@ -97,8 +102,10 @@ class MatchupController extends AbstractActionController
                 $startingOLine["LT"] = array_shift($depthChart["OT"]["bench"]);
             }
 
-            if (empty($startingOLine["RT"])) {
+            if (empty($startingOLine["RT"]) && count($offLine["RT"]) > 1) {
                 $startingOLine["RT"] = array_shift($depthChart["OT"]["bench"]);
+            } elseif (empty($startingOLine["RT"]) && count($offLine["RT"]) == 1) {
+                $startingOLine["RT"] = $depthChart["LT"]["2"];
             }
 
             if (empty($startingOLine["LG"])) {
@@ -255,7 +262,7 @@ class MatchupController extends AbstractActionController
                     $dfront["RT"] = array_values($depthChart["ROLB"]);
                     $LBs["middle"] = array_values($depthChart["MLB"]);
                     $LBs["weak"] = array_values($depthChart["LOLB"]);
-                    $cb["slot"] = $depthChart["LCB"][2];
+                    $cb["slot"] = $depthChart["NB"];
 //                    $LBs["strong"][] = array_values($depthChart["SLB"][2]);
                     break;
                 case "GB":
@@ -545,7 +552,8 @@ class MatchupController extends AbstractActionController
         $viewModel = new ViewModel([
             'jsVars' => $jsVars,
             'team1' => $jsVars['team1'],
-            'team2' => $jsVars['team2']
+            'team2' => $jsVars['team2'],
+            'week' => $matchup->week,
         ]);
 
         return $viewModel;

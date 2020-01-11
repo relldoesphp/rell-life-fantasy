@@ -120,13 +120,13 @@ class SqlPlayerCommand implements PlayerCommandInterface
         ]);
         $update->where(['id = ?' => $player->getId()]);
         $stmt   = $sql->prepareStatementForSqlObject($update);
-        $result = $stmt->execute();
-//        try {
-//            $result = $stmt->execute();
-//            return true;
-//        } catch (\Exception $e) {
-//            return false;
-//        }
+       // $result = $stmt->execute();
+        try {
+            $result = $stmt->execute();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**

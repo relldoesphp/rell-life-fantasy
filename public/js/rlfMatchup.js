@@ -172,11 +172,11 @@ rlf.initMatchup = function(off, def, id) {
     runData[id] = {
             labels: [
                 "",
-                oline.LT.last_name+' #'+oline.LT.team_info.number,
-                oline.LG.last_name+' #'+oline.LG.team_info.number,
-                oline.C.last_name+' #'+oline.C.team_info.number,
-                oline.RG.last_name+' #'+oline.RG.team_info.number,
-                oline.RT.last_name+' #'+oline.RT.team_info.number,
+                oline.LT.last_name+' #'+oline.LT.team_info.number+" "+oline.LT.status,
+                oline.LG.last_name+' #'+oline.LG.team_info.number+" "+oline.LG.status,
+                oline.C.last_name+' #'+oline.C.team_info.number+" "+oline.C.status,
+                oline.RG.last_name+' #'+oline.RG.team_info.number+" "+oline.RG.status,
+                oline.RT.last_name+' #'+oline.RT.team_info.number+" "+oline.RT.status,
                 ""
             ],
             datasets: [{
@@ -266,11 +266,11 @@ rlf.initMatchup = function(off, def, id) {
     passData[id] = {
         labels: [
             "",
-            oline.LT.last_name+'-LT',
-            oline.LG.last_name+'-LG',
-            oline.C.last_name+'-C',
-            oline.RG.last_name+'-RG',
-            oline.RT.last_name+'-RT',
+            oline.LT.last_name+'-LT'+" "+oline.LT.status,
+            oline.LG.last_name+'-LG'+" "+oline.LG.status,
+            oline.C.last_name+'-C'+" "+oline.C.status,
+            oline.RG.last_name+'-RG'+" "+oline.RG.status,
+            oline.RT.last_name+'-RT'+" "+oline.RT.status,
             ""
         ],
         datasets: [
@@ -397,8 +397,8 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "columns": [
             {title: "", data: "name", "defaultContent":0},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LWR.sleeper_id+".jpg'/><br><a href='/player/"+LWR.sleeper_id+"'>"+LWR.first_name+" "+LWR.last_name+"</a>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RCB.sleeper_id+".jpg'/><br>"+RCB.first_name+" "+RCB.last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LWR.sleeper_id+".jpg'/><br><a href='/player/"+LWR.sleeper_id+"'>"+LWR.first_name+" "+LWR.last_name+" <i class='red-text'>"+LWR.status+"</i></a>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RCB.sleeper_id+".jpg'/><br>"+RCB.first_name+" "+RCB.last_name+" <i class='red-text'>"+RCB.status+"</i>", data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
         ],
         data:[
             {
@@ -433,8 +433,8 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "columns": [
             {title: "", data: "name", "defaultContent":0},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LWR.sleeper_id+".jpg'/><br>"+LWR.first_name+" "+LWR.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RCB.sleeper_id+".jpg'/><br>"+RCB.first_name+" "+RCB.last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LWR.sleeper_id+".jpg'/><br>"+LWR.first_name+" "+LWR.last_name+" <i class='red-text'>"+LWR.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RCB.sleeper_id+".jpg'/><br>"+RCB.first_name+" "+RCB.last_name+" <i class='red-text'>"+RCB.status+"</i>", data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
         ],
         data:[
             {
@@ -469,8 +469,8 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "columns": [
             {title: "", data: "name", "defaultContent":0},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LWR.sleeper_id+".jpg'/><br>"+LWR.first_name+" "+LWR.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RCB.sleeper_id+".jpg'/><br>"+RCB.first_name+" "+RCB.last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LWR.sleeper_id+".jpg'/><br>"+LWR.first_name+" "+LWR.last_name+" <i class='red-text'>"+LWR.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RCB.sleeper_id+".jpg'/><br>"+RCB.first_name+" "+RCB.last_name+" <i class='red-text'>"+RCB.status+"</i>", data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
         ],
         data:[
             {
@@ -505,8 +505,8 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "columns": [
             {title: "", data: "name", "defaultContent":0},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+TE.sleeper_id+".jpg'/><br>"+TE.first_name+" "+TE.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+MLB.sleeper_id+".jpg'/><br>"+MLB.first_name+" "+MLB.last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+TE.sleeper_id+".jpg'/><br>"+TE.first_name+" "+TE.last_name+" <i class='red-text'>"+TE.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+MLB.sleeper_id+".jpg'/><br>"+MLB.first_name+" "+MLB.last_name+" <i class='red-text'>"+MLB.status+"</i>", data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
         ],
         data:[
             {
@@ -539,7 +539,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info": false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+FS.sleeper_id+".jpg'/><br>"+FS.first_name+" "+FS.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+FS.sleeper_id+".jpg'/><br>"+FS.first_name+" "+FS.last_name+" <i class='red-text'>"+FS.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {
@@ -562,7 +562,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info":false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+SS.sleeper_id+".jpg'/><br>"+SS.first_name+" "+SS.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+SS.sleeper_id+".jpg'/><br>"+SS.first_name+" "+SS.last_name+" <i class='red-text'>"+SS.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {
@@ -600,7 +600,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info":false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RB1.sleeper_id+".jpg'/><br>"+RB1.first_name+" "+RB1.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RB1.sleeper_id+".jpg'/><br>"+RB1.first_name+" "+RB1.last_name+" <i class='red-text'>"+RB1.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {
@@ -625,7 +625,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info": false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RB1.sleeper_id+".jpg'/><br>"+RB1.first_name+" "+RB1.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+RB1.sleeper_id+".jpg'/><br>"+RB1.first_name+" "+RB1.last_name+" <i class='red-text'>"+RB1.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {
@@ -653,8 +653,8 @@ rlf.initMatchup = function(off, def, id) {
         "info":false,
         "columns": [
             {title: "", data: "name", "defaultContent":0},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.middle[0].sleeper_id+".jpg'/><br>"+LBs.middle[0].first_name+" "+LBs.middle[0].last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.weak[0].sleeper_id+".jpg'/><br>"+LBs.weak[0].first_name+" "+LBs.weak[0].last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.middle[0].sleeper_id+".jpg'/><br>"+LBs.middle[0].first_name+" "+LBs.middle[0].last_name+" <i class='red-text'>"+LBs.middle[0].status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+LBs.weak[0].sleeper_id+".jpg'/><br>"+LBs.weak[0].first_name+" "+LBs.weak[0].last_name+" <i class='red-text'>"+LBs.weak[0].status+"</i>", data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
         ],
         data:[
             {
@@ -683,7 +683,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info":     false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+WR1.sleeper_id+".jpg'/><br>"+WR1.first_name+" "+WR1.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+WR1.sleeper_id+".jpg'/><br>"+WR1.first_name+" "+WR1.last_name+" <i class='red-text'>"+WR1.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {
@@ -733,7 +733,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info":     false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+WR1.sleeper_id+".jpg'/><br>"+WR1.first_name+" "+WR1.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+WR1.sleeper_id+".jpg'/><br>"+WR1.first_name+" "+WR1.last_name+" <i class='red-text'>"+WR1.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {
@@ -758,7 +758,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info":     false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+WR1.sleeper_id+".jpg'/><br>"+WR1.first_name+" "+WR1.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+WR1.sleeper_id+".jpg'/><br>"+WR1.first_name+" "+WR1.last_name+" <i class='red-text'>"+WR1.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {
@@ -783,7 +783,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info":     false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+CB1.sleeper_id+".jpg'/><br>"+CB1.first_name+" "+CB1.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+CB1.sleeper_id+".jpg'/><br>"+CB1.first_name+" "+CB1.last_name+" <i class='red-text'>"+CB1.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {
@@ -808,7 +808,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info":     false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+CB2.sleeper_id+".jpg'/><br>"+CB2.first_name+" "+CB2.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+CB2.sleeper_id+".jpg'/><br>"+CB2.first_name+" "+CB2.last_name+" <i class='red-text'>"+CB2.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {
@@ -833,7 +833,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info":     false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+CB2.sleeper_id+".jpg'/><br>"+CB2.first_name+" "+CB2.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+CB2.sleeper_id+".jpg'/><br>"+CB2.first_name+" "+CB2.last_name+" <i class='red-text'>"+CB2.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {
@@ -858,7 +858,7 @@ rlf.initMatchup = function(off, def, id) {
         "searching": false,
         "info":     false,
         "columns": [
-            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+MLB.sleeper_id+".jpg'/><br>"+MLB.first_name+" "+MLB.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
+            {title: "<img class='responsive-img' style='width:100px' src='https://sleepercdn.com/content/nfl/players/"+MLB.sleeper_id+".jpg'/><br>"+MLB.first_name+" "+MLB.last_name+" <i class='red-text'>"+MLB.status+"</i>", data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"}
         ],
         data:[
             {

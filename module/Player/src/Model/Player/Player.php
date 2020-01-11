@@ -41,6 +41,7 @@ class Player implements InputFilterAwareInterface
     public $image2 = "";
     public $image3 = "";
     public $image4= "";
+    public $status="";
 
     /**
      * @return string
@@ -533,6 +534,15 @@ class Player implements InputFilterAwareInterface
         $this->gameLogTable = $this->makeGameLogs();
         $this->fillEmptyValues();
         $this->makeImages();
+
+        $injuryInfo = $this->getInjuryInfo();
+
+        if (array_key_exists("injury_status",$injuryInfo) && $injuryInfo["injury_status"] != null) {
+            $this->status = substr($injuryInfo["injury_status"], 0, 1);
+        } else {
+            $this->status = "";
+        }
+
         return get_object_vars($this);
     }
 

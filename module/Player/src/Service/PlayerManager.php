@@ -113,8 +113,8 @@ class PlayerManager
                 $player->setSleeperId($value->player_id);
             }
 
-            if ($player->getSleeperId() == 6311) {
-                $foundHim = true;
+            if ($player->getSleeperId() == null) {
+                $player->setSleeperId($value->player_id);
             }
             
             $player->setFirstName($value->first_name);
@@ -184,6 +184,13 @@ class PlayerManager
 
     public function updateWrMetrics()
     {
+//        $cbService = new Position\CbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $cbService->calculateMetrics();
+//        $cbService->calculatePercentiles();
+//
+//        $safetyService = new Position\SafetyService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $safetyService->calculateMetrics();
+//        $safetyService->calculatePercentiles();
 
 //        $lbService = new Position\LBService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $lbService->calculateMetrics();
@@ -191,12 +198,11 @@ class PlayerManager
 //        $lbService->calculateSpecialScores();
 //        $lbService->calculateSpecialPercentiles();
 //
-//        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $dlService->calculateMetrics();
 //        $dlService->calculatePercentiles();
 //        $dlService->calculateSpecialScores();
 //        $dlService->calculateSpecialPercentiles();
-//
+////        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //
 //        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $olService->calculateMetrics();
@@ -204,11 +210,11 @@ class PlayerManager
 //        $olService->calculateSpecialScores();
 //        $olService->calculateSpecialPercentiles();
 
-//        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $wrService->calculateMetrics();
-//        $wrService->calculatePercentiles();
-//        $wrService->calculateSpecialScores();
-//        $wrService->calculateSpecialPercentiles();
+        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $wrService->calculateMetrics();
+        $wrService->calculatePercentiles();
+        $wrService->calculateSpecialScores();
+        $wrService->calculateSpecialPercentiles();
 
         $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
         $rbService->calculateMetrics("RB");

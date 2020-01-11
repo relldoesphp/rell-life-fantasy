@@ -346,6 +346,7 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
+
                 "columns": [
                     {title: "Year", data: "name", "defaultContent":0},
                     {title: "GP", data: "stats.gp", "defaultContent":0},
@@ -643,7 +644,7 @@ var rlf =  {
 
         var gameLogColumns = [
             {title: "Year", searchable: true, data: "year"},
-            {title: "Week", data: "week"},
+            {title: "Wk", data: "week"},
             {title: "Pts",  data: "stats.pts_ppr", "defaultContent":0},
             {title: "Pass Yds", data: "stats.pass_yd", "defaultContent":0},
             {title: "Pass Tds", data: "stats.pass_td", "defaultContent":0},
@@ -740,6 +741,9 @@ var rlf =  {
             "ordering": false,
             "searching": false,
             "info":false,
+            "scrollCollapse": true,
+            "scrollY": 200,
+            "scrollX": true,
             "columns": [
                 {title: "2019", data: "name", "defaultContent":"n/a", "width": "60%"},
                 {title: "Stat",  data: "stat", "defaultContent":0, "width": "10%"},
@@ -828,7 +832,7 @@ var rlf =  {
 
         var gameLogColumns = [
             {title: "Year", searchable: true, data: "year"},
-            {title: "Week", data: "week"},
+            {title: "Wk", data: "week"},
             {title: "PPR Points",  data: "stats.pts_ppr", "defaultContent":0},
             {title: "PRR Rank", data: "ranks.pts_ppr", "defaultContent":0},
             {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
@@ -966,7 +970,7 @@ var rlf =  {
 
         var gameLogColumns = [
             {title: "Year", searchable: true, data: "year"},
-            {title: "Week", data: "week"},
+            {title: "Wk", data: "week"},
             {title: "PPR Points",  data: "stats.pts_ppr", "defaultContent":0},
             {title: "PPR Rank", data: "ranks.pts_ppr", "defaultContent":0},
             {title: "Recs", data: "stats.rec", "defaultContent":0},
@@ -986,6 +990,7 @@ var rlf =  {
             "ordering": false,
             "searching": false,
             "info":false,
+            "className":'compact',
             "columns": [
                 {title: "2019", data: "name", "defaultContent":"n/a", "width": "50%"},
                 {title: "Stat",  data: "stat", "defaultContent":0, "width": "10%"},
@@ -1180,7 +1185,7 @@ var rlf =  {
 
         var gameLogColumns = [
             {title: "Year", searchable: true, data: "year"},
-            {title: "Week", data: "week"},
+            {title: "Wk", data: "week"},
             {title: "PPR Points",  data: "stats.pts_ppr", "defaultContent":0},
             {title: "PPR Rank", data: "ranks.pts_ppr"},
             {title: "Recs", data: "stats.rec", "defaultContent":0},
@@ -2166,9 +2171,11 @@ var rlf =  {
 
     makeCollegeTable : function(columns) {
         $('#college-stats').DataTable( {
+            "info":false,
             "paging":   false,
             "ordering": false,
             "searching": false,
+            "className":"",
             data: rlfData.player.collegeTable,
             columns: columns,
             "footerCallback": function ( row, data, start, end, display ) {
@@ -2213,6 +2220,7 @@ var rlf =  {
 
     makeSeasonTable: function(columns) {
         $('#season-stats').DataTable({
+            "info":false,
             "paging": false,
             "ordering": false,
             "searching": false,
@@ -2271,6 +2279,7 @@ var rlf =  {
 
     makeGameLogTable: function(columns) {
         $('#game-logs').DataTable({
+            "info":false,
             "paging": false,
             "ordering": false,
             data: rlfData.player.gameLogTable,

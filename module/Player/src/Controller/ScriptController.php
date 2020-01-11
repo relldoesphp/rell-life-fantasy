@@ -156,7 +156,6 @@ class ScriptController extends AbstractActionController
         $this->statsManager->makeSeasonRanks("TE", "2019");
         $this->statsManager->makeSeasonAverages("QB", "2019");
         $this->statsManager->makeSeasonRanks("QB", "2019");
-
     }
 
     public function makeNameJsonAction()

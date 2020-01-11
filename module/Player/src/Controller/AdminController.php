@@ -9,6 +9,8 @@
 namespace Player\Controller;
 
 use Player\Model\Player;
+use Zend\Form\Element;
+use Zend\Form\Fieldset;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Json\Json;
@@ -74,9 +76,11 @@ class AdminController extends AbstractActionController
             }
         }
 
+        $form->addFieldsets($player);
 
         $request = $this->getRequest();
-        $viewData = ['id' => $id, 'form' => $form];
+
+        $viewData = ['id' => $id, 'form' => $form, 'player' => $player];
 
         if (! $request->isPost()) {
             return $viewData;
@@ -105,6 +109,8 @@ class AdminController extends AbstractActionController
         if (! $form->isValid()) {
             return $viewData;
         }
+
+        $player = $form->updatePlayer($player, $data);
 
         $this->playerCommand->save($player);
 

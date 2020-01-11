@@ -207,7 +207,7 @@ div.skillset > div {
 
 #college-stats_wrapper, #season-stats_wrapper, #game-logs_wrapper {
     overflow-x:scroll;
-    font-size:12px;
+    font-size:15px;
 }
 
 #gradient-horizontal {
@@ -246,6 +246,11 @@ div.skillset > div {
 .section.full-height.search-section {
     height:800px;
 }
+
+.collapsible-body {
+    overflow:auto;
+}
+
 @media only screen and (max-width: 600px) {
     .twitter-typeahead {
         width:300px;

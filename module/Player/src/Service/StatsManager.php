@@ -60,6 +60,10 @@ class StatsManager
         $progressBar = new ProgressBar($this->consoleAdapter, 0, count($json));
         $pointer = 0;
         foreach ($json as $sleeperId => $stats) {
+            if ($sleeperId == 3198) {
+                print_r($stats);
+                die();
+            }
             // check for existing game log
             $seasonStat = $this->statsRepository->getSeasonStatsByWhere([
                 "sleeper_id = ?" => $sleeperId,
@@ -88,8 +92,8 @@ class StatsManager
 
     public function getSleeperGameLogs($year)
     {
-        $week = 11;
-        while ($week < 18) {
+        $week = 16;
+        while ($week < 19) {
             $request = new Request();
             $uri = "https://api.sleeper.app/v1/stats/nfl/regular/{$year}/{$week}";
             $request->setUri($uri);

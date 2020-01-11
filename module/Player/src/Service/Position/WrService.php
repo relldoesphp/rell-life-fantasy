@@ -84,6 +84,10 @@ class WrService extends ServiceAbstract
             $metrics = $wr->getMetrics();
             $percentiles = $wr->getPercentiles();
 
+            if ($wr->getId() == "102") {
+                $gotem = true;
+            }
+
             if (empty($metrics)) {
                 continue;
             }
@@ -206,7 +210,7 @@ class WrService extends ServiceAbstract
     public function makeCollegeScore($wr)
     {
         $collegeStats = $wr->college_stats;
-        if ($wr->getId() == 3617) {
+        if ($wr->getId() == 48) {
             $gotHim = true;
         }
         $i = 0;
@@ -222,6 +226,19 @@ class WrService extends ServiceAbstract
         $i = 0;
         foreach ($collegeStats as $stats) {
             if ($stats->year != "Career") {
+
+                if ($stats['totals']['yds'] == 0 || !array_key_exists('totals', $stats)) {
+                    //we don't have team totals so we can't do calculations
+                    return [
+                        'collegeScore' => null,
+                        'bestSeason' => null,
+                        'bestReturn' => null,
+                        'breakoutClass' => null,
+                        'breakoutSeasons' => null,
+                        "collegeSeasons" => null,
+                        "bestDominator" => null
+                    ];
+                }
 
                 // determine dominators
                 $dominator['td'] = round(($stats['recTds'] / $stats['totals']['tds'] ) * 100, 2);

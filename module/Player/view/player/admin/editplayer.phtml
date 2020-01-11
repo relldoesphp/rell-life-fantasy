@@ -85,6 +85,9 @@ $this->headTitle($title);
             'action' => 'editPlayer',
             'id'     => $id,
         ]));
+
+        //college
+        $collegeSets = $form->get('college')->getFieldsets();
         $form->prepare();
 
         echo $this->form()->openTag($form);
@@ -116,31 +119,56 @@ $this->headTitle($title);
 
         <fieldset>
             <legend>Player Info</legend>
+
             <div class="form-group col m12">
-                <?= $this->formLabel($player_info) ?>
-                <?= $this->formElement($player_info) ?>
-                <?= $this->formElementErrors()->render($player_info, ['class' => 'help-block']) ?>
-                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+                <?= $this->formCollection($form->get('body')) ?>
+                <ul class="collapsible expandable">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Player Info Json</div>
+                        <div class="collapsible-body">
+                            <?= $this->formLabel($player_info) ?>
+                            <?= $this->formElement($player_info) ?>
+                            <?= $this->formElementErrors()->render($player_info, ['class' => 'help-block']) ?>
+                            <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </fieldset>
 
         <fieldset>
             <legend>Team Info</legend>
             <div class="form-group col m12">
-                <?= $this->formLabel($team_info) ?>
-                <?= $this->formElement($team_info) ?>
-                <?= $this->formElementErrors()->render($team_info, ['class' => 'help-block']) ?>
-                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+                <?= $this->formCollection($form->get('teamFieldset')) ?>
+                <ul class="collapsible expandable">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Team Info Json</div>
+                        <div class="collapsible-body">
+                            <?= $this->formLabel($team_info) ?>
+                            <?= $this->formElement($team_info) ?>
+                            <?= $this->formElementErrors()->render($team_info, ['class' => 'help-block']) ?>
+                            <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </fieldset>
 
         <fieldset>
             <legend>API Info</legend>
             <div class="form-group col m12">
-                <?= $this->formLabel($api_info) ?>
-                <?= $this->formElement($api_info) ?>
-                <?= $this->formElementErrors()->render($api_info, ['class' => 'help-block']) ?>
-                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+                <?= $this->formCollection($form->get('apiFieldset')) ?>
+                <ul class="collapsible expandable">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>API Info Json</div>
+                        <div class="collapsible-body">
+                            <?= $this->formLabel($api_info) ?>
+                            <?= $this->formElement($api_info) ?>
+                            <?= $this->formElementErrors()->render($api_info, ['class' => 'help-block']) ?>
+                            <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </fieldset>
 
@@ -156,33 +184,106 @@ $this->headTitle($title);
 
         <fieldset>
             <legend>Metrics</legend>
-
-            <div class="form-group col m12">
-                <?= $this->formLabel($metrics) ?>
-                <?= $this->formElement($metrics) ?>
-                <?= $this->formElementErrors()->render($metrics, ['class' => 'help-block']) ?>
-                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            <fieldset>
+                <legend>Combine</legend>
+                <div class="form-group col m2">
+                    <?= $this->formLabel($form->get('benchPress')); ?>
+                    <?= $this->formElement($form->get('benchPress')); ?>
+                    <?= $this->formElementErrors()->render($form->get('benchPress'), ['class' => 'help-block']); ?>
+                </div>
+                <div class="form-group col m2">
+                    <?= $this->formLabel($form->get('fortyTime')); ?>
+                    <?= $this->formElement($form->get('fortyTime')); ?>
+                    <?= $this->formElementErrors()->render($form->get('fortyTime'), ['class' => 'help-block']); ?>
+                </div>
+                <div class="form-group col m2">
+                    <?= $this->formLabel($form->get('shuttle')); ?>
+                    <?= $this->formElement($form->get('shuttle')); ?>
+                    <?= $this->formElementErrors()->render($form->get('shuttle'), ['class' => 'help-block']); ?>
+                </div>
+                <div class="form-group col m2">
+                    <?= $this->formLabel($form->get('cone')); ?>
+                    <?= $this->formElement($form->get('cone')); ?>
+                    <?= $this->formElementErrors()->render($form->get('cone'), ['class' => 'help-block']); ?>
+                </div>
+                <div class="form-group col m2">
+                    <?= $this->formLabel($form->get('verticalJump')); ?>
+                    <?= $this->formElement($form->get('verticalJump')); ?>
+                    <?= $this->formElementErrors()->render($form->get('verticalJump'), ['class' => 'help-block']); ?>
+                </div>
+                <div class="form-group col m2">
+                    <?= $this->formLabel($form->get('broadJump')); ?>
+                    <?= $this->formElement($form->get('broadJump')); ?>
+                    <?= $this->formElementErrors()->render($form->get('broadJump'), ['class' => 'help-block']); ?>
+                </div>
+            </fieldset>
+            <div>
+                <ul class="collapsible expandable">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Metrics</div>
+                        <div class="collapsible-body">
+                            <?= $this->formCollection($form->get('metricsFieldset')) ?>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Metrics Json</div>
+                        <div class="collapsible-body">
+                            <?= $this->formLabel($metrics) ?>
+                            <?= $this->formElement($metrics) ?>
+                            <?= $this->formElementErrors()->render($metrics, ['class' => 'help-block']) ?>
+                            <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </fieldset>
 
         <fieldset>
             <legend>Percentiles</legend>
-            <div class="form-group col m12">
-                <?= $this->formLabel($percentiles) ?>
-                <?= $this->formElement($percentiles) ?>
-                <?= $this->formElementErrors()->render($percentiles, ['class' => 'help-block']) ?>
-                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
-            </div>
+            <ul class="collapsible expandable">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">filter_drama</i>Percentiles Json</div>
+                    <div class="collapsible-body">
+                        <?= $this->formLabel($percentiles) ?>
+                        <?= $this->formElement($percentiles) ?>
+                        <?= $this->formElementErrors()->render($percentiles, ['class' => 'help-block']) ?>
+                        <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+                    </div>
+                </li>
+            </ul>
         </fieldset>
 
         <fieldset>
             <legend>College Stats</legend>
-            <div class="form-group col m12">
-                <?= $this->formLabel($collegeStats) ?>
-                <?= $this->formElement($collegeStats) ?>
-                <?= $this->formElementErrors()->render($collegeStats, ['class' => 'help-block']) ?>
-                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
-            </div>
+            <ul class="collapsible">
+                <li>
+                    <div class='collapsible-header'><i class='material-icons'>filter_drama</i>Freshman</div>
+                    <div class='collapsible-body'><?= $this->formCollection($collegeSets['college-0']); ?></div>
+                </li>
+                <li>
+                    <div class='collapsible-header'><i class='material-icons'>filter_drama</i>Sophmore</div>
+                    <div class='collapsible-body'><?= $this->formCollection($collegeSets['college-1']); ?></div>
+                </li>
+                <li>
+                    <div class='collapsible-header'><i class='material-icons'>filter_drama</i>Junior</div>
+                    <div class='collapsible-body'><?= $this->formCollection($collegeSets['college-2']); ?></div>
+                </li>
+                <li>
+                    <div class='collapsible-header'><i class='material-icons'>filter_drama</i>Senior</div>
+                    <div class='collapsible-body'><?= $this->formCollection($collegeSets['college-3']); ?></div>
+                </li>
+            </ul>
+            <ul class="collapsible expandable">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">filter_drama</i>College Json</div>
+                    <div class="collapsible-body">
+                        <?= $this->formLabel($collegeStats) ?>
+                        <?= $this->formElement($collegeStats) ?>
+                        <?= $this->formElementErrors()->render($collegeStats, ['class' => 'help-block']) ?>
+                        <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+                    </div>
+                </li>
+            </ul>
         </fieldset>
 
         <fieldset>
@@ -238,12 +339,12 @@ $this->headTitle($title);
 
     }
 
-    $(".prettyPrint").on("click", function(e){
-        e.preventDefault();
-        var textArea = $(this).parent().find('textarea');
-        var ugly = textArea.val();
-        var obj = JSON.parse(ugly);
-        var pretty = JSON.stringify(obj, undefined, 4);
-        textArea.val(pretty);
-    });
+    // $(".prettyPrint").on("click", function(e){
+    //     e.preventDefault();
+    //     var textArea = $(this).parent().find('textarea');
+    //     var ugly = textArea.val();
+    //     var obj = JSON.parse(ugly);
+    //     var pretty = JSON.stringify(obj, undefined, 4);
+    //     textArea.val(pretty);
+    // });
 </script>
