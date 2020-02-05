@@ -45,6 +45,67 @@ class StatsManager
         $this->statsCommand = $statsCommand;
     }
 
+    public function getSeasonStatsFromGames($year, $position) {
+        $players = $this->playerRepository->findAllPlayers($position);
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, count($players));
+        $pointer = 0;
+        foreach ($players as $player) {
+            if ($player->getSleeperId() == null) {
+                continue;
+            }
+            $where =<<<EOT
+sleeper_id = {$player->getSleeperId()} and year = {$year}
+EOT;
+            $gameLogs = $this->statsRepository->getGameLogsByWhere($where);
+            if (!empty($gameLogs)) {
+                $seasonTotals = [];
+                foreach ($gameLogs as $gameLog) {
+                    $stats = json_decode($gameLog['stats'], 1);
+                    foreach ($stats as $key => $stat) {
+                        if (!array_key_exists($key, $seasonTotals)) {
+                            $seasonTotals[$key] = round($stat,2);
+                        } else {
+                            $seasonTotals[$key] = round(($stat + $seasonTotals[$key]),2);
+                        }
+                    }
+                }
+
+                $averages = ["rec_ypr", "rec_ypt", "rush_ypc", "pass_rtg"];
+                foreach ($averages as $avKey) {
+                    if (array_key_exists($avKey, $seasonTotals)) {
+                        $seasonTotals[$avKey] = round(($seasonTotals[$avKey]/$seasonTotals['gp']),2);
+                    }
+                }
+
+                if ($position == "RB" || $position == "WR" || $position == "RB" || $position == "TE") {
+                    $seasonTotals['rush_td'] = (array_key_exists('rush_td', $seasonTotals)) ? $seasonTotals['rush_td'] : 0;
+                    $seasonTotals['rec_td'] = (array_key_exists('rec_td', $seasonTotals)) ? $seasonTotals['rec_td'] : 0;
+                    $seasonTotals['pass_td'] = (array_key_exists('pass_td', $seasonTotals)) ? $seasonTotals['pass_td'] : 0;
+                    $seasonTotals['rush_yd'] = (array_key_exists('rush_yd', $seasonTotals)) ? $seasonTotals['rush_yd'] : 0;
+                    $seasonTotals['rec_yd'] = (array_key_exists('rec_yd', $seasonTotals)) ? $seasonTotals['rec_yd'] : 0;
+                    $seasonTotals["all_td"] = $seasonTotals['rush_td'] + $seasonTotals['rec_td'] + $seasonTotals['pass_td'];
+                    $seasonTotals["all_yd"] = $seasonTotals['rush_yd'] + $seasonTotals['rec_yd'];
+                }
+
+                $seasonStat = $this->statsRepository->getSeasonStatsByWhere([
+                    "sleeper_id = ?" => $player->getSleeperId(),
+                    "year = ?" => $year
+                ])->current();
+
+                if ($seasonStat == false) {
+                    continue;
+                }
+
+                $seasonStat->setStats($seasonTotals);
+                $this->statsCommand->saveSeasonStat($seasonStat);
+
+            }
+            $pointer++;
+            $progressBar->update($pointer);
+        }
+        $progressBar->finish();
+    }
+
     public function getSleeperStats($year)
     {
         $request = new Request();
@@ -111,8 +172,8 @@ class StatsManager
             $pointer = 0;
             foreach ($json as $key => $value) {
                 // check for existing game log
-                $gameLog = $this->statsRepository->getGameLogsByWeekYearSleeper($week, $year, $key);
-                if ($gameLog == false) {
+                    $gameLog = $this->statsRepository->getGameLogsByWeekYearSleeper($week, $year, $key);
+                    if ($gameLog == false) {
                     $gameLog = new GameLog();
                 }
 

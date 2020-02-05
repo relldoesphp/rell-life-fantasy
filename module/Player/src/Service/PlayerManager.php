@@ -216,11 +216,11 @@ class PlayerManager
         $wrService->calculateSpecialScores();
         $wrService->calculateSpecialPercentiles();
 
-        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $rbService->calculateMetrics("RB");
-        $rbService->calculatePercentiles("RB");
-        $rbService->calculateSpecialScores("RB");
-        $rbService->calculateSpecialPercentiles("RB");
+//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $rbService->calculateMetrics("RB");
+//        $rbService->calculatePercentiles("RB");
+//        $rbService->calculateSpecialScores("RB");
+//        $rbService->calculateSpecialPercentiles("RB");
 //
 //        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $teService->calculateMetrics("TE");
@@ -237,8 +237,11 @@ class PlayerManager
 
     public function scrapCollegeJob()
     {
-        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $rbService->scrapCollegeJob();
+//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $rbService->scrapCollegeJob();
+
+        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $wrService->scrapCollegeJob();
     }
 
     public function getSalaries()

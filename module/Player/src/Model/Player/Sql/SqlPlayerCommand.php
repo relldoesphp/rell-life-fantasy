@@ -70,6 +70,7 @@ class SqlPlayerCommand implements PlayerCommandInterface
         $insert->values([
             'first_name' => $player->getFirstName(),
             'last_name' => $player->getLastName(),
+            'sleeper_id' => $player->getSleeperId(),
             'search_full_name' => $player->getSearchFullName(),
             'position' => $player->getPosition(),
             'team' => $player->getTeam(),

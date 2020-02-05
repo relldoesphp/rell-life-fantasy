@@ -1,18 +1,15 @@
 <?php
-$this->headTitle($player['first_name']." ".$player['last_name'], 'PREPEND');
+    $this->headTitle($player['first_name']." ".$player['last_name'], 'PREPEND');
 ?>
+
 <div class="section white full-height container">
     <div id="search-players" class="container player-search my-2 m6">
         <input class="typeahead" type="text" placeholder="Search for Players">
     </div>
-    <div class="header">
-        <div class="col s12 m6 container header-wrapper header">
-            <h1 class="text-right brand-logo"><?= $player['first_name']." ".$player['last_name'] ?></h1>
-        </div>
-    </div>
+
 
     <div class="row player-header scrollspy container" id="player-header">
-        <div class="col m5 s12 profile">
+        <div class="col m6 s12 profile">
             <div class="card small player-card hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
                     <div class="carousel carousel-slider activator">
@@ -22,7 +19,7 @@ $this->headTitle($player['first_name']." ".$player['last_name'], 'PREPEND');
                 <div class="card-content player-card-content center">
                     <a class="btn-floating right halfway-fab waves-effect waves-dark activator"><i class="material-icons teal-text">arrow_upward</i></a>
                     <span class="player-title activator row-title text-darken-4"><?= $player['first_name']." ".$player['last_name'] ?></span>
-                    <p class="player-title activator text-darken-4" style="color:#1de9c3">#<?=$player['team_info']['number'] ?> <?=$player['position']?> <?= $player['team']?></p>
+                    <p class="player-title activator text-darken-4" style="color:#1de9c3">#<?=$player['position']?> <?= $player['team']?></p>
                 </div>
                 <div class="card-reveal player-card-reveal">
                     <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>
@@ -35,69 +32,160 @@ $this->headTitle($player['first_name']." ".$player['last_name'], 'PREPEND');
                 </div>
             </div>
         </div>
-        <div class="col m4 s12 measurables">
-            <div class="card player-card small hoverable">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <div id="radar-graph" class="scale-transition scale-out active">
-
+        <div class="col m6 s12 measurables">
+            <div class="header">
+                <div class="col s12 m6 container header-wrapper header staggered-transition-wrapper" data-duration="0" data-staggereddelay=".9"">
+                    <h2 class="text-right fade-in-out"><?= $player['first_name']." ".$player['last_name'] ?></h2>
+                    <h5 class="fade-in-out"><?= $player['player_info']['height']?>&nbsp;-&nbsp;<?= $player['player_info']['weight']?>&nbsp;lbs&nbsp;-&nbsp; <?= $player['player_info']['age']?> years old &nbsp;-&nbsp; <?= $player['player_info']['college']?></h5>
+                    <h4 class="fade-in-out">#<?= (array_key_exists('number', $player['team_info'])) ? $player['team_info']['number'] : '0' ?> <?=$player['position']?> <?= $player['team']?></h4>
+                    <div class="col s12 player-summary">
+                        <h5>2019 Stats</h5>
+                        <table id="summary-stats">
+                        </table>
                     </div>
                 </div>
-                <div class="card-content player-card-content center">
-                    <a class="btn-floating right halfway-fab waves-effect waves-light activator"><i class="material-icons teal-text">arrow_upward</i></a>
-                    <span class="player-title activator white-text text-darken-4">Measurables</span>
-                </div>
-                <div class="card-reveal player-card-reveal">
-                    <span class="card-title white-text">Workout Metrics<i class="material-icons right">arrow_downward</i></span>
-                    <p>40 yd dash: <?= (!empty($player['metrics']['fortyTime'])) ? $player['metrics']['fortyTime']." seconds (".$player['ordinals']['fortyTime']." percentile)" : "Not Available"?></p>
-                    <p>Bench Press: <?= (!empty($player['metrics']['benchPress'])) ? $player['metrics']['benchPress']." reps (".$player['ordinals']['benchPress']." percentile)" : "Not Available"?></p>
-                    <p>3 cone: <?= (!empty($player['metrics']['cone'])) ? $player['metrics']['cone']." seconds (".$player['ordinals']['cone']." percentile)" : "Not Available" ?></p>
-                    <p>Shuttle: <?= (!empty($player['metrics']['shuttle'])) ? $player['metrics']['shuttle']." seconds (".$player['ordinals']['shuttle']." percentile)" : "Not Available" ?></p>
-                    <p>Vertical Jump: <?= (!empty($player['metrics']['verticalJump'])) ? $player['metrics']['verticalJump']." inches (".$player['ordinals']['verticalJump']." percentile)" : "Not Available" ?></p>
-                    <p>Broad Jump: <?= (!empty($player['metrics']['broadJump'])) ? $player['metrics']['broadJump']." inches (".$player['ordinals']['broadJump']." percentile)" : "Not Available"?></p>
-                </div>
             </div>
+<!--            <div class="card player-card small hoverable">-->
+<!--                <div class="card-image waves-effect waves-block waves-light">-->
+<!---->
+<!--                </div>-->
+<!--                <div class="card-content player-card-content center">-->
+<!--                    <a class="btn-floating right halfway-fab waves-effect waves-light activator"><i class="material-icons teal-text">arrow_upward</i></a>-->
+<!--                    <span class="player-title activator white-text text-darken-4">Measurables</span>-->
+<!--                </div>-->
+<!--                <div class="card-reveal player-card-reveal">-->
+<!--                    <span class="card-title white-text">Workout Metrics<i class="material-icons right">arrow_downward</i></span>-->
+<!--                    <p>40 yd dash: --><?//= (!empty($player['metrics']['fortyTime'])) ? $player['metrics']['fortyTime']." seconds (".$player['ordinals']['fortyTime']." percentile)" : "Not Available"?><!--</p>-->
+<!--                    <p>Bench Press: --><?//= (!empty($player['metrics']['benchPress'])) ? $player['metrics']['benchPress']." reps (".$player['ordinals']['benchPress']." percentile)" : "Not Available"?><!--</p>-->
+<!--                    <p>3 cone: --><?//= (!empty($player['metrics']['cone'])) ? $player['metrics']['cone']." seconds (".$player['ordinals']['cone']." percentile)" : "Not Available" ?><!--</p>-->
+<!--                    <p>Shuttle: --><?//= (!empty($player['metrics']['shuttle'])) ? $player['metrics']['shuttle']." seconds (".$player['ordinals']['shuttle']." percentile)" : "Not Available" ?><!--</p>-->
+<!--                    <p>Vertical Jump: --><?//= (!empty($player['metrics']['verticalJump'])) ? $player['metrics']['verticalJump']." inches (".$player['ordinals']['verticalJump']." percentile)" : "Not Available" ?><!--</p>-->
+<!--                    <p>Broad Jump: --><?//= (!empty($player['metrics']['broadJump'])) ? $player['metrics']['broadJump']." inches (".$player['ordinals']['broadJump']." percentile)" : "Not Available"?><!--</p>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
-        <div class="col m3 s12 measurables">
-            <div class="card player-card small hoverable center" style="font-size:14px">
-              <table id="summary-stats"></table>
-            </div>
-        </div>
+<!--        <div class="col m3 s12 measurables">-->
+<!--            <div class="card player-card small hoverable center" style="font-size:14px">-->
+<!--              <table id="summary-stats"></table>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
-    <div class="row player-prospect container scrollspy fade-in" id="player-prospect">
+    <div class="row player-prospect container scrollspy" id="player-prospect">
         <a class="waves-effect waves-light btn-small right center modal-trigger dark" href="#modal2">Glossary<i class="material-icons">live_help</i></a>
-        <div class="col s12 center row-title"><h6>Draft Prospect Breakdown</h6></div>
-        <div class="col m9 s12 prospect hoverable z-depth-2 hoverable" style="background:white; position: relative; height:450px;">
-            <canvas id="canvas" width="75%"></canvas>
-        </div>
-        <div class="col m3 s12 skillset hoverable z-depth-2 hoverable" style="background:white; position: relative; height:450px;">
-            <div class="slot-box center">
-                <div style="margin-top:10px" class="role-one-title"></div>
-                <div class="role-one-score"></div>
+        <div class="col s12 center brand-logo"><h5>Draft Prospect Breakdown</h5></div>
+        <div class="col s12 skillset hoverable z-depth-2">
+            <div class="slot-box center col m4">
+                <div style="margin-top:10px" class="role-one-title combine-title"></div>
+                <div class="role-one-score combine-score"></div>
                 <div class="progress role-one-bar">
                     <div class="determinate" style="width: 0%"></div>
                 </div>
-                <div class="role-one-percentile"></div>
+                <div class="role-one-percentile percentile"></div>
             </div>
-            <div class="deep-box center">
-                <div style="margin-top:10px" class="role-two-title"></div>
-                <div class="role-two-score"></div>
+            <div class="deep-box center col m4">
+                <div style="margin-top:10px" class="role-two-title combine-title"></div>
+                <div class="role-two-score combine-score"></div>
                 <div class="progress role-two-bar">
                     <div class="determinate" style="width: 0%"></div>
                 </div>
-                <div class="role-two-percentile"></div>
+                <div class="role-two-percentile percentile"></div>
             </div>
-            <div class="alpha-box center">
-                <div style="margin-top:10px" class="role-three-title"></div>
-                <div class="role-three-score"></div>
+            <div class="alpha-box center col m4">
+                <div style="margin-top:10px" class="role-three-title combine-title"></div>
+                <div class="role-three-score combine-score"></div>
                 <div class="progress role-three-bar">
                     <div class="determinate" style="width: 0%"></div>
                 </div>
-                <div class="role-three-percentile"></div>
+                <div class="role-three-percentile percentile"></div>
+            </div>
+        </div>
+        <div class="row z-depth-2 hoverable">
+            <div class="col m8 s12 prospect" style="background:white; position: relative; height:380px; margin-top:10px; margin-bottom:10px">
+                <canvas id="canvas" width="75%"></canvas>
+            </div>
+            <div class="col m4 s12 skillset" style="background:white; position: relative; height:380px; margin-top:10px; margin-bottom:10px">
+                <div id="radar-graph" class="scale-transition scale-out active"></div>
+            </div>
+        </div>
+        <?php
+            $fortyTime = (!empty($player['metrics']['fortyTime'])) ? $player['metrics']['fortyTime'] : "-";
+            $fortyPercent = (!empty($player['percentiles']['fortyTime'])) ? $player['percentiles']['fortyTime'] : 0;
+            $fortyOrdinal = ($player['ordinals']['fortyTime'] !== "0th") ? "( ".$player['ordinals']['fortyTime']." percentile )" : "N/A";
+
+            $shuttle = (!empty($player['metrics']['shuttle'])) ? $player['metrics']['shuttle'] : "-";
+            $shuttlePercent = (!empty($player['percentiles']['shuttle'])) ? $player['percentiles']['shuttle'] : 0;
+            $shuttleOrdinal = ($player['percentiles']['shuttle'] > O) ? "( ".$player['ordinals']['shuttle']." percentile )" : "N/A";
+
+            $cone = (!empty($player['metrics']['cone'])) ? $player['metrics']['cone'] : "-";
+            $conePercent = (!empty($player['percentiles']['cone'])) ? $player['percentiles']['cone'] : 0;
+            $coneOrdinal = ($player['percentiles']['cone'] > O) ? "( ".$player['ordinals']['cone']." percentile )" : "N/A";
+
+            $vertical = (!empty($player['metrics']['verticalJump'])) ? $player['metrics']['verticalJump'] : "-";
+            $verticalPercent = (!empty($player['percentiles']['verticalJump'])) ? $player['percentiles']['verticalJump'] : 0;
+            $verticalOrdinal = ($player['percentiles']['verticalJump'] > O) ? "( ".$player['ordinals']['verticalJump']." percentile )" : "N/A";
+
+            $broad = (!empty($player['metrics']['broadJump'])) ? $player['metrics']['broadJump'] : "-";
+            $broadPercent = (!empty($player['percentiles']['broadJump'])) ? $player['percentiles']['broadJump'] : 0;
+            $broadOrdinal = ($player['percentiles']['broadJump'] > O) ? "( ".$player['ordinals']['broadJump']." percentile )" : "N/A";
+
+            $bench = (!empty($player['metrics']['benchPress'])) ? $player['metrics']['benchPress'] : "-";
+            $benchPercent = (!empty($player['percentiles']['benchPress'])) ? $player['percentiles']['benchPress'] : 0;
+            $benchOrdinal = ($player['percentiles']['benchPress'] > O) ? "( ".$player['ordinals']['benchPress']." percentile )" : "N/A";
+        ?>
+        <div class="col s12 combine z-depth-2 hoverable ">
+            <div class="forty-box center col m2">
+                <div style="margin-top:10px" class="combine-title">40 time</div>
+                <div class="combine-score"><?= $fortyTime ?></div>
+                <div class="progress forty-bar">
+                    <div class="determinate" style="width: <?= $fortyPercent ?>%"></div>
+                </div>
+                <div class="forty-percentile percentile"><?= $fortyOrdinal ?></div>
+            </div>
+            <div class="shuttle-box center col m2">
+                <div style="margin-top:10px" class="combine-title">Shuttle</div>
+                <div class="combine-score"><?= $shuttle ?></div>
+                <div class="progress shuttle-bar">
+                    <div class="determinate" style="width: <?= $shuttlePercent ?>%"></div>
+                </div>
+                <div class="shuttle-percentile percentile"><?= $shuttleOrdinal ?></div>
+            </div>
+            <div class="cone-box center col m2">
+                <div style="margin-top:10px" class="combine-title">3 Cone</div>
+                <div class="combine-score"><?= $cone ?></div>
+                <div class="progress cone-bar">
+                    <div class="determinate" style="width: <?= $conePercent?>%"></div>
+                </div>
+                <div class="cone-percentile percentile"><?= $coneOrdinal ?></div>
+            </div>
+            <div class="vertical-box center col m2">
+                <div style="margin-top:10px" class="combine-title">Vertical Jump</div>
+                <div class="combine-score"><?= $vertical ?></div>
+                <div class="progress vertical-bar">
+                    <div class="determinate" style="width: <?= $verticalPercent?>%"></div>
+                </div>
+                <div class="vertical-percentile percentile"><?= $verticalOrdinal ?></div>
+            </div>
+            <div class="broad-box center col m2">
+                <div style="margin-top:10px" class="combine-title">Broad Jump</div>
+                <div class="combine-score"><?= $broad ?></div>
+                <div class="progress broad-bar">
+                    <div class="determinate" style="width: <?= $broadPercent ?>%"></div>
+                </div>
+                <div class="broad-percentile percentile"><?= $broadOrdinal ?></div>
+            </div>
+            <div class="bench-box center col m2">
+                <div style="margin-top:10px" class="combine-title">Bench Press</div>
+                <div class="combine-score"><?= $bench ?></div>
+                <div class="progress bench-bar">
+                    <div class="determinate" style="width: <?= $benchPercent ?>%"></div>
+                </div>
+                <div class="bench-percentile percentile"><?= $benchOrdinal ?></div>
             </div>
         </div>
     </div>
 
-    <div class="row player-situation container scrollspy" id="player-situation" style="display:none">
+
+    <div class="row container player-situation container scrollspy" id="player-situation" style="display:none">
         <a class="waves-effect waves-light btn-small right center modal-trigger dark" href="#modal1">Glossary<i class="material-icons">live_help</i></a>
         <div class="col s12 center row-title"><h6>Situation Breakdown</h6></div>
         <div class="col m4 s12 fit z-depth-1 hoverable">
@@ -110,13 +198,13 @@ $this->headTitle($player['first_name']." ".$player['last_name'], 'PREPEND');
             <div id="support-graph"></div>
         </div>
     </div>
+    <div class="col s12 center"><h5>Stats</h5></div>
     <div class="row player-stats container scrollspy hoverable z-depth-2 hoverable fade-in" id="player-stats" style="background:white">
-        <div class="col s12 center row-title"><h6>Stats</h6></div>
         <div class="col s12">
             <ul class="tabs">
-                <li class="tab col s3"><a class="active purple-text" href="#test1">NFL Stats</a></li>
-                <li class="tab col s3"><a class="purple-text" href="#test2">NFL Game Logs</a></li>
-                <li class="tab col s3"><a class="purple-text" href="#test3">College Stats</a></li>
+                <li class="tab col s4"><a class="active purple-text" href="#test1">NFL Stats</a></li>
+                <li class="tab col s4"><a class="purple-text" href="#test2">NFL Game Logs</a></li>
+                <li class="tab col s4"><a class="purple-text" href="#test3">College Stats</a></li>
             </ul>
         </div>
         <div id="test1" class="col s12">
@@ -255,6 +343,7 @@ switch($player['position']) {
     var rlfData = <?=json_encode($jsVars, 512)?>;
 
     $(document).ready(function() {
+        rlf.colorDeterminates();
         <?= $init ?>
         rlf.initSearch();
         rlf.initCompareSearches();

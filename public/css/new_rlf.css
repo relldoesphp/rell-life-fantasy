@@ -251,6 +251,48 @@ div.skillset > div {
     overflow:auto;
 }
 
+table#summary-stats {
+    border-bottom: none;
+}
+
+table#summary-stats tr {
+    background:none;
+}
+
+table#summary-stats th, .percentile {
+    text-align:center;
+    font-size:12px;
+    color:gray;
+    text-transform: uppercase;
+}
+table#summary-stats > tbody > tr > td {
+    text-align:center;
+}
+
+table#summary-stats thead th{
+    border-bottom:none;
+    padding:3px;
+}
+
+table#summary-stats > tbody > tr:nth-child(1) > td, .combine-score {
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight:bold;
+    padding:0px;
+}
+
+table#summary-stats > tbody > tr:nth-child(2) > td, .combine-title {
+    font-size: 13px;,
+    text-transform: uppercase;
+    font-weight:bold;
+    padding:5px;
+    color:gray;
+}
+
+table#summary-stats > tbody > tr:nth-child(2) > td::before {
+    content:"#";
+}
+
 @media only screen and (max-width: 600px) {
     .twitter-typeahead {
         width:300px;

@@ -35,4 +35,6 @@ interface PlayerRepositoryInterface
 
     public function getPlayersByTeam($team);
 
+    public function getCollegeTeammates($year, $college, $position);
+
 }

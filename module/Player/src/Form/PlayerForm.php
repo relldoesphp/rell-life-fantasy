@@ -391,6 +391,8 @@ class PlayerForm extends Form
         $playerInfo["height"] = $data["body"]["height"];
         $playerInfo["heightInches"] = $data["body"]["heightInches"];
         $playerInfo["college"] = $data["body"]["college"];
+        $playerInfo["weight"] = $data["body"]["weight"];
+        $palyerInfo["age"] = $data["body"]["age"];
 
         //college stats
         $collegeStats = $player->getCollegeStats();

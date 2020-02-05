@@ -98,10 +98,10 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
 //            ->and
 //            ->in("position", ["QB","RB","WR","TE"]);
 
-        $select->order([
-            new Expression("json_unquote(player_info->'$.active') DESC"),
-            new Expression("json_unquote(team_info->'$.depth_chart_order') ASC"),
-        ]);
+//        $select->order([
+//            new Expression("json_unquote(player_info->'$.active') DESC"),
+//            new Expression("json_unquote(team_info->'$.depth_chart_order') ASC"),
+//        ]);
 
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -441,5 +441,40 @@ EOT;
         $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
         $resultSet->initialize($result);
         return $resultSet;
+    }
+
+    public function getCollegeTeammates($year, $college, $position)
+    {
+        // TODO: Implement getCollegeTeammates() method.
+        $sql =<<<EOT
+Select 
+id,
+first_name, 
+last_name,
+college_stats->'$."{$year}".dominator' as 'dominator',
+college_stats->'$."{$year}".recTds' as 'recTds',
+college_stats->'$."{$year}".recYds' as 'recYds'
+from player_test
+where player_info->'$.college' = '{$college}'
+and position in ('{$position}')
+and JSON_SEARCH(college_stats,'one','{$year}') is not null
+EOT;
+        $stmt = $this->db->query($sql);
+        $result = $stmt->execute();
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $resultArray = $resultSet->toArray();
+
+        $teammates = [];
+        foreach($resultArray as $row) {
+            $teammates[$row['id']] = $row;
+        }
+
+        return $teammates;
+
     }
 }

@@ -259,8 +259,8 @@ class ServiceAbstract
         $pointer = 0;
 
         foreach ($players as $player) {
-            if ($player->getId() == "4334") {
-                $goedert = true;
+            if ($player->getTeam() == "Rookie") {
+                continue;
             }
 
             $player->decodeJson();
@@ -269,6 +269,26 @@ class ServiceAbstract
                 continue;
             }
             $info = $player->getPlayerInfo();
+
+            if (!array_key_exists('shuttle', $metrics)) {
+                $metrics['shuttle'] = null;
+            }
+
+            if (!array_key_exists('cone', $metrics)) {
+                $metrics['cone'] = null;
+            }
+
+            if (!array_key_exists('broadJump', $metrics)) {
+                $metrics['broadJump'] = null;
+            }
+
+            if (!array_key_exists('verticalJump', $metrics)) {
+                $metrics['verticalJump'] = null;
+            }
+
+            if (!array_key_exists('fortyTime', $metrics)) {
+                $metrics['fortyTime'] = null;
+            }
 
             // (average bmi 26.6/ average bench 14.2) = 1.87
             // (1.87 * (wr bmi - average bmi)) + wr bench Press

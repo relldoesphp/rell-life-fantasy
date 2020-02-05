@@ -147,13 +147,17 @@ class ScriptController extends AbstractActionController
 
     public function getSleeperStatsAction()
     {
-        $this->statsManager->getSleeperStats("2019");
+        //$this->statsManager->getSleeperStats("2019");
+        $this->statsManager->getSeasonStatsFromGames("2019", "WR");
         $this->statsManager->makeSeasonAverages("WR", "2019");
         $this->statsManager->makeSeasonRanks("WR", "2019");
+        $this->statsManager->getSeasonStatsFromGames("2019", "RB");
         $this->statsManager->makeSeasonAverages("RB", "2019");
         $this->statsManager->makeSeasonRanks("RB", "2019");
+        $this->statsManager->getSeasonStatsFromGames("2019", "TE");
         $this->statsManager->makeSeasonAverages("TE", "2019");
         $this->statsManager->makeSeasonRanks("TE", "2019");
+        $this->statsManager->getSeasonStatsFromGames("2019", "QB");
         $this->statsManager->makeSeasonAverages("QB", "2019");
         $this->statsManager->makeSeasonRanks("QB", "2019");
     }

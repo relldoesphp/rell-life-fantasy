@@ -61,6 +61,7 @@ class SqlStatsRepository implements StatsRepositoryInterface
             'pts_half_ppr_avg',
             'pts_std_avg',
             'snp_pct',
+            'all_td'
         ],
         "WR" => [
             'pts_ppr',
@@ -87,7 +88,9 @@ class SqlStatsRepository implements StatsRepositoryInterface
             'rush_yd_avg',
             'rush_fd_avg',
             'snp_pct',
-            'opp_per_snap'
+            'opp_per_snap',
+            'all_td',
+            'all_yd'
         ],
         "TE" => [
             'pts_ppr',
@@ -112,7 +115,9 @@ class SqlStatsRepository implements StatsRepositoryInterface
             'rec_fd_avg',
             'opp_per_snap',
             'snap_pct',
-            'opp_per_snap'
+            'opp_per_snap',
+            'all_td',
+            'all_yd'
         ],
         "RB" => [
             'pts_ppr',
@@ -140,6 +145,8 @@ class SqlStatsRepository implements StatsRepositoryInterface
             'rush_fd_avg',
             'opp_per_snap',
             'snap_pct',
+            'all_td',
+            'all_yd'
         ]
     ];
 
@@ -178,6 +185,28 @@ class SqlStatsRepository implements StatsRepositoryInterface
         $resultSet = new HydratingResultSet($this->hydrator, $this->gameLogPrototype);
         $resultSet->initialize($result);
         return $resultSet;
+    }
+
+    /**
+     * @param $sleeperId
+     * @return mixed
+     */
+    public function getGameLogsByWhere($where)
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select($this->gameLogTable);
+        $select->where($where);
+        $select->order('week ASC');
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->gameLogPrototype);
+        $resultSet->initialize($result);
+        return $resultSet->toArray();
     }
 
     public function getSeasonStatsByPosition($position, $year)

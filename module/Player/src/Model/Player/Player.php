@@ -551,6 +551,7 @@ class Player implements InputFilterAwareInterface
         $ordinals = [];
         foreach($this->percentiles as $key => $value) {
             $nf = new \NumberFormatter('en_US', \NumberFormatter::ORDINAL);
+            $value = round($value);
             $ordinals[$key] = $nf->format($value);
         }
         return $ordinals;
