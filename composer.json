@@ -32,7 +32,8 @@
         "zendframework/zend-progressbar": "^2.6",
         "xp-forge/handlebars": "^4.3",
         "zendframework/zend-crypt": "^3.3",
-        "neilime/zf2-mobile-detect": "2.*.*"
+        "neilime/zf2-mobile-detect": "2.*.*",
+        "zendframework/zend-hydrator": "2.4.2"
     },
     "autoload": {
         "psr-4": {
