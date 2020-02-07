@@ -211,8 +211,8 @@ class PlayerManager
 //        $olService->calculateSpecialPercentiles();
 
         $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $wrService->calculateMetrics();
-        $wrService->calculatePercentiles();
+//        $wrService->calculateMetrics();
+//        $wrService->calculatePercentiles();
         $wrService->calculateSpecialScores();
         $wrService->calculateSpecialPercentiles();
 
@@ -240,8 +240,11 @@ class PlayerManager
 //        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $rbService->scrapCollegeJob();
 
-        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $wrService->scrapCollegeJob();
+        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $teService->scrapCollegeJob();
+
+//        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $wrService->scrapCollegeJob();
     }
 
     public function getSalaries()

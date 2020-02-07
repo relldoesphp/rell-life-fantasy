@@ -2244,15 +2244,15 @@ var rlf =  {
     colorDeterminates: function(){
         $(".determinate").each(function(){
             var widthPercent = Math.round(($(this).width()/$(this).parent().width()) * 100);
-            if (widthPercent > 69) {
+            if (widthPercent > 69.99) {
                 $(this).css("background-color", "green");
             }
 
-            if (widthPercent < 69 && widthPercent > 40) {
+            if (widthPercent < 60 && widthPercent > 40) {
                 $(this).css("background-color", "yellow");
             }
 
-            if (widthPercent < 39) {
+            if (widthPercent < 39.99) {
                 $(this).css("background-color", "red");
             }
         });

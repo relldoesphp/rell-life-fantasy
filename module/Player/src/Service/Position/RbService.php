@@ -95,6 +95,40 @@ class RbService extends ServiceAbstract
             $metrics = $rb->getMetrics();
             $percentiles = $rb->getPercentiles();
 
+            if ($rb->getTeam() == "Rookie") {
+                if ($rb->college_stats != null) {
+                    $college = $this->makeCollegeScore($rb);
+                    $metrics['collegeScore'] = $college['collegeScore'];
+                    $metrics['bestSeason'] = $college['bestSeason'];
+                    $metrics['breakoutClass'] = $college['breakoutClass'];
+                    $metrics['breakoutSeasons'] = $college['breakoutSeasons'];
+                    $metrics['collegeSeasons'] = $college['collegeSeasons'];
+                    $metrics['bestDominator'] = $college['bestDominator'];
+                    $metrics["bestYPC"] = $college['bestYPC'];
+                    $metrics["bestCarryDominator"] = $college['bestCarryDominator'];
+                    $metrics['bestRecDominator'] = $college['bestRecDominator'];
+                } else {
+                    $metrics['collegeScore'] = null;
+                    $metrics['bestSeason'] = null;
+                    $metrics['breakoutClass'] = null;
+                    $metrics['breakoutSeasons'] = null;
+                    $metrics['collegeSeasons'] = null;
+                    $metrics['bestDominator'] = null;
+                    $metrics["bestYPC"] = null;
+                    $metrics["bestCarryDominator"] = null;
+                    $metrics['bestRecDominator'] = null;
+                }
+
+                $rb->setMetrics($metrics);
+
+                $this->command->save($rb);
+
+                $pointer++;
+                $progressBar->update($pointer);
+
+                continue;
+            }
+
             $data['receiver'] = 0;
             $data['grinder'] = 0;
 
@@ -391,7 +425,7 @@ class RbService extends ServiceAbstract
         $pointer = 0;
 
         foreach ($rbs as $rb) {
-            if ($rb->getId() == 5226) {
+            if (true) {
                 $rb->decodeJson();
                 $result = $this->scrapCollegeStats($rb);
                 if ($result == false) {

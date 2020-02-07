@@ -309,7 +309,7 @@ class ServiceAbstract
 
             if ($metrics['shuttle'] != null && $metrics['shuttle'] != '-' && $metrics['cone'] != null && $metrics['cone'] != "-") {
                 $metrics['agility'] = $metrics['shuttle'] + $metrics['cone'];
-                $metrics['routeAgility'] = round(($metrics['cone']) + ($metrics['shuttle'] * .2),2);
+                $metrics['routeAgility'] = round(($metrics['cone']) + ($metrics['shuttle'] * .15),2);
                 $metrics['jukeAgility'] = round(($metrics['shuttle']) + ($metrics['cone'] * .2), 2);
             } else {
                 $metrics['agility'] = null;
@@ -322,7 +322,7 @@ class ServiceAbstract
                 $coneRate = ($posInfo[$type]['coneAvg'])/($posInfo[$type]['shuttleAvg']);
                 $estCone = round($coneRate * $metrics['shuttle'], 2);
                 $metrics['estCone'] = $estCone;
-                $metrics['routeAgility'] = round((($estCone) + ($metrics['shuttle'] * .2)), 2);
+                $metrics['routeAgility'] = round((($estCone) + ($metrics['shuttle'] * .15)), 2);
                 $metrics['jukeAgility'] = round((($metrics['shuttle']) + ($estCone * .2)), 2);
             }
 
@@ -331,7 +331,7 @@ class ServiceAbstract
                 $shuttleRate = ($posInfo[$type]['shuttleAvg'])/($posInfo[$type]['coneAvg']);
                 $estShuttle = round($shuttleRate * $metrics['cone'], 2);
                 $metrics['estShuttle'] = round($estShuttle, 2);
-                $metrics['routeAgility'] = round((($metrics['cone']) + ($estShuttle * .2)), 2);
+                $metrics['routeAgility'] = round((($metrics['cone']) + ($estShuttle * .15)), 2);
                 $metrics['jukeAgility'] = round((($estShuttle) + ($metrics['cone'] * .2)), 2);
             }
 
@@ -374,7 +374,7 @@ class ServiceAbstract
 
             // add jumpball reach, adds bonus for hand size
             if (($metrics['verticalJump'] != null && $metrics['verticalJump'] != '-') && array_key_exists('armsInches', $info)) {
-                $metrics['jumpball'] = round($info['heightInches'] + $info['armsInches'] + $metrics['verticalJump'], 2);
+                $metrics['jumpball'] = round($info['heightInches'] + ($info['armsInches'] * 1.1) + ($metrics['verticalJump'] * .8), 2);
                 // Premium for big Hands
                 if ($info['hands'] > 9.5) {
                     $metrics['jumpball'] =  $metrics['jumpball'] + 3;

@@ -99,6 +99,42 @@
                 <div class="role-three-percentile percentile"></div>
             </div>
         </div>
+        <?php if ($player['position'] == 'WR'): ?>
+            <div class="row">
+                <div class="bench-box center col m3">
+                    <div style="margin-top:10px" class="combine-title">Beat Press</div>
+                    <div class="combine-score"><?= $player['metrics']['beatPress']?></div>
+                    <div class="progress bench-bar">
+                        <div class="determinate" style="width: <?= $player['metrics']['beatPress'] ?>%"></div>
+                    </div>
+                    <div class="bench-percentile percentile"></div>
+                </div>
+                <div class="bench-box center col m3">
+                    <div style="margin-top:10px" class="combine-title">Separation</div>
+                    <div class="combine-score"><?= $player['metrics']['separation']?></div>
+                    <div class="progress bench-bar">
+                        <div class="determinate" style="width: <?= $player['metrics']['separation'] ?>%"></div>
+                    </div>
+                    <div class="bench-percentile percentile"></div>
+                </div>
+                <div class="bench-box center col m3">
+                    <div style="margin-top:10px" class="combine-title">Contested Catch</div>
+                    <div class="combine-score"><?= $player['metrics']['contested']?></div>
+                    <div class="progress bench-bar">
+                        <div class="determinate" style="width: <?= $player['metrics']['contested'] ?>%"></div>
+                    </div>
+                    <div class="bench-percentile percentile"></div>
+                </div>
+                <div class="bench-box center col m3">
+                    <div style="margin-top:10px" class="combine-title">YAC Score</div>
+                    <div class="combine-score"><?= $player['metrics']['yac']?></div>
+                    <div class="progress bench-bar">
+                        <div class="determinate" style="width: <?= $player['metrics']['yac'] ?>%"></div>
+                    </div>
+                    <div class="bench-percentile percentile"></div>
+                </div>
+            </div>
+        <?php endif; ?>
         <div class="row z-depth-2 hoverable">
             <div class="col m8 s12 prospect" style="background:white; position: relative; height:380px; margin-top:10px; margin-bottom:10px">
                 <canvas id="canvas" width="75%"></canvas>

@@ -165,6 +165,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
                 default:
                     $select->where([
                         "position = ?" => $type,
+                        "team = ?" => "Rookie",
                         new Expression("json_unquote(college_stats)") => "[]"
                     ]);
             }

@@ -143,6 +143,76 @@ class WrService extends ServiceAbstract
                 $metrics['breakoutClass'] = null;
             }
 
+            if ($metrics['bully'] != null) {
+                if ($metrics['elusiveness'] != null) {
+                    $metrics['beatPress'] = round((($percentiles['bully'] * .75) + ($percentiles['elusiveness'] * .25)),2);
+                } else {
+                    $metrics['beatPress'] = round($percentiles['bully'], 2);
+                }
+            } else {
+                if ($metrics['elusiveness'] != null) {
+                    $metrics['beatPress'] = round(($percentiles['elusiveness'] * .75), 2);
+                } else {
+                    $metrics['beatPress'] = null;
+                }
+            }
+
+            if ($metrics['routeAgility'] != null ) {
+                if ($metrics['fortyTime'] != null) {
+                    $metrics['separation'] = round((($percentiles['routeAgility'] * .65) + ($percentiles['fortyTime'] * .35)),2);
+                } else {
+                    $metrics['separation'] = round((($percentiles['routeAgility'] * .75)),2);
+                }
+            } else {
+                $metrics['separation'] = null;
+            }
+
+            if ($metrics['elusiveness'] != null) {
+                if ($metrics['power'] != null) {
+                    $metrics['yac'] = round((($percentiles['elusiveness'] * .7) + ($percentiles['power'] * .3)),2);
+                } else {
+                    $metrics['yac'] = round(($percentiles['elusiveness'] * .7),2);
+                }
+            } else {
+                if ($metrics['power'] != null) {
+                    $metrics['yac'] = round(($percentiles['power'] * .7),2);
+                } else {
+                    $metrics['yac'] = null;
+                }
+            }
+
+            if ($metrics['jumpball'] != null) {
+                if ($metrics['bully'] != null) {
+                    $metrics['contested'] = round((($percentiles['bully'] * .15) + ($percentiles['jumpball'] * .85)),2);
+                } else {
+                    $metrics['contested'] = round((($percentiles['jumpball'] * .85)),2);
+                }
+            } else {
+                $metrics['contested'] = null;
+            }
+
+            $halfAlpha = ($metrics['beatPress'] *.20) + ($metrics['separation'] *.35) + ($metrics['contested'] *.35) + ($metrics['yac'] *.10);
+            $alphaScore = round(((($metrics['collegeScore']/40) * 100) * .45) + ($halfAlpha * .55), 2);
+
+            if ($alphaScore > 50 && $metrics['separation'] < 40) {
+                $alphaScore = $alphaScore - 10;
+            }
+
+            if ($alphaScore > 50 && $metrics['separation'] < 25) {
+                $alphaScore = $alphaScore - 10;
+            }
+
+            if ($alphaScore > 50 && $metrics['contested'] < 50) {
+                $alphaScore = $alphaScore - 5;
+            }
+
+            if ($alphaScore > 50 && $metrics['contested'] < 40) {
+                $alphaScore = $alphaScore - 5;
+            }
+
+            if ($alphaScore > 50 && $metrics['contested'] < 30) {
+                $alphaScore = $alphaScore - 5;
+            }
 
             // Alpha Score
             /*
@@ -151,37 +221,37 @@ class WrService extends ServiceAbstract
              * 20% seperation (60% route Agility, 40% speed)
              * 20% Jumpball
              */
-
-            $alphaScore = round(((($metrics['collegeScore']/33) * 100) * .5) + ($deep * .25) + ($slot * .25), 2);
-
-//            // Penalties
-            // not getting off the press
-            if($metrics['bully'] != null) {
-                if ($metrics['bully'] < 14) {
-                    $alphaScore = $alphaScore - 8;
-                }
-
-                if ($metrics['bully'] < 9) {
-                    $alphaScore = $alphaScore - 8;
-                }
 //
-                if ($metrics['bully'] > 18) {
-                    $alphaScore = $alphaScore + 3;
-                }
-
-                if ($metrics['bully'] > 23 ) {
-                    $alphaScore = $alphaScore + 2;
-                }
+//            $alphaScore = round(((($metrics['collegeScore']/33) * 100) * .5) + ($deep * .25) + ($slot * .25), 2);
+//
+////            // Penalties
+//            // not getting off the press
+            if($metrics['bully'] != null) {
+//                if ($metrics['bully'] < 13) {
+//                    $alphaScore = $alphaScore - 4;
+//                }
+//
+//                if ($metrics['bully'] < 9) {
+//                    $alphaScore = $alphaScore - 4;
+//                }
+//
+//                if ($metrics['bully'] > 18) {
+//                    $alphaScore = $alphaScore + 3;
+//                }
+//
+//                if ($metrics['bully'] > 23 ) {
+//                    $alphaScore = $alphaScore + 2;
+//                }
             }
 
 //            // not commanding cushion or running past cb
-            if ($metrics['fortyTime'] > 4.56) {
-                $alphaScore = $alphaScore - 5;
-            }
-
-            if ($metrics['fortyTime'] > 4.65) {
-                $alphaScore = $alphaScore - 7;
-            }
+//            if ($metrics['fortyTime'] > 4.60) {
+//                $alphaScore = $alphaScore - 7;
+//            }
+//
+//            if ($metrics['fortyTime'] > 4.70) {
+//                $alphaScore = $alphaScore - 7;
+//            }
 //
 //            if ($metrics['fortyTime'] < 4.46) {
 //                $alphaScore = $alphaScore + 1;
@@ -192,30 +262,30 @@ class WrService extends ServiceAbstract
 //            }
 //
 //            //not creating separation
-            if ($metrics['routeAgility'] > 7.85) {
-                $alphaScore = $alphaScore - 5;
-            }
-
-            if ($metrics['routeAgility'] > 7.90) {
-                $alphaScore = $alphaScore - 10;
-            }
+//            if ($metrics['routeAgility'] > 8.60) {
+//                $alphaScore = $alphaScore - 7;
+//            }
+//
+//            if ($metrics['routeAgility'] > 8.80) {
+//                $alphaScore = $alphaScore - 10;
+//            }
 //
 //            if ($metrics['routeAgility'] < 7.7) {
 //                $alphaScore = $alphaScore + 1;
 //            }
 //
-            if ($metrics['routeAgility'] < 7.5) {
-                $alphaScore = $alphaScore + 2;
-            }
+//            if ($metrics['routeAgility'] < 7.5) {
+//                $alphaScore = $alphaScore + 2;
+//            }
 //
 //            // not winning contested catches
-            if ($metrics['jumpball'] < 142) {
-                $alphaScore = $alphaScore - 6;
-            }
+//            if ($metrics['jumpball'] < 142) {
+//                $alphaScore = $alphaScore - 6;
+//            }
 
-            if ($metrics['jumpball'] < 135) {
-                $alphaScore = $alphaScore - 7;
-            }
+//            if ($metrics['jumpball'] < 135) {
+//                $alphaScore = $alphaScore - 5;
+//            }
 //
 //            if ($metrics['jumpball'] < 143) {
 //                $alphaScore = $alphaScore + 1;
@@ -272,6 +342,7 @@ class WrService extends ServiceAbstract
         $i = 0;
         $bonus = 0;
         $lastClass = "";
+        $conf = "";
         foreach ($collegeStats as $year => $stats) {
             if ($stats->year != "Career") {
 
@@ -352,7 +423,7 @@ class WrService extends ServiceAbstract
                                 $breakoutClass = $stats['class'];
                             }
                         } elseif ($i == 1 ) {
-                            if ($stats['class'] == "FR" && $redshirt == true) {
+                            if ($stats['class'] == "FR") {
                                 $breakoutClass = "Redshirt Freshman";
                             } elseif ($stats['class'] == "SO") {
                                 $breakoutClass = "Sophomore";
@@ -360,7 +431,7 @@ class WrService extends ServiceAbstract
                                 $breakoutClass = $stats['class'];
                             }
                         } elseif ($i == 2) {
-                            if ($stats['class'] == "SO" && $redshirt == true) {
+                            if ($stats['class'] == "SO") {
                                 $breakoutClass = "Redshirt Sophomore";
                             } elseif ($stats['class'] == "SO") {
                                 $breakoutClass = "Sophomore";
@@ -368,7 +439,7 @@ class WrService extends ServiceAbstract
                                 $breakoutClass = $stats['class'];
                             }
                         } elseif ($i == 3) {
-                            if ($stats['class'] == "JR" && $redshirt == true) {
+                            if ($stats['class'] == "JR") {
                                 $breakoutClass = "Redshirt Junior";
                             } elseif ($stats['class'] == "JR") {
                                 $breakoutClass = "JR";
@@ -429,11 +500,13 @@ class WrService extends ServiceAbstract
 
                 $lastBreakout = $breakout;
                 $collegeScore = $collegeScore + $breakout;
-                $conf = $stats['conference'];
-                if ($stats['college'] == "Notre Dame") {
-                    $conf = "ACC";
+                if (array_key_exists('conference', $stats)) {
+                    $conf = $stats['conference'];
+                    if ($stats['college'] == "Notre Dame") {
+                        $conf = "ACC";
+                    }
+                    $lastYear = $stats['class'];
                 }
-                $lastYear = $stats['class'];
 
                 if ($stats['recYds'] > 1000) {
                     $bonus = $bonus + 1;
