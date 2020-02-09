@@ -206,7 +206,6 @@ class WrService extends ServiceAbstract
                 $alphaScore = $alphaScore - 10;
             }
 
-
             if ($alphaScore > 50 && $metrics['separation'] < 50) {
                 $alphaScore = $alphaScore - 5;
             }
