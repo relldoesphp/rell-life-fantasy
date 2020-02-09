@@ -184,7 +184,7 @@ class PlayerForm extends Form
             'name' => 'college_stats',
             'options' => [
                 'label' => 'college_stats',
-                'rows'        => '5',
+                'rows' => '5',
             ],
         ]);
 

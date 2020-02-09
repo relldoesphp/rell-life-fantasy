@@ -191,14 +191,35 @@ class WrService extends ServiceAbstract
                 $metrics['contested'] = null;
             }
 
-            $halfAlpha = ($metrics['beatPress'] *.20) + ($metrics['separation'] *.35) + ($metrics['contested'] *.35) + ($metrics['yac'] *.10);
-            $alphaScore = round(((($metrics['collegeScore']/40) * 100) * .45) + ($halfAlpha * .55), 2);
+            $halfAlpha = ($metrics['beatPress'] *.20) + ($metrics['separation'] *.37) + ($metrics['contested'] *.35) + ($metrics['yac'] *.08);
+            $alphaScore = round(((($metrics['collegeScore']/45) * 100) * .40) + ($halfAlpha * .55), 2);
 
-            if ($alphaScore > 50 && $metrics['separation'] < 40) {
+            if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 50) {
+                $alphaScore = $alphaScore - 5;
+            }
+
+            if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 40) {
+                $alphaScore = $alphaScore - 5;
+            }
+
+            if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 30) {
                 $alphaScore = $alphaScore - 10;
             }
 
-            if ($alphaScore > 50 && $metrics['separation'] < 25) {
+
+            if ($alphaScore > 50 && $metrics['separation'] < 50) {
+                $alphaScore = $alphaScore - 5;
+            }
+
+            if ($alphaScore > 50 && $metrics['separation'] < 40) {
+                $alphaScore = $alphaScore - 5;
+            }
+
+            if ($alphaScore > 50 && $metrics['separation'] < 30) {
+                $alphaScore = $alphaScore - 10;
+            }
+
+            if ($alphaScore > 50 && $metrics['separation'] < 20) {
                 $alphaScore = $alphaScore - 10;
             }
 
