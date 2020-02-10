@@ -100,6 +100,12 @@
             </div>
         </div>
         <?php if ($player['position'] == 'WR'): ?>
+            <?php
+                $player['metrics']['beatPress'] = (array_key_exists('beatPress', $player['metrics'])) ? $player['metrics']['beatPress'] : "-";
+                $player['metrics']['separation'] = (array_key_exists('separation', $player['metrics'])) ? $player['metrics']['separation'] : "-";
+                $player['metrics']['contested'] = (array_key_exists('contested', $player['metrics'])) ? $player['metrics']['contested'] : "-";
+                $player['metrics']['yac'] = (array_key_exists('yac', $player['metrics'])) ? $player['metrics']['yac'] : "-";
+            ?>
             <div class="row">
                 <div class="bench-box center col m3">
                     <div style="margin-top:10px" class="combine-title">Beat Press</div>

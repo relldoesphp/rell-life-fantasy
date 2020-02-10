@@ -358,6 +358,52 @@ class PlayerForm extends Form
                     $college->add($collegeFieldset);
                     break;
                 case "RB":
+                    $fields = ["year","college","class","conference","games","recs","recYds","recAvg","recTds","rushes","rushAvg","rushTds","rushYds"];
+                    foreach ($fields as $field) {
+                        $newField = new Element($field);
+                        $newField->setLabel($field);
+                        $newField->setLabelAttributes(['class' => 'form-group col m1']);
+                        if ($collegeStats != null && array_key_exists($i, $collegeStats) && array_key_exists($field, $collegeStats[$i])) {
+                            $newField->setValue($collegeStats[$i][$field]);
+                        }
+                        $collegeFieldset->add($newField);
+                    }
+
+                    //return fieldset
+                    $returnStats = new Fieldset("returnStats");
+                    $returnStats->setLabel("Return Stats");
+                    $returnFields = ["kickAvg", "kickYds", "kickTds", "puntAvg", "puntYds", "puntTds"];
+                    foreach ($returnFields as $field) {
+                        $newField = new Element($field);
+                        $newField->setLabel($field);
+                        $newField->setLabelAttributes(['class' => 'form-group col m2']);
+                        $returnStats->add($newField);
+                        if ($collegeStats != null
+                            && array_key_exists($i, $collegeStats)
+                            && array_key_exists('returnStats', $collegeStats[$i])
+                            && array_key_exists($field, $collegeStats[$i]['returnStats'])
+                        ) {
+                            $newField->setValue($collegeStats[$i]['returnStats'][$field]);
+                        }
+                    }
+                    $collegeFieldset->add($returnStats);
+
+                    //total fieldset
+                    $teamTotal = new Fieldset("totals");
+                    $teamTotal->setLabel("totals");
+                    $totalFields = ["tds","yds","recs","returnTds","returnYds"];
+                    foreach ($totalFields as $field) {
+                        $newField = new Element($field);
+                        $newField->setLabel($field);
+                        $newField->setLabelAttributes(['class' => 'form-group col m2']);
+                        $teamTotal->add($newField);
+                        if ($collegeStats != null && array_key_exists($i, $collegeStats) && array_key_exists($field, $collegeStats[$i]['totals'])) {
+                            $newField->setValue($collegeStats[$i]['totals'][$field]);
+                        }
+                    }
+                    $collegeFieldset->add($teamTotal);
+                    $college->add($collegeFieldset);
+                    break;
                 case "QB":
                 default:
             }

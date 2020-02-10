@@ -384,15 +384,23 @@ class WrService extends ServiceAbstract
                     ];
                 }
 
+
+
                 // determine dominators
                 $dominator['td'] = round(($stats['recTds'] / $stats['totals']['tds'] ) * 100, 2);
                 $dominator['yd'] = round(($stats['recYds'] / $stats['totals']['yds']) * 100, 2);
                 $dominator['rec'] = round(($stats['recs'] / $stats['totals']['recs']) * 100, 2);
 
-                $collegeStats[$year]['dominator'] = round(($dominator['yd'] + $dominator['td'])/2, 2);
-                $collegeStats[$year]['tdDominator'] = round(($stats['recTds'] / $stats['totals']['tds'] ) * 100, 2);
-                $collegeStats[$year]['recDominator'] = round(($stats['recs'] / $stats['totals']['recs']) * 100, 2);
+                if ($stats['games'] > 5 && $stats['games'] < 11) {
+                    $dominator['td'] = round(($dominator['td']/$stats['games']) * 12,2);
+                    $dominator['yd'] = round(($dominator['yd']/$stats['games']) * 12,2);
+                    $dominator['rec'] = round(($dominator['rec']/$stats['games']) * 12,2);
+                }
 
+                $collegeStats[$year]['dominator'] = round(($dominator['yd'] + $dominator['td'])/2, 2);
+                $collegeStats[$year]['tdDominator'] = round($dominator['td'] * 100, 2);
+                $collegeStats[$year]['recDominator'] = round($dominator['rec'] * 100, 2);
+                $collegeStats[$year]['ydDominator'] = round($dominator['yd'] * 100, 2);
                 $breakout = 0;
 
                 if ($dominator['rec'] > 20 && (($dominator['yd'] + $dominator['td'])/2) > 20) {
@@ -457,7 +465,7 @@ class WrService extends ServiceAbstract
                         } elseif ($i == 2) {
                             if ($stats['class'] == "SO") {
                                 $breakoutClass = "Redshirt Sophomore";
-                            } elseif ($stats['class'] == "SO") {
+                            } elseif ($stats['class'] == "JR") {
                                 $breakoutClass = "Sophomore";
                             } else {
                                 $breakoutClass = $stats['class'];
@@ -467,6 +475,14 @@ class WrService extends ServiceAbstract
                                 $breakoutClass = "Redshirt Junior";
                             } elseif ($stats['class'] == "JR") {
                                 $breakoutClass = "JR";
+                            } else {
+                                $breakoutClass = $stats['class'];
+                            }
+                        } elseif ($i == 4) {
+                            if ($stats['class'] == "SR") {
+                                $breakoutClass = "Redshirt Senior";
+                            } elseif ($stats['class'] == "SR") {
+                                $breakoutClass = "SR";
                             } else {
                                 $breakoutClass = $stats['class'];
                             }
@@ -604,15 +620,15 @@ class WrService extends ServiceAbstract
             $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
             $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
             if (in_array($conf, $power5) ) {
-                $collegeScore = $collegeScore + 8;
+                $collegeScore = $collegeScore + 9;
             } elseif (in_array($conf, $minor5)) {
-                $collegeScore = $collegeScore + 6;
+                $collegeScore = $collegeScore + 7;
             } else {
-                $collegeScore = $collegeScore + 4;
+                $collegeScore = $collegeScore + 6;
             }
         } elseif (in_array($breakoutClass, ["Redshirt Freshman", "SO", "Sophomore"])) {
             $collegeScore = $collegeScore + 5;
-        } elseif ($breakoutClass == "JR") {
+        } elseif ($breakoutClass == "JR" || $breakoutClass == "Redshirt Sophomore") {
             $collegeScore = $collegeScore + 4;
         } else {
             $collegeScore = $collegeScore + 3;
@@ -622,11 +638,11 @@ class WrService extends ServiceAbstract
         $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
         $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
         if (in_array($conf, $power5) ) {
-            $collegeScore = $collegeScore + 3;
+            $collegeScore = $collegeScore + 4;
         } elseif (in_array($conf, $minor5)) {
             $collegeScore = $collegeScore + 0;
         } else {
-            $collegeScore = $collegeScore - 3;
+            $collegeScore = $collegeScore - 4;
         }
 //
         // Best breakout score

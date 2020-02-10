@@ -1016,8 +1016,6 @@ var rlf =  {
 
         rlf.makeCollegeTable(collegeColumns);
 
-
-
         var roleFits = [
             {
                 "name":"Slot Score:",
@@ -2144,43 +2142,43 @@ var rlf =  {
             "className":"",
             data: rlfData.player.collegeTable,
             columns: columns,
-            "footerCallback": function ( row, data, start, end, display ) {
-                if (data.length === 0) {
-                    return;
-                }
-
-                var api = this.api(), data;
-
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '')*1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                var rowsToSum = [4,5,6];
-                var selectedRows = api.rows('.selected').indexes();
-                rowsToSum.forEach(function(col) {
-                    // Total filtered rows on the selected column (code part added)
-                    if (selectedRows.count() == 0) {
-                        total = api
-                            .column( col, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/api.column( col, { page: 'current'} ).data().count();
-                    } else {
-                        total = api.cells( selectedRows, col, { page: 'current' } )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-                        average = total/selectedRows.count();
-                    }
-                    $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
-                });
-            }
+            // "footerCallback": function ( row, data, start, end, display ) {
+            //     if (data.length === 0) {
+            //         return;
+            //     }
+            //
+            //     var api = this.api(), data;
+            //
+            //     var intVal = function ( i ) {
+            //         return typeof i === 'string' ?
+            //             i.replace(/[\$,]/g, '')*1 :
+            //             typeof i === 'number' ?
+            //                 i : 0;
+            //     };
+            //
+            //     var rowsToSum = [4,5,6];
+            //     var selectedRows = api.rows('.selected').indexes();
+            //     rowsToSum.forEach(function(col) {
+            //         // Total filtered rows on the selected column (code part added)
+            //         if (selectedRows.count() == 0) {
+            //             total = api
+            //                 .column( col, { page: 'current'} )
+            //                 .data()
+            //                 .reduce( function (a, b) {
+            //                     return intVal(a) + intVal(b);
+            //                 }, 0 );
+            //             average = total/api.column( col, { page: 'current'} ).data().count();
+            //         } else {
+            //             total = api.cells( selectedRows, col, { page: 'current' } )
+            //                 .data()
+            //                 .reduce( function (a, b) {
+            //                     return intVal(a) + intVal(b);
+            //                 }, 0 );
+            //             average = total/selectedRows.count();
+            //         }
+            //         $( api.column(col).footer() ).html(average.toFixed(1)+'<br>'+total.toFixed(1));
+            //     });
+            // }
         } );
     },
 
