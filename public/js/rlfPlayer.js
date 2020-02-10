@@ -711,7 +711,7 @@ var rlf =  {
         rlf.initMesChartsRB();
         rlf.initProsChartsRB();
 
-        if (rlfData.player.college_stats !== "undefined") {
+        if (rlfData.player.college_stats !== undefined) {
             var collegeColumns = [
                 { title: "Year", data: "year", "defaultContent":0},
                 { title: "College", data: "college", "defaultContent": "n/a"},
@@ -929,7 +929,7 @@ var rlf =  {
         rlf.initProsChartsWR();
         //rlf.initOppChartsWR();
 
-        if (rlfData.player.seasonStats !== "undefined") {
+        if (rlfData.player.seasonStats !== undefined) {
             var seasonColumns = [
                 {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
                 {title: "GP", data: "stats.gp", "defaultContent":0},
@@ -964,39 +964,41 @@ var rlf =  {
             rlf.makeGameLogTable(gameLogColumns);
 
             var currentStats = rlfData.player.seasonStats["2019"];
-            $('#summary-stats').DataTable({
-                "paging": false,
-                "ordering": false,
-                "searching": false,
-                "info":false,
-                "className":'compact',
-                "columns": [
-                    {title:"Avg", data: "avg", "defaultContent":"n/a"},
-                    {title:"PPR", data: "points", "defaultContent":"n/a"},
-                    {title:"Recs", data: "recs", "defaultContent":"n/a"},
-                    {title:"Tgts", data: "targets", "defaultContent":"n/a"},
-                    {title:"Yds", data: "yds", "defaultContent":"n/a"},
-                    {title:"Tds", data: "tds", "defaultContent":""}
-                ],
-                "data":[
-                    {
-                        "avg":currentStats.stats.pts_ppr_avg,
-                        "points":currentStats.stats.pts_ppr,
-                        "recs":currentStats.stats.rec,
-                        "targets":currentStats.stats.rec_tgt,
-                        "yds":currentStats.stats.rec_yd,
-                        "tds":currentStats.stats.all_td
-                    },
-                    {
-                        "avg":currentStats.ranks.pts_ppr_avg,
-                        "points":currentStats.ranks.pts_ppr,
-                        "recs":currentStats.ranks.rec,
-                        "targets":currentStats.ranks.rec_tgt,
-                        "yds":currentStats.ranks.rec_yd,
-                        "tds":currentStats.ranks.all_td
-                    }
-                ]
-            });
+            if (currentStats !== undefined) {
+                $('#summary-stats').DataTable({
+                    "paging": false,
+                    "ordering": false,
+                    "searching": false,
+                    "info":false,
+                    "className":'compact',
+                    "columns": [
+                        {title:"Avg", data: "avg", "defaultContent":"n/a"},
+                        {title:"PPR", data: "points", "defaultContent":"n/a"},
+                        {title:"Recs", data: "recs", "defaultContent":"n/a"},
+                        {title:"Tgts", data: "targets", "defaultContent":"n/a"},
+                        {title:"Yds", data: "yds", "defaultContent":"n/a"},
+                        {title:"Tds", data: "tds", "defaultContent":""}
+                    ],
+                    "data":[
+                        {
+                            "avg":currentStats.stats.pts_ppr_avg,
+                            "points":currentStats.stats.pts_ppr,
+                            "recs":currentStats.stats.rec,
+                            "targets":currentStats.stats.rec_tgt,
+                            "yds":currentStats.stats.rec_yd,
+                            "tds":currentStats.stats.all_td
+                        },
+                        {
+                            "avg":currentStats.ranks.pts_ppr_avg,
+                            "points":currentStats.ranks.pts_ppr,
+                            "recs":currentStats.ranks.rec,
+                            "targets":currentStats.ranks.rec_tgt,
+                            "yds":currentStats.ranks.rec_yd,
+                            "tds":currentStats.ranks.all_td
+                        }
+                    ]
+                });
+            }
         }
 
         var collegeColumns = [
