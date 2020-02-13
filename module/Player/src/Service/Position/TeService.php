@@ -197,16 +197,16 @@ class TeService extends ServiceAbstract
         $bestReturn = 0;
         $breakoutSeasons = 0;
         $lastBreakout = 0;
-        $i = 0;
         foreach ($collegeStats as $stats) {
             if ($stats->year != "Career") {
+                $i++;
                 if ($stats['totals']['tds'] == 0) {
                     return false;
                 }
                 // determine dominators
                 $dominator['td'] = round(($stats['recTds'] / $stats['totals']['tds'] ) * 100, 2);
                 $dominator['yd'] = round(($stats['recYds'] / $stats['totals']['yds']) * 100, 2);
-                $dominator['rec'] = round(($stats['receptions'] / $stats['totals']['recs']) * 100, 2);
+                $dominator['rec'] = round(($stats['recs'] / $stats['totals']['recs']) * 100, 2);
                 $breakout = 0;
 
                 if ($dominator['rec'] > 15 && (($dominator['yd'] + $dominator['td'])/2) > 15) {
@@ -291,7 +291,6 @@ class TeService extends ServiceAbstract
 //                    $conf = "ACC";
 //                }
                 $lastYear = $stats['class'];
-                $i++;
             }
         }
         $collegeScore = round(($breakoutSeasons/$i) * 10, 2);

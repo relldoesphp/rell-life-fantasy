@@ -214,7 +214,7 @@ class WrService extends ServiceAbstract
                 $alphaScore = $alphaScore - 10;
             }
 
-            if ($alphaScore > 50 && $metrics['separation'] < 50 && $metrics['contested'] < 70 && $metrics['collegeScore'] < 30) {
+            if ($alphaScore > 50  && $metrics['contested'] < 70 && $metrics['collegeScore'] < 30) {
                 $alphaScore = $alphaScore - 5;
             }
 
@@ -230,17 +230,14 @@ class WrService extends ServiceAbstract
                 $alphaScore = $alphaScore - 12;
             }
 
-            if ($alphaScore > 50 && $metrics['contested'] < 50) {
+            if ($alphaScore > 50 && $metrics['collegeScore'] < 30 && $metrics['contested'] < 50) {
                 $alphaScore = $alphaScore - 5;
             }
 
-            if ($alphaScore > 50 && $metrics['contested'] < 40) {
+            if ($alphaScore > 50 && $metrics['collegeScore'] < 30 && $metrics['contested'] < 40) {
                 $alphaScore = $alphaScore - 5;
             }
 
-            if ($metrics['contested'] < 25) {
-                $alphaScore = $alphaScore - 10;
-            }
 
             // Alpha Score
             /*
@@ -561,7 +558,7 @@ class WrService extends ServiceAbstract
                     }
 
                     if ($stats['returnStats']['puntYds'] > 200) {
-                        $bonus = $bonus + .75;
+                        $bonus = $bonus + 1;
                     }
 
                     if ($stats['returnStats']['kickYds'] > 300) {
@@ -569,7 +566,7 @@ class WrService extends ServiceAbstract
                     }
 
                     if ($stats['returnStats']['kickYds'] > 600) {
-                        $bonus = $bonus + .75;
+                        $bonus = $bonus + 1;
                     }
                 }
 
@@ -583,7 +580,7 @@ class WrService extends ServiceAbstract
                     }
 
                     if ($stats['rushYds'] > 300) {
-                        $bonus = $bonus + .5;
+                        $bonus = $bonus + 1;
                     }
                 }
 
@@ -624,10 +621,8 @@ class WrService extends ServiceAbstract
             $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
             if (in_array($conf, $power5) ) {
                 $collegeScore = $collegeScore + 9;
-            } elseif (in_array($conf, $minor5)) {
-                $collegeScore = $collegeScore + 7;
             } else {
-                $collegeScore = $collegeScore + 6;
+                $collegeScore = $collegeScore + 7;
             }
         } elseif (in_array($breakoutClass, ["Redshirt Freshman", "SO", "Sophomore"])) {
             $collegeScore = $collegeScore + 5;
