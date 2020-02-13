@@ -377,7 +377,7 @@ class TeService extends ServiceAbstract
 
     public function scrapCollegeJob()
     {
-        $tes = $this->repository->findAllPlayersNoCollege("TE");
+        $tes = $this->repository->findAllPlayers("TE");
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $tes->count());
         $pointer = 0;
 
@@ -440,7 +440,7 @@ class TeService extends ServiceAbstract
                 $collegeStats[$year]['year'] = $year;
                 $collegeStats[$year]['college'] = $rowChildren->item(1)->nodeValue;
                 $collegeStats[$year]['class'] = $rowChildren->item(3)->nodeValue;
-                $collegeStats[$year]['games'] = $rowChildren->item(4)->nodeValue;
+                $collegeStats[$year]['conference'] = $rowChildren->item(4)->nodeValue;
                 $collegeStats[$year]['games'] = $rowChildren->item(5)->nodeValue;
                 $collegeStats[$year]['recs'] = $rowChildren->item(6)->nodeValue;
                 $collegeStats[$year]['recYds'] = $rowChildren->item(7)->nodeValue;

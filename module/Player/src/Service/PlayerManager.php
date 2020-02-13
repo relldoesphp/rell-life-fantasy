@@ -237,11 +237,11 @@ class PlayerManager
 
     public function scrapCollegeJob()
     {
-        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $rbService->scrapCollegeJob();
+//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $rbService->scrapCollegeJob();
 
-//        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $teService->scrapCollegeJob();
+        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $teService->scrapCollegeJob();
 
 //        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $wrService->scrapCollegeJob();

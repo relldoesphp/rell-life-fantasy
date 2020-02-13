@@ -511,11 +511,11 @@ class Player implements InputFilterAwareInterface
                         "college" => $stats['college'],
                         "class" => $stats['class'],
                         "games" => $stats['games'],
-                        "recs" => $stats['receptions'],
+                        "recs" => $stats['recs'],
                         "recYds" => $stats['recYds'],
                         "recTds" => $stats['recTds'],
                         "recAvg" => $stats['recAvg'],
-                        "recDom" => round($stats['receptions']/$stats['totals']['recs'] * 100,1)."%",
+                        "recDom" => round($stats['recs']/$stats['totals']['recs'] * 100,1)."%",
                         "ydsDom" => round($stats['recYds']/$stats['totals']['yds'] * 100, 1)."%",
                         "tdsDom" => round($stats['recTds']/$stats['totals']['tds'] * 100,1)."%",
                     ];
