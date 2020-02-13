@@ -173,7 +173,7 @@ class WrService extends ServiceAbstract
 
             if ($metrics['elusiveness'] != null) {
                 if ($metrics['power'] != null) {
-                    $metrics['yac'] = round((($percentiles['elusiveness'] * .7) + ($percentiles['power'] * .3)),2);
+                    $metrics['yac'] = round((($percentiles['elusiveness'] * .6) + ($percentiles['power'] * .25)) + ($percentiles['fortyTime'] * .15),2);
                 } else {
                     $metrics['yac'] = round(($percentiles['elusiveness'] * .7),2);
                 }
@@ -195,8 +195,8 @@ class WrService extends ServiceAbstract
                 $metrics['contested'] = null;
             }
 
-            $halfAlpha = ($metrics['beatPress'] *.27) + ($metrics['separation'] *.35) + ($metrics['contested'] *.30) + ($metrics['yac'] *.08);
-            $alphaScore = round(((($metrics['collegeScore']/45) * 100) * .5) + ($halfAlpha * .5), 2);
+            $halfAlpha = ($metrics['beatPress'] *.25) + ($metrics['separation'] *.35) + ($metrics['contested'] *.33) + ($metrics['yac'] *.07);
+            $alphaScore = round(((($metrics['collegeScore']/40) * 100) * .4) + ($halfAlpha * .6), 2);
 
 //            if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 50) {
 //                $alphaScore = $alphaScore - 5;
@@ -210,7 +210,11 @@ class WrService extends ServiceAbstract
                 $alphaScore = $alphaScore - 10;
             }
 
-            if ($alphaScore > 50 && $metrics['separation'] < 50) {
+            if ($metrics['beatPress'] < 20) {
+                $alphaScore = $alphaScore - 10;
+            }
+
+            if ($alphaScore > 50 && $metrics['separation'] < 50 && $metrics['contested'] < 70 && $metrics['collegeScore'] < 30) {
                 $alphaScore = $alphaScore - 5;
             }
 
@@ -223,7 +227,7 @@ class WrService extends ServiceAbstract
             }
 
             if ($alphaScore > 50 && $metrics['separation'] < 20) {
-                $alphaScore = $alphaScore - 10;
+                $alphaScore = $alphaScore - 12;
             }
 
             if ($alphaScore > 50 && $metrics['contested'] < 50) {
@@ -234,8 +238,8 @@ class WrService extends ServiceAbstract
                 $alphaScore = $alphaScore - 5;
             }
 
-            if ($alphaScore > 50 && $metrics['contested'] < 30) {
-                $alphaScore = $alphaScore - 5;
+            if ($metrics['contested'] < 25) {
+                $alphaScore = $alphaScore - 10;
             }
 
             // Alpha Score
@@ -350,10 +354,10 @@ class WrService extends ServiceAbstract
     {
         $collegeStats = $wr->college_stats;
         unset($collegeStats['Career']);
-        if ($wr->getId() == 48) {
+        if ($wr->getId() == 4380) {
             $gotHim = true;
         }
-        $i = 0;
+
         $breakout = false;
         $collegeScore = 0;
         $bestDominator = .01;
@@ -369,6 +373,7 @@ class WrService extends ServiceAbstract
         $conf = "";
         foreach ($collegeStats as $year => $stats) {
             if ($stats->year != "Career") {
+                $i++;
 
                 if ($stats['totals']['yds'] == 0 || !array_key_exists('totals', $stats)) {
                     //we don't have team totals so we can't do calculations
@@ -384,14 +389,12 @@ class WrService extends ServiceAbstract
                     ];
                 }
 
-
-
                 // determine dominators
                 $dominator['td'] = round(($stats['recTds'] / $stats['totals']['tds'] ) * 100, 2);
                 $dominator['yd'] = round(($stats['recYds'] / $stats['totals']['yds']) * 100, 2);
                 $dominator['rec'] = round(($stats['recs'] / $stats['totals']['recs']) * 100, 2);
 
-                if ($stats['games'] > 5 && $stats['games'] < 11) {
+                if ($stats['games'] > 4 && $stats['games'] < 9) {
                     $dominator['td'] = round(($dominator['td']/$stats['games']) * 12,2);
                     $dominator['yd'] = round(($dominator['yd']/$stats['games']) * 12,2);
                     $dominator['rec'] = round(($dominator['rec']/$stats['games']) * 12,2);
@@ -427,7 +430,7 @@ class WrService extends ServiceAbstract
 
                 // add to breakout seasons
                 switch ($breakout) {
-                    case 3:
+                    case ($breakout >= 3):
                         $breakoutSeasons = $breakoutSeasons + 1;
                         break;
                     case ($breakout >= 2):
@@ -448,13 +451,13 @@ class WrService extends ServiceAbstract
                 // determine breakout class
                 if ($breakout == 3 ) {
                     if ($breakoutClass == "None") {
-                        if ($i == 0) {
+                        if ($i == 1) {
                             if ($stats['class'] == "FR") {
                                 $breakoutClass = "True Freshman";
                             } else {
                                 $breakoutClass = $stats['class'];
                             }
-                        } elseif ($i == 1 ) {
+                        } elseif ($i == 2) {
                             if ($stats['class'] == "FR") {
                                 $breakoutClass = "Redshirt Freshman";
                             } elseif ($stats['class'] == "SO") {
@@ -462,23 +465,23 @@ class WrService extends ServiceAbstract
                             } else {
                                 $breakoutClass = $stats['class'];
                             }
-                        } elseif ($i == 2) {
+                        } elseif ($i == 3) {
                             if ($stats['class'] == "SO") {
                                 $breakoutClass = "Redshirt Sophomore";
                             } elseif ($stats['class'] == "JR") {
-                                $breakoutClass = "Sophomore";
-                            } else {
-                                $breakoutClass = $stats['class'];
-                            }
-                        } elseif ($i == 3) {
-                            if ($stats['class'] == "JR") {
-                                $breakoutClass = "Redshirt Junior";
-                            } elseif ($stats['class'] == "JR") {
-                                $breakoutClass = "JR";
+                                $breakoutClass = "Junior";
                             } else {
                                 $breakoutClass = $stats['class'];
                             }
                         } elseif ($i == 4) {
+                            if ($stats['class'] == "JR") {
+                                $breakoutClass = "Redshirt Junior";
+                            } elseif ($stats['class'] == "SR") {
+                                $breakoutClass = "Senior";
+                            } else {
+                                $breakoutClass = $stats['class'];
+                            }
+                        } elseif ($i == 5) {
                             if ($stats['class'] == "SR") {
                                 $breakoutClass = "Redshirt Senior";
                             } elseif ($stats['class'] == "SR") {
@@ -561,11 +564,11 @@ class WrService extends ServiceAbstract
                         $bonus = $bonus + .75;
                     }
 
-                    if ($stats['returnStats']['kickYds'] > 400) {
+                    if ($stats['returnStats']['kickYds'] > 300) {
                         $bonus = $bonus + .5;
                     }
 
-                    if ($stats['returnStats']['kickYds'] > 800) {
+                    if ($stats['returnStats']['kickYds'] > 600) {
                         $bonus = $bonus + .75;
                     }
                 }
@@ -599,7 +602,7 @@ class WrService extends ServiceAbstract
                     }
                 }
 
-                $i++;
+
             }
         }
 
@@ -628,7 +631,7 @@ class WrService extends ServiceAbstract
             }
         } elseif (in_array($breakoutClass, ["Redshirt Freshman", "SO", "Sophomore"])) {
             $collegeScore = $collegeScore + 5;
-        } elseif ($breakoutClass == "JR" || $breakoutClass == "Redshirt Sophomore") {
+        } elseif ($breakoutClass == "JR" || $breakoutClass == "Redshirt Sophomore" || $breakoutClass == "Junior") {
             $collegeScore = $collegeScore + 4;
         } else {
             $collegeScore = $collegeScore + 3;
@@ -646,7 +649,7 @@ class WrService extends ServiceAbstract
         }
 //
         // Best breakout score
-        if ($i == 2 && $lastYear == "SO") {
+        if ($lastYear == "SO") {
             switch ($bestDominator) {
                 case $bestDominator >= 50:
                     $collegeScore = $collegeScore + 5;
@@ -753,7 +756,7 @@ class WrService extends ServiceAbstract
         $pointer = 0;
 
         foreach ($wrs as $wr) {
-            if ($wr->getId() == 26657) {
+            if ($wr->getId() == 26499) {
                 $wr->decodeJson();
                 $result = $this->scrapCollegeStats($wr);
                 if ($result == false) {
@@ -821,7 +824,7 @@ class WrService extends ServiceAbstract
                 $collegeStats[$year]['recYds'] = $rowChildren->item(7)->nodeValue;
                 $collegeStats[$year]['recAvg'] = $rowChildren->item(8)->nodeValue;
                 $collegeStats[$year]['recTds'] = $rowChildren->item(9)->nodeValue;
-                $collegeStats[$year]['rushes'] = $rowChildren->item(10)->nodeValue;
+                $collegeStats[$year]['rushAtt'] = $rowChildren->item(10)->nodeValue;
                 $collegeStats[$year]['rushYds'] = $rowChildren->item(11)->nodeValue;
                 $collegeStats[$year]['rushAvg'] = $rowChildren->item(12)->nodeValue;
                 $collegeStats[$year]['rushTds'] = $rowChildren->item(13)->nodeValue;

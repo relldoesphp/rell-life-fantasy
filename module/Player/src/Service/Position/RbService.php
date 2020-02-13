@@ -420,12 +420,12 @@ class RbService extends ServiceAbstract
 
     public function scrapCollegeJob()
     {
-        $rbs = $this->repository->findAllPlayersNoCollege("RB");
+        $rbs = $this->repository->findAllPlayers("WR");
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $rbs->count());
         $pointer = 0;
 
         foreach ($rbs as $rb) {
-            if (true) {
+            if ($rb->getId() == 2496) {
                 $rb->decodeJson();
                 $result = $this->scrapCollegeStats($rb);
                 if ($result == false) {
@@ -491,7 +491,7 @@ class RbService extends ServiceAbstract
                     $collegeStats[$year]['totals'] = $totals;
                     $collegeStats[$year]['year'] = $year;
                     $collegeStats[$year]['college'] = $rowChildren->item(1)->nodeValue;
-                    $collegeStats[$year]['conf'] = $rowChildren->item(2)->nodeValue;
+                    $collegeStats[$year]['conference'] = $rowChildren->item(2)->nodeValue;
                     $collegeStats[$year]['class'] = $rowChildren->item(3)->nodeValue;
                     $collegeStats[$year]['position'] = $rowChildren->item(4)->nodeValue;
                     $collegeStats[$year]['games'] = $rowChildren->item(5)->nodeValue;

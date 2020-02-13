@@ -358,7 +358,7 @@ class PlayerForm extends Form
                     $college->add($collegeFieldset);
                     break;
                 case "RB":
-                    $fields = ["year","college","class","conference","games","recs","recYds","recAvg","recTds","rushes","rushAvg","rushTds","rushYds"];
+                    $fields = ["year","college","class","conference","games","recs","recYds","recAvg","recTds","rushAtt","rushAvg","rushTds","rushYds","position"];
                     foreach ($fields as $field) {
                         $newField = new Element($field);
                         $newField->setLabel($field);
@@ -370,28 +370,29 @@ class PlayerForm extends Form
                     }
 
                     //return fieldset
-                    $returnStats = new Fieldset("returnStats");
-                    $returnStats->setLabel("Return Stats");
-                    $returnFields = ["kickAvg", "kickYds", "kickTds", "puntAvg", "puntYds", "puntTds"];
-                    foreach ($returnFields as $field) {
-                        $newField = new Element($field);
-                        $newField->setLabel($field);
-                        $newField->setLabelAttributes(['class' => 'form-group col m2']);
-                        $returnStats->add($newField);
-                        if ($collegeStats != null
-                            && array_key_exists($i, $collegeStats)
-                            && array_key_exists('returnStats', $collegeStats[$i])
-                            && array_key_exists($field, $collegeStats[$i]['returnStats'])
-                        ) {
-                            $newField->setValue($collegeStats[$i]['returnStats'][$field]);
-                        }
-                    }
-                    $collegeFieldset->add($returnStats);
+//                    $returnStats = new Fieldset("returnStats");
+//                    $returnStats->setLabel("Return Stats");
+//                    $returnFields = ["kickAvg", "kickYds", "kickTds", "puntAvg", "puntYds", "puntTds"];
+//                    foreach ($returnFields as $field) {
+//                        $newField = new Element($field);
+//                        $newField->setLabel($field);
+//                        $newField->setLabelAttributes(['class' => 'form-group col m2']);
+//                        $returnStats->add($newField);
+//                        if ($collegeStats != null
+//                            && array_key_exists($i, $collegeStats)
+//                            && array_key_exists('returnStats', $collegeStats[$i])
+//                            && array_key_exists($field, $collegeStats[$i]['returnStats'])
+//                        ) {
+//                            $newField->setValue($collegeStats[$i]['returnStats'][$field]);
+//                        }
+//                    }
+//                    $collegeFieldset->add($returnStats);
 
                     //total fieldset
                     $teamTotal = new Fieldset("totals");
                     $teamTotal->setLabel("totals");
-                    $totalFields = ["tds","yds","recs","returnTds","returnYds"];
+                    //totals": {"tds": 43, "yds": 5364, "recs": 292, "carries": 525, "rushing": 1904.5, "scrimmage": 5307.900000000001}
+                    $totalFields = ["tds","yds","recs","carries","rushing","scrimmage","returnTds","returnYds"];
                     foreach ($totalFields as $field) {
                         $newField = new Element($field);
                         $newField->setLabel($field);
@@ -421,7 +422,7 @@ class PlayerForm extends Form
         $player->decodeJson();
         //get combine stats
         $metrics = $player->getMetrics();
-        $metrics['fortyTIme'] = $data["fortyTime"];
+        $metrics['fortyTime'] = $data["fortyTime"];
         $metrics['verticalJump'] = $data["verticalJump"];
         $metrics['broadJump'] = $data["broadJump"];
         $metrics['shuttle'] = $data["shuttle"];
@@ -433,12 +434,14 @@ class PlayerForm extends Form
         $playerInfo["bmi"] = $data["body"]["bmi"];
         $playerInfo["arms"] = $data["body"]["arms"];
         $playerInfo["armsInches"] = $data["body"]["armsInches"];
-     //   $playerInfo["hands"] = $data["body"]["hands"];
+        //$playerInfo["hands"] = $data["body"]["hands"];
         $playerInfo["height"] = $data["body"]["height"];
         $playerInfo["heightInches"] = $data["body"]["heightInches"];
         $playerInfo["college"] = $data["body"]["college"];
         $playerInfo["weight"] = $data["body"]["weight"];
-        $palyerInfo["age"] = $data["body"]["age"];
+        $playerInfo["age"] = $data["body"]["age"];
+        $playerInfo["draft_year"] = $data["body"]["draft_year"];
+        $playerInfo["draft_pick"] = $data["body"]["draft_pick"];
 
         //college stats
         $collegeStats = $player->getCollegeStats();

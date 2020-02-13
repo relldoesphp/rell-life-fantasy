@@ -499,9 +499,9 @@ class Player implements InputFilterAwareInterface
                         "recAvg" => $stats['recAvg'],
                         "recTds" => $stats['recTds'],
                         "carryDom" => round(($stats['rushAtt'] / $stats['totals']['carries']) * 100, 1)."%",
-                        "recDom" => round($stats['recDominator'],1)."%",
-                        "ydDom" => round($stats['ydsDominator'],1)."%",
-                        "tdDom" => round($stats['tdDominator'],1)."%"
+                        "recDom" => round(($stats['recs'] / $stats['totals']['recs']) * 100, 1)."%",
+                        "ydDom" => round((($stats['rushYds'] + $stats['recYds']) / $stats['totals']['yds']) * 100, 1)."%",
+                        "tdDom" => round((($stats['rushTds'] + $stats['recTds']) / $stats['totals']['tds']) * 100, 1)."%",
                     ];
                 }
 
