@@ -1018,7 +1018,7 @@ var rlf =  {
 
         var roleFits = [
             {
-                "name":"Slot Score:",
+                "name":"Slot WR Score:",
                 "value":rlfData.player.metrics.slot,
                 "percentile":rlfData.player.ordinals.slot,
                 "percent":rlfData.player.percentiles.slot

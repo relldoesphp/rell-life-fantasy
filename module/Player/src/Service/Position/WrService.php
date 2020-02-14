@@ -640,7 +640,9 @@ class WrService extends ServiceAbstract
         } elseif (in_array($conf, $minor5)) {
             $collegeScore = $collegeScore + 0;
         } else {
-            $collegeScore = $collegeScore - 4;
+            if ($collegeScore > 15) {
+                $collegeScore = $collegeScore - 4;
+            }
         }
 //
         // Best breakout score

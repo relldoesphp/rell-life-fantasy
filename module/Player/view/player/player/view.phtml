@@ -38,9 +38,9 @@
                     <h2 class="text-right fade-in-out"><?= $player['first_name']." ".$player['last_name'] ?></h2>
                     <h5 class="fade-in-out"><?= $player['player_info']['height']?>&nbsp;-&nbsp;<?= $player['player_info']['weight']?>&nbsp;lbs&nbsp;-&nbsp; <?= $player['player_info']['age']?> years old &nbsp;-&nbsp; <?= $player['player_info']['college']?></h5>
                     <h4 class="fade-in-out">#<?= (array_key_exists('number', $player['team_info'])) ? $player['team_info']['number'] : '0' ?> <?=$player['position']?> <?= $player['team']?></h4>
-                    <div class="col s12 player-summary">
+                    <div class="col s12 player-summary hide-on-small-only">
                         <h5>2019 Stats</h5>
-                        <table id="summary-stats">
+                        <table class="responsive-table" id="summary-stats">
                         </table>
                     </div>
                 </div>
@@ -74,29 +74,29 @@
         <a class="waves-effect waves-light btn-small right center modal-trigger dark" href="#modal2">Glossary<i class="material-icons">live_help</i></a>
         <div class="col s12 center brand-logo"><h5>Draft Prospect Breakdown</h5></div>
         <div class="col s12 skillset hoverable z-depth-2">
-            <div class="slot-box center col m4">
+            <div class="slot-box center col m4 s4">
                 <div style="margin-top:10px" class="role-one-title combine-title"></div>
                 <div class="role-one-score combine-score"></div>
                 <div class="progress role-one-bar">
                     <div class="determinate" style="width: 0%"></div>
                 </div>
-                <div class="role-one-percentile percentile"></div>
+                <div class="role-one-percentile percentile hide-on-small-only"></div>
             </div>
-            <div class="deep-box center col m4">
+            <div class="deep-box center col m4 s4">
                 <div style="margin-top:10px" class="role-two-title combine-title"></div>
                 <div class="role-two-score combine-score"></div>
                 <div class="progress role-two-bar">
                     <div class="determinate" style="width: 0%"></div>
                 </div>
-                <div class="role-two-percentile percentile"></div>
+                <div class="role-two-percentile percentile hide-on-small-only"></div>
             </div>
-            <div class="alpha-box center col m4">
+            <div class="alpha-box center col m4 s4">
                 <div style="margin-top:10px" class="role-three-title combine-title"></div>
                 <div class="role-three-score combine-score"></div>
                 <div class="progress role-three-bar">
                     <div class="determinate" style="width: 0%"></div>
                 </div>
-                <div class="role-three-percentile percentile"></div>
+                <div class="role-three-percentile percentile hide-on-small-only"></div>
             </div>
         </div>
         <?php if ($player['position'] == 'WR'): ?>
@@ -107,7 +107,7 @@
                 $player['metrics']['yac'] = (array_key_exists('yac', $player['metrics'])) ? $player['metrics']['yac'] : "-";
             ?>
             <div class="row">
-                <div class="bench-box center col m3">
+                <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Beat Press</div>
                     <div class="combine-score"><?= (array_key_exists('beatPress', $player['metrics'])) ? $player['metrics']['beatPress'] : 0?></div>
                     <div class="progress bench-bar">
@@ -115,7 +115,7 @@
                     </div>
                     <div class="bench-percentile percentile"></div>
                 </div>
-                <div class="bench-box center col m3">
+                <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Separation</div>
                     <div class="combine-score"><?= (array_key_exists('separation', $player['metrics'])) ? $player['metrics']['separation'] : 0?></div>
                     <div class="progress bench-bar">
@@ -123,7 +123,7 @@
                     </div>
                     <div class="bench-percentile percentile"></div>
                 </div>
-                <div class="bench-box center col m3">
+                <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Contested Catch</div>
                     <div class="combine-score"><?= (array_key_exists('contested', $player['metrics'])) ? $player['metrics']['contested'] : 0?></div>
                     <div class="progress bench-bar">
@@ -131,7 +131,7 @@
                     </div>
                     <div class="bench-percentile percentile"></div>
                 </div>
-                <div class="bench-box center col m3">
+                <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">YAC Score</div>
                     <div class="combine-score"><?= (array_key_exists('yac', $player['metrics'])) ? $player['metrics']['yac'] : 0 ?></div>
                     <div class="progress bench-bar">
@@ -175,7 +175,7 @@
             $benchOrdinal = ($player['percentiles']['benchPress'] > O) ? "( ".$player['ordinals']['benchPress']." percentile )" : "N/A";
         ?>
         <div class="col s12 combine z-depth-2 hoverable ">
-            <div class="forty-box center col m2">
+            <div class="forty-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">40 time</div>
                 <div class="combine-score"><?= $fortyTime ?></div>
                 <div class="progress forty-bar">
@@ -183,7 +183,7 @@
                 </div>
                 <div class="forty-percentile percentile"><?= $fortyOrdinal ?></div>
             </div>
-            <div class="shuttle-box center col m2">
+            <div class="shuttle-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">Shuttle</div>
                 <div class="combine-score"><?= $shuttle ?></div>
                 <div class="progress shuttle-bar">
@@ -191,7 +191,7 @@
                 </div>
                 <div class="shuttle-percentile percentile"><?= $shuttleOrdinal ?></div>
             </div>
-            <div class="cone-box center col m2">
+            <div class="cone-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">3 Cone</div>
                 <div class="combine-score"><?= $cone ?></div>
                 <div class="progress cone-bar">
@@ -199,7 +199,7 @@
                 </div>
                 <div class="cone-percentile percentile"><?= $coneOrdinal ?></div>
             </div>
-            <div class="vertical-box center col m2">
+            <div class="vertical-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">Vertical Jump</div>
                 <div class="combine-score"><?= $vertical ?></div>
                 <div class="progress vertical-bar">
@@ -207,7 +207,7 @@
                 </div>
                 <div class="vertical-percentile percentile"><?= $verticalOrdinal ?></div>
             </div>
-            <div class="broad-box center col m2">
+            <div class="broad-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">Broad Jump</div>
                 <div class="combine-score"><?= $broad ?></div>
                 <div class="progress broad-bar">
@@ -215,7 +215,7 @@
                 </div>
                 <div class="broad-percentile percentile"><?= $broadOrdinal ?></div>
             </div>
-            <div class="bench-box center col m2">
+            <div class="bench-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">Bench Press</div>
                 <div class="combine-score"><?= $bench ?></div>
                 <div class="progress bench-bar">
@@ -251,14 +251,14 @@
         </div>
         <div id="test1" class="col s12">
             <div class="col-sm-12">
-                <table id="season-stats" class="display cell-border compact responsive-table" width="100%">
+                <table id="season-stats" class="display cell-border compact" width="100%">
 
                 </table>
             </div>
         </div>
         <div id="test2" class="col s12">
             <div class="col-sm-12">
-                <table id="game-logs" class="display cell-border compact responsive-table" width="100%">
+                <table id="game-logs" class="display cell-border compact" width="100%">
 
                     <tfoot>
                     <tr>
@@ -303,7 +303,7 @@
                 </div>
             </div>
             <div class="col s12">
-                <table id="college-stats" class="display cell-border compact responsive-table" width="100%">
+                <table id="college-stats" class="display cell-border compact" width="100%">
                     <tfoot>
                     <tr>
                         <th colspan="2">Career Average:<br>Career Total:</th>
