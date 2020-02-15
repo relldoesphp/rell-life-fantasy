@@ -346,7 +346,7 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
-
+                "info":false,
                 "columns": [
                     {title: "Year", data: "name", "defaultContent":0},
                     {title: "GP", data: "stats.gp", "defaultContent":0},
@@ -379,6 +379,7 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
+                "info":false,
                 "columns": [
                     {title: "", data: "name", "defaultContent":0},
                     {title: player1.first_name+" "+player1.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
@@ -467,6 +468,7 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
+                "info":false,
                 "columns": [
                     {title: "Year", data: "name", "defaultContent":0},
                     {title: "GP", data: "stats.gp", "defaultContent":0},
@@ -499,6 +501,7 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
+                "info":false,
                 "columns": [
                     {title: "", data: "name", "defaultContent":0},
                     {title: player1.first_name+" "+player1.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
@@ -542,6 +545,7 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
+                "info":false,
                 "columns": [
                     {title: "", data: "name", "defaultContent":0},
                     {title: player1.first_name+" "+player1.last_name, data: "metric1", "defaultContent":0, className: "dt-center", targets: "_all"},
@@ -587,7 +591,7 @@ var rlf =  {
             });
         }
 
-
+        rlf.colorDeterminates();
     },
 
     /************************* QB Metrics **************************/
@@ -2461,7 +2465,7 @@ var rlf =  {
             // layout.autosize = true;
         }
 
-        Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false});
+        Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false, staticPlot: true});
         $("#radar-graph").addClass("scale-in");
     }
 

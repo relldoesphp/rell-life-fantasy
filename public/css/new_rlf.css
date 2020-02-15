@@ -243,6 +243,10 @@ div.skillset > div {
     margin:auto;
 }
 
+.measurables {
+    height:auto;
+}
+
 .section.full-height.search-section {
     height:800px;
 }
