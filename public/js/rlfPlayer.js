@@ -131,7 +131,7 @@ var rlf =  {
             }
         };
 
-        Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false});
+        Plotly.plot("radar-graph", data, layout, {responsive: true, displayModeBar: false, staticPlot: true});
         $("#radar-graph").addClass("scale-in");
     },
 
