@@ -89,67 +89,82 @@ $this->headTitle("{$players[0]['first_name']} {$players[0]['last_name']} vs {$pl
             </div>
     </div>
     <div class="row player-prospect container scrollspy" id="player-prospect" style="margin-top:50px">
-        <div class="col m5">
-            <table>
-                <tr>
-                    <th class="player-skillz-role1 center" width="33%">Slot</th>
-                    <th class="player-skillz-role2 center" width="33%">Deep</th>
-                    <th class="player-skillz-role3 center" width="33%">Outside-X</th>
-                </tr>
-                <tr id="player1-skill">
-                    <td>
-                        <div class="role-one-score center"></div>
-                        <div class="progress role-one-bar">
-                            <div class="determinate" style="width: 0%"></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="role-two-score center"></div>
-                        <div class="progress role-two-bar">
-                            <div class="determinate" style="width: 0%"></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="role-three-score center"></div>
-                        <div class="progress role-three-bar">
-                            <div class="determinate" style="width: 0%"></div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+        <div class="col m5" id="player1-skill">
+            <div class="col m4">
+                <div class="player-skillz-role1 center combine-title"></div>
+                <div class="role-one-score center combine-score"></div>
+                <div class="progress role-one-bar">
+                    <div class="determinate" style=""></div>
+                </div>
+            </div>
+            <div class="col m4">
+                <div class="player-skillz-role2 center combine-title"></div>
+                <div class="role-two-score center combine-score"></div>
+                <div class="progress role-two-bar">
+                    <div class="determinate" style=""></div>
+                </div>
+            </div>
+            <div class="col m4">
+                <div class="player-skillz-role3 center combine-title"></div>
+                <div class="role-three-score center combine-score"></div>
+                <div class="progress role-three-bar">
+                    <div class="determinate" style=""></div>
+                </div>
+            </div>
         </div>
+<!--            <table>-->
+<!--                <tr>-->
+<!--                    <th class="player-skillz-role1 center" width="33%">Slot</th>-->
+<!--                    <th class="player-skillz-role2 center" width="33%">Deep</th>-->
+<!--                    <th class="player-skillz-role3 center" width="33%">Outside-X</th>-->
+<!--                </tr>-->
+<!--                <tr id="player1-skill">-->
+<!--                    <td>-->
+<!--                        <div class="role-one-score center"></div>-->
+<!--                        <div class="progress role-one-bar">-->
+<!--                            <div class="determinate" style=""></div>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <div class="role-two-score center"></div>-->
+<!--                        <div class="progress role-two-bar">-->
+<!--                            <div class="determinate" style=""></div>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <div class="role-three-score center"></div>-->
+<!--                        <div class="progress role-three-bar">-->
+<!--                            <div class="determinate" style=""></div>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </table>-->
         <div class="col m2 center">
             <h4>VS.</h4>
         </div>
-        <div class="col m5">
-            <table id="player-skillz">
-                <tr>
-                    <th class="player-skillz-role1 center" width="33%">Slot</th>
-                    <th class="player-skillz-role2 center" width="33%">Deep</th>
-                    <th class="player-skillz-role3 center" width="33%">Outside-X</th>
-                </tr>
-                <tr id="player2-skill">
-                    <td>
-                        <div class="role-one-score center"></div>
-                        <div class="progress role-one-bar">
-                            <div class="determinate" style="width: 0%"></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="role-two-score center"></div>
-                        <div class="progress role-two-bar">
-                            <div class="determinate" style="width: 0%"></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="role-three-score center"></div>
-                        <div class="progress role-three-bar">
-                            <div class="determinate" style="width: 0%"></div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <div class="col m5" id="player2-skill">
+                <div class="col m4">
+                    <div class="player-skillz-role1 center combine-title"></div>
+                    <div class="role-one-score center combine-score"></div>
+                    <div class="progress role-one-bar ">
+                        <div class="determinate" style=""></div>
+                    </div>
+                </div>
+                <div class="col m4">
+                    <div class="player-skillz-role2 center combine-title"></div>
+                    <div class="role-two-score center combine-score"></div>
+                    <div class="progress role-two-bar">
+                        <div class="determinate" style=""></div>
+                    </div>
+                </div>
+                <div class="col m4">
+                    <div class="player-skillz-role3 center combine-title"></div>
+                    <div class="role-three-score center combine-score"></div>
+                    <div class="progress role-three-bar">
+                        <div class="determinate" style=""></div>
+                    </div>
+                </div>
+            </div>
         <a class="dark waves-effect waves-light btn-small right center modal-trigger" href="#modal2">Explain<i class="material-icons">live_help</i></a>
         <div class="col s12 center row-title"><h6>Prospect Breakdown</h6></div>
 <!--        <div class="col m1 s12 skillset z-depth-1 hoverable" id="player1-skill" style="height:450px">-->

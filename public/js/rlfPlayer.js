@@ -245,15 +245,15 @@ var rlf =  {
             var alphapercent = Math.round(rlfData.players[0].percentiles.alpha);
 
             $("#player1-skill .role-one-bar .determinate").css("width", slotpercent + "%");
-            $("#player1-skill .role-one-score").text(slotpercent + "%")
+            $("#player1-skill .role-one-score").text(rlfData.players[0].metrics['slot']);
 
 
             $("#player1-skill .role-two-bar .determinate").css("width", deeppercent + "%");
-            $("#player1-skill .role-two-score").text(deeppercent + "%")
+            $("#player1-skill .role-two-score").text(rlfData.players[0].metrics['deep']);
 
 
             $("#player1-skill .role-three-bar .determinate").css("width", alphapercent + "%");
-            $("#player1-skill .role-three-score").text(alphapercent + "%")
+            $("#player1-skill .role-three-score").text(rlfData.players[0].metrics['alpha']);
 
             /*** Player2 ***/
             var slotpercent = Math.round(rlfData.players[1].percentiles.slot);
@@ -261,13 +261,13 @@ var rlf =  {
             var alphapercent = Math.round(rlfData.players[1].metrics.alpha);
 
             $("#player2-skill .role-one-bar .determinate").css("width", slotpercent + "%");
-            $("#player2-skill .role-one-score").text(slotpercent + "%")
+            $("#player2-skill .role-one-score").text(rlfData.players[1].metrics['slot']);
 
             $("#player2-skill .role-two-bar .determinate").css("width", deeppercent + "%");
-            $("#player2-skill .role-two-score").text(deeppercent + "%")
+            $("#player2-skill .role-two-score").text(rlfData.players[1].metrics['deep']);
 
             $("#player2-skill .role-three-bar .determinate").css("width", alphapercent + "%");
-            $("#player2-skill .role-three-score").text(alphapercent + "%")
+            $("#player2-skill .role-three-score").text(rlfData.players[1].metrics['alpha']);
         }
 
         if (position == "RB") {
@@ -423,6 +423,7 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
+                "info":false,
                 "columns": [
                     {title: "", data: "name", "defaultContent":0},
                     {title: player1.first_name+" "+player1.last_name, data: "metric1", "defaultContent":0, className: "dt-center", targets: "_all"},
