@@ -242,9 +242,9 @@ class RbService extends ServiceAbstract
         foreach ($collegeStats as $stats) {
             if ($stats->year != "Career") {
                 // determine dominators
-                $dominator['td'] = $stats['tdDominator'];
-                $dominator['yd'] = $stats['ydsDominator'];
-                $dominator['rec'] = $stats['recDominator'];
+                $dominator['td'] = round(($stats['scrimmageTds'] / $stats['totals']['tds']) * 100, 2);
+                $dominator['yd'] = round(($stats['scrimmageYds'] / $stats['totals']['yds']) * 100, 2);
+                $dominator['rec'] = round(($stats['recs'] / $stats['totals']['recs']) * 100, 2);
                 $dominator['carries'] = round(($stats['rushAtt'] / $stats['totals']['carries']) * 100, 2);
                 $breakout = 0;
 
@@ -332,10 +332,15 @@ class RbService extends ServiceAbstract
                 }
             }
             $lastBreakout = $breakout;
-            $conf = $stats['conf'];
-            if ($stats['college'] == "Notre Dame") {
-                $conf = "ACC";
+            if (array_key_exists('conference', $stats)) {
+                $conf = $stats['conference'];
+                if ($stats['college'] == "Notre Dame") {
+                    $conf = "ACC";
+                }
+            } else {
+                $conf = "";
             }
+
             $lastYear = $stats['class'];
             $i++;
         }
@@ -420,12 +425,12 @@ class RbService extends ServiceAbstract
 
     public function scrapCollegeJob()
     {
-        $rbs = $this->repository->findAllPlayers("WR");
+        $rbs = $this->repository->findAllPlayers("RB");
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $rbs->count());
         $pointer = 0;
 
         foreach ($rbs as $rb) {
-            if ($rb->getId() == 2496) {
+            if (true) {
                 $rb->decodeJson();
                 $result = $this->scrapCollegeStats($rb);
                 if ($result == false) {
@@ -505,9 +510,9 @@ class RbService extends ServiceAbstract
                     $collegeStats[$year]['recTds'] = $rowChildren->item(13)->nodeValue;
                     $collegeStats[$year]['scrimmageYds'] = $rowChildren->item(15)->nodeValue;
                     $collegeStats[$year]['scrimmageTds'] = $rowChildren->item(16)->nodeValue;
-                    $collegeStats[$year]['ydsDominator'] = (round($collegeStats[$year]['scrimmageYds'] / $totals['yds'], 4)) * 100;
-                    $collegeStats[$year]['recDominator'] = (round($collegeStats[$year]['recs'] / $totals['recs'], 4)) * 100;
-                    $collegeStats[$year]['tdDominator'] = (round($collegeStats[$year]['scrimmageTds'] / $totals['tds'], 4)) * 100;
+//                    $collegeStats[$year]['ydsDominator'] = (round($collegeStats[$year]['scrimmageYds'] / $totals['yds'], 4)) * 100;
+//                    $collegeStats[$year]['recDominator'] = (round($collegeStats[$year]['recs'] / $totals['recs'], 4)) * 100;
+//                    $collegeStats[$year]['tdDominator'] = (round($collegeStats[$year]['scrimmageTds'] / $totals['tds'], 4)) * 100;
                 }
             }
             // $result is a DOMElement

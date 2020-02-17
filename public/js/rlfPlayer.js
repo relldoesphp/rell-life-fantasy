@@ -831,8 +831,8 @@ var rlf =  {
                 ],
                 "data":[
                     {
-                        "avg":currentStats.stats.pts_ppr_avg.toFixed(2),
-                        "points":currentStats.stats.pts_ppr.toFixed(2),
+                        "avg":currentStats.stats.pts_ppr_avg,
+                        "points":currentStats.stats.pts_ppr,
                         "runs":currentStats.stats.rush_att,
                         "recs":currentStats.stats.rec,
                         "yds":(currentStats.stats.rec_yd + currentStats.stats.rush_yd),
