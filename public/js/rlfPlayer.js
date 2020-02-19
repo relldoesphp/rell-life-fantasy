@@ -580,8 +580,8 @@ var rlf =  {
                     },
                     {
                         "name": "Best Reception Share",
-                        "metric1": player1.metrics.bestRecDominator.toFixed(2)+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.bestRecDominator+"%'></div></div>",
-                        "metric2": player2.metrics.bestRecDominator.toFixed(2)+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.bestRecDominator+"%'></div></div>",
+                        "metric1": player1.metrics.bestRecDominator+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.bestRecDominator+"%'></div></div>",
+                        "metric2": player2.metrics.bestRecDominator+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.bestRecDominator+"%'></div></div>",
                     },
                     {
                         "name": "College Score",
@@ -1150,73 +1150,78 @@ var rlf =  {
 
         rlf.makeCollegeTable(collegeColumns);
 
-        var seasonColumns = [
-            {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
-            {title: "GP", data: "stats.gp", "defaultContent":0},
-            {title: "Points", data: "stats.pts_ppr", "defaultContent":0},
-            {title: "PPG", data:"stats.pts_ppr_avg", "defaultContent":0},
-            {title: "Rank", data: "ranks.pts_ppr", "defaultContent":0},
-            {title: "Recs", data: "stats.rec", "defaultContent":0},
-            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
-            {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
-            {title: "Tds", data: "stats.rec_td", "defaultContent":0},
-            {title: "Fds", data: "stats.rec_fd", "defaultContent":0},
-            {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
-            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
-        ];
-        $('#season-stats').append("<tfoot><th colspan=\"2\">Career Average:<br>Career Total:</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tfoot>");
-        rlf.makeSeasonTable(seasonColumns);
+        if (rlfData.player.seasonStats !== undefined) {
+            var seasonColumns = [
+                {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
+                {title: "GP", data: "stats.gp", "defaultContent":0},
+                {title: "Points", data: "stats.pts_ppr", "defaultContent":0},
+                {title: "PPG", data:"stats.pts_ppr_avg", "defaultContent":0},
+                {title: "Rank", data: "ranks.pts_ppr", "defaultContent":0},
+                {title: "Recs", data: "stats.rec", "defaultContent":0},
+                {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+                {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
+                {title: "Tds", data: "stats.rec_td", "defaultContent":0},
+                {title: "Fds", data: "stats.rec_fd", "defaultContent":0},
+                {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
+                {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
+            ];
+            $('#season-stats').append("<tfoot><th colspan=\"2\">Career Average:<br>Career Total:</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tfoot>");
+            rlf.makeSeasonTable(seasonColumns);
 
-        var gameLogColumns = [
-            {title: "Year", searchable: true, data: "year"},
-            {title: "Wk", data: "week"},
-            {title: "PPR Points",  data: "stats.pts_ppr", "defaultContent":0},
-            {title: "PPR Rank", data: "ranks.pts_ppr"},
-            {title: "Recs", data: "stats.rec", "defaultContent":0},
-            {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
-            {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
-            {title: "Tds", data: "stats.rec_td", "defaultContent":0},
-            {title: "Fds", data: "stats.rec_fd", "defaultContent":0},
-            {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
-            {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
-        ];
+            var gameLogColumns = [
+                {title: "Year", searchable: true, data: "year"},
+                {title: "Wk", data: "week"},
+                {title: "PPR Points",  data: "stats.pts_ppr", "defaultContent":0},
+                {title: "PPR Rank", data: "ranks.pts_ppr"},
+                {title: "Recs", data: "stats.rec", "defaultContent":0},
+                {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
+                {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
+                {title: "Tds", data: "stats.rec_td", "defaultContent":0},
+                {title: "Fds", data: "stats.rec_fd", "defaultContent":0},
+                {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
+                {title: "YPT", data: "stats.rec_ypt", "defaultContent":0}
+            ];
 
-        rlf.makeGameLogTable(gameLogColumns);
+            rlf.makeGameLogTable(gameLogColumns);
 
-        var currentStats = rlfData.player.seasonStats["2019"];
-        $('#summary-stats').DataTable({
-            "paging": false,
-            "ordering": false,
-            "searching": false,
-            "info":false,
-            "className":'compact',
-            "columns": [
-                {title:"Avg", data: "avg", "defaultContent":"n/a"},
-                {title:"PPR", data: "points", "defaultContent":"n/a"},
-                {title:"Recs", data: "recs", "defaultContent":"n/a"},
-                {title:"Tgts", data: "targets", "defaultContent":"n/a"},
-                {title:"Yds", data: "yds", "defaultContent":"n/a"},
-                {title:"Tds", data: "tds", "defaultContent":""}
-            ],
-            "data":[
-                {
-                    "avg":currentStats.stats.pts_ppr_avg,
-                    "points":currentStats.stats.pts_ppr,
-                    "recs":currentStats.stats.rec,
-                    "targets":currentStats.stats.rec_tgt,
-                    "yds":currentStats.stats.rec_yd,
-                    "tds":currentStats.stats.all_td
-                },
-                {
-                    "avg":currentStats.ranks.pts_ppr_avg,
-                    "points":currentStats.ranks.pts_ppr,
-                    "recs":currentStats.ranks.rec,
-                    "targets":currentStats.ranks.rec_tgt,
-                    "yds":currentStats.ranks.rec_yd,
-                    "tds":currentStats.ranks.all_td
-                }
-            ]
-        });
+            var currentStats = rlfData.player.seasonStats["2019"];
+            if (currentStats != undefined) {
+                $('#summary-stats').DataTable({
+                    "paging": false,
+                    "ordering": false,
+                    "searching": false,
+                    "info":false,
+                    "className":'compact',
+                    "columns": [
+                        {title:"Avg", data: "avg", "defaultContent":"n/a"},
+                        {title:"PPR", data: "points", "defaultContent":"n/a"},
+                        {title:"Recs", data: "recs", "defaultContent":"n/a"},
+                        {title:"Tgts", data: "targets", "defaultContent":"n/a"},
+                        {title:"Yds", data: "yds", "defaultContent":"n/a"},
+                        {title:"Tds", data: "tds", "defaultContent":""}
+                    ],
+                    "data":[
+                        {
+                            "avg":currentStats.stats.pts_ppr_avg,
+                            "points":currentStats.stats.pts_ppr,
+                            "recs":currentStats.stats.rec,
+                            "targets":currentStats.stats.rec_tgt,
+                            "yds":currentStats.stats.rec_yd,
+                            "tds":currentStats.stats.all_td
+                        },
+                        {
+                            "avg":currentStats.ranks.pts_ppr_avg,
+                            "points":currentStats.ranks.pts_ppr,
+                            "recs":currentStats.ranks.rec,
+                            "targets":currentStats.ranks.rec_tgt,
+                            "yds":currentStats.ranks.rec_yd,
+                            "tds":currentStats.ranks.all_td
+                        }
+                    ]
+                });
+            }
+        }
+
 
         var roleFits = [
             {
