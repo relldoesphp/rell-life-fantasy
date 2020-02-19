@@ -742,7 +742,7 @@ var rlf =  {
                 $(".college-row-one p").text("Full Breakout Class: " + rlfData.player.metrics.breakoutClass);
                 $(".college-row-two p").text("Dominate Seasons: " + rlfData.player.metrics.breakoutSeasons + " out of " + rlfData.player.metrics.collegeSeasons);
                 $(".college-row-three p").text("Best Dominator: " + rlfData.player.metrics.bestDominator + "%");
-                $(".college-row-four p").text("Best Reception Dominator: " + rlfData.player.metrics.bestRecDominator + "%");
+                $(".college-row-four p").text("Best Reception Share: " + rlfData.player.metrics.bestRecDominator + "%");
                 $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
                 $(".donut-inner span").text(rlfData.player.ordinals.collegeScore + " percentile");
                 var config = {
