@@ -210,17 +210,17 @@ class PlayerManager
 //        $olService->calculateSpecialScores();
 //        $olService->calculateSpecialPercentiles();
 
-//        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-////        $wrService->calculateMetrics();
-////        $wrService->calculatePercentiles();
-//        $wrService->calculateSpecialScores();
-//        $wrService->calculateSpecialPercentiles();
+        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $wrService->calculateMetrics();
+        $wrService->calculatePercentiles();
+        $wrService->calculateSpecialScores();
+        $wrService->calculateSpecialPercentiles();
 
-        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $rbService->calculateMetrics("RB");
 //        $rbService->calculatePercentiles("RB");
-        $rbService->calculateSpecialScores("RB");
-        $rbService->calculateSpecialPercentiles("RB");
+//        $rbService->calculateSpecialScores("RB");
+//        $rbService->calculateSpecialPercentiles("RB");
 //
 //        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $teService->calculateMetrics("TE");
@@ -237,14 +237,14 @@ class PlayerManager
 
     public function scrapCollegeJob()
     {
-        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $rbService->scrapCollegeJob();
+//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $rbService->scrapCollegeJob();
 
 //        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $teService->scrapCollegeJob();
 
-//        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $wrService->scrapCollegeJob();
+        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $wrService->scrapCollegeJob();
     }
 
     public function getSalaries()

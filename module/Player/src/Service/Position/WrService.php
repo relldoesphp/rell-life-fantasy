@@ -214,20 +214,20 @@ class WrService extends ServiceAbstract
                 $alphaScore = $alphaScore - 10;
             }
 
-            if ($alphaScore > 50  && $metrics['contested'] < 70 && $metrics['collegeScore'] < 30) {
+            if ($alphaScore > 50  && $metrics['contested'] < 70) {
                 $alphaScore = $alphaScore - 5;
             }
 
             if ($alphaScore > 50 && $metrics['separation'] < 40) {
-                $alphaScore = $alphaScore - 5;
+                $alphaScore = $alphaScore - 7;
             }
 
             if ($alphaScore > 50 && $metrics['separation'] < 30) {
                 $alphaScore = $alphaScore - 10;
             }
 
-            if ($alphaScore > 50 && $metrics['separation'] < 20) {
-                $alphaScore = $alphaScore - 12;
+            if ($metrics['separation'] < 20) {
+                $alphaScore = $alphaScore - 10;
             }
 
             if ($alphaScore > 50 && $metrics['collegeScore'] < 30 && $metrics['contested'] < 50) {
@@ -599,7 +599,6 @@ class WrService extends ServiceAbstract
                     }
                 }
 
-
             }
         }
 
@@ -636,12 +635,12 @@ class WrService extends ServiceAbstract
         $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
         $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
         if (in_array($conf, $power5) ) {
-            $collegeScore = $collegeScore + 4;
+            $collegeScore = $collegeScore + 2;
         } elseif (in_array($conf, $minor5)) {
             $collegeScore = $collegeScore + 0;
         } else {
             if ($collegeScore > 15) {
-                $collegeScore = $collegeScore - 4;
+                $collegeScore = $collegeScore - 2;
             }
         }
 //
@@ -675,33 +674,33 @@ class WrService extends ServiceAbstract
                 default:
             }
         }
-        switch ($bestDominator) {
-            case $bestDominator >= 50:
-                $collegeScore = $collegeScore + 5;
-                break;
-            case $bestDominator >= 45:
-                $collegeScore = $collegeScore + 4.5;
-                break;
-            case $bestDominator >= 40:
-                $collegeScore = $collegeScore + 4;
-                break;
-            case $bestDominator >= 37.51:
-                $collegeScore = $collegeScore + 3.5;
-                break;
-            case $bestDominator >= 35:
-                $collegeScore = $collegeScore + 3;
-                break;
-            case $bestDominator >= 33.51:
-                $collegeScore = $collegeScore + 2.5;
-                break;
-            case $bestDominator >= 30:
-                $collegeScore = $collegeScore + 2;
-                break;
-            case $bestDominator >= 25:
-                $collegeScore = $collegeScore + 1.5;
-                break;
-            default:
-        }
+//        switch ($bestDominator) {
+//            case $bestDominator >= 50:
+//                $collegeScore = $collegeScore + 5;
+//                break;
+//            case $bestDominator >= 45:
+//                $collegeScore = $collegeScore + 4.5;
+//                break;
+//            case $bestDominator >= 40:
+//                $collegeScore = $collegeScore + 4;
+//                break;
+//            case $bestDominator >= 37.51:
+//                $collegeScore = $collegeScore + 3.5;
+//                break;
+//            case $bestDominator >= 35:
+//                $collegeScore = $collegeScore + 3;
+//                break;
+//            case $bestDominator >= 33.51:
+//                $collegeScore = $collegeScore + 2.5;
+//                break;
+//            case $bestDominator >= 30:
+//                $collegeScore = $collegeScore + 2;
+//                break;
+//            case $bestDominator >= 25:
+//                $collegeScore = $collegeScore + 1.5;
+//                break;
+//            default:
+//        }
 
 //        if ($bestReturn != 0) {
 //            switch ($bestReturn) {
@@ -753,7 +752,7 @@ class WrService extends ServiceAbstract
         $pointer = 0;
 
         foreach ($wrs as $wr) {
-            if ($wr->getId() == 26499) {
+            if ($wr->getTeam() == "Rookie" && $wr->getCollegeStats() == null) {
                 $wr->decodeJson();
                 $result = $this->scrapCollegeStats($wr);
                 if ($result == false) {

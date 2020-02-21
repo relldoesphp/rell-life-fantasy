@@ -606,7 +606,6 @@ class Player implements InputFilterAwareInterface
             'arms',
             'weight',
             'heightInches',
-            'armsInches'
             ];
         foreach($metricsArray as $metric) {
             if (!array_key_exists($metric, $this->metrics)) {

@@ -154,16 +154,16 @@ class RbService extends ServiceAbstract
 
             /*** Make Receiver Base ***/
             // 1. We have agility scores and forty time
-            if ($metrics['routeAgility'] !== null && $metrics['jukeAgility'] !== null && $metrics['fortyTime'] !== null) {
+            if ($metrics['shuttle'] !== null && $metrics['cone'] !== null && $metrics['fortyTime'] !== null) {
                 $data['receiver'] = ($percentiles['routeAgility'] * .6) + ($percentiles['jukeAgility'] * .2) + ($percentiles['fortyTime'] * .2);
             }
             // 2. No agility scores just forty time
-            if ($metrics['routeAgility'] == null && $metrics['jukeAgility'] == null && $metrics['fortyTime'] !== null) {
+            if ($metrics['shuttle'] == null && $metrics['cone'] == null && $metrics['fortyTime'] !== null) {
                 $data['receiver'] = $percentiles['fortyTime'];
             }
 
             // 3. Agility but no 40 time
-            if ($metrics['routeAgility'] == null && $metrics['jukeAgility'] == null && $metrics['fortyTime'] !== null) {
+            if ($metrics['cone'] == null && $metrics['shuttle'] == null && $metrics['fortyTime'] !== null) {
                 $data['receiver'] = ($percentiles['routeAgility'] * .7) + ($percentiles['jukeAgility'] * .3);
             }
 
@@ -178,6 +178,7 @@ class RbService extends ServiceAbstract
                 $metrics['breakoutClass'] = $collegeStuff['breakoutClass'];
                 $metrics['bestYPC'] = $collegeStuff['bestYPC'];
                 $metrics['bestCarryDominator'] = $collegeStuff['bestCarryDominator'];
+                $rb->setCollegeStats($collegeStuff['collegeStats']);
 
                 /*** Use College Stats to adjust scores ***/
 
@@ -239,15 +240,44 @@ class RbService extends ServiceAbstract
         $bestCarryDom = 0;
 
         $collegeStats = $rb->getCollegeStats();
-        foreach ($collegeStats as $stats) {
+        foreach ($collegeStats as $year => $stats) {
             if ($stats->year != "Career") {
+                //increment year count
+                $i++;
+
+                if ($stats['totals']['yds'] == 0 || !array_key_exists('totals', $stats)) {
+                    //we don't have team totals so we can't do calculations
+                    return [
+                        'collegeScore' => null,
+                        'bestSeason' => null,
+                        'bestRecDominator' => null,
+                        'breakoutClass' => null,
+                        'breakoutSeasons' => null,
+                        "collegeSeasons" => null,
+                        "bestDominator" => null,
+                        "bestYPC" => null,
+                        "bestCarryDominator" => null,
+                        "collegeStats" => $collegeStats,
+                    ];
+                }
+
                 // determine dominators
                 $dominator['td'] = round(($stats['scrimmageTds'] / $stats['totals']['tds']) * 100, 2);
                 $dominator['yd'] = round(($stats['scrimmageYds'] / $stats['totals']['yds']) * 100, 2);
                 $dominator['rec'] = round(($stats['recs'] / $stats['totals']['recs']) * 100, 2);
                 $dominator['carries'] = round(($stats['rushAtt'] / $stats['totals']['carries']) * 100, 2);
+
+                // save dominators to collegestats
+                $collegeStats[$year]['dominator'] = round(($dominator['yd'] + $dominator['td'])/2, 2);
+                $collegeStats[$year]['tdDominator'] = round($dominator['td'], 2);
+                $collegeStats[$year]['recDominator'] = round($dominator['rec'], 2);
+                $collegeStats[$year]['ydDominator'] = round($dominator['yd'], 2);
+                $collegeStats[$year]['carryDominator'] = round($dominator['carries'], 2);
+
+
                 $breakout = 0;
 
+                // determine breakout
                 foreach ($dominator as $type => $score) {
                     if ($type == 'td') {
                         if ($score !== 0) {
@@ -278,6 +308,7 @@ class RbService extends ServiceAbstract
                     }
                 }
 
+                //update dominate season count
                 switch ($breakout) {
                     case 2:
                         $breakoutSeasons = $breakoutSeasons + 1;
@@ -291,13 +322,13 @@ class RbService extends ServiceAbstract
                 // determine breakout class
                 if ($breakout == 2) {
                     if ($breakoutClass == "None") {
-                        if ($i == 0) {
+                        if ($i == 1) {
                             if ($stats['class'] == "FR") {
                                 $breakoutClass = "True Freshman";
                             } else {
                                 $breakoutClass = $stats['class'];
                             }
-                        } elseif ($i == 1) {
+                        } elseif ($i == 2) {
                             if ($stats['class'] == "FR") {
                                 $breakoutClass = "Redshirt Freshman";
                             } elseif ($stats['class'] == "SO") {
@@ -305,15 +336,37 @@ class RbService extends ServiceAbstract
                             } else {
                                 $breakoutClass = $stats['class'];
                             }
-                        } elseif ($i == 2) {
-                            $breakoutClass = "JR";
+                        } elseif ($i == 3) {
+                            if ($stats['class'] == "SO") {
+                                $breakoutClass = "Redshirt Sophomore";
+                            } elseif ($stats['class'] == "JR") {
+                                $breakoutClass = "Junior";
+                            } else {
+                                $breakoutClass = $stats['class'];
+                            }
+                        } elseif ($i == 4) {
+                            if ($stats['class'] == "JR") {
+                                $breakoutClass = "Redshirt Junior";
+                            } elseif ($stats['class'] == "SR") {
+                                $breakoutClass = "Senior";
+                            } else {
+                                $breakoutClass = $stats['class'];
+                            }
+                        } elseif ($i == 5) {
+                            if ($stats['class'] == "SR") {
+                                $breakoutClass = "Redshirt Senior";
+                            } elseif ($stats['class'] == "SR") {
+                                $breakoutClass = "SR";
+                            } else {
+                                $breakoutClass = $stats['class'];
+                            }
                         } else {
                             $breakoutClass = "SR";
                         }
                     }
                 }
 
-                // determine best dominators
+                // determine best dominators and save info
                 $currentDominator = round((array_sum([$dominator['yd'], $dominator['td']])) / 2, 2);
                 if ($currentDominator > $bestDominator) {
                     $bestDominator = $currentDominator;
@@ -330,77 +383,106 @@ class RbService extends ServiceAbstract
                 if ($dominator['carries'] > $bestCarryDom) {
                     $bestCarryDom = $dominator['carries'];
                 }
-            }
-            $lastBreakout = $breakout;
-            if (array_key_exists('conference', $stats)) {
-                $conf = $stats['conference'];
-                if ($stats['college'] == "Notre Dame") {
-                    $conf = "ACC";
+
+                if ($breakout == 3) {
+                    switch ($currentDominator) {
+                        case $currentDominator >= 40 && $stats['rushYds'] > 1000:
+                            $collegeScore = $collegeScore + 3;
+                            break;
+                        case $currentDominator >= 35 && $stats['rushYds'] > 1000:
+                            $collegeScore = $collegeScore + 2.75;
+                            break;
+                        case $currentDominator >= 30:
+                            $collegeScore = $collegeScore + 2.50;
+                            break;
+                        case $currentDominator >= 27.51:
+                            $collegeScore = $collegeScore + 2.25;
+                            break;
+                        case $currentDominator >= 25:
+                            $collegeScore = $collegeScore + 2;
+                            break;
+                        case $currentDominator >= 20:
+                            $collegeScore = $collegeScore + 1.75;
+                            break;
+                        case $currentDominator >= 15:
+                            $collegeScore = $collegeScore + 1.50;
+                            break;
+                        case $currentDominator >= 10:
+                            $collegeScore = $collegeScore + 1.25;
+                            break;
+                        default:
+                    }
                 }
-            } else {
-                $conf = "";
+
+                // Best Recbreakout score
+                switch ($dominator['rec']) {
+                    case $dominator['rec'] >= 15:
+                        $collegeScore = $collegeScore + 3;
+                        break;
+                    case $dominator['rec'] >= 12:
+                        $collegeScore = $collegeScore + 2;
+                        break;
+                    case $dominator['rec'] >= 9:
+                        $collegeScore = $collegeScore + 1;
+                        break;
+                    default:
+                }
+
+                $collegeScore = $collegeScore + $breakout;
+
+                //save last breakout
+                $lastBreakout = $breakout;
+                $lastYear = $stats['class'];
+
+                //save conference
+                if (array_key_exists('conference', $stats)) {
+                    $conf = $stats['conference'];
+                    if ($stats['college'] == "Notre Dame") {
+                        $conf = "ACC";
+                    }
+                } else {
+                    $conf = "";
+                }
             }
-
-            $lastYear = $stats['class'];
-            $i++;
         }
 
-        $collegeScore = $breakoutSeasons;
-        /**** Bonuses ****/
         // Coming out as a junior, add last breakout to simulate senior season
-        if ($lastYear !== "SR" && $i < 3) {
-            $collegeScore = $collegeScore + $lastBreakout;
+        if (($lastYear == "JR" || $lastYear == "SO") && $i == 3) {
+            $collegeScore = $collegeScore + $lastBreakout + 2;
         }
+
+        /**** Bonuses ****/
 
         // Breakout class
         if ($breakoutClass == "True Freshman") {
+            $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
+            $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
+            if (in_array($conf, $power5) ) {
+                $collegeScore = $collegeScore + 7;
+            } else {
+                $collegeScore = $collegeScore + 6;
+            }
+        } elseif (in_array($breakoutClass, ["Redshirt Freshman", "SO", "Sophomore"])) {
+            $collegeScore = $collegeScore + 5;
+        } elseif (in_array($breakoutClass, ["JR", "Redshirt Sophomore", "Junior"])) {
+            $collegeScore = $collegeScore + 4;
+        } elseif (in_array($breakoutClass, ["SR", "Redshirt Junior", "Senior"])) {
             $collegeScore = $collegeScore + 3;
-        } elseif ($breakoutClass == "Somphomore" ||$breakoutClass == "Redshirt Freshman" ) {
-            $collegeScore = $collegeScore + 2;
-        } elseif ($breakoutClass == "Junior") {
+        } elseif ($breakoutClass == "Redshirt Senior") {
             $collegeScore = $collegeScore + 1;
-        } else {
-            $collegeScore = $collegeScore + 0;
         }
 
         //Conference bonus/penalty for not Division 1
         $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
         $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
         if (in_array($conf, $power5)) {
-            $collegeScore = $collegeScore + 1;
+            $collegeScore = $collegeScore + 4;
         } elseif (in_array($conf, $minor5)) {
             $collegeScore = $collegeScore + 0;
         } else {
             $collegeScore = $collegeScore - 2;
         }
 
-        // Best breakout score
-        switch ($bestDominator) {
-            case $bestDominator >= 30:
-                $collegeScore = $collegeScore + 3;
-                break;
-            case $bestDominator >= 20:
-                $collegeScore = $collegeScore + 2;
-                break;
-            case $bestDominator >= 15:
-                $collegeScore = $collegeScore + 1;
-                break;
-            default:
-        }
-
-        // Best Recbreakout score
-        switch ($bestRecDominator) {
-            case $bestDominator >= 15:
-                $collegeScore = $collegeScore + 3;
-                break;
-            case $bestDominator >= 12:
-                $collegeScore = $collegeScore + 2;
-                break;
-            case $bestDominator >= 9:
-                $collegeScore = $collegeScore + 1;
-                break;
-            default:
-        }
 
         if ($breakoutClass == "JR") {
             $breakoutClass = "Junior";
@@ -419,7 +501,8 @@ class RbService extends ServiceAbstract
             "collegeSeasons" => $i,
             "bestDominator" => $bestDominator,
             "bestYPC" => $bestYPC,
-            "bestCarryDominator" => $bestCarryDom
+            "bestCarryDominator" => $bestCarryDom,
+            "collegeStats" => $collegeStats
         ];
     }
 

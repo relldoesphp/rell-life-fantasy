@@ -88,28 +88,30 @@ class TeService extends ServiceAbstract
 
             /*** Calculate Run Block ***/
             $data['runBlock'] = null;
-            if (!in_array($metrics['benchPress'], [null, "-", "", "null"])
+            if (array_key_exists('benchPress', $metrics) && !in_array($metrics['benchPress'], [null, "-", "", "null"])
                 && !in_array($metrics['broadJump'], [null, "-", "", "null"]) ) {
                 $data['runBlock'] = ($percentiles['bully'] * .30) + ($percentiles['power'] * .70);
             }
 
-            if (in_array($metrics['benchPress'], [null, "-", "", "null"])
+            if (array_key_exists('benchPress', $metrics) && in_array($metrics['benchPress'], [null, "-", "", "null"])
                 && !in_array($metrics['broadJump'], [null, "-", "", "null"]) ) {
                 $data['runBlock'] = $percentiles['power'];
             }
 
-            if (!in_array($metrics['benchPress'], [null, "-", "", "null"])
+            if (array_key_exists('benchPress', $metrics) && !in_array($metrics['benchPress'], [null, "-", "", "null"])
                 && in_array($metrics['broadJump'], [null, "-", "", "null"]) ) {
                 $data['runBlock'] = $percentiles['benchPress'];
             }
 
             /*** Calculate Pass Block ***/
-            if (!in_array($metrics['shuttle'], [null, "-", "", "null"])
+            if (array_key_exists('shuttle', $metrics) && !in_array($metrics['shuttle'], [null, "-", "", "null"])
                 && !in_array($metrics['benchPress'], [null, "-", "", "null"]) ) {
                 $data['passBlock'] = ($percentiles->bully * .40) + ($percentiles->elusiveness * .60);
             }
 
-            if (in_array($metrics['shuttle'], [null, "-", "", "null"])
+            if (array_key_exists('shuttle', $metrics)
+                && array_key_exists('benchPress', $metrics)
+                && in_array($metrics['shuttle'], [null, "-", "", "null"])
                 && !in_array($metrics['benchPress'], [null, "-", "", "null"]) ) {
                 $data['passBlock'] = ($percentiles->bully * .40) + ($percentiles->speedScore * .60);
             }
@@ -118,28 +120,29 @@ class TeService extends ServiceAbstract
             //Move - TE Speed + Jumpball + Route Agility
             $data['move'] = 0;
 
-            if (!in_array($metrics['routeAgility'], [null, "-", "", "null"])
+            if (array_key_exists('routeAgility', $metrics) && !in_array($metrics['routeAgility'], [null, "-", "", "null"])
                 && !in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
                 $data['move'] = ($percentiles['routeAgility'] * .70) + ($percentiles['fortyTime'] * .30);
             }
 
-            if (!in_array($metrics['routeAgility'], [null, "-", "", "null"])
+            if (array_key_exists('routeAgility', $metrics) && !in_array($metrics['routeAgility'], [null, "-", "", "null"])
                 && in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
                 $data['move'] = $percentiles['routeAgility'];
             }
 
-            if (in_array($metrics['routeAgility'], [null, "-", "", "null"])
+            if (array_key_exists('routeAgiltiy', $metrics) && in_array($metrics['routeAgility'], [null, "-", "", "null"])
                 && !in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
                 $data['move'] = $percentiles['fortyTime'];
             }
 
-            if (!in_array($metrics['verticalJump'], [null, "-", "", "null"])) {
+            if (array_key_exists('verticalJump', $metrics) && !in_array($metrics['verticalJump'], [null, "-", "", "null"])) {
                 $data['move'] = ($percentiles['verticalJump'] * .25) + ($data['move'] * .75);
             }
 
             /*** Calculate InLine Score ***/
             if (!in_array($data['runBlock'], [null, "-", "", "null"])
-                && !in_array($percentiles['bmi'], [null, "-", "", "null"]) ) {
+                && array_key_exists("runBlock", $percentiles)
+                && !in_array($percentiles['bmi'], [null, "-", "", "null"])) {
                 $data['inLine'] = ($percentiles['runBlock'] * .60) + ($percentiles['bmi'] * .20) + ($percentiles['weight'] * .20);
             }
 
@@ -169,6 +172,7 @@ class TeService extends ServiceAbstract
                 $metrics['breakoutSeasons'] = $college['breakoutSeasons'];
                 $metrics['collegeSeasons'] = $college['collegeSeasons'];
                 $metrics['bestDominator'] = $college['bestDominator'];
+                $te->setCollegeStats($college['collegeStats']);
             } else {
                 $metrics['collegeScore'] = null;
                 $metrics['bestSeason'] = null;
@@ -197,16 +201,40 @@ class TeService extends ServiceAbstract
         $bestReturn = 0;
         $breakoutSeasons = 0;
         $lastBreakout = 0;
-        foreach ($collegeStats as $stats) {
+        $bonus = 0;
+        foreach ($collegeStats as $year => $stats) {
             if ($stats->year != "Career") {
                 $i++;
-                if ($stats['totals']['tds'] == 0) {
-                    return false;
+
+                if ($stats['totals']['yds'] == 0 || !array_key_exists('totals', $stats)) {
+                    //we don't have team totals so we can't do calculations
+                    return [
+                        'collegeScore' => null,
+                        'bestSeason' => null,
+                        'bestReturn' => null,
+                        'breakoutClass' => null,
+                        'breakoutSeasons' => null,
+                        "collegeSeasons" => null,
+                        "bestDominator" => null,
+                        "collegeStats" => $collegeStats
+                    ];
                 }
+
                 // determine dominators
                 $dominator['td'] = round(($stats['recTds'] / $stats['totals']['tds'] ) * 100, 2);
                 $dominator['yd'] = round(($stats['recYds'] / $stats['totals']['yds']) * 100, 2);
                 $dominator['rec'] = round(($stats['recs'] / $stats['totals']['recs']) * 100, 2);
+
+                if ($stats['games'] > 4 && $stats['games'] < 9) {
+                    $dominator['td'] = round(($dominator['td']/$stats['games']) * 12,2);
+                    $dominator['yd'] = round(($dominator['yd']/$stats['games']) * 12,2);
+                    $dominator['rec'] = round(($dominator['rec']/$stats['games']) * 12,2);
+                }
+
+                $collegeStats[$year]['dominator'] = round(($dominator['yd'] + $dominator['td'])/2, 2);
+                $collegeStats[$year]['tdDominator'] = round($dominator['td'] * 100, 2);
+                $collegeStats[$year]['recDominator'] = round($dominator['rec'] * 100, 2);
+                $collegeStats[$year]['ydDominator'] = round($dominator['yd'] * 100, 2);
                 $breakout = 0;
 
                 if ($dominator['rec'] > 15 && (($dominator['yd'] + $dominator['td'])/2) > 15) {
@@ -217,7 +245,7 @@ class TeService extends ServiceAbstract
                         if ($score !== 0) {
                             switch (true) {
                                 case ($score > (15)):
-                                    $breakout = $breakout + 1;
+                                    $breakout = $breakout + .9;
                                     break;
                                 case ($score > (10)):
                                     $breakout = $breakout + .5;
@@ -248,13 +276,13 @@ class TeService extends ServiceAbstract
                 // determine breakout class
                 if ($breakout == 3 ) {
                     if ($breakoutClass == "None") {
-                        if ($i == 0) {
+                        if ($i == 1) {
                             if ($stats['class'] == "FR") {
                                 $breakoutClass = "True Freshman";
                             } else {
                                 $breakoutClass = $stats['class'];
                             }
-                        } elseif ($i == 1 ) {
+                        } elseif ($i == 2) {
                             if ($stats['class'] == "FR") {
                                 $breakoutClass = "Redshirt Freshman";
                             } elseif ($stats['class'] == "SO") {
@@ -262,8 +290,30 @@ class TeService extends ServiceAbstract
                             } else {
                                 $breakoutClass = $stats['class'];
                             }
-                        } elseif ($i == 2) {
-                            $breakoutClass = "JR";
+                        } elseif ($i == 3) {
+                            if ($stats['class'] == "SO") {
+                                $breakoutClass = "Redshirt Sophomore";
+                            } elseif ($stats['class'] == "JR") {
+                                $breakoutClass = "Junior";
+                            } else {
+                                $breakoutClass = $stats['class'];
+                            }
+                        } elseif ($i == 4) {
+                            if ($stats['class'] == "JR") {
+                                $breakoutClass = "Redshirt Junior";
+                            } elseif ($stats['class'] == "SR") {
+                                $breakoutClass = "Senior";
+                            } else {
+                                $breakoutClass = $stats['class'];
+                            }
+                        } elseif ($i == 5) {
+                            if ($stats['class'] == "SR") {
+                                $breakoutClass = "Redshirt Senior";
+                            } elseif ($stats['class'] == "SR") {
+                                $breakoutClass = "SR";
+                            } else {
+                                $breakoutClass = $stats['class'];
+                            }
                         } else {
                             $breakoutClass = "SR";
                         }
@@ -279,62 +329,121 @@ class TeService extends ServiceAbstract
                     $bestSeason['tdsDominator'] = $dominator['td'];
                 }
 
-                // determine return dominator
-//                if ($stats['returnStats']['puntYds'] > 0) {
-//                    $bestReturn = $stats['returnStats']['puntYds'] + $stats['returnStats']['kickYds'];
-//                }
+                // Best breakout score
+                if ($breakout == 3) {
+                    switch ($currentDominator) {
+                        case $currentDominator >= 40 && $stats['recYds'] > 1000:
+                            $collegeScore = $collegeScore + 3;
+                            break;
+                        case $currentDominator >= 35 && $stats['recYds'] > 1000:
+                            $collegeScore = $collegeScore + 2.75;
+                            break;
+                        case $currentDominator >= 30:
+                            $collegeScore = $collegeScore + 2.50;
+                            break;
+                        case $currentDominator >= 27.51:
+                            $collegeScore = $collegeScore + 2.25;
+                            break;
+                        case $currentDominator >= 25:
+                            $collegeScore = $collegeScore + 2;
+                            break;
+                        case $currentDominator >= 23.51:
+                            $collegeScore = $collegeScore + 1.75;
+                            break;
+                        case $currentDominator >= 20:
+                            $collegeScore = $collegeScore + 1.50;
+                            break;
+                        case $currentDominator >= 15:
+                            $collegeScore = $collegeScore + 1.25;
+                            break;
+                        default:
+                    }
+                }
 
-                // save last year
+                if ($stats['recYds'] > 1000) {
+                    $bonus = $bonus + 1;
+                }
+
+                if (array_key_exists('rushYds', $stats)) {
+                    if ($stats['rushYds'] > 50) {
+                        $bonus = $bonus + .5;
+                    }
+
+                    if ($stats['rushYds'] > 100) {
+                        $bonus = $bonus + .5;
+                    }
+
+                    if ($stats['rushYds'] > 150) {
+                        $bonus = $bonus + 1;
+                    }
+                }
+
                 $lastBreakout = $breakout;
-//                $conf = $stats['conference'];
-//                if ($stats['college'] == "Notre Dame") {
-//                    $conf = "ACC";
-//                }
+                $collegeScore = $collegeScore + $breakout;
+
+                if (array_key_exists('conference', $stats)) {
+                    $conf = $stats['conference'];
+                    if ($stats['college'] == "Notre Dame") {
+                        $conf = "ACC";
+                    }
+                } else {
+                    $conf = "";
+                }
+
                 $lastYear = $stats['class'];
             }
         }
-        $collegeScore = round(($breakoutSeasons/$i) * 10, 2);
-        /**** Bonuses ****/
+        //$collegeScore = round(($breakoutSeasons/$i) * 10, 2);
         // Coming out as a junior, add last breakout to simulate senior season
-        if ($lastYear !== "SR" && $i < 3) {
-            $collegeScore = $collegeScore + $lastBreakout + .5;
+        if (($lastYear == "JR" || $lastYear == "SO") && $i == 3) {
+            $collegeScore = $collegeScore + $lastBreakout + 2;
         }
+        /**** Bonuses ****/
+        $collegeScore = $collegeScore + $bonus;
 
         // Breakout class
-        if ($breakoutClass == "FR") {
-            $collegeScore = $collegeScore + 3;
-        } elseif ($breakoutClass == "SO") {
-            $collegeScore = $collegeScore + 2;
-        } elseif ($breakoutClass == "JR") {
-            $collegeScore = $collegeScore + 1;
+        if ($breakoutClass == "True Freshman") {
+            $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
+            $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
+            if (in_array($conf, $power5) ) {
+                $collegeScore = $collegeScore + 9;
+            } else {
+                $collegeScore = $collegeScore + 7;
+            }
+        } elseif (in_array($breakoutClass, ["Redshirt Freshman", "SO", "Sophomore"])) {
+            $collegeScore = $collegeScore + 5;
+        } elseif ($breakoutClass == "JR" || $breakoutClass == "Redshirt Sophomore" || $breakoutClass == "Junior") {
+            $collegeScore = $collegeScore + 4;
         } else {
-            $collegeScore = $collegeScore + 0;
+            $collegeScore = $collegeScore + 3;
         }
 
         //Conference bonus/penalty for not Division 1
-//        $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
-//        $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
-//        if (in_array($conf, $power5) ) {
-//            $collegeScore = $collegeScore + 1;
-//        } elseif (in_array($conf, $minor5)) {
-//            $collegeScore = $collegeScore + 0;
-//        } else {
-//            $collegeScore = $collegeScore - 2;
-//        }
-
-        // Best breakout score
-        switch ($bestDominator) {
-            case $bestDominator >= 35:
-                $collegeScore = $collegeScore + 2;
-                break;
-            case $bestDominator >= 30:
-                $collegeScore = $collegeScore + 1.5;
-                break;
-            case $bestDominator >= 25:
-                $collegeScore = $collegeScore + 1;
-                break;
-            default:
+        $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
+        $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
+        if (in_array($conf, $power5) ) {
+            $collegeScore = $collegeScore + 4;
+        } elseif (in_array($conf, $minor5)) {
+            $collegeScore = $collegeScore + 0;
+        } else {
+            if ($collegeScore > 15) {
+                $collegeScore = $collegeScore - 4;
+            }
         }
+
+//        // Best breakout score
+//        switch ($bestDominator) {
+//            case $bestDominator >= 35:
+//                $collegeScore = $collegeScore + 2;
+//                break;
+//            case $bestDominator >= 30:
+//                $collegeScore = $collegeScore + 1.5;
+//                break;
+//            case $bestDominator >= 25:
+//                $collegeScore = $collegeScore + 1;
+//                break;
+//            default:
+//        }
 
 //        if ($bestReturn != 0) {
 //            switch ($bestReturn) {
@@ -369,7 +478,8 @@ class TeService extends ServiceAbstract
             'breakoutClass' => $breakoutClass,
             'breakoutSeasons' => $breakoutSeasons,
             "collegeSeasons" => $i,
-            "bestDominator" => $bestDominator
+            "bestDominator" => $bestDominator,
+            "collegeStats" => $collegeStats
         ];
 
     }
