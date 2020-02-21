@@ -604,6 +604,8 @@ class Player implements InputFilterAwareInterface
             'breakoutYears',
             'bestDominator',
             'arms',
+            'weight',
+            'heightInches'
             ];
         foreach($metricsArray as $metric) {
             if (!array_key_exists($metric, $this->metrics)) {
