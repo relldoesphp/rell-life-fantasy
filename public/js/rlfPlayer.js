@@ -115,7 +115,7 @@ var rlf =  {
             height: 300,
             margin: {
                 l: 0,
-                r: 25,
+                r: 55,
                 b: 20,
                 t: 20,
                 pad: 0
