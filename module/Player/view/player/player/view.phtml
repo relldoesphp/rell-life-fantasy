@@ -244,9 +244,15 @@
     <div class="row player-stats container scrollspy hoverable z-depth-2 hoverable fade-in" id="player-stats" style="background:white">
         <div class="col s12">
             <ul class="tabs">
-                <li class="tab col s4"><a class="active purple-text" href="#test1">NFL Stats</a></li>
-                <li class="tab col s4"><a class="purple-text" href="#test2">NFL Game Logs</a></li>
-                <li class="tab col s4"><a class="purple-text" href="#test3">College Stats</a></li>
+                <?php if ($player['team'] == "Rookie") : ?>
+                    <li class="tab col s4"><a class="purple-text" href="#test1">NFL Stats</a></li>
+                    <li class="tab col s4"><a class="purple-text" href="#test2">NFL Game Logs</a></li>
+                    <li class="tab col s4"><a class="active purple-text" href="#test3">College Stats</a></li>
+                <?php else: ?>
+                    <li class="tab col s4"><a class="active purple-text" href="#test1">NFL Stats</a></li>
+                    <li class="tab col s4"><a class="purple-text" href="#test2">NFL Game Logs</a></li>
+                    <li class="tab col s4"><a class="purple-text" href="#test3">College Stats</a></li>
+                <?php endif; ?>
             </ul>
         </div>
         <div id="test1" class="col s12">
