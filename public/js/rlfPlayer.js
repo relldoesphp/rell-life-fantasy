@@ -712,9 +712,16 @@ var rlf =  {
     /****************************************** RB stuff **************************************************************/
 
     initRbPage : function(){
+
+        $(window).one('scroll' , function(){
+            if ($(".prospect").is(":visible")){
+                rlf.initProsChartsRB();
+                rlf.initMesChartsRB();
+            }
+        });
         //rlf.initOppChartsRB();
-        rlf.initMesChartsRB();
-        rlf.initProsChartsRB();
+
+
 
         if (rlfData.player.college_stats !== undefined) {
             var collegeColumns = [
@@ -930,9 +937,12 @@ var rlf =  {
 
     /****************************************** WR stuff **************************************************************/
     initWrPage : function() {
-        rlf.initMesChartsWR();
-        rlf.initProsChartsWR();
-        //rlf.initOppChartsWR();
+        $(window).one('scroll' , function(){
+            if ($(".prospect").is(":visible")){
+                rlf.initProsChartsWR();
+                rlf.initMesChartsWR();
+            }
+        });
 
         if (rlfData.player.seasonStats !== undefined) {
             var seasonColumns = [
@@ -1131,9 +1141,12 @@ var rlf =  {
     /****************************************** TE stuff **************************************************************/
 
     initTePage : function(){
-        rlf.initProsChartsTE();
-       // rlf.initOppChartsTE();
-        rlf.initMesChartsTE();
+        $(window).one('scroll' , function(){
+            if ($(".prospect").is(":visible")){
+                rlf.initProsChartsTE();
+                rlf.initMesChartsTE();
+            }
+        });
 
         var collegeColumns = [
             { title: "Year", data: "year", "defaultContent":0},

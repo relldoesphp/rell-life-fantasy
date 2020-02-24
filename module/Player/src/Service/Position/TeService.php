@@ -491,13 +491,15 @@ class TeService extends ServiceAbstract
         $pointer = 0;
 
         foreach ($tes as $te) {
-            $te->decodeJson();
-            $result = $this->scrapCollegeStats($te);
-            if ($result == false) {
-                continue;
+            if ($te->getTeam() == "Rookie") {
+                $te->decodeJson();
+                $result = $this->scrapCollegeStats($te);
+                if ($result == false) {
+                    continue;
+                }
+                $pointer++;
+                $progressBar->update($pointer);
             }
-            $pointer++;
-            $progressBar->update($pointer);
         }
         $progressBar->finish();
     }

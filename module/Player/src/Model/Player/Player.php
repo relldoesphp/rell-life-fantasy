@@ -195,6 +195,7 @@ class Player implements InputFilterAwareInterface
      */
     public function setPlayerInfo($player_info)
     {
+        $player_info['height'] = stripslashes($player_info['height']);
         $this->player_info = $player_info;
     }
 
@@ -357,6 +358,8 @@ class Player implements InputFilterAwareInterface
 
     public function encodeJson()
     {
+
+
         if (is_array($this->player_info)) {
             $this->player_info = Json::encode($this->player_info);
         }

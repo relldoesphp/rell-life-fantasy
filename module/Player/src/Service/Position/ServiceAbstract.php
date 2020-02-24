@@ -259,28 +259,41 @@ class ServiceAbstract
         $pointer = 0;
 
         foreach ($players as $player) {
+            $player->decodeJson();
+            $info = $player->getPlayerInfo();
+            //make BMI
+            // convert from lbs to kg
+            if (!empty($info['weight'])
+                && array_key_exists('heightInches', $info)
+                && !empty($info['heightInches'])) {
+                $adjusted_weight = $info['weight'] * 0.45359237;
+                // convert from inches to m
+                $adjusted_height = $info['heightInches'] * 0.0254;
+                // square the height variable
+                $adjusted_height_final = $adjusted_height * $adjusted_height;
+                // divide the weight by the squared height to get the BMI value
+                $prep_bmi = $adjusted_weight/$adjusted_height_final;
+                $info['bmi'] = number_format($prep_bmi, 1);
+            }
+
             if ($player->getTeam() == "Rookie") {
-                $player->decodeJson();
-                $info = $player->getPlayerInfo();
                 if (!array_key_exists("hashtag", $info) || empty($info['hashtag']) || $info['hashtag'] == null) {
                     if ($player->getTeam() == "Rookie") {
                         $info["hashtag"] = "#{$player->getFirstName()}{$player->getLastName()}-NFL-Rookie-0";
-                        $player->setPlayerInfo($info);
                     }
                 }
+                $player->setPlayerInfo($info);
                 $this->command->save($player);
                 $pointer++;
                 $progressBar->update($pointer);
-
+                continue;
             }
 
-            $player->decodeJson();
             $metrics = $player->getMetrics();
             if (empty($metrics)) {
                 continue;
             }
 
-            $info = $player->getPlayerInfo();
 
             if (!array_key_exists('shuttle', $metrics)) {
                 $metrics['shuttle'] = null;
@@ -411,6 +424,8 @@ class ServiceAbstract
             if ($metrics == false) {
                 $metrics = [];
             }
+
+            $player->setPlayerInfo($info);
             $player->setMetrics($metrics);
             $this->command->save($player);
 
