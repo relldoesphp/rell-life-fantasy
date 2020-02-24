@@ -812,7 +812,7 @@ var rlf =  {
 
         rlf.makeRoleFits(roleFits);
 
-        if (rlfData.player.seasonStats !== "undefined") {
+        if (rlfData.player.seasonStats !== undefined && rlfData.player.seasonStats.length !== 0) {
             var currentStats = rlfData.player.seasonStats["2019"];
 
             $('#summary-stats').DataTable({
@@ -1150,7 +1150,7 @@ var rlf =  {
 
         rlf.makeCollegeTable(collegeColumns);
 
-        if (rlfData.player.seasonStats !== undefined) {
+        if (rlfData.player.seasonStats !== undefined && rlfData.player.seasonStats.length !== 0) {
             var seasonColumns = [
                 {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
                 {title: "GP", data: "stats.gp", "defaultContent":0},
