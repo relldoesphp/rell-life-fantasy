@@ -260,7 +260,18 @@ class ServiceAbstract
 
         foreach ($players as $player) {
             if ($player->getTeam() == "Rookie") {
-                continue;
+                $player->decodeJson();
+                $info = $player->getPlayerInfo();
+                if (!array_key_exists("hashtag", $info) || empty($info['hashtag']) || $info['hashtag'] == null) {
+                    if ($player->getTeam() == "Rookie") {
+                        $info["hashtag"] = "#{$player->getFirstName()}{$player->getLastName()}-NFL-Rookie-0";
+                        $player->setPlayerInfo($info);
+                    }
+                }
+                $this->command->save($player);
+                $pointer++;
+                $progressBar->update($pointer);
+
             }
 
             $player->decodeJson();
@@ -268,6 +279,7 @@ class ServiceAbstract
             if (empty($metrics)) {
                 continue;
             }
+
             $info = $player->getPlayerInfo();
 
             if (!array_key_exists('shuttle', $metrics)) {

@@ -249,7 +249,7 @@ class PlayerForm extends Form
         $apiInfo = $player->getApiInfo();
 
         $body = new Fieldset('body');
-        $bodyFields = ["bmi", "arms", "armsInches", "weight", "age", "height", "heightInches", "college", "draft_pick", "draft_year"];
+        $bodyFields = ["bmi", "arms", "armsInches", "weight", "age", "height", "heightInches", "college", "draft_pick", "draft_year", "hands"];
         foreach ($bodyFields as $key) {
             $newField = new Element($key);
             $newField->setLabel($key);
@@ -434,7 +434,7 @@ class PlayerForm extends Form
         $playerInfo["bmi"] = $data["body"]["bmi"];
         $playerInfo["arms"] = $data["body"]["arms"];
         $playerInfo["armsInches"] = $data["body"]["armsInches"];
-        //$playerInfo["hands"] = $data["body"]["hands"];
+        $playerInfo["hands"] = $data["body"]["hands"];
         $playerInfo["height"] = $data["body"]["height"];
         $playerInfo["heightInches"] = $data["body"]["heightInches"];
         $playerInfo["college"] = $data["body"]["college"];

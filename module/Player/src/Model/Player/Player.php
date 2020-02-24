@@ -577,6 +577,9 @@ class Player implements InputFilterAwareInterface
             'collegeSeasons',
             'heightInches',
             'hands',
+            'arms',
+            'weight',
+            'heightInches'
         ];
         foreach($infoArray as $metric) {
             if (!array_key_exists($metric, $this->player_info)) {
@@ -603,10 +606,7 @@ class Player implements InputFilterAwareInterface
             'breakoutClass',
             'breakoutYears',
             'bestDominator',
-            'arms',
-            'weight',
-            'heightInches',
-            ];
+        ];
         foreach($metricsArray as $metric) {
             if (!array_key_exists($metric, $this->metrics)) {
                 $this->metrics[$metric] = "N/A";
@@ -624,10 +624,18 @@ class Player implements InputFilterAwareInterface
         if (empty($this->images)) {
             $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; margin:auto;'></a>";
         } else {
+            $i = 0;
             foreach ($this->images as $key => $url) {
+                if (empty($url) && $i == 0) {
+                    $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; margin:auto;'></a>";
+                    break;
+                }
+
                 if (!empty($url)){
                     $images .= "<a class='carousel-item' href='#{$key}!'><img src='{$url}' style='height:280px'></a>\n";
                 }
+
+                $i++;
             }
         }
         $this->images = $images;
