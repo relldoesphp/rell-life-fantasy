@@ -258,7 +258,7 @@ var rlf =  {
             /*** Player2 ***/
             var slotpercent = Math.round(rlfData.players[1].percentiles.slot);
             var deeppercent = Math.round(rlfData.players[1].percentiles.deep);
-            var alphapercent = Math.round(rlfData.players[1].metrics.alpha);
+            var alphapercent = Math.round(rlfData.players[1].percentiles.alpha);
 
             $("#player2-skill .role-one-bar .determinate").css("width", slotpercent + "%");
             $("#player2-skill .role-one-score").text(rlfData.players[1].metrics['slot']);
