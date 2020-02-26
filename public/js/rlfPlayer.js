@@ -753,8 +753,9 @@ var rlf =  {
                 $(".donut-inner h5").addClass('combine-score').text(rlfData.player.metrics.collegeScore);
                 $(".donut-inner span").text(rlfData.player.ordinals.collegeScore + " percentile");
 
-                $(window).one('scroll' , function(){
+                $(window).on('scroll' , function(){
                     if ($("#test3").is(":visible")){
+                        console.log("triggered");
                         var ctx = document.getElementById('college-doughnut').getContext('2d');
                         var config = {
                             type: 'doughnut',
@@ -821,6 +822,143 @@ var rlf =  {
                         var myDoughut = new Chart(ctx, config);
                     }
                 });
+
+                $("#college-tab").on("click", function(){
+                    if ($("#test3").is(":visible")){
+                        console.log("triggered");
+                        var ctx = document.getElementById('college-doughnut').getContext('2d');
+                        var config = {
+                            type: 'doughnut',
+                            data: {
+                                datasets: [{
+                                    data: [],
+                                    backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                                    label: 'College Score'
+                                }],
+                                labels: [
+                                    'College Score',
+                                    ''
+                                ]
+                            },
+                            options: {
+                                cutoutPercentage: 75,
+                                legend: {
+                                    position: 'top'
+                                },
+                                title: {
+                                    display: false,
+                                    text: 'College Score'
+                                },
+                                responsive: true,
+                                animation: {
+                                    animateScale: true,
+                                    animateRotate: true
+                                }
+                            }
+                        };
+                        var myDoughut = new Chart(ctx, config);
+
+                        var config = {
+                            type: 'doughnut',
+                            data: {
+                                datasets: [{
+                                    data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore, 2)],
+                                    backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                                    label: 'College Score'
+                                }],
+                                labels: [
+                                    'College Score',
+                                    ''
+                                ]
+                            },
+                            options: {
+                                cutoutPercentage: 75,
+                                legend: {
+                                    position: 'top'
+                                },
+                                title: {
+                                    display: false,
+                                    text: 'College Score'
+                                },
+                                responsive: true,
+                                animation: {
+                                    animateScale: true,
+                                    animateRotate: true
+                                }
+                            }
+                        };
+
+                        var ctx = document.getElementById('college-doughnut').getContext('2d');
+                        var myDoughut = new Chart(ctx, config);
+                    }
+                });
+
+                // $("#college-tab").on("click", function(){
+                //     var ctx = document.getElementById('college-doughnut').getContext('2d');
+                //     var config = {
+                //         type: 'doughnut',
+                //         data: {
+                //             datasets: [{
+                //                 data: [],
+                //                 backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                //                 label: 'College Score'
+                //             }],
+                //             labels: [
+                //                 'College Score',
+                //                 ''
+                //             ]
+                //         },
+                //         options: {
+                //             cutoutPercentage: 75,
+                //             legend: {
+                //                 position: 'top'
+                //             },
+                //             title: {
+                //                 display: false,
+                //                 text: 'College Score'
+                //             },
+                //             responsive: true,
+                //             animation: {
+                //                 animateScale: true,
+                //                 animateRotate: true
+                //             }
+                //         }
+                //     };
+                //     var myDoughut = new Chart(ctx, config);
+                //
+                //     var config = {
+                //         type: 'doughnut',
+                //         data: {
+                //             datasets: [{
+                //                 data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore, 2)],
+                //                 backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                //                 label: 'College Score'
+                //             }],
+                //             labels: [
+                //                 'College Score',
+                //                 ''
+                //             ]
+                //         },
+                //         options: {
+                //             cutoutPercentage: 75,
+                //             legend: {
+                //                 position: 'top'
+                //             },
+                //             title: {
+                //                 display: false,
+                //                 text: 'College Score'
+                //             },
+                //             responsive: true,
+                //             animation: {
+                //                 animateScale: true,
+                //                 animateRotate: true
+                //             }
+                //         }
+                //     };
+                //
+                //     var ctx = document.getElementById('college-doughnut').getContext('2d');
+                //     var myDoughut = new Chart(ctx, config);
+                // });
             }
         }
 
