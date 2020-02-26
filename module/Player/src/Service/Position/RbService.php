@@ -261,6 +261,14 @@ class RbService extends ServiceAbstract
                     ];
                 }
 
+                if (!array_key_exists("scrimmageTds", $stats)) {
+                    $stats["scrimmageTds"] = $stats["rushTds"] + $stats['recTds'];
+                }
+
+                if (!array_key_exists("scrimmageYds", $stats)) {
+                    $stats["scrimmageYds"] = $stats["rushYds"] + $stats['recYds'];
+                }
+
                 // determine dominators
                 $dominator['td'] = round(($stats['scrimmageTds'] / $stats['totals']['tds']) * 100, 2);
                 $dominator['yd'] = round(($stats['scrimmageYds'] / $stats['totals']['yds']) * 100, 2);
@@ -426,6 +434,10 @@ class RbService extends ServiceAbstract
                         $collegeScore = $collegeScore + 1;
                         break;
                     default:
+                }
+
+                if ($stats['rushAvg'] > 6 && $stats['rushYds'] > 500) {
+                    $collegeScore = $collegeScore + 1;
                 }
 
                 $collegeScore = $collegeScore + $breakout;

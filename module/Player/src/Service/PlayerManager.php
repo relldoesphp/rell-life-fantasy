@@ -184,56 +184,81 @@ class PlayerManager
 
     public function updateWrMetrics()
     {
-//        $cbService = new Position\CbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $cbService->calculateMetrics();
-//        $cbService->calculatePercentiles();
-//
-//        $safetyService = new Position\SafetyService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $safetyService->calculateMetrics();
-//        $safetyService->calculatePercentiles();
+        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $wrService->calculateMetrics();
+        $wrService->calculatePercentiles();
+        $wrService->calculateSpecialScores();
+        $wrService->calculateSpecialPercentiles();
+    }
 
-//        $lbService = new Position\LBService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $lbService->calculateMetrics();
-//        $lbService->calculatePercentiles();
-//        $lbService->calculateSpecialScores();
-//        $lbService->calculateSpecialPercentiles();
-//
-//        $dlService->calculateMetrics();
-//        $dlService->calculatePercentiles();
-//        $dlService->calculateSpecialScores();
-//        $dlService->calculateSpecialPercentiles();
-////        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//
-//        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $olService->calculateMetrics();
-//        $olService->calculatePercentiles();
-//        $olService->calculateSpecialScores();
-//        $olService->calculateSpecialPercentiles();
+    public function updateRbMetrics()
+    {
+        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $rbService->calculateMetrics();
+        $rbService->calculatePercentiles();
+        $rbService->calculateSpecialScores();
+        $rbService->calculateSpecialPercentiles();
+    }
 
-//        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $wrService->calculateMetrics();
-//        $wrService->calculatePercentiles();
-//        $wrService->calculateSpecialScores();
-//        $wrService->calculateSpecialPercentiles();
-
-//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $rbService->calculateMetrics("RB");
-//        $rbService->calculatePercentiles("RB");
-//        $rbService->calculateSpecialScores("RB");
-//        $rbService->calculateSpecialPercentiles("RB");
-//
+    public function updateTeMetrics()
+    {
         $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
         $teService->calculateMetrics("TE");
         $teService->calculatePercentiles("TE");
         $teService->calculateSpecialScores("TE");
         $teService->calculateSpecialPercentiles("TE");
-//
-//        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $qbService->calculateMetrics("QB");
-//        $qbService->calculatePercentiles("QB");
-//        $qbService->calculateSpecialScores("QB");
-//        $qbService->calculateSpecialPercentiles("QB");
     }
+
+    public function updateQbMetrics()
+    {
+        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $qbService->calculateMetrics("QB");
+        $qbService->calculatePercentiles("QB");
+        $qbService->calculateSpecialScores("QB");
+        $qbService->calculateSpecialPercentiles("QB");
+    }
+
+    public function updateOlMetrics()
+    {
+        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $olService->calculateMetrics();
+        $olService->calculatePercentiles();
+        $olService->calculateSpecialScores();
+        $olService->calculateSpecialPercentiles();
+    }
+
+    public function updateDlMetrics()
+    {
+        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $dlService->calculateMetrics();
+        $dlService->calculatePercentiles();
+        $dlService->calculateSpecialScores();
+        $dlService->calculateSpecialPercentiles();
+    }
+
+    public function updateLbMetrics()
+    {
+        $lbService = new Position\LBService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $lbService->calculateMetrics();
+        $lbService->calculatePercentiles();
+        $lbService->calculateSpecialScores();
+        $lbService->calculateSpecialPercentiles();
+    }
+
+    public function updateCbMetrics()
+    {
+        $cbService = new Position\CbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $cbService->calculateMetrics();
+        $cbService->calculatePercentiles();
+    }
+
+    public function updatteSafetiesMetrics()
+    {
+        $safetyService = new Position\SafetyService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $safetyService->calculateMetrics();
+        $safetyService->calculatePercentiles();
+    }
+
 
     public function scrapCollegeJob()
     {

@@ -109,6 +109,9 @@ class WrService extends ServiceAbstract
                 $metrics['contested'] = null;
                 $metrics['separation'] = null;
                 $metrics['yac'] = null;
+                $metrics["deep"] = null;
+                $metrics["slot"] = null;
+                $metrics["alpha"] = null;
 
                 $wr->setMetrics($metrics);
 

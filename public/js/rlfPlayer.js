@@ -750,42 +750,78 @@ var rlf =  {
                 $(".college-row-two p").text("Dominate Seasons: " + rlfData.player.metrics.breakoutSeasons + " out of " + rlfData.player.metrics.collegeSeasons);
                 $(".college-row-three p").text("Best Dominator: " + rlfData.player.metrics.bestDominator + "%");
                 $(".college-row-four p").text("Best Reception Share: " + rlfData.player.metrics.bestRecDominator + "%");
-                $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
+                $(".donut-inner h5").addClass('combine-score').text(rlfData.player.metrics.collegeScore);
                 $(".donut-inner span").text(rlfData.player.ordinals.collegeScore + " percentile");
-                var config = {
-                    type: 'doughnut',
-                    data: {
-                        datasets: [{
-                            data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore, 2)],
-                            backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
-                            label: 'College Score'
-                        }],
-                        labels: [
-                            'College Score',
-                            ''
-                        ]
-                    },
-                    options: {
-                        cutoutPercentage: 75,
-                        legend: {
-                            position: 'top'
-                        },
-                        title: {
-                            display: false,
-                            text: 'College Score'
-                        },
-                        responsive: true,
-                        animation: {
-                            animateScale: true,
-                            animateRotate: true
-                        }
+
+                $(window).one('scroll' , function(){
+                    if ($("#test3").is(":visible")){
+                        var ctx = document.getElementById('college-doughnut').getContext('2d');
+                        var config = {
+                            type: 'doughnut',
+                            data: {
+                                datasets: [{
+                                    data: [],
+                                    backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                                    label: 'College Score'
+                                }],
+                                labels: [
+                                    'College Score',
+                                    ''
+                                ]
+                            },
+                            options: {
+                                cutoutPercentage: 75,
+                                legend: {
+                                    position: 'top'
+                                },
+                                title: {
+                                    display: false,
+                                    text: 'College Score'
+                                },
+                                responsive: true,
+                                animation: {
+                                    animateScale: true,
+                                    animateRotate: true
+                                }
+                            }
+                        };
+                        var myDoughut = new Chart(ctx, config);
+
+                        var config = {
+                            type: 'doughnut',
+                            data: {
+                                datasets: [{
+                                    data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore, 2)],
+                                    backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
+                                    label: 'College Score'
+                                }],
+                                labels: [
+                                    'College Score',
+                                    ''
+                                ]
+                            },
+                            options: {
+                                cutoutPercentage: 75,
+                                legend: {
+                                    position: 'top'
+                                },
+                                title: {
+                                    display: false,
+                                    text: 'College Score'
+                                },
+                                responsive: true,
+                                animation: {
+                                    animateScale: true,
+                                    animateRotate: true
+                                }
+                            }
+                        };
+
+                        var ctx = document.getElementById('college-doughnut').getContext('2d');
+                        var myDoughut = new Chart(ctx, config);
                     }
-                };
-
-                var ctx = document.getElementById('college-doughnut').getContext('2d');
-                var myDoughut = new Chart(ctx, config);
+                });
             }
-
         }
 
 
@@ -944,7 +980,7 @@ var rlf =  {
             }
         });
 
-        if (rlfData.player.seasonStats !== undefined) {
+        if (rlfData.player.seasonStats.length !== 0) {
             var seasonColumns = [
                 {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
                 {title: "GP", data: "stats.gp", "defaultContent":0},
@@ -1014,6 +1050,34 @@ var rlf =  {
                     ]
                 });
             }
+        } else if (rlfData.player.collegeTable !== undefined && rlfData.player.collegeTable.length !== 0) {
+            var collegeStuff = rlfData.player.collegeTable;
+            var currentStats = collegeStuff.pop();
+            $('#summary-stats').DataTable({
+                "paging": false,
+                "ordering": false,
+                "searching": false,
+                "info":false,
+                "className":'compact',
+                "columns": [
+                    {title:"Class", data: "class", "defaultContent":""},
+                    {title:"Games", data: "games", "defaultContent":""},
+                    {title:"Recs", data: "recs", "defaultContent":""},
+                    {title:"Yds", data: "yds", "defaultContent":""},
+                    {title:"Tds", data: "tds", "defaultContent":""},
+                    {title:"Dominator", data: "dominator", "defaultContent":""}
+                ],
+                "data":[
+                    {
+                        "games":currentStats.games,
+                        "class":currentStats.class,
+                        "recs":currentStats.recs,
+                        "yds":currentStats.recYds,
+                        "tds":currentStats.recTds,
+                        "dominator":currentStats.dom
+                    }
+                ]
+            });
         }
 
         var collegeColumns = [
@@ -1059,7 +1123,7 @@ var rlf =  {
             $(".college-row-one p").text("Full Breakout Class: " + rlfData.player.metrics.breakoutClass);
             $(".college-row-two p").text("Dominate Seasons: " + rlfData.player.metrics.breakoutSeasons + " out of " + rlfData.player.metrics.collegeSeasons);
             $(".college-row-three p").text("Best Dominator: " + rlfData.player.metrics.bestDominator + "%");
-            $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
+            $(".donut-inner h5").addClass("combine-score").text(rlfData.player.metrics.collegeScore);
             $(".donut-inner span").text(rlfData.player.ordinals.collegeScore + " percentile");
             var config = {
                 type: 'doughnut',
@@ -1264,7 +1328,7 @@ var rlf =  {
             $(".college-row-one p").text("Full Breakout Class: "+rlfData.player.metrics.breakoutClass);
             $(".college-row-two p").text("Dominate Seasons: "+rlfData.player.metrics.breakoutSeasons+" out of "+rlfData.player.metrics.collegeSeasons);
             $(".college-row-three p").text("Best Dominator: "+rlfData.player.metrics.bestDominator+"%");
-            $(".donut-inner h5").text(rlfData.player.metrics.collegeScore);
+            $(".donut-inner h5").addClass('combine-score').text(rlfData.player.metrics.collegeScore);
             $(".donut-inner span").text(rlfData.player.ordinals.collegeScore+" percentile");
             var config = {
                 type:'doughnut',

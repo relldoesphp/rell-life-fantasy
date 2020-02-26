@@ -484,6 +484,7 @@ class Player implements InputFilterAwareInterface
                         "recDom" => round($stats['recs']/$stats['totals']['recs'] * 100,1)."%",
                         "ydsDom" => round($stats['recYds']/$stats['totals']['yds'] * 100, 1)."%",
                         "tdsDom" => round($stats['recTds']/$stats['totals']['tds'] * 100,1)."%",
+                        "dom" => $stats['dominator']
                     ];
                 }
 
