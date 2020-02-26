@@ -1052,7 +1052,7 @@ var rlf =  {
             }
         } else if (rlfData.player.collegeTable !== undefined && rlfData.player.collegeTable.length !== 0) {
             var collegeStuff = rlfData.player.collegeTable;
-            var currentStats = collegeStuff.pop();
+            var currentStats = collegeStuff[collegeStuff.length - 1];
             $('#summary-stats').DataTable({
                 "paging": false,
                 "ordering": false,
