@@ -323,16 +323,34 @@
 <!--            <li><a href="#player-takes">Taeks</a></li>-->
         </ul>
     </div>
-    <div id="modal2" class="modal">
+    <div id="modal2" class="modal modal-fixed-footer">
         <div class="modal-content black-text">
-            <h4>Metrics Glossary</h4>
-            <p class="black-text">Bully Score: The is based on the player's bench press but factors in the players BMI (body mass index). This metric predicts how well a player gets off press coverage and fights for position.</p>
-            <p class="black-text">Speed: Simply based on the players 40 yard dash. For WRs not only predicts if they can get past defenders but also if they will command cushion or not.</p>
-            <p class="black-text">Route Agility: A combination of the player's 3 cone drill and 20 yard shuttle, however it is heavily weighted toward the 3 cone time.</p>
-            <p class="black-text">Juke Agility: A combination of the player's 3 cone drill and 20 yard shuttle, however it is heavily weighted toward the 20 yard shuttle.</p>
-            <p class="black-text">Jumpball: A combination of the player's height, vertical jump, and arm length. Bonus is also given for above average hand size. Predicts how well a player will do with contested catches.</p>
-            <p class="black-text">Elusiveness: Based on the juke agility but is adjusted based on BMI (body mass index). Used to predict how difficult a player will be to tackle.</p>
-            <p class="black-text">Run Power: Based on the broad jump but is adjusted for weight. The more weight a player can move shows how much power they really have in their lower body</p>
+            <h4 class="center">Metrics Glossary</h4>
+            <?php if ($player['position'] == "WR") : ?>
+                <p class="black-text"><b>Slot Score:</b>This metric uses the agility drills and factors in yards after catch ability.</p>
+                <p class="black-text"><b>Big Play Score:</b> Based on a combination of forty time and jumpball ability, this helps to predict if a WR can make big plays downfield.</p>
+                <p class="black-text"><b>Outside X Score:</b> This metric is a combination of College Score, Beat Press, Separation, Contested Catch and YAC Score. This is heavily weighted towards College Score.</p>
+                <p class="black-text"><b>Beat Press:</b> A combination of Bully Score and short shuttle this helps to predict whether or not a receiver will struggle at the line of scrimmage</p>
+                <p class="black-text"><b>Separation:</b> This metric uses route agility and 40 time to determine how easy a receiver can create separation either by running straight or changing direction. </p>
+                <p class="black-text"><b>Contested Catch:</b> Uses the jumpball score and bully score to determine how well a receiver is likely to convert a contested catch.</b></p>
+                <p class="black-text"><b>YAC Score:</b> This metric is based on the power score, forty time and the elusiveness score to quantify how hard a receiver is to bring down after the catch</p>
+                <p class="black-text"><b>College Score:</b> This metric puts a score on the college career of a receiver, input factors include market share each year, special team production, rushing, other teammates that brokeout, conference, and breakout class.</p>
+                <p class="black-text"><b>Breakout Class:</b> Which year in college did a receiver first account for 20% of team receptions, 20% of receiving yards and 20% of receiving touchdowns. This also referred to as a breakout.</p>
+            <?php elseif ($player['position'] == "RB") : ?>
+                <p class="black-text"><b>Grinder score:</b> Predicts how well a running back does between the tackles. Uses power, bmi, weight and elusiveness.</p>
+                <p class="black-text"><b>Receiver score:</b> Uses the running backs best college reception share, their agility scores and their 40 time.</p>
+                <p class="black-text"><b>3 down back score:</b> Uses the grinder score and the receiver score to determine a running backs all around utility.</p>
+            <?php elseif ($player['position'] == "TE") : ?>
+            <?php elseif ($player['position'] == "QB") : ?>
+            <?php endif; ?>
+
+            <p class="black-text"><b>Bully Score</b>: The is based on the player's bench press but factors in the players BMI (body mass index). This metric predicts how well a player gets off press coverage and fights for position.</p>
+            <p class="black-text"><b>Speed</b>: Simply based on the players 40 yard dash. For WRs not only predicts if they can get past defenders but also if they will command cushion or not.</p>
+            <p class="black-text"><b>Route Agility</b>: A combination of the player's 3 cone drill and 20 yard shuttle, however it is heavily weighted toward the 3 cone time.</p>
+            <p class="black-text"><b>Juke Agility</b>: A combination of the player's 3 cone drill and 20 yard shuttle, however it is heavily weighted toward the 20 yard shuttle.</p>
+            <p class="black-text"><b>Jumpball</b>: A combination of the player's height, vertical jump, and arm length. Bonus is also given for above average hand size. Predicts how well a player will do with contested catches.</p>
+            <p class="black-text"><b>Elusiveness</b>: Based on the juke agility but is adjusted based on BMI (body mass index). Used to predict how difficult a player will be to tackle.</p>
+            <p class="black-text"><b>Run Power</b>: Based on the broad jump but is adjusted for weight. The more weight a player can move shows how much power they really have in their lower body</p>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
