@@ -1336,8 +1336,8 @@ var rlf =  {
 
     initMesChartsWR : function(){
         var percent = rlfData.player.percentiles;
-        var info = [percent.heightInches, percent.weight, percent.armsInches, percent.bmi, percent.fortyTime, percent.benchPress, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
-        var labels = ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'];
+        var info = [percent.heightInches, percent.weight, percent.armsInches, percent.bmi, percent.benchPress, percent.fortyTime, percent.verticalJump, percent.broadJump, percent.cone, percent.shuttle];
+        var labels = ['height', 'weight', 'arms', 'bmi', 'bench', '40', 'vertical', 'broad', '3cone', 'shuttle'];
         rlf.makeRadarGraph(info, labels);
     },
     /****************************************** TE stuff **************************************************************/

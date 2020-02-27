@@ -282,6 +282,20 @@ class ServiceAbstract
                         $info["hashtag"] = "#{$player->getFirstName()}{$player->getLastName()}-NFL-Rookie-0";
                     }
                 }
+
+                $metrics = $player->getMetrics();
+                if (array_key_exists("benchPress", $metrics) && $metrics['benchPress'] != null && $metrics['benchPress'] != '-') {
+                    $bmiRate = ($posInfo[$type]['benchAvg'])/($posInfo[$type]['bmiAvg']);
+                    if (!array_key_exists("bmi", $info)) {
+                        $info['bmi'] = $posInfo[$type]['bmiAvg'];
+                    }
+                    $bmiAdj = $bmiRate * ($info['bmi'] - $posInfo[$type]['bmiAvg']);
+                    $metrics['bully'] = round( $bmiAdj + $metrics['benchPress'], 2);
+                } else {
+                    $metrics['bully'] = null;
+                }
+
+                $player->setMetrics($metrics);
                 $player->setPlayerInfo($info);
                 $this->command->save($player);
                 $pointer++;
