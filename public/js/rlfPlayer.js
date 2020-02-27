@@ -79,8 +79,8 @@ var rlf =  {
         var data = [
             {
                 type: 'scatterpolar',
-                r: [percent1.heightInches, percent1.weight, percent1.armsInches, percent1.bmi, percent1.fortyTime, percent1.benchPress, percent1.verticalJump, percent1.broadJump, percent1.cone, percent1.shuttle],
-                theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
+                r: [percent1.heightInches, percent1.weight, percent1.armsInches, percent1.bmi, percent1.benchPress, percent1.fortyTime, percent1.verticalJump, percent1.broadJump, percent1.cone, percent1.shuttle],
+                theta: ['height', 'weight', 'arms', 'bmi', 'bench', 'forty', 'vertical', 'broad', '3cone', 'shuttle'],
                 fill: 'toself',
                 name: rlfData.players[0].first_name+' '+rlfData.players[0].last_name,
                 opacity: 0.5,
@@ -90,8 +90,8 @@ var rlf =  {
             },
             {
                 type: 'scatterpolar',
-                r: [percent2.heightInches, percent2.weight, percent2.armsInches, percent2.bmi, percent2.fortyTime, percent2.benchPress, percent2.verticalJump, percent2.broadJump, percent2.cone, percent2.shuttle],
-                theta: ['height', 'weight', 'arms', 'bmi', '40', 'bench', 'vertical', 'broad', '3cone', 'shuttle'],
+                r: [percent2.heightInches, percent2.weight, percent2.armsInches, percent2.bmi, percent2.benchPress, percent2.fortyTime, percent2.verticalJump, percent2.broadJump, percent2.cone, percent2.shuttle],
+                theta: ['height', 'weight', 'arms', 'bmi', 'bench', 'forty', 'vertical', 'broad', '3cone', 'shuttle'],
                 fill: 'toself',
                 name: rlfData.players[1].first_name+' '+rlfData.players[1].last_name,
                 opacity: 0.5,
