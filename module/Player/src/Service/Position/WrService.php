@@ -89,51 +89,93 @@ class WrService extends ServiceAbstract
             }
 
 
-            if ($wr->getTeam() == "Rookie" || $wr->getId() == 2868) {
-                if ($wr->college_stats != null) {
-                    $college = $this->makeCollegeScore($wr);
-                    $metrics['collegeScore'] = $college['collegeScore'];
-                    $metrics['bestSeason'] = $college['bestSeason'];
-                    $metrics['breakoutClass'] = $college['breakoutClass'];
-                    $metrics['breakoutSeasons'] = $college['breakoutSeasons'];
-                    $metrics['collegeSeasons'] = $college['collegeSeasons'];
-                    $metrics['bestDominator'] = $college['bestDominator'];
-                    $wr->college_stats = $college['updateCollegeStats'];
-                } else {
-                    $metrics['collegeScore'] = null;
-                    $metrics['bestSeason'] = null;
-                    $metrics['breakoutClass'] = null;
-                }
-
-                $metrics['beatPress'] = null;
-                $metrics['contested'] = null;
-                $metrics['separation'] = null;
-                $metrics['yac'] = null;
-                $metrics["deep"] = null;
-                $metrics["slot"] = null;
-                $metrics["alpha"] = null;
-
-                $wr->setMetrics($metrics);
-
-                $this->command->save($wr);
-
-                $pointer++;
-                $progressBar->update($pointer);
-
-                continue;
-            }
+//            if ($wr->getTeam() == "Rookie" || $wr->getId() == 2868) {
+//                if ($wr->college_stats != null) {
+//                    $college = $this->makeCollegeScore($wr);
+//                    $metrics['collegeScore'] = $college['collegeScore'];
+//                    $metrics['bestSeason'] = $college['bestSeason'];
+//                    $metrics['breakoutClass'] = $college['breakoutClass'];
+//                    $metrics['breakoutSeasons'] = $college['breakoutSeasons'];
+//                    $metrics['collegeSeasons'] = $college['collegeSeasons'];
+//                    $metrics['bestDominator'] = $college['bestDominator'];
+//                    $wr->college_stats = $college['updateCollegeStats'];
+//                } else {
+//                    $metrics['collegeScore'] = null;
+//                    $metrics['bestSeason'] = null;
+//                    $metrics['breakoutClass'] = null;
+//                }
+//
+//                $metrics['beatPress'] = null;
+//                $metrics['contested'] = null;
+//                $metrics['separation'] = null;
+//                $metrics['yac'] = null;
+//                $metrics["deep"] = null;
+//                $metrics["slot"] = null;
+//                $metrics["alpha"] = null;
+//
+//                $wr->setMetrics($metrics);
+//
+//                $this->command->save($wr);
+//
+//                $pointer++;
+//                $progressBar->update($pointer);
+//
+//                continue;
+//            }
 
             if (empty($metrics) || !array_key_exists('bully', $metrics)) {
                 continue;
             }
 
-            //slot score
-            $slot = 0;
-            $slot = round(($percentiles['routeAgility'] * .7) + ($percentiles['elusiveness'] * .3),2);
-            $deep = round(($percentiles['fortyTime'] * .7) + ($percentiles['jumpball'] * .3), 2);
+            if (in_array($metrics['shuttle'], ["-", "", null])
+                && in_array($metrics['cone'], ["-", "", null])) {
+                $noAgility = true;
+            } else{
+                $noAgility = false;
+            }
 
-            $metrics["deep"] = $deep;
+            if (in_array($metrics['verticalJump'], ["-", "", null])
+                && in_array($metrics['broadJump'], ["-", "", null])) {
+                $noJump = true;
+            } else{
+                $noJump = false;
+            }
+
+            if (in_array($metrics['fortyTime'], ["-", "", null])) {
+                $noForty = true;
+            } else{
+                $noForty = false;
+            }
+
+            if (in_array($metrics['benchPress'], ["-", "", null])) {
+                $noBench = true;
+            } else{
+                $noBench = false;
+            }
+
+            if (in_array($metrics['verticalJump'], ["-", "", null])) {
+                $noVert = true;
+            } else {
+                $noVert = false;
+            }
+
+            //slot score
+            $slot = null;
+            if ($noAgility) {
+                $slot = null;
+            } else {
+                $slot = round(($percentiles['routeAgility'] * .7) + ($percentiles['elusiveness'] * .3),2);
+            }
             $metrics["slot"] = $slot;
+
+            //deep score
+            if ($noForty)  {
+                $deep = null;
+            } else {
+                $deep = round(($percentiles['fortyTime'] * .7) + ($percentiles['jumpball'] * .3), 2);
+            }
+            $metrics["deep"] = $deep;
+
 
             if ($wr->college_stats != null) {
                 $college = $this->makeCollegeScore($wr);
@@ -150,7 +192,7 @@ class WrService extends ServiceAbstract
                 $metrics['breakoutClass'] = null;
             }
 
-            if ($metrics['bully'] != null) {
+            if ($noBench == false) {
                 if ($metrics['elusiveness'] != null) {
                     $metrics['beatPress'] = round((($percentiles['bully'] * .75) + ($percentiles['elusiveness'] * .25)),2);
                 } else {
@@ -164,8 +206,8 @@ class WrService extends ServiceAbstract
                 }
             }
 
-            if ($metrics['routeAgility'] != null ) {
-                if ($metrics['fortyTime'] != null) {
+            if ($noAgility == false) {
+                if ($noForty == false) {
                     $metrics['separation'] = round((($percentiles['routeAgility'] * .65) + ($percentiles['fortyTime'] * .35)),2);
                 } else {
                     $metrics['separation'] = round((($percentiles['routeAgility'] * .75)),2);
@@ -198,49 +240,58 @@ class WrService extends ServiceAbstract
                 $metrics['contested'] = null;
             }
 
-            $halfAlpha = ($metrics['beatPress'] *.25) + ($metrics['separation'] *.35) + ($metrics['contested'] *.33) + ($metrics['yac'] *.07);
-            $alphaScore = round(((($metrics['collegeScore']/40) * 100) * .4) + ($halfAlpha * .6), 2);
+            if ($metrics['beatPress'] != null && $metrics['separation'] != null && $metrics['contested'] != null && $metrics['yac'] != null) {
+                $halfAlpha = ($metrics['beatPress'] *.25) + ($metrics['separation'] *.35) + ($metrics['contested'] *.33) + ($metrics['yac'] *.07);
+                $alphaScore = round(((($metrics['collegeScore']/40) * 100) * .4) + ($halfAlpha * .6), 2);
+            } else {
+                $alphaScore = null;
+            }
 
-//            if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 50) {
+            if ($noForty == false && $noBench == false) {
+                //            if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 50) {
 //                $alphaScore = $alphaScore - 5;
 //            }
 
-            if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 40) {
-                $alphaScore = $alphaScore - 5;
+                if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 40) {
+                    $alphaScore = $alphaScore - 5;
+                }
+
+                if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 30) {
+                    $alphaScore = $alphaScore - 10;
+                }
+
+                if ($metrics['beatPress'] < 20) {
+                    $alphaScore = $alphaScore - 10;
+                }
             }
 
-            if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 30) {
-                $alphaScore = $alphaScore - 10;
+            if ($noJump) {
+                if ($alphaScore > 50  && $metrics['contested'] < 70) {
+                    $alphaScore = $alphaScore - 5;
+                }
+
+                if ($alphaScore > 50 && $metrics['collegeScore'] < 30 && $metrics['contested'] < 50) {
+                    $alphaScore = $alphaScore - 5;
+                }
+
+                if ($alphaScore > 50 && $metrics['collegeScore'] < 30 && $metrics['contested'] < 40) {
+                    $alphaScore = $alphaScore - 5;
+                }
             }
 
-            if ($metrics['beatPress'] < 20) {
-                $alphaScore = $alphaScore - 10;
-            }
+            if ($noAgility == false) {
+                if ($alphaScore > 50 && $metrics['separation'] < 40) {
+                    $alphaScore = $alphaScore - 7;
+                }
 
-            if ($alphaScore > 50  && $metrics['contested'] < 70) {
-                $alphaScore = $alphaScore - 5;
-            }
+                if ($alphaScore > 50 && $metrics['separation'] < 30) {
+                    $alphaScore = $alphaScore - 10;
+                }
 
-            if ($alphaScore > 50 && $metrics['separation'] < 40) {
-                $alphaScore = $alphaScore - 7;
+                if ($metrics['separation'] < 20) {
+                    $alphaScore = $alphaScore - 10;
+                }
             }
-
-            if ($alphaScore > 50 && $metrics['separation'] < 30) {
-                $alphaScore = $alphaScore - 10;
-            }
-
-            if ($metrics['separation'] < 20) {
-                $alphaScore = $alphaScore - 10;
-            }
-
-            if ($alphaScore > 50 && $metrics['collegeScore'] < 30 && $metrics['contested'] < 50) {
-                $alphaScore = $alphaScore - 5;
-            }
-
-            if ($alphaScore > 50 && $metrics['collegeScore'] < 30 && $metrics['contested'] < 40) {
-                $alphaScore = $alphaScore - 5;
-            }
-
 
             // Alpha Score
             /*
@@ -327,15 +378,21 @@ class WrService extends ServiceAbstract
 
             if (array_key_exists("bestDominator", $college) && $college['bestDominator'] > 20) {
                 if ($college['bestSeason']['recAvg'] < 14.51 && $metrics['slot'] != 0) {
-                    $metrics['slot'] = $metrics['slot'] + 5;
+                    if ($noAgility == false) {
+                        $metrics['slot'] = $metrics['slot'] + 5;
+                    }
                 }
 
                 if ($college['bestSeason']['recAvg'] > 17 && $metrics['deep'] != 0) {
-                    $metrics['deep'] = $metrics['deep'] + 5;
+                    if ($noForty == false) {
+                        $metrics['deep'] = $metrics['deep'] + 5;
+                    }
                 }
 
                 if ($college['bestSeason']['recAvg'] > 14.51 && $college['bestSeason']['recAvg'] < 17 && $metrics['alpha'] != 0) {
-                    $metrics['alpha'] = $metrics['alpha'] + 5;
+                    if ($metrics['alpha'] !== null) {
+                        $metrics['alpha'] = $metrics['alpha'] + 5;
+                    }
                 }
             }
 

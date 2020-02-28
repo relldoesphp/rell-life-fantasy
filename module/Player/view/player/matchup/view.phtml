@@ -450,7 +450,7 @@
     rlf.initMatchupPage();
     $(document).ready(function() {
         $("img").on("error", function () {
-            $(this).unbind("error").attr("src", "/images/placeholder.jpeg").css("height", "60px");
+            $(this).unbind("error").attr("src", "/img/favicon.png").css("height", "60px");
         });
         $(".determinate").each(function(){
             var width = $(this).width()/$(this).parent().width();

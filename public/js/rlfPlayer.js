@@ -603,20 +603,20 @@ var rlf =  {
         var roleFits = [
             {
                 "name":"Arm Talent",
-                "value": rlfData.player.metrics.armTalent.toFixed(2),
+                "value": rlfData.player.metrics.armTalent,
                 "percentile":rlfData.player.ordinals.armTalent,
                 "percent":rlfData.player.percentiles.armTalent
             },
             {
                 "name":"Mobility",
-                "value": rlfData.player.metrics.mobility.toFixed(2),
+                "value": rlfData.player.metrics.mobility,
                 "percentile":rlfData.player.ordinals.mobility,
                 "percent":rlfData.player.percentiles.mobility
 
             },
             {
                 "name":"PlayMaker",
-                "value": rlfData.player.metrics.playmaker.toFixed(2),
+                "value": rlfData.player.metrics.playmaker,
                 "percentile":rlfData.player.ordinals.playmaker,
                 "percent":rlfData.player.percentiles.playmaker
             }
@@ -2597,16 +2597,16 @@ var rlf =  {
         $(".role-one-title").text(roleFits[0].name);
         $(".role-one-score").text(roleFits[0].value);
         $(".role-one-percentile").text("("+roleFits[0].percentile + " percentile)");
-        if (roleFits[0].percent > 69) {
+        if (roleFits[0].percent > 69.99) {
             $(".role-one-bar .determinate").css("background-color", "green");
         }
 
 
-        if (roleFits[0].percent < 69 && roleFits[0].percent > 40) {
+        if (roleFits[0].percent < 69.99 && roleFits[0].percent > 39.99) {
             $(".role-one-bar .determinate").css("background-color", "yellow");
         }
 
-        if (roleFits[0].percent < 39) {
+        if (roleFits[0].percent < 39.99) {
             $(".role-one-bar .determinate").css("background-color", "red");
         }
 

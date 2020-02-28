@@ -58,7 +58,12 @@ class ScriptController extends AbstractActionController
 
     public function updateTeMetricsAction()
     {
-        $this->playerManager->updateWrMetrics();
+        $this->playerManager->updateTeMetrics();
+    }
+
+    public function updateQbMetricsAction()
+    {
+        $this->playerManager->updateQbMetrics();
     }
 
     public function updateOLMetricsAction()

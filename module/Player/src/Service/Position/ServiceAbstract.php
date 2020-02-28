@@ -294,13 +294,13 @@ class ServiceAbstract
                 } else {
                     $metrics['bully'] = null;
                 }
-
-                $player->setMetrics($metrics);
-                $player->setPlayerInfo($info);
-                $this->command->save($player);
-                $pointer++;
-                $progressBar->update($pointer);
-                continue;
+//
+//                $player->setMetrics($metrics);
+//                $player->setPlayerInfo($info);
+//                $this->command->save($player);
+//                $pointer++;
+//                $progressBar->update($pointer);
+//                continue;
             }
 
             $metrics = $player->getMetrics();
@@ -327,6 +327,38 @@ class ServiceAbstract
 
             if (!array_key_exists('fortyTime', $metrics)) {
                 $metrics['fortyTime'] = null;
+            }
+
+            if (in_array($metrics['shuttle'], ["-", "", null])
+                && in_array($metrics['cone'], ["-", "", null])) {
+                $noAgility = true;
+            } else{
+                $noAgility = false;
+            }
+
+            if (in_array($metrics['verticalJump'], ["-", "", null])
+                && in_array($metrics['broadJump'], ["-", "", null])) {
+                $noJump = true;
+            } else{
+                $noJump = false;
+            }
+
+            if (in_array($metrics['fortyTime'], ["-", "", null])) {
+                $noForty = true;
+            } else{
+                $noForty = false;
+            }
+
+            if (in_array($metrics['benchPress'], ["-", "", null])) {
+                $noBench = true;
+            } else{
+                $noBench = false;
+            }
+
+            if (in_array($metrics['verticalJump'], ["-", "", null])) {
+                $noVert = true;
+            } else {
+                $noVert = false;
             }
 
             // (average bmi 26.6/ average bench 14.2) = 1.87
@@ -357,22 +389,22 @@ class ServiceAbstract
             }
 
             // If we have a shuttle but no cone, determine estimated cone and use to make route Agility
-            if (($metrics['shuttle'] != null && $metrics['shuttle'] != '-') && ($metrics['cone'] == null || $metrics['cone'] == "-")) {
-                $coneRate = ($posInfo[$type]['coneAvg'])/($posInfo[$type]['shuttleAvg']);
-                $estCone = round($coneRate * $metrics['shuttle'], 2);
-                $metrics['estCone'] = $estCone;
-                $metrics['routeAgility'] = round((($estCone) + ($metrics['shuttle'] * .15)), 2);
-                $metrics['jukeAgility'] = round((($metrics['shuttle']) + ($estCone * .2)), 2);
-            }
+//            if (($metrics['shuttle'] != null && $metrics['shuttle'] != '-') && ($metrics['cone'] == null || $metrics['cone'] == "-")) {
+//                $coneRate = ($posInfo[$type]['coneAvg'])/($posInfo[$type]['shuttleAvg']);
+//                $estCone = round($coneRate * $metrics['shuttle'], 2);
+//                $metrics['estCone'] = $estCone;
+//                $metrics['routeAgility'] = round((($estCone) + ($metrics['shuttle'] * .15)), 2);
+//                $metrics['jukeAgility'] = round((($metrics['shuttle']) + ($estCone * .2)), 2);
+//            }
 
             // If we have a a cone but no shuttle, determine estimated shuttle and use to make juke Agility
-            if (($metrics['cone'] != null && $metrics['cone'] != '-') && ($metrics['shuttle'] == null || $metrics['shuttle'] == "-")) {
-                $shuttleRate = ($posInfo[$type]['shuttleAvg'])/($posInfo[$type]['coneAvg']);
-                $estShuttle = round($shuttleRate * $metrics['cone'], 2);
-                $metrics['estShuttle'] = round($estShuttle, 2);
-                $metrics['routeAgility'] = round((($metrics['cone']) + ($estShuttle * .15)), 2);
-                $metrics['jukeAgility'] = round((($estShuttle) + ($metrics['cone'] * .2)), 2);
-            }
+//            if (($metrics['cone'] != null && $metrics['cone'] != '-') && ($metrics['shuttle'] == null || $metrics['shuttle'] == "-")) {
+//                $shuttleRate = ($posInfo[$type]['shuttleAvg'])/($posInfo[$type]['coneAvg']);
+//                $estShuttle = round($shuttleRate * $metrics['cone'], 2);
+//                $metrics['estShuttle'] = round($estShuttle, 2);
+//                $metrics['routeAgility'] = round((($metrics['cone']) + ($estShuttle * .15)), 2);
+//                $metrics['jukeAgility'] = round((($estShuttle) + ($metrics['cone'] * .2)), 2);
+//            }
 
             // Use Juke agility plus BMI to determine how elusive a player is
             if ($metrics['jukeAgility'] != null) {
@@ -415,13 +447,14 @@ class ServiceAbstract
             if (($metrics['verticalJump'] != null && $metrics['verticalJump'] != '-') && array_key_exists('armsInches', $info)) {
                 $metrics['jumpball'] = round($info['heightInches'] + ($info['armsInches'] * 1.1) + ($metrics['verticalJump'] * .8), 2);
                 // Premium for big Hands
-                if ($info['hands'] > 9.5) {
-                    $metrics['jumpball'] =  $metrics['jumpball'] + 3;
+                if (array_key_exists('hands', $info)){
+                    if ($info['hands'] > 9.5) {
+                        $metrics['jumpball'] =  $metrics['jumpball'] + 3;
+                    }
+                    if ($info['hands'] > 9.99) {
+                        $metrics['jumpball'] =  $metrics['jumpball'] + 2;
+                    }
                 }
-                if ($info['hands'] > 9.99) {
-                    $metrics['jumpball'] =  $metrics['jumpball'] + 2;
-                }
-
             } else {
                 $metrics['jumpball'] = null;
             }
@@ -433,7 +466,6 @@ class ServiceAbstract
                 $metrics['speedScore'] = null;
             }
 
-            
 
             if ($metrics == false) {
                 $metrics = [];

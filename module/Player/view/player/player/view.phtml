@@ -1,5 +1,6 @@
 <?php
     $this->headTitle($player['first_name']." ".$player['last_name'], 'PREPEND');
+
 ?>
 
 <div class="section white full-height container">
@@ -400,6 +401,10 @@ switch($player['position']) {
         <?= $init ?>
         rlf.initSearch();
         rlf.initCompareSearches();
+
+        $("img").on("error", function () {
+            $(this).unbind("error").attr("src", "/img/favicon.png").css("height", "60px");
+        });
     });
 </script>
 

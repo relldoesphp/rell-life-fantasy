@@ -311,7 +311,7 @@ class PlayerForm extends Form
             switch ($player->getPosition()) {
                 case "WR":
                 case "TE":
-                    $fields = ["year","college","class","conference","games","recs","recYds","recAvg","recTds","rushes","rushAvg","rushTds","rushYds"];
+                    $fields = ["year","college","class","conference","games","recs","recYds","recAvg","recTds","rushes","rushAvg","rushTds","rushYds", "dominator"];
                     foreach ($fields as $field) {
                         $newField = new Element($field);
                         $newField->setLabel($field);

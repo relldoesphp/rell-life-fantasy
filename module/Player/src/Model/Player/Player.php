@@ -619,19 +619,31 @@ class Player implements InputFilterAwareInterface
             }
         }
 
-
+        foreach ($this->metrics as $key => $value) {
+            if ($value == 0) {
+                $this->metrics[$key] = null;
+            }
+        }
     }
 
     private function makeImages()
     {
         $images = "";
         if (empty($this->images)) {
-            $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; margin:auto;'></a>";
+            if ($this->sleeper_id == null) {
+                $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='/img/favicon.png'  style='height:280px; width:280px; margin:auto;'></a>";
+            } else {
+                $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; margin:auto;'></a>";
+            }
         } else {
             $i = 0;
             foreach ($this->images as $key => $url) {
                 if (empty($url) && $i == 0) {
-                    $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; margin:auto;'></a>";
+                    if ($this->sleeper_id == null) {
+                        $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='/img/favicon.png'  style='height:280px; width:280px; margin:auto;'></a>";
+                    } else {
+                        $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; margin:auto;'></a>";
+                    }
                     break;
                 }
 

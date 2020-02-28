@@ -209,6 +209,17 @@ return [
                         ],
                     ],
                 ],
+                'qb-metrics' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'update-qb-metrics',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'updateQbMetrics',
+                        ],
+                    ],
+                ],
                 'data-scrap' => [
                     'type'    => 'simple',  // This is the default, and may be omitted; more on
                     // types below
