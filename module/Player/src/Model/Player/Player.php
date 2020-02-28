@@ -619,11 +619,11 @@ class Player implements InputFilterAwareInterface
             }
         }
 
-        foreach ($this->metrics as $key => $value) {
-            if ($value == 0) {
-                $this->metrics[$key] = null;
-            }
-        }
+//        foreach ($this->metrics as $key => $value) {
+//            if ($value == 0) {
+//                $this->metrics[$key] = null;
+//            }
+//        }
     }
 
     private function makeImages()

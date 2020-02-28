@@ -2593,10 +2593,13 @@ var rlf =  {
     // };
 
     makeRoleFits : function(roleFits){
-        $(".role-one-bar .determinate").css("width", roleFits[0].value + "%");
         $(".role-one-title").text(roleFits[0].name);
-        $(".role-one-score").text(roleFits[0].value);
-        $(".role-one-percentile").text("("+roleFits[0].percentile + " percentile)");
+        $(".role-one-bar .determinate").css("width", roleFits[0].value + "%");
+        if (roleFits[0].value !== 0) {
+            $(".role-one-score").text(roleFits[0].value);
+            $(".role-one-percentile").text("("+roleFits[0].percentile + " percentile)");
+        }
+
         if (roleFits[0].percent > 69.99) {
             $(".role-one-bar .determinate").css("background-color", "green");
         }
@@ -2612,8 +2615,11 @@ var rlf =  {
 
         $(".role-two-bar .determinate").css("width", roleFits[1].value + "%");
         $(".role-two-title").text(roleFits[1].name);
-        $(".role-two-score").text(roleFits[1].value)
-        $(".role-two-percentile").text("("+roleFits[1].percentile + " percentile)");
+        if (roleFits[1].value !== 0) {
+            $(".role-two-score").text(roleFits[1].value);
+            $(".role-two-percentile").text("("+roleFits[1].percentile + " percentile)");
+        }
+
         if (roleFits[1].percent > 69) {
             $(".role-two-bar .determinate").css("background-color", "green");
         }
@@ -2628,8 +2634,11 @@ var rlf =  {
 
         $(".role-three-bar .determinate").css("width", roleFits[2].value + "%");
         $(".role-three-title").text(roleFits[2].name);
-        $(".role-three-score").text(roleFits[2].value)
-        $(".role-three-percentile").text("("+roleFits[2].percentile + " percentile)");
+        if (roleFits[2].value !== 0) {
+            $(".role-three-score").text(roleFits[2].value)
+            $(".role-three-percentile").text("("+roleFits[2].percentile + " percentile)");
+        }
+
         if (roleFits[2].percent > 69) {
             $(".role-three-bar .determinate").css("background-color", "green");
         }
