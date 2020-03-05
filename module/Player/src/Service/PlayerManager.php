@@ -196,8 +196,8 @@ class PlayerManager
         $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
         $rbService->calculateMetrics();
         $rbService->calculatePercentiles();
-//        $rbService->calculateSpecialScores();
-//        $rbService->calculateSpecialPercentiles();
+        $rbService->calculateSpecialScores();
+        $rbService->calculateSpecialPercentiles();
     }
 
     public function updateTeMetrics()

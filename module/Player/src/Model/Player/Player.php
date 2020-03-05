@@ -42,6 +42,7 @@ class Player implements InputFilterAwareInterface
     public $image3 = "";
     public $image4= "";
     public $status="";
+    public $headshot = "";
 
     /**
      * @return string
@@ -318,6 +319,22 @@ class Player implements InputFilterAwareInterface
     public function getSleeperId()
     {
         return $this->sleeper_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHeadshot()
+    {
+        return $this->headshot;
+    }
+
+    /**
+     * @param string $headshot
+     */
+    public function setHeadshot($headshot)
+    {
+        $this->headshot = $headshot;
     }
 
 

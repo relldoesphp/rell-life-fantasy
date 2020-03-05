@@ -191,6 +191,15 @@ class QbService extends ServiceAbstract
                         case ($bestRush > 500) :
                             $metrics['mobility'] = 70;
                             break;
+                        case ($bestRush > 300) :
+                            $metrics['mobility'] = 65;
+                            break;
+                        case ($bestRush > 200) :
+                            $metrics['mobility'] = 60;
+                            break;
+                        case ($bestRush > 100) :
+                            $metrics['mobility'] = 50;
+                            break;
                         default:
                             $metrics['mobility'] = 40;
                         }

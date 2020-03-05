@@ -95,78 +95,152 @@ class RbService extends ServiceAbstract
             $metrics = $rb->getMetrics();
             $percentiles = $rb->getPercentiles();
 
-            if ($rb->getTeam() == "Rookie") {
-                if ($rb->college_stats != null) {
-                    $college = $this->makeCollegeScore($rb);
-                    $metrics['collegeScore'] = $college['collegeScore'];
-                    $metrics['bestSeason'] = $college['bestSeason'];
-                    $metrics['breakoutClass'] = $college['breakoutClass'];
-                    $metrics['breakoutSeasons'] = $college['breakoutSeasons'];
-                    $metrics['collegeSeasons'] = $college['collegeSeasons'];
-                    $metrics['bestDominator'] = $college['bestDominator'];
-                    $metrics["bestYPC"] = $college['bestYPC'];
-                    $metrics["bestCarryDominator"] = $college['bestCarryDominator'];
-                    $metrics['bestRecDominator'] = $college['bestRecDominator'];
-                } else {
-                    $metrics['collegeScore'] = null;
-                    $metrics['bestSeason'] = null;
-                    $metrics['breakoutClass'] = null;
-                    $metrics['breakoutSeasons'] = null;
-                    $metrics['collegeSeasons'] = null;
-                    $metrics['bestDominator'] = null;
-                    $metrics["bestYPC"] = null;
-                    $metrics["bestCarryDominator"] = null;
-                    $metrics['bestRecDominator'] = null;
-                }
+//            if ($rb->getTeam() == "Rookie") {
+//                if ($rb->college_stats != null) {
+//                    $college = $this->makeCollegeScore($rb);
+//                    $metrics['collegeScore'] = $college['collegeScore'];
+//                    $metrics['bestSeason'] = $college['bestSeason'];
+//                    $metrics['breakoutClass'] = $college['breakoutClass'];
+//                    $metrics['breakoutSeasons'] = $college['breakoutSeasons'];
+//                    $metrics['collegeSeasons'] = $college['collegeSeasons'];
+//                    $metrics['bestDominator'] = $college['bestDominator'];
+//                    $metrics["bestYPC"] = $college['bestYPC'];
+//                    $metrics["bestCarryDominator"] = $college['bestCarryDominator'];
+//                    $metrics['bestRecDominator'] = $college['bestRecDominator'];
+//                } else {
+//                    $metrics['collegeScore'] = null;
+//                    $metrics['bestSeason'] = null;
+//                    $metrics['breakoutClass'] = null;
+//                    $metrics['breakoutSeasons'] = null;
+//                    $metrics['collegeSeasons'] = null;
+//                    $metrics['bestDominator'] = null;
+//                    $metrics["bestYPC"] = null;
+//                    $metrics["bestCarryDominator"] = null;
+//                    $metrics['bestRecDominator'] = null;
+//                }
+//
+//                $rb->setMetrics($metrics);
+//
+//                $this->command->save($rb);
+//
+//                $pointer++;
+//                $progressBar->update($pointer);
+//
+//                continue;
+//            }
 
-                $rb->setMetrics($metrics);
-
-                $this->command->save($rb);
-
-                $pointer++;
-                $progressBar->update($pointer);
-
-                continue;
+            if ($rb->getId() == 26660) {
+                $found = true;
             }
 
-            $data['receiver'] = 0;
-            $data['grinder'] = 0;
+            if (in_array($metrics['shuttle'], ["-", "", null])
+                && in_array($metrics['cone'], ["-", "", null])) {
+                $noAgility = true;
+            } else{
+                $noAgility = false;
+            }
+
+            if (in_array($metrics['verticalJump'], ["-", "", null])
+                && in_array($metrics['broadJump'], ["-", "", null])) {
+                $noJump = true;
+            } else{
+                $noJump = false;
+            }
+
+            if (in_array($metrics['fortyTime'], ["-", "", null])) {
+                $noForty = true;
+            } else{
+                $noForty = false;
+            }
+
+            if (in_array($metrics['benchPress'], ["-", "", null])) {
+                $noBench = true;
+            } else{
+                $noBench = false;
+            }
+
+            if (in_array($metrics['verticalJump'], ["-", "", null])) {
+                $noVert = true;
+            } else {
+                $noVert = false;
+            }
+
+            if (in_array($metrics['broadJump'], ["-", "", null])) {
+                $noBroad = true;
+            } else {
+                $noBroad = false;
+            }
+
+            if (in_array($metrics['shuttle'], ["-", "", null])) {
+                $noShuttle = true;
+            } else {
+                $noShuttle = false;
+            }
+
+            if (in_array($metrics["cone"], ["-", "", null])) {
+                $noCone = true;
+            } else {
+                $noCone = false;
+            }
+
+            $data['receiver'] = null;
+            $data['grinder'] = null;
 
             /*** Make Grinder Base ***/
             // 1. We have elusiveness, power, and speedScore
-            if ($metrics['elusiveness'] !== null && $metrics['power'] !== null && $metrics['speedScore'] !== null) {
-                $data['grinder'] = ($percentiles['power'] * .6) + ($percentiles['elusiveness'] * .2) + ($percentiles['speedScore'] * .2);
+            if ($noAgility == false && $noForty == false && $noBroad == false) {
+                $data['grinder'] = ($percentiles['power'] * .7) + ($percentiles['elusiveness'] * .1) + ($percentiles['speedScore'] * .2);
             }
             // 2. No agility so no elusiveness, just broad jump and speedScore
-            if ($metrics['elusiveness'] == null && $metrics['power'] !== null && $metrics['speedScore'] !== null) {
+            if ($noAgility == true && $noForty == false && $noBroad == false) {
                 $data['grinder'] = ($percentiles['power'] * .6) + ($percentiles['speedScore'] * .4);
             }
 
             // 3. Just speedScore
-            if ($metrics['elusiveness'] == null && $metrics['power'] == null && $metrics['speedScore'] !== null) {
+            if ($noAgility == true && $noForty == false && $noBroad == true) {
                 $data['grinder'] = $percentiles['speedScore'];
             }
 
             // 4. Just broadJump
-            if ($metrics['elusiveness'] == null && $metrics['power'] !== null && $metrics['speedScore'] == null) {
+            if ($noAgility == true && $noForty == true && $noJump == false) {
                 $data['grinder'] = $percentiles['power'];
+            }
+
+            // 5. Just broadJump
+            if ($noShuttle == false && $noForty == false && $noBroad == true) {
+                $data['grinder'] = ($percentiles['elusiveness'] * .3) + ($percentiles['speedScore'] * .7);;
             }
 
             /*** Make Receiver Base ***/
             // 1. We have agility scores and forty time
-            if ($metrics['shuttle'] !== null && $metrics['cone'] !== null && $metrics['fortyTime'] !== null) {
+            if ($noAgility == false && $noForty == false) {
                 $data['receiver'] = ($percentiles['routeAgility'] * .6) + ($percentiles['jukeAgility'] * .2) + ($percentiles['fortyTime'] * .2);
             }
+
             // 2. No agility scores just forty time
-            if ($metrics['shuttle'] == null && $metrics['cone'] == null && $metrics['fortyTime'] !== null) {
-                $data['receiver'] = $percentiles['fortyTime'];
+            if ($noAgility == true && $noForty == false) {
+                $data['receiver'] = ($percentiles['fortyTime'] * .7);
             }
 
             // 3. Agility but no 40 time
-            if ($metrics['cone'] == null && $metrics['shuttle'] == null && $metrics['fortyTime'] !== null) {
+            if ($noAgility == false && $noForty == true ) {
                 $data['receiver'] = ($percentiles['routeAgility'] * .7) + ($percentiles['jukeAgility'] * .3);
             }
 
+            // 4. If just shuttle w/ 40 but no cone
+            if ($noShuttle == false && $noForty == false && $noCone == true) {
+                $data['receiver'] = ($percentiles['jukeAgility'] * .3) + ($percentiles['fortyTime'] * .7);
+            }
+
+            // 5. If just cone w/ 40 but no shuttle
+            if ($noShuttle == true && $noForty == false && $noCone == false) {
+                $data['receiver'] = ($percentiles['routeAgility'] * .6) + ($percentiles['fortyTime'] * .4);
+            }
+
+            //6. If nothing then null
+            if ($noShuttle == true && $noForty == true && $noCone == true) {
+                $data['receiver'] = null;
+            }
 
             if (!empty($rb->getCollegeStats())) {
                 $collegeStuff = $this->makeCollegeScore($rb);
@@ -182,15 +256,35 @@ class RbService extends ServiceAbstract
 
                 /*** Use College Stats to adjust scores ***/
 
-                $data['receiver'] = ($percentiles['bestRecDominator'] * .6) + ($data['receiver'] * .4);
-
-                if ($collegeStuff['bestYPC'] < 5) {
-                    $data['grinder'] = $data['grinder'] - 10;
+ //               $data['receiver'] = $data['receiver'] + $collegeStuff['bestRecDominator'];
+                if ($rb->getId() == 26665) {
+                    $gotem = true;
                 }
 
-                if ($collegeStuff['bestCarryDominator'] < 30) {
-                    $data['grinder'] = $data['grinder'] - 10;
+                if ($data['receiver'] != null) {
+                    if ($collegeStuff['bestRecDominator'] < 9 ) {
+                        $data['receiver'] = $data['receiver'] - 5;
+                    } else {
+                        $data['receiver'] = ($percentiles['bestRecDominator'] * .6) + ($data['receiver'] * .4);
+                    }
                 }
+
+
+//                if ($collegeStuff['bestRec'] >= 30) {
+//                    $data['receiver'] = $data['receiver'] + 5;
+//                }
+//
+//                if ($collegeStuff['bestRec'] >= 40) {
+//                    $data['receiver'] = $data['receiver'] + 5;
+//                }
+//
+//                if ($collegeStuff['bestYPC'] < 5) {
+//                    $data['grinder'] = $data['grinder'] - 10;
+//                }
+//
+//                if ($collegeStuff['bestCarryDominator'] < 30) {
+//                    $data['grinder'] = $data['grinder'] - 10;
+//                }
 
             } else {
                 $metrics['collegeScore'] = null;
@@ -202,7 +296,18 @@ class RbService extends ServiceAbstract
                 $metrics['bestCarryDominator'] = "N/A";
             }
 
-            $data['alpha'] = ($data['receiver'] * .6) + ($data['grinder'] * .4);
+            if ($metrics['collegeScore'] !== null && $data['grinder'] != null && $data['receiver'] != null) {
+                $data['alpha'] = ($data['receiver'] * .5) + ($data['grinder'] * .5);
+                if ($metrics['collegeScore'] > 19) {
+                    $data['alpha'] = $data['alpha'] + ($metrics['collegeScore'] - 19);
+                }
+            } else {
+                $data['alpha'] = ($data['receiver'] * .5) + ($data['grinder'] * .5);
+            }
+
+            if ($data['receiver'] == null && $data['grinder'] == null) {
+                $data['alpha'] = null;
+            }
 
             $metrics['alpha'] = round($data['alpha'],2);
             $metrics['passCatcher'] = round($data['receiver'],2);
@@ -238,6 +343,7 @@ class RbService extends ServiceAbstract
         $lastBreakout = 0;
         $bestYPC = 0;
         $bestCarryDom = 0;
+        $bestRec = 0;
 
         $collegeStats = $rb->getCollegeStats();
         foreach ($collegeStats as $year => $stats) {
@@ -257,15 +363,23 @@ class RbService extends ServiceAbstract
                         "bestDominator" => null,
                         "bestYPC" => null,
                         "bestCarryDominator" => null,
+                        "bestRec" => null,
                         "collegeStats" => $collegeStats,
                     ];
                 }
 
                 if (!array_key_exists("scrimmageTds", $stats)) {
+                    if (!array_key_exists("recTds", $stats)) {
+                        $stats["recTds"] = 0;
+                    }
                     $stats["scrimmageTds"] = $stats["rushTds"] + $stats['recTds'];
                 }
 
                 if (!array_key_exists("scrimmageYds", $stats)) {
+                    if (!array_key_exists("recYds", $stats)) {
+                        $stats["recYds"] = 0;
+                        $stats["recs"] = 0;
+                    }
                     $stats["scrimmageYds"] = $stats["rushYds"] + $stats['recYds'];
                 }
 
@@ -436,6 +550,10 @@ class RbService extends ServiceAbstract
                     default:
                 }
 
+                if ($stats['recs'] > $bestRec) {
+                    $bestRec = $stats['recs'];
+                }
+
                 if ($stats['rushAvg'] > 6 && $stats['rushYds'] > 500) {
                     $collegeScore = $collegeScore + 1;
                 }
@@ -514,6 +632,7 @@ class RbService extends ServiceAbstract
             "bestDominator" => $bestDominator,
             "bestYPC" => $bestYPC,
             "bestCarryDominator" => $bestCarryDom,
+            "bestRec" => $bestRec,
             "collegeStats" => $collegeStats
         ];
     }

@@ -230,6 +230,13 @@ class PlayerForm extends Form
             ],
         ]);
 
+        $this->add([
+            'name' => 'headshot',
+            'type' => 'text',
+            'options' => [
+                'label' => 'headshot',
+            ],
+        ]);
 
         $this->add([
             'name' => 'submit',
@@ -293,7 +300,11 @@ class PlayerForm extends Form
             $metricsFieldset->add($newField);
             if (getType($value) == "string") {
                 $metricsFieldset->get($key)->setValue($value);
-                $combineFields = ["benchPress", "fortyTime", "shuttle", "cone", "verticalJump", "broadJump"];
+                if ($player->getPosition()) {
+                    $combineFields = ["benchPress", "fortyTime", "shuttle", "cone", "verticalJump", "broadJump"];
+                } else {
+                    $combineFields = ["benchPress", "fortyTime", "shuttle", "cone", "verticalJump", "broadJump"];
+                }
                 if (in_array($key, $combineFields)) {
                     $this->get($key)->setValue($value);
                 }
@@ -304,7 +315,7 @@ class PlayerForm extends Form
 
         $i = 0;
         $college = new Fieldset("college");
-        while ($i < 4) {
+        while ($i < 5) {
             $collegeFieldset = new Fieldset("college-{$i}");
             $collegeStats = array_values($player->getCollegeStats());
 
@@ -406,6 +417,27 @@ class PlayerForm extends Form
                     $college->add($collegeFieldset);
                     break;
                 case "QB":
+                    $fields = ["year","college","class","conference","games","cmp","att","pct","yds","ypa","aypa","tds","ints","rate"];
+                    foreach ($fields as $field) {
+                        $newField = new Element($field);
+                        $newField->setLabel($field);
+                        $newField->setLabelAttributes(['class' => 'form-group col m1']);
+                        if ($collegeStats != null && array_key_exists($i, $collegeStats) && array_key_exists($field, $collegeStats[$i])) {
+                            $newField->setValue($collegeStats[$i][$field]);
+                        }
+                        $collegeFieldset->add($newField);
+                    }
+                    $college->add($collegeFieldset);
+
+                    $newField = new Element("throwVelocity");
+                    $newField->setLabel("throwVelocity");
+                    $newField->setLabelAttributes(['class' => 'form-group col m2']);
+                    $this->add($newField);
+                    if ($metrics != null && array_key_exists("throwVelocity", $metrics)) {
+                        $newField->setValue($metrics["throwVelocity"]);
+                    }
+
+                    break;
                 default:
             }
             $i++;
@@ -428,6 +460,10 @@ class PlayerForm extends Form
         $metrics['shuttle'] = $data["shuttle"];
         $metrics['cone'] = $data["cone"];
         $metrics['benchPress'] = $data["benchPress"];
+
+        if ($player->getPosition() == "QB") {
+            $metrics['throwVelocity'] = $data["throwVelocity"];
+        }
 
         //get body stats
         $playerInfo = $player->getPlayerInfo();

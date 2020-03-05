@@ -18,6 +18,7 @@ $this->headTitle($title);
 
         $position = $form->get('position');
         $position->setAttribute('class', 'form-control');
+        $positionValue = $position->getValue();
 
         $team = $form->get('team');
         $team->setAttribute('class', 'form-control');
@@ -77,6 +78,10 @@ $this->headTitle($title);
         $image5 = $form->get('image5');
         $image5->setAttribute('class', 'form-control');
         $image5->setAttribute('placeholder', 'image5');
+
+        $headshot = $form->get('headshot');
+        $headshot->setAttribute('class', 'form-control');
+        $headshot->setAttribute('placeholder', 'headshot');
 
         $submit = $form->get('submit');
         $submit->setAttribute('class', 'btn btn-primary');
@@ -186,6 +191,13 @@ $this->headTitle($title);
             <legend>Metrics</legend>
             <fieldset>
                 <legend>Combine</legend>
+                <?php if ($positionValue == "QB") : ?>
+                    <div class="form-group col m2">
+                        <?= $this->formLabel($form->get('throwVelocity')); ?>
+                        <?= $this->formElement($form->get('throwVelocity')); ?>
+                        <?= $this->formElementErrors()->render($form->get('throwVelocity'), ['class' => 'help-block']); ?>
+                    </div>
+                <?php endif; ?>
                 <div class="form-group col m2">
                     <?= $this->formLabel($form->get('benchPress')); ?>
                     <?= $this->formElement($form->get('benchPress')); ?>
@@ -316,6 +328,12 @@ $this->headTitle($title);
                 <?= $this->formLabel($image5) ?>
                 <?= $this->formElement($image5) ?>
                 <?= $this->formElementErrors()->render($image1, ['class' => 'help-block']) ?>
+                <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
+            </div>
+            <div class="form-group col m6">
+                <?= $this->formLabel($headshot) ?>
+                <?= $this->formElement($headshot) ?>
+                <?= $this->formElementErrors()->render($headshot, ['class' => 'help-block']) ?>
                 <a href="" class="prettyPrint" onclick="prettyPrint()">Pretty Print</a>
             </div>
         </fieldset>
