@@ -130,6 +130,10 @@ div.row-title {
 
 .card.small .card-image {
     max-height:82%;
+    background-image: url(/img/favicon.png);
+    /* background: no-repeat; */
+    background-position: center;
+    background-size: 100% 100%;
 }
 
 .measurables .card.small .card-image {
