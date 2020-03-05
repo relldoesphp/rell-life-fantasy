@@ -9,8 +9,8 @@
 namespace User\Form;
 
 
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
+use Laminas\Form\Form;
+use Laminas\InputFilter\InputFilter;
 
 class PasswordResetForm extends Form
 {
@@ -107,7 +107,7 @@ class PasswordResetForm extends Form
                 [
                     'name' => 'EmailAddress',
                     'options' => [
-                        'allow' => \Zend\Validator\Hostname::ALLOW_DNS,
+                        'allow' => \Laminas\Validator\Hostname::ALLOW_DNS,
                         'useMxCheck'    => false,
                     ],
                 ],

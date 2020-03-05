@@ -14,8 +14,8 @@ use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Service\PlayerManager;
 use Player\Service\StatsManager;
 use Player\Service\TeamManager;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 
 class ScriptController extends AbstractActionController

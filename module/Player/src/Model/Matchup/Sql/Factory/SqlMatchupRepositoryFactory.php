@@ -9,10 +9,10 @@
 namespace Player\Model\Matchup\Sql\Factory;
 
 use Player\Model\Matchup\Sql\SqlMatchupRepository;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Model\Matchup\Matchup;
-use Zend\Hydrator\Reflection as ReflectionHydrator;
+use Laminas\Hydrator\Reflection as ReflectionHydrator;
 
 class SqlMatchupRepositoryFactory implements FactoryInterface
 {

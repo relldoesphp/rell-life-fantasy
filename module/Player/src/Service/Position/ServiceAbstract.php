@@ -8,14 +8,14 @@
 
 namespace Player\Service\Position;
 
-use Zend\Db\Adapter\AdapterInterface;
-use Zend\Json\Json;
-use Zend\ProgressBar\Adapter\Console;
-use Zend\Http\Request;
-use Zend\Http\Client;
+use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Json\Json;
+use Laminas\ProgressBar\Adapter\Console;
+use Laminas\Http\Request;
+use Laminas\Http\Client;
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
-use Zend\ProgressBar\ProgressBar;
+use Laminas\ProgressBar\ProgressBar;
 
 
 class ServiceAbstract

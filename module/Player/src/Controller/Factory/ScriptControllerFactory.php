@@ -11,7 +11,7 @@ namespace Player\Controller\Factory;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Service\StatsManager;
 use Player\Service\TeamManager;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Controller\ScriptController;
 use Player\Model\Player\PlayerCommandInterface;

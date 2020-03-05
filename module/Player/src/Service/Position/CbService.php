@@ -10,13 +10,13 @@ namespace Player\Service\Position;
 
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
-use Zend\Db\Adapter\AdapterInterface;
-use Zend\ProgressBar\Adapter\Console;
-use Zend\ProgressBar\ProgressBar;
-use Zend\Db\Sql\Select;
-use Zend\Http\Request;
-use Zend\Http\Client;
-use Zend\Dom\Query;
+use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\ProgressBar\Adapter\Console;
+use Laminas\ProgressBar\ProgressBar;
+use Laminas\Db\Sql\Select;
+use Laminas\Http\Request;
+use Laminas\Http\Client;
+use Laminas\Dom\Query;
 
 class CbService extends ServiceAbstract
 {

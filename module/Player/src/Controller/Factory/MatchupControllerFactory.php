@@ -11,7 +11,7 @@ namespace Player\Controller\Factory;
 use Player\Controller\MatchupController;
 use Player\Service\MatchupManager;
 use Player\Service\TeamManager;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 
 

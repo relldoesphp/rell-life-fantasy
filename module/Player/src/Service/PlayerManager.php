@@ -9,16 +9,16 @@
 namespace Player\Service;
 
 use Player\Model\Player\Player;
-use Zend\Db\Adapter\AdapterInterface;
-use Zend\Json\Json;
-use Zend\ProgressBar\Adapter\Console;
-use Zend\Http\Request;
-use Zend\Http\Client;
+use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Json\Json;
+use Laminas\ProgressBar\Adapter\Console;
+use Laminas\Http\Request;
+use Laminas\Http\Client;
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Model\Stats\StatsCommandInterface;
 use Player\Model\Stats\StatsRepositoryInterface;
-use Zend\ProgressBar\ProgressBar;
+use Laminas\ProgressBar\ProgressBar;
 use Player\Service\Position;
 
 

@@ -9,9 +9,9 @@
 namespace Player\Model\Team\Sql\Factory;
 
 use Player\Model\Team\Sql\SqlTeamCommand;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
-use Zend\ProgressBar\Adapter\Console;
+use Laminas\ProgressBar\Adapter\Console;
 
 class SqlTeamCommandFactory implements FactoryInterface
 {

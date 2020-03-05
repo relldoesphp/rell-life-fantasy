@@ -11,7 +11,7 @@ namespace User\Controller\Factory;
 use User\Model\User\CommandInterface;
 use User\Model\User\RepositoryInterface;
 use User\Service\Factory\AuthManagerFactory;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use User\Controller\AuthController;
 use User\Service\AuthManager;

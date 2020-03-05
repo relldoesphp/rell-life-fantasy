@@ -9,8 +9,8 @@
 namespace User\Validator;
 
 
-use Zend\Validator\AbstractValidator;
-use Zend\Validator\Exception;
+use Laminas\Validator\AbstractValidator;
+use Laminas\Validator\Exception;
 
 class UserExistsValidator extends AbstractValidator
 {

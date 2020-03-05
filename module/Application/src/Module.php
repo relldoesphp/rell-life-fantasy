@@ -7,9 +7,9 @@
 
 namespace Application;
 
-use Zend\Mvc\MvcEvent;
-use Zend\Session\SessionManager;
-use Zend\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Session\SessionManager;
+use Laminas\Mvc\Controller\AbstractActionController;
 use User\Controller\AuthController;
 use User\Service\AuthManager;
 use Player\Controller\ScriptController;

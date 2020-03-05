@@ -12,10 +12,10 @@ use User\Model\User\CommandInterface;
 use User\Model\User\RepositoryInterface;
 use User\Model\User\User;
 use User\Model\User\Sql;
-use Zend\Crypt\Password\Bcrypt;
+use Laminas\Crypt\Password\Bcrypt;
 use Exception;
-use Zend\Math\Rand;
-use Zend\Mail;
+use Laminas\Math\Rand;
+use Laminas\Mail;
 
 class UserManager
 {

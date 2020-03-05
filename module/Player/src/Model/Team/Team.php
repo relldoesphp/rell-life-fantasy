@@ -8,7 +8,7 @@
 
 namespace Player\Model\Team;
 
-use Zend\Json\Json;
+use Laminas\Json\Json;
 
 class Team
 {

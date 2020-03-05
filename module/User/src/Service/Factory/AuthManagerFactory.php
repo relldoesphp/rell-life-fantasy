@@ -9,16 +9,16 @@
 namespace User\Service\Factory;
 
 use User\Model\User\RepositoryInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use User\Service\AuthManager;
-use Zend\Session\SessionManager;
+use Laminas\Session\SessionManager;
 
 class AuthManagerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $authService = $container->get(\Zend\Authentication\AuthenticationService::class);
+        $authService = $container->get(\Laminas\Authentication\AuthenticationService::class);
         $sessionManager = $container->get(SessionManager::class);
         $config = $container->get('Config');
 

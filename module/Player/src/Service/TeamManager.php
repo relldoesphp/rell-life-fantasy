@@ -11,8 +11,8 @@ namespace Player\Service;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Model\Team\TeamCommandInterface;
 use Player\Model\Team\TeamRepositoryInterface;
-use Zend\ProgressBar\Adapter\Console;
-use Zend\ProgressBar\ProgressBar;
+use Laminas\ProgressBar\Adapter\Console;
+use Laminas\ProgressBar\ProgressBar;
 
 class TeamManager
 {

@@ -8,7 +8,7 @@
 
 namespace Player\Controller\Factory;
 
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Controller\AdminController;

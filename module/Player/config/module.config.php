@@ -8,10 +8,10 @@
 
 namespace Player;
 
-use Zend\Router\Http\Literal;
-use Zend\Router\Http\Segment;
-use Zend\Db\Adapter\AdapterAbstractServiceFactory;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Segment;
+use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 use Player\Controller\Factory;
 use Player\Model\Player\Sql;
 

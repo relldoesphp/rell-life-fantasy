@@ -8,8 +8,8 @@
 
 namespace Player\Service;
 
-use Zend\Db\Adapter\AdapterInterface;
-use Zend\ProgressBar\Adapter\Console;
+use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\ProgressBar\Adapter\Console;
 use Player\Model\Matchup\MatchupCommandInterface;
 use Player\Model\Matchup\MatchupRepositoryInterface;
 use Player\Model\Stats\StatsCommandInterface;

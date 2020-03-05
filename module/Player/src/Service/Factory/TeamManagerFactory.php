@@ -17,12 +17,12 @@ use Player\Model\Team\TeamCommandInterface;
 use Player\Model\Team\TeamRepositoryInterface;
 use Player\Service\StatsManager;
 use Player\Service\TeamManager;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
-use Zend\ProgressBar\Adapter\Console;
+use Laminas\ProgressBar\Adapter\Console;
 
 
 class TeamManagerFactory implements FactoryInterface

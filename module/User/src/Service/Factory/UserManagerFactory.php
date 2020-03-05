@@ -10,7 +10,7 @@ namespace User\Service\Factory;
 
 use User\Model\User\RepositoryInterface;
 use User\Model\User\CommandInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use User\Service\UserManager;
 

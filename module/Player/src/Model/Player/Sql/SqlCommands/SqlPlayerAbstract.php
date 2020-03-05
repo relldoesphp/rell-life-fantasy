@@ -10,14 +10,14 @@ namespace Player\Model\Player\SqlCommands;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Adapter\AdapterInterface;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Adapter\Driver\ResultInterface;
-use Zend\Db\ResultSet\ResultSet;
-use Zend\ProgressBar\ProgressBar;
-use Zend\ProgressBar\Adapter\Console;
-use Zend\Db\Sql\Select;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Db\Sql\Sql;
+use Laminas\Db\Adapter\Driver\ResultInterface;
+use Laminas\Db\ResultSet\ResultSet;
+use Laminas\ProgressBar\ProgressBar;
+use Laminas\ProgressBar\Adapter\Console;
+use Laminas\Db\Sql\Select;
 
 
 

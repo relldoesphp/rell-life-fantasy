@@ -9,9 +9,9 @@
 namespace Player\Model\Matchup\Sql\Factory;
 
 use Player\Model\Matchup\Sql\SqlMatchupCommand;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
-use Zend\ProgressBar\Adapter\Console;
+use Laminas\ProgressBar\Adapter\Console;
 
 class SqlMatchupCommandFactory implements FactoryInterface
 {

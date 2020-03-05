@@ -8,7 +8,7 @@
 
 namespace Player\Model\Stats;
 
-use Zend\Json\Json;
+use Laminas\Json\Json;
 
 class SeasonStats
 {

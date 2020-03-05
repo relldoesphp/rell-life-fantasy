@@ -10,12 +10,12 @@ namespace Player\Service\Factory;
 
 use Player\Model\Stats\StatsCommandInterface;
 use Player\Model\Stats\StatsRepositoryInterface;
-use Zend\ProgressBar\Adapter\Console;
+use Laminas\ProgressBar\Adapter\Console;
 use Player\Service\PlayerManager;
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Model\Player;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 
 class PlayerManagerFactory implements FactoryInterface

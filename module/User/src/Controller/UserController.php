@@ -7,10 +7,10 @@
  */
 
 namespace User\Controller;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 use User\Service\UserManager;
-use Zend\Http\Response;
+use Laminas\Http\Response;
 use User\Form\UserForm;
 use User\Form\PasswordResetForm;
 use User\Form\PasswordChangeForm;

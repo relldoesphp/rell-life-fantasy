@@ -10,8 +10,8 @@ namespace Player\Model\Matchup\Sql;
 
 use Player\Model\Matchup\Matchup;
 use Player\Model\Matchup\MatchupCommandInterface;
-use Zend\ProgressBar\Adapter\Console;
-use Zend\Db\Adapter\AdapterInterface;
+use Laminas\ProgressBar\Adapter\Console;
+use Laminas\Db\Adapter\AdapterInterface;
 
 class SqlMatchupCommand implements MatchupCommandInterface
 {

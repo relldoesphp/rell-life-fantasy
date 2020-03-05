@@ -8,11 +8,11 @@
 
 namespace User\Model\User\Sql\Factory;
 
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use User\Model\User\Sql\SqlRepository;
 use User\Model\User\User;
-use Zend\Hydrator\Reflection as ReflectionHydrator;
+use Laminas\Hydrator\Reflection as ReflectionHydrator;
 
 class SqlRespositoryFactory implements FactoryInterface
 {

@@ -2,10 +2,10 @@
 
 namespace User;
 
-use Zend\Router\Http\Literal;
-use Zend\Router\Http\Segment;
-use Zend\Db\Adapter\AdapterAbstractServiceFactory;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Segment;
+use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 use User\Service;
 use User\Controller;
 use User\View\Helper\Menu;
@@ -20,7 +20,7 @@ return [
         'factories' => [
             /**** Factories for User Services ***/
             'Dtw\Db\Adapter' => AdapterAbstractServiceFactory::class,
-            \Zend\Authentication\AuthenticationService::class => Service\Factory\AuthenticationServiceFactory::class,
+            \Laminas\Authentication\AuthenticationService::class => Service\Factory\AuthenticationServiceFactory::class,
             Service\UserManager::class => Service\Factory\UserManagerFactory::class,
             Service\AuthManager::class => Service\Factory\AuthManagerFactory::class,
             Service\AuthAdapter::class => Service\Factory\AuthAdapterFactory::class,

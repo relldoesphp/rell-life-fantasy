@@ -8,9 +8,9 @@
 
 namespace Blog\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Controller\AbstractActionController;
 use Blog\Model\PostRepositoryInterface;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 class ListController extends AbstractActionController
 {

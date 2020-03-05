@@ -2,9 +2,9 @@
 
 namespace Blog;
 
-use Zend\Router\Http\Literal;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\Db\Adapter\AdapterAbstractServiceFactory;
+use Laminas\Router\Http\Literal;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 
 return [
     'service_manager' => [

@@ -9,7 +9,7 @@
 namespace User\Service;
 
 
-use \Zend\Authentication\Authentication;
+use \Laminas\Authentication\Authentication;
 /**
  * This service is responsible for determining which items should be in the main menu.
  * The items may be different depending on whether the user is authenticated or not.
@@ -19,13 +19,13 @@ class NavManager
 {
     /**
      * Auth service.
-     * @var \Zend\Authentication\Authentication
+     * @var \Laminas\Authentication\Authentication
      */
     private $authService;
 
     /**
      * Url view helper.
-     * @var \Zend\View\Helper\Url
+     * @var \Laminas\View\Helper\Url
      */
     private $urlHelper;
 

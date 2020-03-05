@@ -10,11 +10,11 @@ namespace Blog\Model;
 use InvalidArgumentException;
 use RuntimeException;
 
-use Zend\Hydrator\HydratorInterface;
-use Zend\Db\Adapter\AdapterInterface;
-use Zend\Db\Adapter\Driver\ResultInterface;
-use Zend\Db\ResultSet\HydratingResultSet;
-use Zend\Db\Sql\Sql;
+use Laminas\Hydrator\HydratorInterface;
+use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Db\Adapter\Driver\ResultInterface;
+use Laminas\Db\ResultSet\HydratingResultSet;
+use Laminas\Db\Sql\Sql;
 
 class ZendDbSqlRepository implements PostRepositoryInterface
 {

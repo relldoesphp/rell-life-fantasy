@@ -8,15 +8,15 @@
 
 namespace User\Service;
 
-use Zend\Authentication\Result;
-use Zend\Session;
+use Laminas\Authentication\Result;
+use Laminas\Session;
 use \Exception;
 
 class AuthManager
 {
     /**
      * Authentication service.
-     * @var \Zend\Authentication\AuthenticationService
+     * @var \Laminas\Authentication\AuthenticationService
      */
     private $authService;
 

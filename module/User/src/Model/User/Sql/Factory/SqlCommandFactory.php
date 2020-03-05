@@ -8,7 +8,7 @@
 
 namespace User\Model\User\Sql\Factory;
 
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use User\Model\User\Sql\SqlCommand;
 

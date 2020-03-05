@@ -11,7 +11,7 @@ namespace Blog\Factory;
 use Blog\Controller\ListController;
 use Blog\Model\PostRepositoryInterface;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ListControllerFactory implements FactoryInterface
 {

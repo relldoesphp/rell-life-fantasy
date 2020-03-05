@@ -9,10 +9,10 @@
 namespace Player\Controller;
 
 use Player\Model\Player;
-use Zend\View\Model\ViewModel;
-use Zend\View\Model\JsonModel;
-use Zend\Json\Json;
-use Zend\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
+use Laminas\View\Model\JsonModel;
+use Laminas\Json\Json;
+use Laminas\Mvc\Controller\AbstractActionController;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Service\PlayerManager;
 

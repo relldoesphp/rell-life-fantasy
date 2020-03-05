@@ -1,5 +1,5 @@
 {
-    "name": "zendframework/skeleton-application",
+    "name": "laminas/skeleton-application",
     "description": "Skeleton Application for Zend Framework zend-mvc applications",
     "type": "project",
     "license": "BSD-3-Clause",
@@ -13,27 +13,28 @@
     "prefer-stable": true,
     "require": {
         "php": "^5.6 || ^7.0",
-        "zendframework/zend-component-installer": "^1.0 || ^0.7 || ^1.0.0-dev@dev",
-        "zendframework/zend-mvc": "^3.0.1",
-        "zfcampus/zf-development-mode": "^3.0",
-        "zendframework/zend-cache": "^2.7.1",
-        "zendframework/zend-db": "^2.10",
-        "zendframework/zend-mvc-form": "^1.0",
-        "zendframework/zend-json": "^3.0",
-        "zendframework/zend-log": "^2.9",
-        "zendframework/zend-mvc-console": "^1.1.10",
-        "zendframework/zend-mvc-i18n": "^1.0",
-        "zendframework/zend-mvc-plugins": "^1.0.1",
-        "zendframework/zend-psr7bridge": "^0.2.2",
-        "zendframework/zend-session": "^2.7.1",
-        "zendframework/zend-servicemanager-di": "^1.0",
-        "zendframework/zend-console": "^2.8",
+        "laminas/laminas-component-installer": "^1.0 || ^0.7 || ^1.0.0-dev@dev",
+        "laminas/laminas-mvc": "^3.0.1",
+        "laminas/laminas-development-mode": "^3.0",
+        "laminas/laminas-cache": "^2.7.1",
+        "laminas/laminas-db": "^2.10",
+        "laminas/laminas-mvc-form": "^1.0",
+        "laminas/laminas-json": "^3.0",
+        "laminas/laminas-log": "^2.9",
+        "laminas/laminas-mvc-console": "^1.1.10",
+        "laminas/laminas-mvc-i18n": "^1.0",
+        "laminas/laminas-mvc-plugins": "^1.0.1",
+        "laminas/laminas-psr7bridge": "^0.2.2",
+        "laminas/laminas-session": "^2.7.1",
+        "laminas/laminas-servicemanager-di": "^1.0",
+        "laminas/laminas-console": "^2.8",
         "twitter/typeahead.js": "^0.11.1",
-        "zendframework/zend-progressbar": "^2.6",
+        "laminas/laminas-progressbar": "^2.6",
         "xp-forge/handlebars": "^4.3",
-        "zendframework/zend-crypt": "^3.3",
+        "laminas/laminas-crypt": "^3.3",
         "neilime/zf2-mobile-detect": "2.*.*",
-        "zendframework/zend-hydrator": "2.4.2"
+        "laminas/laminas-hydrator": "2.4.2",
+        "laminas/laminas-dependency-plugin": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -49,16 +50,16 @@
         }
     },
     "extra": {
-     	"installer-paths": {
-		    "public/js": "twitter/typeahead.js"
-	    }
+        "installer-paths": {
+            "public/js": "twitter/typeahead.js"
+        }
     },
     "scripts": {
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
-        "development-disable": "zf-development-mode disable",
-        "development-enable": "zf-development-mode enable",
-        "development-status": "zf-development-mode status",
+        "development-disable": "laminas-development-mode disable",
+        "development-enable": "laminas-development-mode enable",
+        "development-status": "laminas-development-mode status",
         "post-create-project-cmd": [
             "@development-enable"
         ],
@@ -66,7 +67,7 @@
         "test": "phpunit"
     },
     "require-dev": {
-        "zendframework/zend-developer-tools": "^1.1.0",
-        "zendframework/zend-test": "^3.0.1"
+        "laminas/laminas-developer-tools": "^1.1.0",
+        "laminas/laminas-test": "^3.0.1"
     }
 }

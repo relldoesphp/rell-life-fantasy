@@ -11,10 +11,10 @@ namespace Player\Model\Stats\Sql\Factory;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Player\Model\Stats\Sql\SqlStatsCommand;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ProgressBar\Adapter\Console;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ProgressBar\Adapter\Console;
 
 class SqlStatCommandFactory implements FactoryInterface
 {

@@ -11,10 +11,10 @@ namespace Player\Model\Stats\Sql\Factory;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Player\Model\Stats\Sql\SqlStatsRepository;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\Hydrator\Reflection as ReflectionHydrator;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Hydrator\Reflection as ReflectionHydrator;
 use Player\Model\Stats\GameLog;
 use Player\Model\Stats\SeasonStats;
 

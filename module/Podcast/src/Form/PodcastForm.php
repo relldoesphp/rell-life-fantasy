@@ -8,7 +8,7 @@
 
 namespace Podcast\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class PodcastForm extends Form
 {

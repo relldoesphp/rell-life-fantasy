@@ -10,10 +10,10 @@ namespace Blog\Factory;
 
 use Interop\Container\ContainerInterface;
 use Blog\Model\ZendDbSqlRepository;
-use Zend\Db\Adapter\AdapterInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Blog\Model\Post;
-use Zend\Hydrator\Reflection as ReflectionHydrator;
+use Laminas\Hydrator\Reflection as ReflectionHydrator;
 
 class ZendDbSqlRepositoryFactory implements FactoryInterface
 {

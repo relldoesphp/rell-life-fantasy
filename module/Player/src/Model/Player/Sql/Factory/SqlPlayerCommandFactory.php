@@ -8,11 +8,11 @@
 
 namespace Player\Model\Player\Sql\Factory;
 
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Controller\PlayerController;
 use Player\Model\Player\Sql\SqlPlayerCommand;
-use Zend\ProgressBar\Adapter\Console;
+use Laminas\ProgressBar\Adapter\Console;
 
 
 class SqlPlayerCommandFactory implements FactoryInterface

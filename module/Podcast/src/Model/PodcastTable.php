@@ -9,7 +9,7 @@
 namespace Podcast\Model;
 
 use RuntimeException;
-use Zend\Db\TableGateway\TableGatewayInterface;
+use Laminas\Db\TableGateway\TableGatewayInterface;
 
 class PodcastTable
 {

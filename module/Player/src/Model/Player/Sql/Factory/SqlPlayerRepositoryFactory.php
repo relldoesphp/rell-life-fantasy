@@ -8,13 +8,13 @@
 
 namespace Player\Model\Player\Sql\Factory;
 
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Player\Model\Player\Sql\SqlPlayerRepository;
 use Player\Model\Player\Player;
 // we comment out the adapter interface because we are loading in custom adapter for DB object
-//use Zend\Db\Adapter\AdapterInterface;
-use Zend\Hydrator\Reflection as ReflectionHydrator;
+//use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Hydrator\Reflection as ReflectionHydrator;
 
 
 class SqlPlayerRepositoryFactory implements FactoryInterface
