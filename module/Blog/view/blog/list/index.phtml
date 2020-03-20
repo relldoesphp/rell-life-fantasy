@@ -1,11 +1,62 @@
 <?php ?>
 <!-- Filename: module/Blog/view/blog/list/index.phtml -->
-<h1>Blog</h1>
+<div class="section white full-height container center">
+    <h1>Articles</h1>
 
-<?php foreach ($this->posts as $post): ?>
-    <article>
-        <h1 id="post<?= $post->getId() ?>"><?= $post->getTitle() ?></h1>
 
-        <p><?= $post->getText() ?></p>
-    </article>
-<?php endforeach ?>
+    <div class="row masonry-grid" style="position: relative; height: 527px;">
+        <?php foreach ($this->posts as $post): ?>
+            <article class="col s12 m6 l4" style="position: absolute; left: 0px; top: 0px;">
+                <div class="card">
+                    <div class="card-image">
+                        <a href="blog.html"><img src="http://placehold.it/600x400"></a>
+                        <span class="card-title"><?= $post->getTitle() ?></span>
+                    </div>
+                </div>
+            </article>
+        <?php endforeach ?>
+
+        <div class="col s12 m6 l4" style="position: absolute; left: 384px; top: 0px;">
+            <div class="card">
+                <div class="card-image">
+                    <a href="blog.html"><img src="http://placehold.it/600x400"></a>
+                    <span class="card-title">Another Blog Post</span>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6 l4" style="position: absolute; left: 768px; top: 0px;">
+            <div class="card">
+                <div class="card-image">
+                    <a href="blog.html"><img src="http://placehold.it/600x400"></a>
+                    <span class="card-title">Click Bait Article</span>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6 l4" style="position: absolute; left: 0px; top: 263px;">
+            <div class="card">
+                <div class="card-image">
+                    <a href="blog.html"><img src="http://placehold.it/600x400"></a>
+                    <span class="card-title">Don't Read This!</span>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6 l4" style="position: absolute; left: 384px; top: 263px;">
+            <div class="card">
+                <div class="card-image">
+                    <a href="blog.html"><img src="http://placehold.it/600x400"></a>
+                    <span class="card-title">Why Are You Still Reading?</span>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6 l4" style="position: absolute; left: 768px; top: 263px;">
+            <div class="card">
+                <div class="card-image">
+                    <a href="blog.html"><img src="http://placehold.it/600x400"></a>
+                    <span class="card-title">Good Bye</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

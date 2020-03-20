@@ -109,8 +109,19 @@ class PlayerManager
             
             $player = $this->playerRepository->findPlayerBySleeperId($sleeperId);
             if (empty($player)) {
-                $player = new Player();
-                $player->setSleeperId($value->player_id);
+                //check for rookies
+                $rookie = $this->playerRepository->findRookiesByName(
+                    $value->first_name,
+                    $value->last_name,
+                    $value->position
+                );
+                if (!empty($rookie)) {
+                    $player = $rookie;
+                    $player->setSleeperId($value->player_id);
+                } else {
+                    $player = new Player();
+                    $player->setSleeperId($value->player_id);
+                }
             }
 
             if ($player->getSleeperId() == null) {
@@ -121,14 +132,23 @@ class PlayerManager
             $player->setLastName($value->last_name);
             $player->setSearchFullName($value->search_full_name);
             $player->setPosition($value->position);
-            $player->setTeam($value->team);
-
+            if ($player->getTeam() !== 'Rookie') {
+                $player->setTeam($value->team);
+            }
             $playerInfo = Json::decode($player->getPlayerInfo(),1);
             $playerInfo['age'] = $value->age;
             $playerInfo['sport'] = $value->sport;
-            $playerInfo['height'] = $value->height;
+
+            if (!empty($value->height)) {
+                $playerInfo['height'] = $value->height;
+            }
+
             $playerInfo['status'] = $value->status;
-            $playerInfo['weight'] = $value->weight;
+
+            if (!empty($value->weight)) {
+                $playerInfo['weight'] = $value->weight;
+            }
+
             $playerInfo['college'] = $value->college;
             $playerInfo['hashtag'] = $value->hashtag;
             $playerInfo['player_id'] = $value->player_id;
@@ -174,6 +194,12 @@ class PlayerManager
             $teamInfo['practice_participation'] = $value->practice_participation;
             $teamInfo['practice_description'] = $value->practice_description;
             $player->setTeamInfo($teamInfo);
+
+            $headshot = $player->getHeadshot();
+            if (empty($headshot) && $value->player_id != null) {
+                $headshot = "https://sleepercdn.com/content/nfl/players/{$value->player_id}.jpg";
+                $player->setHeadshot($headshot);
+            }
 
             $this->playerCommand->save($player);
             $pointer++;

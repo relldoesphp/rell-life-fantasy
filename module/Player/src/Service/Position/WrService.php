@@ -248,14 +248,24 @@ class WrService extends ServiceAbstract
 
             if ($metrics['beatPress'] != null && $metrics['separation'] != null && $metrics['contested'] != null && $metrics['yac'] != null) {
                 $halfAlpha = ($metrics['beatPress'] *.25) + ($metrics['separation'] *.35) + ($metrics['contested'] *.33) + ($metrics['yac'] *.07);
-                $alphaScore = round(((($metrics['collegeScore']/40) * 100) * .4) + ($halfAlpha * .6), 2);
+                $alphaScore = round(((($metrics['collegeScore']/35) * 100) * .4) + ($halfAlpha * .6), 2);
             } else {
                 $alphaScore = null;
             }
 
             if ($alphaScore !== null && $noForty == false && $noBench == false) {
+                if ($alphaScore > 70 && $metrics['slot'] < 60) {
+                    $alphaScore = $alphaScore - 5;
+                }
+
+                if ($alphaScore > 70 && $metrics['deep'] < 60) {
+                    $alphaScore = $alphaScore - 5;
+                }
+
                 if ($alphaScore > 55 && $metrics['beatPress'] < 50) {
-                    $alphaScore = $alphaScore - 7;
+                    if ($metrics['slot'] < 50) {
+                        $alphaScore = $alphaScore - 7;
+                    }
                 }
 
                 if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 40) {
@@ -266,11 +276,11 @@ class WrService extends ServiceAbstract
                     $alphaScore = $alphaScore - 5;
                 }
 
-                if ($noBench == false) {
-                    if ($metrics['beatPress'] < 20) {
-                        $alphaScore = $alphaScore -5;
-                    }
-                }
+//                if ($noBench == false) {
+//                    if ($metrics['beatPress'] < 20) {
+//                        $alphaScore = $alphaScore -5;
+//                    }
+//                }
             }
 
             if ($noJump) {
@@ -288,16 +298,16 @@ class WrService extends ServiceAbstract
             }
 
             if ($noAgility == false) {
-                if ($alphaScore > 50 && $metrics['separation'] < 40) {
-                    $alphaScore = $alphaScore - 7;
+                if ($alphaScore > 60 && $metrics['separation'] < 40) {
+                    $alphaScore = $alphaScore - 5;
                 }
 
                 if ($alphaScore > 50 && $metrics['separation'] < 30) {
-                    $alphaScore = $alphaScore - 10;
+                    $alphaScore = $alphaScore - 5;
                 }
 
-                if ($metrics['separation'] < 20) {
-                    $alphaScore = $alphaScore - 10;
+                if ($metrics['separation'] < 20 && $alphaScore != null) {
+                    $alphaScore = $alphaScore - 5;
                 }
             }
 
@@ -383,6 +393,10 @@ class WrService extends ServiceAbstract
 //            }
 
             $metrics['alpha'] = round($alphaScore,2);
+
+            if ($metrics['alpha'] == 0) {
+                $metrics['alpha'] = null;
+            }
 
             if (array_key_exists("bestDominator", $college) && $college['bestDominator'] > 20) {
                 if ($college['bestSeason']['recAvg'] < 14.51 && $metrics['slot'] != 0) {

@@ -478,4 +478,27 @@ EOT;
         return $teammates;
 
     }
+
+    public function findRookiesByName($firstname, $lastname, $position)
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['p' => 'player_test']);
+        $select->where([
+            'p.team = ?' => 'Rookie',
+            'p.first_name = ?' => $firstname,
+            'p.last_name = ?' => $lastname,
+            'p.position = ?' => $position
+        ]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
+        $resultSet->initialize($result);
+        return $resultSet->current();
+    }
 }

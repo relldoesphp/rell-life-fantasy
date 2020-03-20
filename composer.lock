@@ -2439,16 +2439,16 @@
         },
         {
             "name": "laminas/laminas-session",
-            "version": "2.9.1",
+            "version": "2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-session.git",
-                "reference": "60b5cc844e09627d4f1a2a547e13268f376ccb3d"
+                "reference": "fdba34c1b257235dba2fff6ed4df1844390f85f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-session/zipball/60b5cc844e09627d4f1a2a547e13268f376ccb3d",
-                "reference": "60b5cc844e09627d4f1a2a547e13268f376ccb3d",
+                "url": "https://api.github.com/repos/laminas/laminas-session/zipball/fdba34c1b257235dba2fff6ed4df1844390f85f6",
+                "reference": "fdba34c1b257235dba2fff6ed4df1844390f85f6",
                 "shasum": ""
             },
             "require": {
@@ -2470,7 +2470,7 @@
                 "laminas/laminas-validator": "^2.6",
                 "mongodb/mongodb": "^1.0.1",
                 "php-mock/php-mock-phpunit": "^1.1.2 || ^2.0",
-                "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.5.16"
+                "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.5.20"
             },
             "suggest": {
                 "laminas/laminas-cache": "Laminas\\Cache component",
@@ -2506,7 +2506,7 @@
                 "laminas",
                 "session"
             ],
-            "time": "2019-12-31T17:46:59+00:00"
+            "time": "2020-03-06T09:44:45+00:00"
         },
         {
             "name": "laminas/laminas-stdlib",

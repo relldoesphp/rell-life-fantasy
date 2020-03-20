@@ -41,7 +41,8 @@
             "Application\\": "module/Application/src/",
             "User\\": "module/User/src",
             "Podcast\\": "module/Podcast/src",
-            "Player\\": "module/Player/src"
+            "Player\\": "module/Player/src",
+            "Blog\\": "module/Blog/src"
         }
     },
     "autoload-dev": {

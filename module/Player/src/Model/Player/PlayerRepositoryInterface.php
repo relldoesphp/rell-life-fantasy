@@ -37,4 +37,6 @@ interface PlayerRepositoryInterface
 
     public function getCollegeTeammates($year, $college, $position);
 
+    public function findRookiesByName($firstName, $lastName, $position);
+
 }

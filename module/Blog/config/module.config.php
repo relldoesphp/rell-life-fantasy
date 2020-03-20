@@ -5,16 +5,21 @@ namespace Blog;
 use Laminas\Router\Http\Literal;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
+use Laminas\Router\Http\Segment;
 
 return [
     'service_manager' => [
         'aliases' => [
             Model\PostRepositoryInterface::class => Model\ZendDbSqlRepository::class,
+            Model\PostCommandInterface::class => Model\ZendDbSqlCommand::class,
         ],
         'factories' => [
-            'Rlf\Db\Adapter' => AdapterAbstractServiceFactory::class,
-            Model\PostRepository::class => InvokableFactory::class,
+            'Dtw\Db\Adapter' => AdapterAbstractServiceFactory::class,
             Model\ZendDbSqlRepository::class => Factory\ZendDbSqlRepositoryFactory::class,
+            Model\ZendDbSqlCommand::class => Factory\ZendDbSqlCommandFactory::class,
+            // 'Rlf\Db\Adapter' => AdapterAbstractServiceFactory::class,
+            //Model\PostRepository::class => InvokableFactory::class,
+            // Model\PostCommand::class => InvokableFactory::class,
         ],
     ],
 
@@ -23,10 +28,36 @@ return [
             'blog' => [
                 'type' => Literal::class,
                 'options' => [
-                    'route' => '/blog',
+                    'route'    => '/blog',
                     'defaults' => [
                         'controller' => Controller\ListController::class,
                         'action'     => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes'  => [
+                    'detail' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route'    => '/:id',
+                            'defaults' => [
+                                'action' => 'detail',
+                            ],
+                            'constraints' => [
+                                'id' => '\d+',
+                            ],
+                        ],
+                    ],
+                    // Add the following route:
+                    'add' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route'    => '/add',
+                            'defaults' => [
+                                'controller' => Controller\WriteController::class,
+                                'action'     => 'add',
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -36,6 +67,8 @@ return [
     'controllers' => [
         'factories' => [
             Controller\ListController::class => Factory\ListControllerFactory::class,
+            // Add the following line:
+            Controller\WriteController::class => Factory\WriteControllerFactory::class,
         ],
     ],
 

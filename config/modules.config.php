@@ -35,4 +35,5 @@ return [
     'Podcast',
     'Player',
     'Neilime\MobileDetect',
+    'Blog'
 ];

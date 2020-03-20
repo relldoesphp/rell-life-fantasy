@@ -278,13 +278,17 @@ class RbService extends ServiceAbstract
 //                    $data['receiver'] = $data['receiver'] + 5;
 //                }
 //
+                if ($collegeStuff['bestYPC'] < 5.5) {
+                    $data['grinder'] = $data['grinder'] - 5;
+                }
+
 //                if ($collegeStuff['bestYPC'] < 5) {
-//                    $data['grinder'] = $data['grinder'] - 10;
+//                    $data['grinder'] = $data['grinder'] - 5;
 //                }
 //
-//                if ($collegeStuff['bestCarryDominator'] < 30) {
-//                    $data['grinder'] = $data['grinder'] - 10;
-//                }
+                if ($collegeStuff['bestCarryDominator'] < 30 && $data['grinder'] > 60) {
+                    $data['grinder'] = $data['grinder'] - 10;
+                }
 
             } else {
                 $metrics['collegeScore'] = null;
@@ -298,8 +302,12 @@ class RbService extends ServiceAbstract
 
             if ($metrics['collegeScore'] !== null && $data['grinder'] != null && $data['receiver'] != null) {
                 $data['alpha'] = ($data['receiver'] * .5) + ($data['grinder'] * .5);
-                if ($metrics['collegeScore'] > 19) {
-                    $data['alpha'] = $data['alpha'] + ($metrics['collegeScore'] - 19);
+                if ($metrics['collegeScore'] > 18) {
+                    $data['alpha'] = $data['alpha'] + ($metrics['collegeScore'] - 18);
+                }
+
+                if ($metrics['collegeScore'] < 15 && $data['alpha'] > 67) {
+                    $data['alpha'] = $data['alpha'] - 7;
                 }
             } else {
                 $data['alpha'] = ($data['receiver'] * .5) + ($data['grinder'] * .5);
@@ -556,6 +564,10 @@ class RbService extends ServiceAbstract
 
                 if ($stats['rushAvg'] > 6 && $stats['rushYds'] > 500) {
                     $collegeScore = $collegeScore + 1;
+                }
+
+                if ($stats['rushAvg'] > 5 && $stats['rushYds'] > 500) {
+                    $collegeScore = $collegeScore - 2;
                 }
 
                 $collegeScore = $collegeScore + $breakout;
