@@ -36,6 +36,7 @@ return [
         'factories' => [
             Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
             Controller\UserController::class => Controller\Factory\UserControllerFactory::class,
+            Controller\AdminController::class => Controller\Factory\AdminControllerFactory::class,
         ]
     ],
 
@@ -84,13 +85,13 @@ return [
             'users' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/users[/:action[/:id]]',
+                    'route'    => '/manage-users[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[a-zA-Z0-9_-]*',
                     ],
                     'defaults' => [
-                        'controller'    => Controller\UserController::class,
+                        'controller'    => Controller\AdminController::class,
                         'action'        => 'index',
                     ],
                 ],
@@ -108,14 +109,22 @@ return [
             // action for not logged in users. In permissive mode, if an action is not listed
             // under the 'access_filter' key, access to it is permitted to anyone (even for
             // not logged in users. Restrictive mode is more secure and recommended to use.
-            'mode' => 'permissive'
+            'mode' => 'restrictive'
         ],
         'controllers' => [
+            Controller\AdminController::class => [
+                // Allow authorized users to visit "settings" action
+                ['actions' => '*', 'allow' => '@']
+            ],
             Controller\UserController::class => [
                 // Allow authorized users to visit "settings" action
-                ['actions' => ['index', 'changePassword', 'add'], 'allow' => '*'],
+                ['actions' => '*', 'allow' => '@']
             ],
-        ]
+            Controller\AuthController::class => [
+                // Allow authorized users to visit "settings" action
+                ['actions' => '*', 'allow' => '*']
+            ],
+        ],
     ],
 
     'view_manager' => [

@@ -1,0 +1,27 @@
+<?php ?>
+<!-- Filename: module/Blog/view/blog/list/index.phtml -->
+<div class="section white full-height container center">
+    <h3>Articles</h3>
+    <div class="row masonry-grid" style="position: relative; height: 527px;" >
+        <?php foreach ($this->posts as $post): ?>
+            <article class="col s12 m6 l4" style="position: absolute; left: 0px; top: 0px;">
+                <div class="card">
+                    <a href="http://relllifefantasy/articles/<?= $post->getId()?>">
+                    <div class="card-image">
+                        <img class="freezeframe" src="<?= $post->getImage() ?>">
+                        <span class="card-title"><?= $post->getTitle() ?></span>
+                    </div>
+                    </a>
+                </div>
+                <div class="right">
+                    <?= $post->getDisplayDate() ?>
+                </div>
+            </article>
+        <?php endforeach ?>
+    </div>
+</div>
+<script>
+    new Freezeframe();
+</script>
+
+

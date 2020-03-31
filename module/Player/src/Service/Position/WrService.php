@@ -262,10 +262,24 @@ class WrService extends ServiceAbstract
                     $alphaScore = $alphaScore - 5;
                 }
 
+                if ($alphaScore > 60 && $metrics['slot'] < 35) {
+                    $alphaScore = $alphaScore - 5;
+                }
+
+                if ($alphaScore > 60 && $metrics['deep'] < 35) {
+                    $alphaScore = $alphaScore - 5;
+                }
+
                 if ($alphaScore > 55 && $metrics['beatPress'] < 50) {
                     if ($metrics['slot'] < 50) {
                         $alphaScore = $alphaScore - 7;
+                    } else {
+                        $alphaScore = $alphaScore - 3.5;
                     }
+                }
+
+                if ($alphaScore > 55 && $metrics['beatPress'] < 30) {
+                    $alphaScore = $alphaScore - 3;
                 }
 
                 if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 40) {

@@ -1,0 +1,56 @@
+<?php
+?>
+<div class="section white container full-height">
+    <div class="row valign container">
+        <div class="col m9 blog-body">
+            <h3 class="center"><?= $this->escapeHtml($this->post->getTitle()) ?></h3>
+            <div class="divider"></div>
+            <?= $this->post->getText() ?>
+            <div class="divider"></div>
+            <div class="col s8 offset-s2 m6 offset-m3 blog-author">
+                <div class="divider"></div>
+                <div class="avatar-wrapper">
+                    <div class="avatar">
+                        <img src="https://pbs.twimg.com/profile_images/1236378393148620803/kSnlS1HX_400x400.jpg" alt="">
+                    </div>
+                </div>
+
+                <div class="author">
+                    <span>Author</span>
+                    <?= $this->post->getAuthor() ?>
+                    <a href="https://www.twitter.com/relllifefantasy">@relllifefantasy</a>
+                </div>
+
+                <div class="date">
+                    <span></span>
+                    <?= $this->post->getDisplayDate() ?>
+                </div>
+
+                <div class="divider"></div>
+            </div>
+        </div>
+        <div class="col m3 blog-related article-sidebar">
+            <?php foreach ($this->recents as $recent): ?>
+                <div class="col m12 card">
+                    <a href="/articles/<?= $recent->getOriginalUrl()?>">
+                        <div class="card-image">
+                            <img class="freezeframe" width="225" height="225" src="<?= $recent->getDisplayImage() ?>">
+                            <div class="card-title center">
+                                <?= $recent->getTitle() ?>
+                            </div>
+                        </div>
+                        <div class="date right small">
+                            <span></span>
+                            <?= $recent->getDisplayDate() ?>
+                        </div>
+                    </a>
+                </div>
+            <?php endforeach ?>
+        </div>
+    </div>
+</div>
+<script>
+    $('document').ready({
+        new Freezeframe();
+    });
+</script>

@@ -196,7 +196,7 @@ class PlayerManager
             $player->setTeamInfo($teamInfo);
 
             $headshot = $player->getHeadshot();
-            if (empty($headshot) && $value->player_id != null) {
+            if ($headshot == null && $value->player_id != null) {
                 $headshot = "https://sleepercdn.com/content/nfl/players/{$value->player_id}.jpg";
                 $player->setHeadshot($headshot);
             }

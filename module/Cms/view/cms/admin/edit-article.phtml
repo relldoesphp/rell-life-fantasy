@@ -1,0 +1,14 @@
+<div class="section container full-height white">
+    <div class="row container">
+        <h3>Edit an Article</h3>
+    </div>
+
+<?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('cms/edit', [], true));
+    echo $this->partial('cms/admin/form', [
+        'form' => $form,
+        'submitLabel' => 'Update post',
+    ]);
+?>
+</div>

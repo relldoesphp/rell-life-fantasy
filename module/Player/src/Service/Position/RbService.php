@@ -189,7 +189,7 @@ class RbService extends ServiceAbstract
             /*** Make Grinder Base ***/
             // 1. We have elusiveness, power, and speedScore
             if ($noAgility == false && $noForty == false && $noBroad == false) {
-                $data['grinder'] = ($percentiles['power'] * .7) + ($percentiles['elusiveness'] * .1) + ($percentiles['speedScore'] * .2);
+                $data['grinder'] = ($percentiles['power'] * .6) + ($percentiles['elusiveness'] * .1) + ($percentiles['speedScore'] * .3);
             }
             // 2. No agility so no elusiveness, just broad jump and speedScore
             if ($noAgility == true && $noForty == false && $noBroad == false) {

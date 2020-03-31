@@ -42,7 +42,7 @@
             "User\\": "module/User/src",
             "Podcast\\": "module/Podcast/src",
             "Player\\": "module/Player/src",
-            "Blog\\": "module/Blog/src"
+            "Cms\\": "module/Cms/src"
         }
     },
     "autoload-dev": {
