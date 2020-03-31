@@ -280,13 +280,13 @@ var rlf =  {
             $(".player-skillz-role3").text("3 Down:");
 
             $("#player1-skill .role-one-bar .determinate").css("width", grinderpercent1 + "%");
-            $("#player1-skill .role-one-score").text(grinderpercent1 + "%")
+            $("#player1-skill .role-one-score").text(grinderpercent1)
 
             $("#player1-skill .role-two-bar .determinate").css("width", passCatcherpercent1 + "%");
-            $("#player1-skill .role-two-score").text(passCatcherpercent1 + "%")
+            $("#player1-skill .role-two-score").text(passCatcherpercent1)
 
             $("#player1-skill .role-three-bar .determinate").css("width", alphapercent1 + "%");
-            $("#player1-skill .role-three-score").text(alphapercent1 + "%")
+            $("#player1-skill .role-three-score").text(alphapercent1)
 
             /*** Player2 ***/
             var grinderpercent2 = Math.round(rlfData.players[1].metrics.grinder);
@@ -294,13 +294,13 @@ var rlf =  {
             var alphapercent2 = Math.round(rlfData.players[1].metrics.alpha);
 
             $("#player2-skill .role-one-bar .determinate").css("width", grinderpercent2 + "%");
-            $("#player2-skill .role-one-score").text(grinderpercent2 + "%")
+            $("#player2-skill .role-one-score").text(grinderpercent2)
 
             $("#player2-skill .role-two-bar .determinate").css("width", passCatcherpercent2 + "%");
-            $("#player2-skill .role-two-score").text(passCatcherpercent2 + "%")
+            $("#player2-skill .role-two-score").text(passCatcherpercent2)
 
             $("#player2-skill .role-three-bar .determinate").css("width", alphapercent2 + "%");
-            $("#player2-skill .role-three-score").text(alphapercent2 + "%")
+            $("#player2-skill .role-three-score").text(alphapercent2)
         }
 
         if (position == "TE") {
@@ -313,13 +313,13 @@ var rlf =  {
             $(".player-skillz-role3").text("2 Way TE:");
 
             $("#player1-skill .role-one-bar .determinate").css("width", move1 + "%");
-            $("#player1-skill .role-one-score").text(move1 + "%")
+            $("#player1-skill .role-one-score").text(move1)
 
             $("#player1-skill .role-two-bar .determinate").css("width", inline1 + "%");
-            $("#player1-skill .role-two-score").text(inline1 + "%")
+            $("#player1-skill .role-two-score").text(inline1)
 
             $("#player1-skill .role-three-bar .determinate").css("width", alpha1 + "%");
-            $("#player1-skill .role-three-score").text(alpha1 + "%")
+            $("#player1-skill .role-three-score").text(alpha1)
 
             /*** Player2 ***/
             var move2 = Math.round(rlfData.players[1].metrics.move)
@@ -327,13 +327,13 @@ var rlf =  {
             var alpha2 = Math.round(rlfData.players[1].metrics.alpha);
 
             $("#player2-skill .role-one-bar .determinate").css("width", move2 + "%");
-            $("#player2-skill .role-one-score").text(move2 + "%")
+            $("#player2-skill .role-one-score").text(move2)
 
             $("#player2-skill .role-two-bar .determinate").css("width", inline2 + "%");
-            $("#player2-skill .role-two-score").text(inline2 + "%")
+            $("#player2-skill .role-two-score").text(inline2)
 
             $("#player2-skill .role-three-bar .determinate").css("width", alpha2 + "%");
-            $("#player2-skill .role-three-score").text(alpha2 + "%")
+            $("#player2-skill .role-three-score").text(alpha2)
         }
     },
 
