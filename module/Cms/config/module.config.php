@@ -65,6 +65,7 @@ return [
                         'options' => [
                             'route'    => '/:id',
                             'defaults' => [
+                                'controller' => Controller\ArticleController::class,
                                 'action' => 'view',
                             ],
                             'constraints' => [

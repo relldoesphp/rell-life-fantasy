@@ -106,7 +106,7 @@ class AdminController extends AbstractActionController
 
         $post = $this->command->updatePost($post);
         return $this->redirect()->toRoute(
-            'cms/article/view',
+            'cms/view',
             ['id' => $post->getId()]
         );
     }
@@ -116,13 +116,13 @@ class AdminController extends AbstractActionController
     {
         $id = $this->params()->fromRoute('id');
         if (! $id) {
-            return $this->redirect()->toRoute('blog');
+            return $this->redirect()->toRoute('cms');
         }
 
         try {
             $post = $this->repository->findPost($id);
         } catch (InvalidArgumentException $ex) {
-            return $this->redirect()->toRoute('blog');
+            return $this->redirect()->toRoute('cms');
         }
 
         $request = $this->getRequest();
@@ -133,10 +133,10 @@ class AdminController extends AbstractActionController
         if ($id != $request->getPost('id')
             || 'Delete' !== $request->getPost('confirm', 'no')
         ) {
-            return $this->redirect()->toRoute('blog');
+            return $this->redirect()->toRoute('cms');
         }
 
         $post = $this->command->deletePost($post);
-        return $this->redirect()->toRoute('blog');
+        return $this->redirect()->toRoute('cms');
     }
 }
