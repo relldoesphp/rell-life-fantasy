@@ -11,12 +11,15 @@ return [
         'aliases' => [
             Model\Article\ArticleRepositoryInterface::class => Model\Article\Sql\ZendDbSqlRepository::class,
             Model\Article\ArticleCommandInterface::class => Model\Article\Sql\ZendDbSqlCommand::class,
+            Model\Podcast\PodcastRepositoryInterface::class => Model\Podcast\Sql\PodcastDbSqlRepository::class,
+            Model\Podcast\PodcastCommandInterface::class => Model\Podcast\Sql\PodcastDbSqlCommand::class,
         ],
         'factories' => [
             'Dtw\Db\Adapter' => AdapterAbstractServiceFactory::class,
             Model\Article\Sql\ZendDbSqlRepository::class => Model\Article\Sql\Factory\ZendDbSqlRepositoryFactory::class,
             Model\Article\Sql\ZendDbSqlCommand::class => Model\Article\Sql\Factory\ZendDbSqlCommandFactory::class,
             Service\ArticleManager::class => Service\Factory\ArticleManagerFactory::class,
+            Service\PodcastManager::class => Service\Factory\PodcastManagerFactory::class,
             Model\Podcast\Sql\PodcastDbSqlRepository::class => Model\Podcast\Sql\Factory\PodcastDbSqlRepositoryFactory::class,
             Model\Podcast\Sql\PodcastDbSqlCommand::class => Model\Podcast\Sql\Factory\PodcastDbSqlCommandFactory::class,
         ],
@@ -55,7 +58,7 @@ return [
                     'route'    => '/manage-articles',
                     'defaults' => [
                         'controller' => Controller\AdminController::class,
-                        'action'     => 'index',
+                        'action'     => 'listArticle',
                     ],
                 ],
                 'may_terminate' => true,
@@ -118,7 +121,7 @@ return [
                     'route'    => '/manage-podcasts',
                     'defaults' => [
                         'controller' => Controller\AdminController::class,
-                        'action'     => 'index',
+                        'action'     => 'listPodcast',
                     ],
                 ],
                 'may_terminate' => true,
@@ -141,7 +144,7 @@ return [
                             'route'    => '/add',
                             'defaults' => [
                                 'controller' => Controller\AdminController::class,
-                                'action'     => 'addArticle',
+                                'action'     => 'addPodcast',
                             ],
                         ],
                     ],

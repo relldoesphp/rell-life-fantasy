@@ -1,0 +1,117 @@
+<?php
+    $form = $this->form;
+    $fieldset = $form->get('podcast');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    $submit = $form->get('submit');
+    $submit->setValue($this->submitLabel);
+    $submit->setAttribute('class', 'btn btn-primary dark');
+?>
+
+<div class="row container">
+    <div class="row">
+        <form class="col s12">
+            <div class="input-field col s6">
+                <?= $this->formElement($fieldset->get('title')) ?>
+                <?= $this->formLabel($fieldset->get('title')) ?>
+                <?= $this->formElementErrors()->render($fieldset->get('title'), ['class' => 'help-block']) ?>
+            </div>
+            <div class="input-field col s6">
+                <?= $this->formElement($fieldset->get('shorttitle')) ?>
+                <?= $this->formLabel($fieldset->get('shorttitle')) ?>
+                <?= $this->formElementErrors()->render($fieldset->get('shorttitle'), ['class' => 'help-block']) ?>
+            </div>
+            <div class="input-field col s6">
+                <?= $this->formElement($fieldset->get('filepath')) ?>
+                <?= $this->formLabel($fieldset->get('filepath')) ?>
+                <?= $this->formElementErrors()->render($fieldset->get('filepath'), ['class' => 'help-block']) ?>
+            </div>
+            <div class="input-field col s6">
+                <?= $this->formElement($fieldset->get('duration')) ?>
+                <?= $this->formLabel($fieldset->get('duration')) ?>
+                <?= $this->formElementErrors()->render($fieldset->get('duration'), ['class' => 'help-block']) ?>
+            </div>
+            <div class="input-field col s12">
+                <?= $this->formElement($fieldset->get('description')) ?>
+                <?= $this->formLabel($fieldset->get('description')) ?>
+                <?= $this->formElementErrors()->render($fieldset->get('description'), ['class' => 'help-block']) ?>
+            </div>
+            <div class="input-field col s5">
+                <?= $this->formElement($fieldset->get('publishDate')) ?>
+                <?= $this->formLabel($fieldset->get('publishDate')) ?>
+                <?= $this->formElementErrors()->render($fieldset->get('publishDate'), ['class' => 'help-block']) ?>
+            </div>
+            <div class="input-field col s6">
+                <div class="switch">
+                    <label>
+                        InActive
+                        <?= $this->formElement($fieldset->get('active')) ?>
+                        <span class="lever"></span>
+                        Active
+                    </label>
+                </div>
+            </div>
+            <div class="form-group col m6 my-2">
+                <?= $this->formSubmit($submit) ?>
+            </div>
+
+            <?php
+            echo $this->formHidden($fieldset->get('id'));
+            ?>
+        </form>
+    </div>
+</div>
+<script>
+    tinymce.init({
+        selector: "textarea",
+        // setup: function(ed) {
+        //     ed.on("change", function(e) {
+        //         $("#preview-html-"+letter).html(ed.getContent());
+        //         $("#edit-text-"+letter).val(ed.getContent({format:"text"}));
+        //     });
+        //     ed.on("keyup", function(e) {
+        //         $("#preview-html-"+letter).html(ed.getContent());
+        //         $("#edit-text-"+letter).val(ed.getContent({format:"text"}));
+        //     });
+        // },
+        plugins: [
+            "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+            "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+            "save contextmenu directionality emoticons template paste textcolor visualblocks table"
+        ],
+        toolbar: "fontsizeselect bold italic forecolor alignleft aligncenter alignright alignjustify link unlink image media  undo redo removeformat formats table",
+        fontsize_formats: "8pt 10pt 12pt 14pt 16pt 18pt 20pt 22pt 24pt 28pt 36pt",
+        style_formats: [
+            { title: 'Headers', items: [
+                    { title: 'h1', block: 'h1' },
+                    { title: 'h2', block: 'h2' },
+                    { title: 'h3', block: 'h3' },
+                    { title: 'h4', block: 'h4' },
+                    { title: 'h5', block: 'h5' },
+                    { title: 'h6', block: 'h6' }
+                ] },
+
+            { title: 'Blocks', items: [
+                    { title: 'p', block: 'p' },
+                    { title: 'div', block: 'div' },
+                    { title: 'pre', block: 'pre' }
+                ] },
+
+            { title: 'Containers', items: [
+                    { title: 'section', block: 'section', wrapper: true, merge_siblings: false },
+                    { title: 'article', block: 'article', wrapper: true, merge_siblings: false },
+                    { title: 'blockquote', block: 'blockquote', wrapper: true },
+                    { title: 'hgroup', block: 'hgroup', wrapper: true },
+                    { title: 'aside', block: 'aside', wrapper: true },
+                    { title: 'figure', block: 'figure', wrapper: true }
+                ] }
+        ],
+        table_toolbar: "tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
+        end_container_on_empty_block: true,
+        relative_urls : false,
+        remove_script_host: false,
+        convert_urls: false
+    });
+</script>
+
+

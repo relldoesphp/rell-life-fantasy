@@ -3,16 +3,26 @@
 namespace Cms\Service;
 
 use Cms\Model\Article\ArticleRepositoryInterface;
+use Cms\Model\Article\ArticleCommandInterface;
+use Cms\Form\ArticleForm;
 
 class ArticleManager
 {
 
     private $articleRepository;
 
+    private $articleCommand;
+
+    private $form;
+
     public function __construct(
-        ArticleRepositoryInterface $articleRepository
+        ArticleRepositoryInterface $articleRepository,
+        ArticleCommandInterface $articleCommand,
+        ArticleForm $articleForm
     ){
         $this->articleRepository = $articleRepository;
+        $this->articleCommand = $articleCommand;
+        $this->form = $articleForm;
     }
 
     public function getArticles()
@@ -34,6 +44,11 @@ class ArticleManager
     public function getRecentArticles($limit="")
     {
         return $this->articleRepository->findRecentPosts($limit);
+    }
+
+    public function getForm()
+    {
+        return $this->form;
     }
 
 

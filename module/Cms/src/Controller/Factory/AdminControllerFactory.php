@@ -8,6 +8,8 @@ use Cms\Model\Article\ArticleCommandInterface;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Cms\Model\Article\ArticleRepositoryInterface;
+use Cms\Service\PodcastManager;
+use Cms\Service\ArticleManager;
 
 class AdminControllerFactory implements FactoryInterface
 {
@@ -23,7 +25,9 @@ class AdminControllerFactory implements FactoryInterface
         return new AdminController(
             $container->get(ArticleCommandInterface::class),
             $formManager->get(ArticleForm::class),
-            $container->get(ArticleRepositoryInterface::class)
+            $container->get(ArticleRepositoryInterface::class),
+            $container->get(PodcastManager::class),
+            $container->get(ArticleManager::class)
         );
     }
 }

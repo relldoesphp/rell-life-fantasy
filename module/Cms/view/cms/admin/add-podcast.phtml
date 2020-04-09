@@ -1,0 +1,15 @@
+<div class="section container full-height white">
+    <div class="row container">
+        <h3>Add a Podcast</h3>
+    </div>
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url());
+echo $this->partial('cms/admin/podcast-form', [
+    'form' => $form,
+    'submitLabel' => 'Add new podcast',
+]);
+
+?>
+</div>
+
