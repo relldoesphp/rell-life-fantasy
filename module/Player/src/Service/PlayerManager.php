@@ -132,8 +132,11 @@ class PlayerManager
             $player->setLastName($value->last_name);
             $player->setSearchFullName($value->search_full_name);
             $player->setPosition($value->position);
-            if ($player->getTeam() !== 'Rookie') {
-                $player->setTeam($value->team);
+//            if ($player->getTeam() !== 'Rookie') {
+            $player->setTeam($value->team);
+//            }
+            if ($value->team == null) {
+                $player->setTeam("FA");
             }
             $playerInfo = Json::decode($player->getPlayerInfo(),1);
             $playerInfo['age'] = $value->age;
@@ -189,6 +192,9 @@ class PlayerManager
             $teamInfo['team'] = $value->team;
             $teamInfo['position'] = $value->position;
             $teamInfo['number'] = $value->number;
+            if ($value->number == null) {
+                $teamInfo['number'] = 0;
+            }
             $teamInfo['depth_chart_position'] = $value->depth_chart_position;
             $teamInfo['depth_chart_order'] = $value->depth_chart_order;
             $teamInfo['practice_participation'] = $value->practice_participation;
@@ -288,8 +294,8 @@ class PlayerManager
 
     public function scrapCollegeJob()
     {
-//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $rbService->scrapCollegeJob();
+        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $rbService->scrapCollegeJob();
 
 //        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $teService->scrapCollegeJob();
@@ -297,8 +303,8 @@ class PlayerManager
 //        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $wrService->scrapCollegeJob();
 
-        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $qbService->scrapCollegeJob();
+//        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $qbService->scrapCollegeJob();
 
     }
 

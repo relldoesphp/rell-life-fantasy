@@ -196,8 +196,10 @@ class Player implements InputFilterAwareInterface
      */
     public function setPlayerInfo($player_info)
     {
-        $player_info['height'] = stripslashes($player_info['height']);
-        $this->player_info = $player_info;
+        if (array_key_exists('height', $player_info)) {
+            $player_info['height'] = stripslashes($player_info['height']);
+            $this->player_info = $player_info;
+        }
     }
 
     /**

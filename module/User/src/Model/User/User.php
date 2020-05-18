@@ -21,6 +21,7 @@ class User
     protected $password;
     protected $status;
     protected $passwordResetToken;
+    private $roles;
 
     /**
      * @return mixed
@@ -222,5 +223,41 @@ class User
     public function setPasswordResetTokenCreationDate($date)
     {
         $this->passwordResetTokenCreationDate = $date;
+    }
+
+    /**
+     * Returns the array of roles assigned to this user.
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Returns the string of assigned role names.
+     */
+    public function getRolesAsString()
+    {
+        $roleList = '';
+
+        $count = count($this->roles);
+        $i = 0;
+        foreach ($this->roles as $role) {
+            $roleList .= $role->getName();
+            if ($i<$count-1)
+                $roleList .= ', ';
+            $i++;
+        }
+
+        return $roleList;
+    }
+
+    /**
+     * Assigns a role to user.
+     */
+    public function addRole($role)
+    {
+        $this->roles->add($role);
     }
 }

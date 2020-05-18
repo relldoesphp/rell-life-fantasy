@@ -464,6 +464,7 @@ class WrService extends ServiceAbstract
         $bonus = 0;
         $lastClass = "";
         $conf = "";
+        $bestRush = 0;
         foreach ($collegeStats as $year => $stats) {
             if ($stats->year != "Career") {
                 $i++;
@@ -478,7 +479,8 @@ class WrService extends ServiceAbstract
                         'breakoutSeasons' => null,
                         "collegeSeasons" => null,
                         "bestDominator" => null,
-                        "updateCollegeStats" => $collegeStats
+                        "updateCollegeStats" => $collegeStats,
+                        "bestRush" => $bestRush
                     ];
                 }
 
@@ -487,7 +489,7 @@ class WrService extends ServiceAbstract
                 $dominator['yd'] = round(($stats['recYds'] / $stats['totals']['yds']) * 100, 2);
                 $dominator['rec'] = round(($stats['recs'] / $stats['totals']['recs']) * 100, 2);
 
-                if ($stats['games'] > 4 && $stats['games'] < 9) {
+                if ($stats['games'] > 2 && $stats['games'] < 9) {
                     $dominator['td'] = round(($dominator['td']/$stats['games']) * 12,2);
                     $dominator['yd'] = round(($dominator['yd']/$stats['games']) * 12,2);
                     $dominator['rec'] = round(($dominator['rec']/$stats['games']) * 12,2);
@@ -667,6 +669,11 @@ class WrService extends ServiceAbstract
                 }
 
                 if (array_key_exists('rushYds', $stats)) {
+
+                    if ($stats['rushYds'] > $bestRush) {
+                        $bestRush = $stats['rushYds'];
+                    }
+
                     if ($stats['rushYds'] > 100) {
                         $bonus = $bonus + .5;
                     }
@@ -855,7 +862,8 @@ class WrService extends ServiceAbstract
             'breakoutSeasons' => $breakoutSeasons,
             "collegeSeasons" => $i,
             "bestDominator" => $bestDominator,
-            "updateCollegeStats" => $collegeStats
+            "updateCollegeStats" => $collegeStats,
+            "bestRush" => $bestRush
         ];
 
     }
@@ -868,7 +876,7 @@ class WrService extends ServiceAbstract
         $pointer = 0;
 
         foreach ($wrs as $wr) {
-            if ($wr->getId() == 26749) {
+            if ($wr->getId() == 3279) {
                 $wr->decodeJson();
                 $result = $this->scrapCollegeStats($wr);
                 if ($result == false) {
@@ -877,7 +885,6 @@ class WrService extends ServiceAbstract
             }
             $pointer++;
             $progressBar->update($pointer);
-
         }
         $progressBar->finish();
     }
