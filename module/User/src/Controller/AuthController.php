@@ -118,8 +118,11 @@ class AuthController extends AbstractActionController
         $code = (string)$this->params()->fromQuery('code', '');
         if (!empty($code)) {
             $tokens = $this->patreonManager->getTokens($code);
-            $info = $this->patreonManager->getPatreonInfo($tokens['accessToken']);
-            print "<pre>";
+            $info = $this->patreonManager->getPatreonInfo($tokens['access_token']);
+            print "Tokens<pre>";
+            print_r($tokens);
+            print "</pre>";
+            print "Info<pre>";
             print_r($info);
             print "</pre>";
             die();
