@@ -9,10 +9,9 @@ use Patreon\OAuth;
 
 class PatreonManager
 {
-
     private $client_id = "_95TC9mhSPNvKnEMirH3N4LMDthwKL1dvRoVzvoY6eaFEU5qLxkCINJ_Kbejvgs1";
     private $client_secret = "o34EtbIBaPcstx9iWfrkfbGo7-ZBVn0PiUjDiqYEykVhKVbOJf63SnsBcpg3UfIO";
-    private $redirect_uri = "https://www.drafttradewin.com";
+    private $redirect_uri = "https://www.drafttradewin.com/login";
     private $oauth_client;
 
     public function __construct()
