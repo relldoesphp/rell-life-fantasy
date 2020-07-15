@@ -15,6 +15,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use User\Controller\AuthController;
 use User\Service\AuthManager;
+use User\Service\PatreonManager;
 use User\Service\UserManager;
 
 class AuthControllerFactory implements FactoryInterface
@@ -24,7 +25,8 @@ class AuthControllerFactory implements FactoryInterface
             $container->get(RepositoryInterface::class),
             $container->get(CommandInterface::class),
             $container->get(AuthManager::class),
-            $container->get(UserManager::class)
+            $container->get(UserManager::class),
+            $container->get(PatreonManager::class)
         );
     }
 }

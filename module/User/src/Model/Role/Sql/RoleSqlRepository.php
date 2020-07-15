@@ -51,7 +51,7 @@ class RoleSqlRepository implements RoleRepositoryInterface
             return [];
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->userPrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->rolePrototype);
         $resultSet->initialize($result);
         return $resultSet;
     }
@@ -62,7 +62,28 @@ class RoleSqlRepository implements RoleRepositoryInterface
      */
     public function findRoleById($id)
     {
-        // TODO: Implement findRoleById() method.
+        $sql    = new Sql($this->db);
+        $select = $sql->select('role', 'r')
+            ->join(
+                ['parent' => 'role_hierarchy'],        // join table with alias
+                'parent.child_role_id = r.id'  // join expression
+            )
+            ->join(
+                ['child' => 'role_hierarchy'],        // join table with alias
+                'child.parent_role_id = r.id'  // join expression
+            )->where([
+                "id = ?" => $id
+            ]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->rolePrototype);
+        $resultSet->initialize($result);
+        return $resultSet;
     }
 
     /**

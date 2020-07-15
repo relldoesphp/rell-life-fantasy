@@ -2233,7 +2233,7 @@ var rlf =  {
         });
 
         $('#edit-players .typeahead').on('typeahead:selected', function(evt, item){
-            var url = "http://relllifefantasy/admin/editplayer/"+item.id;
+            var url = "/admin/editplayer/"+item.id;
             window.location.href=url;
         });
 

@@ -21,11 +21,16 @@ $form->get('password')->setAttributes([
     ->setLabelAttributes([
         'class' => 'sr-only'
     ]);
+$clientId = "_95TC9mhSPNvKnEMirH3N4LMDthwKL1dvRoVzvoY6eaFEU5qLxkCINJ_Kbejvgs1";
+$redirectUri = "https://www.drafttradewin.com";
+$scope = "";
+$state = "";
+$patreonLink = "https://www.patreon.com/oauth2/authorize?response_type=code&client_id={$clientId}&redirect_uri={$redirectUri}";
 ?>
-<div class="section white full-height container">
-    <div class="container">
+<div class="section white container">
+    <div class="container fullscreen">
 <div class="row">
-    <div class="col s8">
+    <div class="col s12 m8 offset-m2 l4 offset-l4">
         <form class="form-signin" method="post">
             <h3 class="form-signin-heading">Please sign in</h3>
             <?php if ($isLoginError): ?>
@@ -47,6 +52,7 @@ $form->get('password')->setAttributes([
             <?= $this->formElement($form->get('csrf')) ?>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>
+        <a href="<?=$this->signUpLink ?>"><img src="/images/login_with_patreon.png"></a>
     </div>
 </div>
     </div>

@@ -16,6 +16,7 @@ use User\Form\LoginForm;
 use User\Model\User;
 use User\Service\AuthManager;
 use User\Model\User\RepositoryInterface;
+use User\Service\PatreonManager;
 
 
 class AuthController extends AbstractActionController
@@ -29,15 +30,18 @@ class AuthController extends AbstractActionController
 
     private $command;
 
+    private $patreonManager;
+
     /**
      * Constructor.
      */
-    public function __construct(RepositoryInterface $repository, $command, $authManager, $userManager)
+    public function __construct(RepositoryInterface $repository, $command, $authManager, $userManager, $patreonManager)
     {
         $this->repository = $repository;
         $this->command = $command;
         $this->authManager = $authManager;
         $this->userManager = $userManager;
+        $this->patreonManager = $patreonManager;
     }
 
     /**
@@ -110,10 +114,22 @@ class AuthController extends AbstractActionController
             }
         }
 
+        $signUpLink = $this->patreonManager->getLoginButton();
+
+        if ($_GET['code']) {
+            $tokens = $this->patreonManager->getTokens($_GET['code']);
+            $info = $this->patreonManager->getPatreonInfo($tokens['accessToken']);
+            print "<pre>";
+            print_r($info);
+            print "</pre>";
+            die();
+        }
+
         return new ViewModel([
             'form' => $form,
             'isLoginError' => $isLoginError,
-            'redirectUrl' => $redirectUrl
+            'redirectUrl' => $redirectUrl,
+            'signUpLink' => $signUpLink
         ]);
     }
 
@@ -126,4 +142,13 @@ class AuthController extends AbstractActionController
 
         return $this->redirect()->toRoute('login');
     }
+
+    public function patreonLoginAction()
+    {
+
+
+
+
+    }
+
 }

@@ -28,7 +28,7 @@ return [
             Model\User\Sql\SqlRepository::class => Model\User\Sql\Factory\SqlRespositoryFactory::class,
             Model\User\Sql\SqlCommand::class => Model\User\Sql\Factory\SqlCommandFactory::class,
             Service\NavManager::class => Service\Factory\NavManagerFactory::class,
-
+            Service\PatreonManager::class => Service\Factory\PatreonManagerFactory::class
         ],
     ],
 
@@ -59,6 +59,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\AuthController::class,
                         'action'     => 'logout',
+                    ],
+                ],
+            ],
+            'patreon' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/patreon',
+                    'defaults' => [
+                        'controller' => Controller\AuthController::class,
+                        'action'     => 'patreonValidate',
                     ],
                 ],
             ],
