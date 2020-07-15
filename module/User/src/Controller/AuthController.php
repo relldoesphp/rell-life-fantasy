@@ -115,8 +115,8 @@ class AuthController extends AbstractActionController
         }
 
         $signUpLink = $this->patreonManager->getLoginButton();
-
-        if ($_GET['code'] !== null) {
+        $code = (string)$this->params()->fromQuery('rcode', '');
+        if (!empty($code)) {
             $tokens = $this->patreonManager->getTokens($_GET['code']);
             $info = $this->patreonManager->getPatreonInfo($tokens['accessToken']);
             print "<pre>";
