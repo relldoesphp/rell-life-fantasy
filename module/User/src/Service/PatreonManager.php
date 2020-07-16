@@ -31,7 +31,7 @@ class PatreonManager
         $state_parameters = '&state=' . urlencode( base64_encode(json_encode($state)));
         // Append it to the url
         $href .= $state_parameters;
-        $scope_parameters = '&scope=identity%20identity.memberships%20identity'.urlencode('[email]');
+        $scope_parameters = '&scope=identity%20identity'.urlencode('[memberships]').'%20identity'.urlencode('[email]');
         $href .= $scope_parameters;
 
         return $href;
