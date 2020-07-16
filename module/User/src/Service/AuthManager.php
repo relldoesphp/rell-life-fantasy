@@ -132,7 +132,7 @@ class AuthManager
         }
 
         if ($result->isValid()) {
-            $this->getStorage()->write($result->getIdentity());
+            $this->authService->getStorage()->write($result->getIdentity());
         }
 
         return $result;
