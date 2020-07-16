@@ -118,7 +118,7 @@ class AuthManager
         // Successful login and update
         $result =  new Result(
             Result::SUCCESS,
-            $user->email,
+            $user->getEmail(),
             ['Authenticated successfully.']);
 
         // Check if user has already logged in. If so, do not allow to log in
