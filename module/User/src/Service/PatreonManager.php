@@ -3,16 +3,19 @@
 
 namespace User\Service;
 
-
+use Laminas\Authentication\Adapter\AdapterInterface;
+use Laminas\Authentication\Result;
 use Patreon\API;
 use Patreon\OAuth;
 
-class PatreonManager
+class PatreonManager implements AdapterInterface
 {
     private $client_id = "_95TC9mhSPNvKnEMirH3N4LMDthwKL1dvRoVzvoY6eaFEU5qLxkCINJ_Kbejvgs1";
     private $client_secret = "o34EtbIBaPcstx9iWfrkfbGo7-ZBVn0PiUjDiqYEykVhKVbOJf63SnsBcpg3UfIO";
     private $redirect_uri = "https://www.drafttradewin.com/login";
     private $oauth_client;
+    private $email;
+    private $userRepository;
 
     public function __construct()
     {
@@ -76,5 +79,31 @@ class PatreonManager
         // Fetch the user's details
         $current_member = $api_client->fetch_user();
         return $current_member;
+    }
+
+    public function authenticate()
+    {
+        //********** Patreon Authenticate ***********//
+        $user = $this->userRepository->getUserByEmail($this->email);
+        // If there is no such user, return 'Identity Not Found' status.
+        if ($user==null) {
+            return new Result(
+                Result::FAILURE_IDENTITY_NOT_FOUND,
+                null,
+                ['Invalid credentials.']);
+        }
+        // If the user with such email exists, we need to check if it is active or retired.
+        // Do not allow retired users to log in.
+        if ($user->getStatus()== User\User::STATUS_RETIRED) {
+            return new Result(
+                Result::FAILURE,
+                null,
+                ['User is retired.']);
+        }
+        //validate access token
+        return new Result(
+            Result::SUCCESS,
+            $this->email,
+            ['Authenticated successfully.']);
     }
 }

@@ -19,9 +19,9 @@ class AuthAdapter implements AdapterInterface
 
     private $email;
 
-
     private $password;
 
+    private $authToken;
 
     private $repository;
 

@@ -11,6 +11,7 @@ namespace User\Service;
 use Laminas\Authentication\Result;
 use Laminas\Session;
 use \Exception;
+use User\Model\User;
 
 class AuthManager
 {
@@ -22,16 +23,20 @@ class AuthManager
 
     private $sessionManager;
 
+    private $patreonManager;
+
     /**
      * Contents of the 'access_filter' config key.
      * @var array
      */
     private $config;
 
-    public function __construct($authService, $sessionManager, $config) {
+    public function __construct($authService, $sessionManager, $config, $patreonManager, $userManager) {
         $this->authService = $authService;
         $this->sessionManager = $sessionManager;
         $this->config = $config;
+        $this->patreonManager = $patreonManager;
+        $this->userManager = $userManager;
     }
     /**
      * Performs a login attempt. If $rememberMe argument is true, it forces the session
@@ -57,6 +62,76 @@ class AuthManager
         if ($result->getCode()==Result::SUCCESS && $rememberMe) {
             // Session cookie will expire in 1 month (30 days).
             $this->sessionManager->rememberMe(60*60*24*30);
+        }
+
+        return $result;
+    }
+
+    public function patreonLogin($code)
+    {
+        //********** Patreon Authenticate ***********//
+        if ($this->authService->getIdentity()!=null) {
+            throw new \Exception('Already logged in');
+        }
+
+        $tokens = $this->patreonManager->getTokens($code);
+
+        //******* If bad code return error ******//
+        if (array_key_exists('error', $tokens)) {
+            return new Result(
+                Result::FAILURE_IDENTITY_NOT_FOUND,
+                null,
+                ['Invalid code.']);
+        }
+
+        // Update or Create User with Valid Patreon Tokens
+        $info = $this->patreonManager->getPatreonInfo($tokens['access_token']);
+        $data = [
+            "email" => $info['data']['attributes']['email'],
+            "firstName" => $info['data']['attributes']['first_name'],
+            "lastLame" => $info['data']['attributes']['last_name'],
+            "patreon_id" => $info['data']['id'],
+            "patreon_image" => $info['data']['attributes']['image_url'],
+            "patreon_token" => $tokens,
+            "patreon_attributes" => $info['data']['attributes'],
+            "patreon_membership" => $info['data']['relationships']['memberships']['data']
+        ];
+        $user = $this->userManager->saveUser($data);
+        //$user = $this->repository->getUserByEmail($this->email);
+        // If there is no such user, return 'Identity Not Found' status.
+        if ($user==null) {
+            return new Result(
+                Result::FAILURE_IDENTITY_NOT_FOUND,
+                null,
+                ['Invalid credentials.']);
+        }
+        // If the user with such email exists, we need to check if it is active or retired.
+        // Do not allow retired users to log in.
+        if ($user->getStatus()== User\User::STATUS_RETIRED) {
+            return new Result(
+                Result::FAILURE,
+                null,
+                ['User is retired.']);
+        }
+
+        // Successful login and update
+        $result =  new Result(
+            Result::SUCCESS,
+            $user->email,
+            ['Authenticated successfully.']);
+
+        // Check if user has already logged in. If so, do not allow to log in
+        // twice.
+        if ($this->authService->getIdentity()!=null) {
+            throw new \Exception('Already logged in');
+        }
+
+        if ($this->authService->hasIdentity()) {
+            $this->authService->clearIdentity();
+        }
+
+        if ($result->isValid()) {
+            $this->getStorage()->write($result->getIdentity());
         }
 
         return $result;

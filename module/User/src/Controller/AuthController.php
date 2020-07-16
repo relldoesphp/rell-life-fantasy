@@ -49,6 +49,19 @@ class AuthController extends AbstractActionController
      */
     public function loginAction()
     {
+        // Store login status.
+        $isLoginError = false;
+        // **** Handle Patreon Login ******* //
+        $code = (string)$this->params()->fromQuery('code', '');
+        if (!empty($code)) {
+            $result = $this->authManager->patreonLogin($code);
+            if ($result->getCode()==Result::SUCCESS) {
+                return $this->redirect()->toRoute('home');
+            } else {
+                $isLoginError = true;
+            }
+        }
+
         // Retrieve the redirect URL (if passed). We will redirect the user to this
         // URL after successfull login.
         $redirectUrl = (string)$this->params()->fromQuery('redirectUrl', '');
@@ -64,8 +77,7 @@ class AuthController extends AbstractActionController
         $form = new LoginForm();
         $form->get('redirect_url')->setValue($redirectUrl);
 
-        // Store login status.
-        $isLoginError = false;
+
 
         // Check if user has submitted the form
         if ($this->getRequest()->isPost()) {
@@ -115,18 +127,6 @@ class AuthController extends AbstractActionController
         }
 
         $signUpLink = $this->patreonManager->getLoginButton();
-        $code = (string)$this->params()->fromQuery('code', '');
-        if (!empty($code)) {
-            $tokens = $this->patreonManager->getTokens($code);
-            $info = $this->patreonManager->getPatreonInfo($tokens['access_token']);
-            print "Tokens<pre>";
-            print_r($tokens);
-            print "</pre>";
-            print "Info<pre>";
-            print_r($info);
-            print "</pre>";
-            die();
-        }
 
         return new ViewModel([
             'form' => $form,

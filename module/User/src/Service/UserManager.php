@@ -46,6 +46,16 @@ class UserManager
         return $this->repository->getUserByEmail($email);
     }
 
+    public function saveUser($data)
+    {
+        if ($this->checkUserExists($data['email'])) {
+            $user = $this->findUserByEmail($data['email']);
+            $this->updateUser($user, $data);
+        } else {
+            $this->addUser($data);
+        }
+    }
+
     /**
      * This method adds a new user.
      */
