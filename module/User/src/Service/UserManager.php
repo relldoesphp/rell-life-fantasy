@@ -50,10 +50,12 @@ class UserManager
     {
         if ($this->checkUserExists($data['email'])) {
             $user = $this->findUserByEmail($data['email']);
-            $this->updateUser($user, $data);
+            $user = $this->updateUser($user, $data);
         } else {
-            $this->addUser($data);
+            $user = $this->addUser($data);
         }
+
+        return $user;
     }
 
     /**
@@ -105,7 +107,7 @@ class UserManager
 
         // Apply changes to database.
         $this->command->updateUser($user);
-        return true;
+        return $user;
     }
 
     /**
