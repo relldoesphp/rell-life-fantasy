@@ -89,12 +89,13 @@ class AuthManager
         $data = [
             "email" => $info['data']['attributes']['email'],
             "firstName" => $info['data']['attributes']['first_name'],
-            "lastLame" => $info['data']['attributes']['last_name'],
+            "lastName" => $info['data']['attributes']['last_name'],
             "patreon_id" => $info['data']['id'],
             "patreon_image" => $info['data']['attributes']['image_url'],
             "patreon_token" => $tokens,
             "patreon_attributes" => $info['data']['attributes'],
-            "patreon_membership" => $info['data']['relationships']['memberships']['data']
+            "patreon_membership" => $info['data']['relationships']['memberships']['data'],
+            "status" => 1
         ];
         $user = $this->userManager->saveUser($data);
         //$user = $this->repository->getUserByEmail($this->email);
