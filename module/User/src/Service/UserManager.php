@@ -75,9 +75,17 @@ class UserManager
         $user->setLastName($data['lastName']);
 
         // Encrypt password and store the password in encrypted state.
-        $bcrypt = new Bcrypt();
-        $passwordHash = $bcrypt->create($data['password']);
-        $user->setPassword($passwordHash);
+        if ($data['password']) {
+            $bcrypt = new Bcrypt();
+            $passwordHash = $bcrypt->create($data['password']);
+            $user->setPassword($passwordHash);
+        }
+
+        $user->setPatreonId($data['patreon_id']);
+        $user->setPatreonImage($data['patreon_image']);
+        $user->setPatreonToken($data['patreon_token']);
+        $user->setPatreonAttributes($data['patreon_attributes']);
+        $user->setPatreonMembership($data['patreon_membership']);
 
         $user->setStatus($data['status']);
 
@@ -105,6 +113,11 @@ class UserManager
         $user->setLastName($data['lastName']);
         $user->setStatus($data['status']);
 
+        $user->setPatreonId($data['patreon_id']);
+        $user->setPatreonImage($data['patreon_image']);
+        $user->setPatreonToken($data['patreon_token']);
+        $user->setPatreonAttributes($data['patreon_attributes']);
+        $user->setPatreonMembership($data['patreon_membership']);
         // Apply changes to database.
         $this->command->updateUser($user);
         return $user;

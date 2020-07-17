@@ -57,6 +57,11 @@ class SqlCommand implements CommandInterface
             'firstName' => $user->getFirstName(),
             'lastName' => $user->getLastName(),
             'status' => $user->getStatus(),
+            'patreon_id' => $user->getPatreonId(),
+            'patreon_image' => $user->getPatreonImage(),
+            'patreon_token' => $user->getPatreonToken(),
+            'patreon_attributes' => $user->getPatreonAttributes(),
+            'patreon_membership' => $user->getPatreonMembership(),
             'date_created' => $user->getDateCreated()
         ]);
 
@@ -83,7 +88,12 @@ class SqlCommand implements CommandInterface
             'password' => $user->getPassword(),
             'firstName' => $user->getFirstName(),
             'lastName' => $user->getLastName(),
-            'status' => $user->getStatus()
+            'status' => $user->getStatus(),
+            'patreon_id' => $user->getPatreonId(),
+            'patreon_image' => $user->getPatreonImage(),
+            'patreon_token' => $user->getPatreonToken(),
+            'patreon_attributes' => $user->getPatreonAttributes(),
+            'patreon_membership' => $user->getPatreonMembership(),
         ]);
 
         $update->where(['id = ?' => $user->getId()]);

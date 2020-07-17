@@ -21,6 +21,11 @@ class User
     protected $password;
     protected $status;
     protected $passwordResetToken;
+    protected $patreon_id;
+    protected $patreon_image;
+    protected $patreon_token;
+    protected $patreon_attributes;
+    protected $patreon_membership;
     private $roles;
 
     /**
@@ -259,5 +264,85 @@ class User
     public function addRole($role)
     {
         $this->roles->add($role);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPatreonId()
+    {
+        return $this->patreon_id;
+    }
+
+    /**
+     * @param mixed $patreon_id
+     */
+    public function setPatreonId($patreon_id)
+    {
+        $this->patreon_id = $patreon_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPatreonImage()
+    {
+        return $this->patreon_image;
+    }
+
+    /**
+     * @param mixed $patreon_image
+     */
+    public function setPatreonImage($patreon_image)
+    {
+        $this->patreon_image = $patreon_image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPatreonToken()
+    {
+        return $this->patreon_token;
+    }
+
+    /**
+     * @param mixed $patreon_token
+     */
+    public function setPatreonToken($patreon_token)
+    {
+        $this->patreon_token = $patreon_token;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPatreonAttributes()
+    {
+        return $this->patreon_attributes;
+    }
+
+    /**
+     * @param mixed $patreon_attributes
+     */
+    public function setPatreonAttributes($patreon_attributes)
+    {
+        $this->patreon_attributes = $patreon_attributes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPatreonMembership()
+    {
+        return $this->patreon_membership;
+    }
+
+    /**
+     * @param mixed $patreon_membership
+     */
+    public function setPatreonMembership($patreon_membership)
+    {
+        $this->patreon_membership = $patreon_membership;
     }
 }
