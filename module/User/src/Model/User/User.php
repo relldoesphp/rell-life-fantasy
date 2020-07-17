@@ -8,6 +8,8 @@
 
 namespace User\Model\User;
 
+use Laminas\Json\Json;
+
 class User
 {
     // User status constants.
@@ -344,5 +346,35 @@ class User
     public function setPatreonMembership($patreon_membership)
     {
         $this->patreon_membership = $patreon_membership;
+    }
+
+    public function encodeJson()
+    {
+        if (is_array($this->patreon_token)) {
+            $this->patreon_token = Json::encode($this->patreon_token);
+        }
+
+        if (is_array($this->patreon_attributes)) {
+            $this->patreon_attributes = Json::encode($this->patreon_attributes);
+        }
+
+        if (is_array($this->patreon_membership)) {
+            $this->patreon_membership = Json::encode($this->patreon_membership);
+        }
+    }
+
+    public function decodeJson()
+    {
+        if (!is_array($this->patreon_token)) {
+            $this->patreon_token =  (!empty($this->patreon_token)) ? Json::decode($this->patreon_token, 1) : [];
+        }
+
+        if (!is_array($this->patreon_attributes)) {
+            $this->patreon_attributes = (!empty($this->patreon_attributes)) ? Json::decode($this->patreon_attributes, 1): [];
+        }
+
+        if (!is_array($this->patreon_membership)) {
+            $this->patreon_membership = (!empty($this->patreon_membership)) ? Json::decode($this->patreon_membership, 1) : [];
+        }
     }
 }

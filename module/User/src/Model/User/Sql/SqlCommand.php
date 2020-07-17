@@ -50,6 +50,7 @@ class SqlCommand implements CommandInterface
     {
         /** Insert new user **/
         $sql    = new Sql($this->db);
+        $user->encodeJson();
         $insert = $sql->insert('user');
         $insert->values([
             'email' => $user->getEmail(),
@@ -81,6 +82,7 @@ class SqlCommand implements CommandInterface
     public function updateUser(User $user)
     {
         /** Insert new user **/
+        $user->encodeJson();
         $sql    = new Sql($this->db);
         $update = $sql->update('user');
         $update->set([
@@ -123,5 +125,4 @@ class SqlCommand implements CommandInterface
             return false;
         }
     }
-
 }
