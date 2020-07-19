@@ -195,7 +195,7 @@ class RbService extends ServiceAbstract
             $data['grinder'] = null;
             if ($noShuttle == false && $noForty == false && $noBroad == false) {
                 if ($percentiles['power'] > $percentiles['elusiveness']) {
-                    $data['inside'] = ($percentiles['power'] * .55) + ($percentiles['elusiveness'] * .35) + ($percentiles['shuttle'] * .10);
+                    $data['inside'] = ($percentiles['power'] * .65) + ($percentiles['elusiveness'] * .25) + ($percentiles['shuttle'] * .10);
                 } else {
                     $data['inside'] = ($percentiles['power'] * .25) + ($percentiles['elusiveness'] * .55) + ($percentiles['shuttle'] * .20);
                 }
