@@ -41,6 +41,14 @@ class TeService extends ServiceAbstract
         'collegeScore' => [
             'field' => 'metrics',
             'sort' => 'ASC'
+        ],
+        'slot' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
+        'deep' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
         ]
     ];
 
@@ -85,6 +93,66 @@ class TeService extends ServiceAbstract
             $info = $te->getPlayerInfo();
             $metrics = $te->getMetrics();
             $percentiles = $te->getPercentiles();
+
+            if (empty($metrics) || !array_key_exists('benchPress', $metrics)) {
+                continue;
+            }
+
+
+            if (in_array($metrics['shuttle'], ["-", "", null])
+                && in_array($metrics['cone'], ["-", "", null])) {
+                $noAgility = true;
+            } else{
+                $noAgility = false;
+            }
+
+            if (in_array($metrics['verticalJump'], ["-", "", null])
+                && in_array($metrics['broadJump'], ["-", "", null])) {
+                $noJump = true;
+            } else{
+                $noJump = false;
+            }
+
+            if (in_array($metrics['fortyTime'], ["-", "", null])) {
+                $noForty = true;
+            } else{
+                $noForty = false;
+            }
+
+            if (in_array($metrics['benchPress'], ["-", "", null])) {
+                $noBench = true;
+            } else{
+                $noBench = false;
+            }
+
+            if (in_array($metrics['verticalJump'], ["-", "", null])) {
+                $noVert = true;
+            } else {
+                $noVert = false;
+            }
+
+            if (in_array($metrics['cone'], ["-", "", null])) {
+                $noCone = true;
+            } else {
+                $noCone = false;
+            }
+
+            //slot score
+            $slot = null;
+            if ($noCone) {
+                $slot = null;
+            } else {
+                $slot = round(($percentiles['routeAgility'] * .7) + ($percentiles['elusiveness'] * .3),2);
+            }
+            $metrics["slot"] = $slot;
+
+            //deep score
+            if ($noForty)  {
+                $deep = null;
+            } else {
+                $deep = round(($percentiles['fortyTime'] * .7) + ($percentiles['jumpball'] * .3), 2);
+            }
+            $metrics["deep"] = $deep;
 
             /*** Calculate Run Block ***/
             $data['runBlock'] = null;
@@ -150,6 +218,8 @@ class TeService extends ServiceAbstract
                 && !in_array($percentiles['weight'], [null, "-", "", "null"]) ) {
                 $data['inLine'] = ($percentiles['speedScore'] * .60) + ($percentiles['bmi'] * .20) + ($percentiles['weight'] * .20);
             }
+
+
 
             //Alpha -  Move+Line
             $data['alpha'] = ($data['inLine'] + $data['move'])/2;

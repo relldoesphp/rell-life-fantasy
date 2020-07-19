@@ -43,7 +43,23 @@ class WrService extends ServiceAbstract
         'collegeScore' => [
             'field' => 'metrics',
             'sort' => 'ASC'
-        ]
+        ],
+        'beatPress' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
+        'separation' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
+        'contested' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
+        'yac' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
     ];
 
     public function __construct(
@@ -248,7 +264,7 @@ class WrService extends ServiceAbstract
 
             if ($metrics['beatPress'] != null && $metrics['separation'] != null && $metrics['contested'] != null && $metrics['yac'] != null) {
                 $halfAlpha = ($metrics['beatPress'] *.25) + ($metrics['separation'] *.35) + ($metrics['contested'] *.33) + ($metrics['yac'] *.07);
-                $alphaScore = round(((($metrics['collegeScore']/35) * 100) * .4) + ($halfAlpha * .6), 2);
+                $alphaScore = round(((($metrics['collegeScore']/35) * 100) * .5) + ($halfAlpha * .5), 2);
             } else {
                 $alphaScore = null;
             }
@@ -278,9 +294,9 @@ class WrService extends ServiceAbstract
                     }
                 }
 
-                if ($alphaScore > 55 && $metrics['beatPress'] < 30) {
-                    $alphaScore = $alphaScore - 3;
-                }
+//                if ($alphaScore > 55 && $metrics['beatPress'] < 30) {
+//                    $alphaScore = $alphaScore - 3;
+//                }
 
                 if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 40) {
                     $alphaScore = $alphaScore - 5;

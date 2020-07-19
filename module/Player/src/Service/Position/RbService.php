@@ -49,7 +49,15 @@ class RbService extends ServiceAbstract
         'bestRecDominator' => [
             'field' => 'metrics',
             'sort' => 'ASC'
-        ]
+        ],
+        'inside' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
+        'outside' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
     ];
 
     public function __construct(
@@ -129,7 +137,7 @@ class RbService extends ServiceAbstract
 //                continue;
 //            }
 
-            if ($rb->getId() == 26660) {
+            if ($rb->getId() == 3961) {
                 $found = true;
             }
 
@@ -185,11 +193,30 @@ class RbService extends ServiceAbstract
 
             $data['receiver'] = null;
             $data['grinder'] = null;
+            if ($noShuttle == false && $noForty == false && $noBroad == false) {
+                if ($percentiles['power'] > $percentiles['elusiveness']) {
+                    $data['inside'] = ($percentiles['power'] * .55) + ($percentiles['elusiveness'] * .35) + ($percentiles['shuttle'] * .10);
+                } else {
+                    $data['inside'] = ($percentiles['power'] * .25) + ($percentiles['elusiveness'] * .55) + ($percentiles['shuttle'] * .20);
+                }
+            } elseif ($noShuttle == true && $noForty == false && $noBroad == false) {
+                $data['inside'] = ($percentiles['power'] * .90);
+            } elseif ($noShuttle == false && $noBroad == true) {
+                $data['inside'] = ($percentiles['elusiveness'] * .90);
+            } else {
+                $data['inside'] = "";
+            }
+
+            if ($noForty == false) {
+                $data['outside'] = ($percentiles['fortyTime'] * .6) + ($percentiles['speedScore'] * .4);
+            } else {
+                $data['outside'] = "";
+            }
 
             /*** Make Grinder Base ***/
             // 1. We have elusiveness, power, and speedScore
             if ($noAgility == false && $noForty == false && $noBroad == false) {
-                $data['grinder'] = ($percentiles['power'] * .6) + ($percentiles['elusiveness'] * .1) + ($percentiles['speedScore'] * .3);
+                $data['grinder'] = ($percentiles['power'] * .65) + ($percentiles['elusiveness'] * .1) + ($percentiles['speedScore'] * .15);
             }
             // 2. No agility so no elusiveness, just broad jump and speedScore
             if ($noAgility == true && $noForty == false && $noBroad == false) {
@@ -301,7 +328,7 @@ class RbService extends ServiceAbstract
             }
 
             if ($metrics['collegeScore'] !== null && $data['grinder'] != null && $data['receiver'] != null) {
-                $data['alpha'] = ($data['receiver'] * .5) + ($data['grinder'] * .5);
+                $data['alpha'] = ($data['receiver'] * .4) + ($data['grinder'] * .6);
                 if ($metrics['collegeScore'] > 18) {
                     $data['alpha'] = $data['alpha'] + ($metrics['collegeScore'] - 18);
                 }
@@ -310,7 +337,7 @@ class RbService extends ServiceAbstract
                     $data['alpha'] = $data['alpha'] - 7;
                 }
             } else {
-                $data['alpha'] = ($data['receiver'] * .5) + ($data['grinder'] * .5);
+                $data['alpha'] = ($data['receiver'] * .4) + ($data['grinder'] * .6);
             }
 
             if ($data['receiver'] == null && $data['grinder'] == null) {
@@ -320,6 +347,8 @@ class RbService extends ServiceAbstract
             $metrics['alpha'] = round($data['alpha'],2);
             $metrics['passCatcher'] = round($data['receiver'],2);
             $metrics['grinder'] = round($data['grinder'],2);
+            $metrics['inside'] = round($data['inside'], 2);
+            $metrics['outside'] = round($data['outside'], 2);
 
             $rb->setMetrics($metrics);
             $this->command->save($rb);
