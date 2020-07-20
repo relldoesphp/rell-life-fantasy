@@ -195,22 +195,29 @@ class RbService extends ServiceAbstract
             $data['grinder'] = null;
             if ($noShuttle == false && $noForty == false && $noBroad == false) {
                 if ($percentiles['power'] > $percentiles['elusiveness']) {
-                    $data['inside'] = ($percentiles['power'] * .65) + ($percentiles['elusiveness'] * .25) + ($percentiles['shuttle'] * .10);
+                    $data['inside'] = ($percentiles['power'] * .65) + ($percentiles['elusiveness'] * .25) + ($percentiles['speedScore'] * .10);
                 } else {
-                    $data['inside'] = ($percentiles['power'] * .25) + ($percentiles['elusiveness'] * .55) + ($percentiles['shuttle'] * .20);
+                    $data['inside'] = ($percentiles['power'] * .25) + ($percentiles['elusiveness'] * .65) + ($percentiles['shuttle'] * .10);
                 }
             } elseif ($noShuttle == true && $noForty == false && $noBroad == false) {
                 $data['inside'] = ($percentiles['power'] * .90);
             } elseif ($noShuttle == false && $noBroad == true) {
                 $data['inside'] = ($percentiles['elusiveness'] * .90);
             } else {
-                $data['inside'] = "";
+                $data['inside'] = $percentiles['speedScore'];
             }
 
             if ($noForty == false) {
                 $data['outside'] = ($percentiles['fortyTime'] * .6) + ($percentiles['speedScore'] * .4);
             } else {
                 $data['outside'] = "";
+            }
+
+            /** Weight Penalty **/
+            if ($info['weight'] < 206) {
+                if ($metrics['inside'] > 75) {
+                    $metrics['inside'] = $metrics['inside'] - 10;
+                }
             }
 
             /*** Make Grinder Base ***/
@@ -327,8 +334,10 @@ class RbService extends ServiceAbstract
                 $metrics['bestCarryDominator'] = "N/A";
             }
 
+
+
             if ($metrics['collegeScore'] !== null && $data['grinder'] != null && $data['receiver'] != null) {
-                $data['alpha'] = ($data['receiver'] * .4) + ($data['grinder'] * .6);
+                $data['alpha'] = ($data['receiver'] * .4) + ($data['inside'] * .30) + ($data['outside'] * .30);
                 if ($metrics['collegeScore'] > 18) {
                     $data['alpha'] = $data['alpha'] + ($metrics['collegeScore'] - 18);
                 }
@@ -337,7 +346,7 @@ class RbService extends ServiceAbstract
                     $data['alpha'] = $data['alpha'] - 7;
                 }
             } else {
-                $data['alpha'] = ($data['receiver'] * .4) + ($data['grinder'] * .6);
+                $data['alpha'] = ($data['receiver'] * .4) + ($data['inside'] * .30) + ($data['outside'] * .30);
             }
 
             if ($data['receiver'] == null && $data['grinder'] == null) {
@@ -349,6 +358,15 @@ class RbService extends ServiceAbstract
             $metrics['grinder'] = round($data['grinder'],2);
             $metrics['inside'] = round($data['inside'], 2);
             $metrics['outside'] = round($data['outside'], 2);
+
+            /** Weight Penalty **/
+            if ($info['weight'] < 206) {
+                if ($metrics['alpha'] > 60) {
+                    $metrics['alpha'] = $metrics['alpha'] - 10;
+                }
+            }
+
+
 
             $rb->setMetrics($metrics);
             $this->command->save($rb);

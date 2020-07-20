@@ -1247,7 +1247,7 @@ var rlf =  {
                 "percent":rlfData.player.percentiles.deep
             },
             {
-                "name":"Outside X Score:",
+                "name":"Elite WR Score:",
                 "value":rlfData.player.metrics.alpha,
                 "percentile":rlfData.player.ordinals.alpha,
                 "percent":rlfData.player.percentiles.alpha
