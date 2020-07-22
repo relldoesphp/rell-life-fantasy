@@ -91,7 +91,7 @@
                     <div class="bench-percentile percentile">(<?= $player['ordinals']['inside'] ?> percentile)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Zone / Outside Score:</div>
+                    <div style="margin-top:10px" class="combine-title">Zone / Outside Runs:</div>
                     <div class="combine-score"><?= (array_key_exists('outside', $player['metrics'])) ? $player['metrics']['outside'] : 0?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['outside'] ?>%"></div>
@@ -286,7 +286,7 @@
                 <div class="cone-percentile percentile"><?= $coneOrdinal ?></div>
             </div>
             <div class="vertical-box center col m2 s4">
-                <div style="margin-top:10px" class="combine-title">Vertical Jump</div>
+                <div style="margin-top:10px" class="combine-title">Vertical</div>
                 <div class="combine-score"><?= $vertical ?></div>
                 <div class="progress vertical-bar">
                     <div class="determinate" style="width: <?= $verticalPercent?>%"></div>

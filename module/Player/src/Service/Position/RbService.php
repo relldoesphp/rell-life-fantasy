@@ -137,7 +137,7 @@ class RbService extends ServiceAbstract
 //                continue;
 //            }
 
-            if ($rb->getId() == 3961) {
+            if ($rb->getId() == 4147) {
                 $found = true;
             }
 
@@ -214,9 +214,15 @@ class RbService extends ServiceAbstract
             }
 
             /** Weight Penalty **/
+            if ($info['weight'] < 214) {
+                if ($data['inside'] > 75) {
+                    $data['inside'] = $data['inside'] - 5;
+                }
+            }
+
             if ($info['weight'] < 206) {
-                if ($metrics['inside'] > 75) {
-                    $metrics['inside'] = $metrics['inside'] - 10;
+                if ($data['inside'] > 75) {
+                    $data['inside'] = $data['inside'] - 10;
                 }
             }
 
