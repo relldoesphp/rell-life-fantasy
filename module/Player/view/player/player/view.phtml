@@ -91,7 +91,7 @@
                     <div class="bench-percentile percentile">(<?= $player['ordinals']['inside'] ?> percentile)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Zone / Outside Runs:</div>
+                    <div style="margin-top:10px" class="combine-title">Zone / Explosive Runs:</div>
                     <div class="combine-score"><?= (array_key_exists('outside', $player['metrics'])) ? $player['metrics']['outside'] : 0?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['outside'] ?>%"></div>
@@ -107,7 +107,7 @@
                     <div class="bench-percentile percentile">(<?= $player['ordinals']['passCatcher'] ?> percentile)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Three Down Back</div>
+                    <div style="margin-top:10px" class="combine-title">Three Down Back:</div>
                     <div class="combine-score"><?= (array_key_exists('alpha', $player['metrics'])) ? $player['metrics']['alpha'] : 0 ?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['alpha'] ?>%"></div>
@@ -132,7 +132,7 @@
                     <div class="bench-percentile percentile"></div>
                 </div>
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Big Play Score</div>
+                    <div style="margin-top:10px" class="combine-title">Seam Threat Score</div>
                     <div class="combine-score"><?= (array_key_exists('deep', $player['metrics'])) ? $player['metrics']['deep'] : 0?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['deep'] ?>%"></div>
