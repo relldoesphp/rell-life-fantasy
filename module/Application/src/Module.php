@@ -82,24 +82,30 @@ class Module
 
         // Execute the access filter on every controller except AuthController
         // (to avoid infinite redirect).
-        if ($controllerName!=AuthController::class &&
-            $controllerName!=ScriptController::class &&
-            !$authManager->filterAccess($controllerName, $actionName)) {
+        if ($controllerName!=AuthController::class && $controllerName!=ScriptController::class)
+        {
+            $result = $authManager->filterAccess($controllerName, $actionName);
 
-            // Remember the URL of the page the user tried to access. We will
-            // redirect the user to that URL after successful login.
-            $uri = $event->getApplication()->getRequest()->getUri();
-            // Make the URL relative (remove scheme, user info, host name and port)
-            // to avoid redirecting to other domain by a malicious user.
-            $uri->setScheme(null)
-                ->setHost(null)
-                ->setPort(null)
-                ->setUserInfo(null);
-            $redirectUrl = $uri->toString();
+            if ($result==AuthManager::AUTH_REQUIRED) {
+                // Remember the URL of the page the user tried to access. We will
+                // redirect the user to that URL after successful login.
+                $uri = $event->getApplication()->getRequest()->getUri();
+                // Make the URL relative (remove scheme, user info, host name and port)
+                // to avoid redirecting to other domain by a malicious user.
+                $uri->setScheme(null)
+                    ->setHost(null)
+                    ->setPort(null)
+                    ->setUserInfo(null);
+                $redirectUrl = $uri->toString();
 
-            // Redirect the user to the "Login" page.
-            return $controller->redirect()->toRoute('login', [],
-                ['query'=>['redirectUrl'=>$redirectUrl]]);
+                // Redirect the user to the "Login" page.
+                return $controller->redirect()->toRoute('login', [],
+                    ['query'=>['redirectUrl'=>$redirectUrl]]);
+            }
+            else if ($result==AuthManager::ACCESS_DENIED) {
+                // Redirect the user to the "Not Authorized" page.
+                return $controller->redirect()->toRoute('not-authorized');
+            }
         }
     }
 }

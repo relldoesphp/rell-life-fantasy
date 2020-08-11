@@ -2556,7 +2556,7 @@ var rlf =  {
                             i : 0;
                 };
 
-                var rowsToSum = [2,3,4,5,6,7,8];
+                var rowsToSum = [2,3,4,5,6,7,8,9,10,11];
                 var selectedRows = api.rows('.selected').indexes();
                 rowsToSum.forEach(function(col) {
                     // Total filtered rows on the selected column (code part added)

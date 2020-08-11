@@ -47,9 +47,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-mvc-plugin-flashmessenger" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-mvc-plugin-identity" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-mvc-plugin-prg" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-permissions-rbac" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-progressbar" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-psr7bridge" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-router" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-serializer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-servicemanager" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-servicemanager-di" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-session" />

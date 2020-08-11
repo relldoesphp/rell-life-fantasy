@@ -9,6 +9,7 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 use User\Service;
 use User\Controller;
 use User\View\Helper\Menu;
+use Laminas\Cache\Storage\Adapter\Filesystem;
 
 
 return [
@@ -24,6 +25,7 @@ return [
             Service\UserManager::class => Service\Factory\UserManagerFactory::class,
             Service\AuthManager::class => Service\Factory\AuthManagerFactory::class,
             Service\AuthAdapter::class => Service\Factory\AuthAdapterFactory::class,
+            Service\RbacManager::class => Service\Factory\RbacManagerFactory::class,
             /**** Factories for User Model ***/
             Model\User\Sql\SqlRepository::class => Model\User\Sql\Factory\SqlRespositoryFactory::class,
             Model\User\Sql\SqlCommand::class => Model\User\Sql\Factory\SqlCommandFactory::class,
@@ -106,6 +108,16 @@ return [
                     ],
                 ],
             ],
+            'not-authorized' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/not-authorized',
+                    'defaults' => [
+                        'controller' => Controller\AuthController::class,
+                        'action'     => 'notAuthorized',
+                    ],
+                ],
+            ],
         ],
     ],
 
@@ -119,16 +131,16 @@ return [
             // action for not logged in users. In permissive mode, if an action is not listed
             // under the 'access_filter' key, access to it is permitted to anyone (even for
             // not logged in users. Restrictive mode is more secure and recommended to use.
-            'mode' => 'restrictive'
+            'mode' => 'permissive'
         ],
         'controllers' => [
             Controller\AdminController::class => [
                 // Allow authorized users to visit "settings" action
-                ['actions' => '*', 'allow' => '@']
+                ['actions' => '*', 'allow' => ['Member','Admin']]
             ],
             Controller\UserController::class => [
                 // Allow authorized users to visit "settings" action
-                ['actions' => '*', 'allow' => '@']
+                ['actions' => '*', 'allow' => ['Member', 'Admin']]
             ],
             Controller\AuthController::class => [
                 // Allow authorized users to visit "settings" action

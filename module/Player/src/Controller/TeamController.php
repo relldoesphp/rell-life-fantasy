@@ -7,8 +7,6 @@
  */
 
 namespace Player\Controller;
-
-
 use Player\Service\MatchupManager;
 use Player\Service\TeamManager;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -24,10 +22,10 @@ class TeamController extends AbstractActionController
     {
         $this->teamManager = $teamManager;
         $this->matchupManager = $matchupManager;
-
     }
 
-    public function depthChartAction(){
+    public function depthChartAction()
+    {
 
     }
 }

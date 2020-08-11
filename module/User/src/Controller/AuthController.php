@@ -154,4 +154,14 @@ class AuthController extends AbstractActionController
 
     }
 
+    /**
+     * Displays the "Not Authorized" page.
+     */
+    public function notAuthorizedAction()
+    {
+        $this->getResponse()->setStatusCode(403);
+
+        return new ViewModel();
+    }
+
 }

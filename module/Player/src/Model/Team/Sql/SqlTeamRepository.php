@@ -68,6 +68,19 @@ class SqlTeamRepository implements TeamRepositoryInterface
     public function getTeamById($id)
     {
         // TODO: Implement getTeamById() method.
+        $sql    = new Sql($this->db);
+        $select = $sql->select('teams');
+        $select->where(['id = ?' => $id]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->teamPrototype);
+        $resultSet->initialize($result);
+        return $resultSet->current();
     }
 
     /**
@@ -91,5 +104,4 @@ class SqlTeamRepository implements TeamRepositoryInterface
         $resultSet->initialize($result);
         return $resultSet->current();
     }
-
 }

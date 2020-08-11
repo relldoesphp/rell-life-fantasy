@@ -14,6 +14,7 @@ use Interop\Container\ContainerInterface;
 use User\Service\AuthManager;
 use Laminas\Session\SessionManager;
 use User\Service\PatreonManager;
+use User\Service\RbacManager;
 use User\Service\UserManager;
 
 class AuthManagerFactory implements FactoryInterface
@@ -25,7 +26,8 @@ class AuthManagerFactory implements FactoryInterface
         $config = $container->get('Config');
         $patreon = $container->get(PatreonManager::class);
         $user = $container->get(UserManager::class);
+        $rbacManager = $container->get(RbacManager::class);
 
-        return new AuthManager($authService, $sessionManager, $config, $patreon, $user);
+        return new AuthManager($authService, $sessionManager, $config, $patreon, $user, $rbacManager);
     }
 }

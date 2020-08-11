@@ -17,6 +17,8 @@ use Laminas\Json\Json;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Form\PlayerForm;
+use Player\Service\TeamManager;
+use Player\Form\TeamForm;
 
 class AdminController extends AbstractActionController
 {
@@ -26,12 +28,17 @@ class AdminController extends AbstractActionController
 
     private $playerList;
 
+    private $teamManager;
+
     public function __construct(
         Player\PlayerRepositoryInterface $playerRepository,
-        Player\PlayerCommandInterface $playerCommand)
+        Player\PlayerCommandInterface $playerCommand,
+        TeamManager $teamManager
+        )
     {
         $this->playerCommand = $playerCommand;
         $this->playerRepository = $playerRepository;
+        $this->teamManager = $teamManager;
         $this->playerList =  $this->playerRepository->getPlayerNames('Off');
     }
 
@@ -116,5 +123,27 @@ class AdminController extends AbstractActionController
 
         // Redirect to album list
         return $this->redirect()->toRoute('admin', ['action' => 'index']);
+    }
+
+    public function editTeamAction()
+    {
+        $name =  (int) $this->params()->fromRoute('team', 0);
+
+        if (0 === $name) {
+            return $this->redirect()->toRoute('admin', ['action' => 'index']);
+        }
+
+        // Retrieve the album with the specified id. Doing so raises
+        // an exception if the album is not found, which should result
+        // in redirecting to the landing page.
+        try {
+            $team = $this->teamManager->getTeam($name);
+        } catch (\Exception $e) {
+            return $this->redirect()->toRoute('admin', ['action' => 'index']);
+        }
+
+        $form = new TeamForm();
+        $form->bind($team);
+        $form->get('submit')->setAttribute('value', 'Edit');
     }
 }

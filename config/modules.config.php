@@ -11,6 +11,7 @@
  * This should be an array of module namespaces used in the application.
  */
 return [
+    'Laminas\Serializer',
     'Laminas\ZendFrameworkBridge',
     'Laminas\I18n',
     'Laminas\InputFilter',

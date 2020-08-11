@@ -14,6 +14,7 @@ use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Player\Controller\Factory;
 use Player\Model\Player\Sql;
+use Laminas\Cache\Storage\Adapter\Filesystem;
 
 return [
     'service_manager' => [
@@ -51,6 +52,27 @@ return [
             Controller\AdminController::class  => Controller\Factory\AdminControllerFactory::class,
             Controller\TeamController::class  => Controller\Factory\TeamControllerFactory::class,
             Controller\MatchupController::class => Controller\Factory\MatchupControllerFactory::class
+        ],
+    ],
+
+    'caches' => [
+        'teamCache' => [
+            'adapter' => [
+                'name'    => Filesystem::class,
+                'options' => [
+                    // Store cached data in this directory.
+                    'cache_dir' => './data/cache',
+                    // Store cached data for 1 hour.
+                    'ttl' => 60*60*1
+                ],
+            ],
+            'plugins' => [
+                [
+                    'name' => 'serializer',
+                    'options' => [
+                    ],
+                ],
+            ],
         ],
     ],
 
@@ -131,16 +153,12 @@ return [
             // action for not logged in users. In permissive mode, if an action is not listed
             // under the 'access_filter' key, access to it is permitted to anyone (even for
             // not logged in users. Restrictive mode is more secure and recommended to use.
-            'mode' => 'restrictive'
+            'mode' => 'permissive'
         ],
         'controllers' => [
             Controller\AdminController::class => [
                 // Allow authorized users to visit "settings" action
-                ['actions' => '*', 'allow' => '@']
-            ],
-            Controller\ScriptController::class => [
-                // Allow authorized users to visit "settings" action
-                ['actions' => '*', 'allow' => '@']
+                ['actions' => '*', 'allow' => ['Admin']]
             ],
             Controller\ScriptController::class => [
                 // Allow authorized users to visit "settings" action

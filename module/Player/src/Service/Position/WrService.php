@@ -264,7 +264,7 @@ class WrService extends ServiceAbstract
 
             if ($metrics['beatPress'] != null && $metrics['separation'] != null && $metrics['contested'] != null && $metrics['yac'] != null) {
                 $halfAlpha = ($metrics['beatPress'] *.25) + ($metrics['separation'] *.35) + ($metrics['contested'] *.33) + ($metrics['yac'] *.07);
-                $alphaScore = round(((($metrics['collegeScore']/35) * 100) * .5) + ($halfAlpha * .5), 2);
+                $alphaScore = round(((($metrics['collegeScore']/35) * 100) * .4) + ($halfAlpha * .6), 2);
             } else {
                 $alphaScore = null;
             }

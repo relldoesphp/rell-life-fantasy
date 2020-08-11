@@ -22,6 +22,7 @@ class User
     protected $lastName;
     protected $password;
     protected $status;
+    protected $level;
     protected $passwordResetToken;
     protected $patreon_id;
     protected $patreon_image;
@@ -231,6 +232,24 @@ class User
     {
         $this->passwordResetTokenCreationDate = $date;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param mixed $level
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+    }
+
+
 
     /**
      * Returns the array of roles assigned to this user.

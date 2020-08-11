@@ -13,6 +13,7 @@ use Interop\Container\ContainerInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Controller\AdminController;
 use Player\Model\Player;
+use Player\Service\TeamManager;
 
 class AdminControllerFactory implements FactoryInterface
 {
@@ -23,7 +24,8 @@ class AdminControllerFactory implements FactoryInterface
     {
         return new AdminController(
             $container->get(PlayerRepositoryInterface::class),
-            $container->get(Player\PlayerCommandInterface::class)
+            $container->get(Player\PlayerCommandInterface::class),
+            $container->get(TeamManager::class)
         );
     }
 }

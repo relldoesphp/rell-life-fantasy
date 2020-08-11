@@ -197,14 +197,14 @@ class RbService extends ServiceAbstract
                 if ($percentiles['power'] > $percentiles['elusiveness']) {
                     $data['inside'] = ($percentiles['power'] * .65) + ($percentiles['elusiveness'] * .25) + ($percentiles['speedScore'] * .10);
                 } else {
-                    $data['inside'] = ($percentiles['power'] * .25) + ($percentiles['elusiveness'] * .65) + ($percentiles['shuttle'] * .10);
+                    $data['inside'] = ($percentiles['power'] * .25) + ($percentiles['elusiveness'] * .65) + ($percentiles['jukeAgility'] * .10);
                 }
             } elseif ($noShuttle == true && $noForty == false && $noBroad == false) {
                 $data['inside'] = ($percentiles['power'] * .90);
             } elseif ($noShuttle == false && $noBroad == true) {
                 $data['inside'] = ($percentiles['elusiveness'] * .90);
             } else {
-                $data['inside'] = $percentiles['speedScore'];
+                $data['inside'] = null;
             }
 
             if ($noForty == false) {
@@ -340,8 +340,6 @@ class RbService extends ServiceAbstract
                 $metrics['bestCarryDominator'] = "N/A";
             }
 
-
-
             if ($metrics['collegeScore'] !== null && $data['grinder'] != null && $data['receiver'] != null) {
                 $data['alpha'] = ($data['receiver'] * .4) + ($data['inside'] * .30) + ($data['outside'] * .30);
                 if ($metrics['collegeScore'] > 18) {
@@ -372,7 +370,9 @@ class RbService extends ServiceAbstract
                 }
             }
 
-
+            if ($metrics['inside'] == null) {
+                $metrics['alpha'] = null;
+            }
 
             $rb->setMetrics($metrics);
             $this->command->save($rb);
