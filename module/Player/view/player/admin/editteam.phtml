@@ -1,0 +1,65 @@
+<?php
+$title = "Edit {$name}";
+$this->headTitle($title);
+$submit = $form->get('submit');
+$submit->setAttribute('class', 'btn btn-primary dark');
+
+$form->setAttribute('action', $this->url('admin', [
+    'action' => 'editTeam',
+    'id'     => $name,
+]));
+
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+?>
+
+<div class="section container full-height white">
+    <div class="row container">
+        <h1><?= $this->escapeHtml($title) ?></h1>
+        <fieldset>
+            <legend>Coaches</legend>
+
+            <div class="form-group col m12">
+                <?= $this->formCollection($form->get('coaches')) ?>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Scheme</legend>
+
+            <div class="form-group col m12">
+                <?= $this->formCollection($form->get('scheme')) ?>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Personnel</legend>
+
+            <div class="form-group col m12">
+                <?= $this->formCollection($form->get('personnel')) ?>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Ratings</legend>
+
+            <div class="form-group col m12">
+                <?= $this->formCollection($form->get('teamRatings')) ?>
+            </div>
+        </fieldset>
+
+        <div class="form-group col m12 my-2">
+            <?= $this->formSubmit($submit) ?>
+        </div>
+
+
+        <?php
+
+        echo $this->formHidden($form->get('id'));
+        echo $this->form()->closeTag();
+        ?>
+
+    </div>
+</div>

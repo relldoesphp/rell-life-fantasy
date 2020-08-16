@@ -16,6 +16,8 @@ class TeamForm extends Form
 
     public function __construct($name = null)
     {
+        parent::__construct('team');
+
         $this->add([
             'name' => 'id',
             'type' => 'hidden',
@@ -55,7 +57,8 @@ class TeamForm extends Form
         }
         $this->add($coaches);
 
-        $personnel = [
+        $personnel = new Fieldset('personnel');
+        $personnelFields = [
             "1-1",
             "1-2",
             "2-1",
@@ -66,6 +69,16 @@ class TeamForm extends Form
             "0-2",
             "0-1",
         ];
+        foreach ($personnelFields as $key) {
+            $newField = new Element($key);
+            $newField->setLabel($key);
+            $newField->setLabelAttributes(['class' => 'form-group col m2']);
+            $personnel->add($newField);
+//            if ($info != null && array_key_exists($key, $info)) {
+//                $newField->setValue($info[$key]);
+//            }
+        }
+        $this->add($personnel);
 
         $scheme = new Fieldset('scheme');
         $schemeFields = [
@@ -85,6 +98,20 @@ class TeamForm extends Form
             "throwsUnder15",
             "throwsUnder25",
             "throwsOver25",
+        ];
+        foreach ($schemeFields as $key) {
+            $newField = new Element($key);
+            $newField->setLabel($key);
+            $newField->setLabelAttributes(['class' => 'form-group col m2']);
+            $scheme->add($newField);
+//            if ($info != null && array_key_exists($key, $info)) {
+//                $newField->setValue($info[$key]);
+//            }
+        }
+        $this->add($scheme);
+
+        $teamRatings = new Fieldset('teamRatings');
+        $teamRatingFields = [
             "qbSkill",
             "qbType",
             "qbMobile",
@@ -113,18 +140,21 @@ class TeamForm extends Form
             "cbCoverage",
             "safetyCoverage"
         ];
-        foreach ($schemeFields as $key) {
+        foreach ($teamRatingFields as $key) {
             $newField = new Element($key);
             $newField->setLabel($key);
             $newField->setLabelAttributes(['class' => 'form-group col m2']);
-            $scheme->add($newField);
+            $teamRatings->add($newField);
 //            if ($info != null && array_key_exists($key, $info)) {
 //                $newField->setValue($info[$key]);
 //            }
         }
-        $this->add($scheme);
+        $this->add($teamRatings);
 
-        $support = new Fieldset('support');
+//        $support = new Fieldset('support');
+//        $supportFields = [
+//
+//        ];
 
         $this->add([
             'name' => 'submit',

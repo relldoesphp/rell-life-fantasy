@@ -104,7 +104,7 @@ return [
             'team' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route' => '/team[/:action[/:id]]',
+                    'route' => '/team[/:action[/:team]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ],

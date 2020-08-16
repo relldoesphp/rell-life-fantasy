@@ -127,8 +127,8 @@ class AdminController extends AbstractActionController
 
     public function editTeamAction()
     {
-        $name =  (int) $this->params()->fromRoute('team', 0);
-
+        $name =  $this->params()->fromRoute('id', 0);
+//
         if (0 === $name) {
             return $this->redirect()->toRoute('admin', ['action' => 'index']);
         }
@@ -143,7 +143,15 @@ class AdminController extends AbstractActionController
         }
 
         $form = new TeamForm();
-        $form->bind($team);
+//        $form->bind($team);
         $form->get('submit')->setAttribute('value', 'Edit');
+
+        $request = $this->getRequest();
+
+        $viewData = ['form' => $form, 'name' => $name];
+
+        if (! $request->isPost()) {
+            return $viewData;
+        }
     }
 }
