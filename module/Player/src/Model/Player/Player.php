@@ -471,9 +471,9 @@ class Player implements InputFilterAwareInterface
                 if ($stats == null || empty($stats)) {
                     continue;
                 }
-                if (!array_key_exists('off_snp', $stats)) {
-                    continue;
-                }
+//                if (!array_key_exists('off_snp', $stats)) {
+//                    continue;
+//                }
 
                 if ($this->position == "QB" || $this->position == "WR" || $this->position == "TE" || $this->position == "RB") {
                     $tableData[] = [

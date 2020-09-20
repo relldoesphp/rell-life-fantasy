@@ -102,10 +102,10 @@ class ScriptController extends AbstractActionController
     public function getSleeperLogsAction()
     {
         $this->statsManager->getGameLogs("2020");
-        $this->statsManager->makeGameLogRanks("RB", "2019");
-        $this->statsManager->makeGameLogRanks("TE", "2019");
-        $this->statsManager->makeGameLogRanks("QB", "2019");
-        $this->statsManager->makeGameLogRanks("WR", "2019");
+        $this->statsManager->makeGameLogRanks("RB", "2020");
+        $this->statsManager->makeGameLogRanks("TE", "2020");
+        $this->statsManager->makeGameLogRanks("QB", "2020");
+        $this->statsManager->makeGameLogRanks("WR", "2020");
 //
 //        $this->statsManager->getSleeperGameLogs("2017");
 //        $this->statsManager->makeGameLogRanks("QB", "2017");

@@ -59,6 +59,12 @@ class SportsInfoApi
         $client = new Client();
         $response = $client->send($request);
         $html = $response->getBody();
+        if (strpos($html,"API calls quota") !== false) {
+            $gotAproblem = true;
+            usleep(30000000);
+            $response = $client->send($request);
+            $html = $response->getBody();
+        }
         if (empty($html)) {
             return [];
         } else {
@@ -183,9 +189,9 @@ class SportsInfoApi
             'BlockFilters.BlockingPosition' => '0',
             'AdjustedBB.TeamId' => '-1',
             'AdjustedBB.BlockingPosition' => '0',
-            'PassingFilters.MinAttempts' => '1',
-            'RushingFilters.MinCarries' => '5',
-            'ReceivingFilters.MinTargets' => '1',
+            'PassingFilters.MinAttempts' => '0',
+            'RushingFilters.MinCarries' => '0',
+            'ReceivingFilters.MinTargets' => '0',
             'PassDefenseFilters.MinTargets' => '1',
             'PassDefenseFilters.MinAttempts' => '1',
             'RunDefenseFilters.MinTackles' => '1',
