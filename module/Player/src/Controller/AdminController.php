@@ -19,6 +19,7 @@ use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Form\PlayerForm;
 use Player\Service\TeamManager;
 use Player\Form\TeamForm;
+use Player\Model\Team\Team;
 
 class AdminController extends AbstractActionController
 {
@@ -133,6 +134,8 @@ class AdminController extends AbstractActionController
             return $this->redirect()->toRoute('admin', ['action' => 'index']);
         }
 
+        $name = strtolower($name);
+
         // Retrieve the album with the specified id. Doing so raises
         // an exception if the album is not found, which should result
         // in redirecting to the landing page.
@@ -142,8 +145,7 @@ class AdminController extends AbstractActionController
             return $this->redirect()->toRoute('admin', ['action' => 'index']);
         }
 
-        $form = new TeamForm();
-//        $form->bind($team);
+        $form = new TeamForm($team);
         $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
@@ -153,5 +155,25 @@ class AdminController extends AbstractActionController
         if (! $request->isPost()) {
             return $viewData;
         }
+
+       // $form->setInputFilter($player->getInputFilter());
+
+        $data = $request->getPost();
+        $form->setData($data);
+
+        if (! $form->isValid()) {
+            return $viewData;
+        }
+
+        $team->setScheme($data['scheme']);
+        $team->setCoaches($data['coaches']);
+        $team->setRatings($data['teamRatings']);
+        $team->setVolume($data['teamVolume']);
+        $team->setRoles($data['positionRoles']);
+
+        $this->teamManager->saveTeam($team);
+
+        // Redirect to album list
+        return $this->redirect()->toRoute('admin', ['action' => 'index']);
     }
 }

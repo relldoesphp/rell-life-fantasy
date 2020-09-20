@@ -17,6 +17,7 @@ use Player\Model\Player\PlayerRepositoryInterface;
 use Player\Model\Player;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
+use Player\Service\SportsInfoApi;
 
 class PlayerManagerFactory implements FactoryInterface
 {
@@ -31,7 +32,8 @@ class PlayerManagerFactory implements FactoryInterface
             $container->get(PlayerCommandInterface::class),
             $container->get(PlayerRepositoryInterface::class),
             $container->get(StatsCommandInterface::class),
-            $container->get(StatsRepositoryInterface::class)
+            $container->get(StatsRepositoryInterface::class),
+            $container->get(SportsInfoApi::class)
         );
     }
 }

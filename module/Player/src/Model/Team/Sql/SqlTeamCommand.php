@@ -42,6 +42,8 @@ class SqlTeamCommand implements TeamCommandInterface
     {
         if ($team->getId() != null) {
             $this->updateTeam($team);
+        } else {
+            $this->createTeam($team);
         }
     }
 
@@ -51,7 +53,31 @@ class SqlTeamCommand implements TeamCommandInterface
      */
     public function createTeam(Team $team)
     {
-        // TODO: Implement createTeam() method.
+        $team->encodeJson();
+
+        /** Insert new player **/
+        $sql    = new Sql($this->db);
+        $insert = $sql->insert('teams');
+        $insert->values([
+            "team" => $team->getTeam(),
+            "city" => $team->getCity(),
+            "name" => $team->getName(),
+            "coaches" => $team->getCoaches(),
+            "scheme" => $team->getScheme(),
+            "ratings" => $team->getRatings(),
+            "volume" => $team->getVolume(),
+            "roles" => $team->getRoles(),
+            "sis_info" => $team->getSisInfo()
+            //   "depth_chart" => $team->depth_chart
+        ]);
+
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        try {
+            $result = $stmt->execute();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -69,7 +95,13 @@ class SqlTeamCommand implements TeamCommandInterface
             "team" => $team->getTeam(),
             "city" => $team->getCity(),
             "name" => $team->getName(),
-            "depth_chart" => $team->depth_chart
+            "coaches" => $team->getCoaches(),
+            "scheme" => $team->getScheme(),
+            "ratings" => $team->getRatings(),
+            "volume" => $team->getVolume(),
+            "roles" => $team->getRoles(),
+            "sis_info" => $team->getSisInfo()
+         //   "depth_chart" => $team->depth_chart
         ]);
         $update->where(['id = ?' => $team->getId()]);
         $stmt = $sql->prepareStatementForSqlObject($update);

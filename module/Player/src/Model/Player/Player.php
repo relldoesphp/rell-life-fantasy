@@ -43,6 +43,23 @@ class Player implements InputFilterAwareInterface
     public $image4= "";
     public $status="";
     public $headshot = "";
+    public $sisId="";
+
+    /**
+     * @return string
+     */
+    public function getSisId()
+    {
+        return $this->sisId;
+    }
+
+    /**
+     * @param string $sisId
+     */
+    public function setSisId($sisId)
+    {
+        $this->sisId = $sisId;
+    }
 
     /**
      * @return string
@@ -339,7 +356,6 @@ class Player implements InputFilterAwareInterface
         $this->headshot = $headshot;
     }
 
-
     public function decodeJson()
     {
         if (!is_array($this->player_info)) {
@@ -552,7 +568,12 @@ class Player implements InputFilterAwareInterface
     {
         $this->decodeJson();
         $this->ordinals = $this->makeOrdinals();
-        $this->collegeTable = $this->makeCollegeTable();
+        try {
+            $this->collegeTable = $this->makeCollegeTable();
+        } catch (\Exception $e) {
+            $this->collegeTable = [];
+        }
+
         $this->seasonTable = $this->makeSeasonStats();
         $this->gameLogTable = $this->makeGameLogs();
         $this->fillEmptyValues();

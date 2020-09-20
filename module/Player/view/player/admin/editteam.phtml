@@ -16,7 +16,8 @@ echo $this->form()->openTag($form);
 ?>
 
 <div class="section container full-height white">
-    <div class="row container">
+    <div class="row container center">
+        <img src="https://sleepercdn.com/images/team_logos/nfl/<?=$name?>.png">
         <h1><?= $this->escapeHtml($title) ?></h1>
         <fieldset>
             <legend>Coaches</legend>
@@ -47,6 +48,20 @@ echo $this->form()->openTag($form);
 
             <div class="form-group col m12">
                 <?= $this->formCollection($form->get('teamRatings')) ?>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Position Roles</legend>
+            <div class="form-group col m12">
+                <?= $this->formCollection($form->get('positionRoles')) ?>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Volume</legend>
+            <div class="form-group col m12">
+                <?= $this->formCollection($form->get('teamVolume')) ?>
             </div>
         </fieldset>
 

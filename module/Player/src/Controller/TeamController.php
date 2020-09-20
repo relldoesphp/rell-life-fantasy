@@ -28,4 +28,11 @@ class TeamController extends AbstractActionController
     {
 
     }
+
+    public function queryAction()
+    {
+        $query = $this->params()->fromRoute('team', '');
+        $results = $this->teamManager->queryTeams($query);
+        return new JsonModel($results);
+    }
 }

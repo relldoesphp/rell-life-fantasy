@@ -79,19 +79,12 @@ class ScriptController extends AbstractActionController
 
     public function getSleeperStatsAction()
     {
-        //$this->statsManager->getSleeperStats("2019");
-        $this->statsManager->getSeasonStatsFromGames("2019", "WR");
-        $this->statsManager->makeSeasonAverages("WR", "2019");
-        $this->statsManager->makeSeasonRanks("WR", "2019");
-        $this->statsManager->getSeasonStatsFromGames("2019", "RB");
-        $this->statsManager->makeSeasonAverages("RB", "2019");
-        $this->statsManager->makeSeasonRanks("RB", "2019");
-        $this->statsManager->getSeasonStatsFromGames("2019", "TE");
-        $this->statsManager->makeSeasonAverages("TE", "2019");
-        $this->statsManager->makeSeasonRanks("TE", "2019");
-        $this->statsManager->getSeasonStatsFromGames("2019", "QB");
-        $this->statsManager->makeSeasonAverages("QB", "2019");
-        $this->statsManager->makeSeasonRanks("QB", "2019");
+        $this->statsManager->getSeasonStats('2020');
+        $positions = ["WR", "RB", "TE", "QB"];
+        foreach($positions as $position) {
+            $this->statsManager->makeSeasonAverages($position, "2020");
+            $this->statsManager->makeSeasonRanks($position, "2020");
+        }
     }
 
     public function makeNameJsonAction()
@@ -102,12 +95,13 @@ class ScriptController extends AbstractActionController
 
     public function updateSleeperInfoAction()
     {
-        $this->playerManager->updateSleeperInfo();
+       // $this->playerManager->updateSleeperInfo();
+        $this->playerManager->syncSisIds();
     }
 
     public function getSleeperLogsAction()
     {
-        $this->statsManager->getSleeperGameLogs("2019");
+        $this->statsManager->getGameLogs("2020");
         $this->statsManager->makeGameLogRanks("RB", "2019");
         $this->statsManager->makeGameLogRanks("TE", "2019");
         $this->statsManager->makeGameLogRanks("QB", "2019");
@@ -129,5 +123,10 @@ class ScriptController extends AbstractActionController
     public function buildDepthChartsAction()
     {
        $team = $this->teamManager->buildDepthCharts();
+    }
+
+    public function updateTeamsAction()
+    {
+        $this->teamManager->sync();
     }
 }

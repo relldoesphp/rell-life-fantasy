@@ -16,16 +16,49 @@ class Team
     public $team;
     public $city;
     public $name;
-    public $coach;
-    public $coach_type;
-    public $off_coordinator;
-    public $def_coordinator;
-    public $off_base;
-    public $def_base;
-    public $depth_chart;
-    public $personnelGroups;
+    public $coaches;
+    public $scheme;
+    public $ratings;
+    public $volume;
+    public $roles;
+    public $support;
+    public $sustainability;
+    public $personnel;
     public $stats;
-    public $metrics;
+
+    /**
+     * @return mixed
+     */
+    public function getSisInfo()
+    {
+        return $this->sis_info;
+    }
+
+    /**
+     * @param mixed $sis_info
+     */
+    public function setSisInfo($sis_info)
+    {
+        $this->sis_info = $sis_info;
+    }
+    public $depth_chart;
+    public $sis_info;
+
+    /**
+     * @return mixed
+     */
+    public function getDepthChart()
+    {
+        return $this->depth_chart;
+    }
+
+    /**
+     * @param mixed $depth_chart
+     */
+    public function setDepthChart($depth_chart)
+    {
+        $this->depth_chart = $depth_chart;
+    }
 
     /**
      * Team constructor.
@@ -100,54 +133,6 @@ class Team
     /**
      * @return mixed
      */
-    public function getConference()
-    {
-        return $this->conference;
-    }
-
-    /**
-     * @param mixed $conference
-     */
-    public function setConference($conference)
-    {
-        $this->conference = $conference;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDivision()
-    {
-        return $this->division;
-    }
-
-    /**
-     * @param mixed $division
-     */
-    public function setDivision($division)
-    {
-        $this->division = $division;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDepthChart()
-    {
-        return $this->depth_chart;
-    }
-
-    /**
-     * @param mixed $depthChart
-     */
-    public function setDepthChart($depthChart)
-    {
-        $this->depth_chart = $depthChart;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getCoaches()
     {
         return $this->coaches;
@@ -164,17 +149,113 @@ class Team
     /**
      * @return mixed
      */
-    public function getDefScheme()
+    public function getScheme()
     {
-        return $this->defScheme;
+        return $this->scheme;
     }
 
     /**
-     * @param mixed $defScheme
+     * @param mixed $scheme
      */
-    public function setDefScheme($defScheme)
+    public function setScheme($scheme)
     {
-        $this->defScheme = $defScheme;
+        $this->scheme = $scheme;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRatings()
+    {
+        return $this->ratings;
+    }
+
+    /**
+     * @param mixed $ratings
+     */
+    public function setRatings($ratings)
+    {
+        $this->ratings = $ratings;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVolume()
+    {
+        return $this->volume;
+    }
+
+    /**
+     * @param mixed $volume
+     */
+    public function setVolume($volume)
+    {
+        $this->volume = $volume;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupport()
+    {
+        return $this->support;
+    }
+
+    /**
+     * @param mixed $support
+     */
+    public function setSupport($support)
+    {
+        $this->support = $support;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSustainability()
+    {
+        return $this->sustainability;
+    }
+
+    /**
+     * @param mixed $sustainability
+     */
+    public function setSustainability($sustainability)
+    {
+        $this->sustainability = $sustainability;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPersonnel()
+    {
+        return $this->personnel;
+    }
+
+    /**
+     * @param mixed $personnel
+     */
+    public function setPersonnel($personnel)
+    {
+        $this->personnel = $personnel;
     }
 
     /**
@@ -193,33 +274,48 @@ class Team
         $this->stats = $stats;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getMetrics()
-    {
-        return $this->metrics;
-    }
-
-    /**
-     * @param mixed $metrics
-     */
-    public function setMetrics($metrics)
-    {
-        $this->metrics = $metrics;
-    }
 
     public function decodeJson()
     {
-        if (!is_array($this->depth_chart)) {
-            $this->depth_chart = (!empty($this->depth_chart)) ? Json::decode($this->depth_chart, 1) : [];
+        $jsonFields = [
+            'coaches',
+            'depth_chart',
+            'scheme',
+            'ratings',
+            'volume',
+            'roles',
+            'support',
+            'sustainability',
+            'personnel',
+            'sis_info'
+        ];
+
+        foreach ($jsonFields as $field) {
+            if (!is_array($this->$field)) {
+                $this->$field = (!empty($this->$field)) ? Json::decode($this->$field, 1) : [];
+            }
         }
     }
 
     public function encodeJson()
     {
-        if (is_array($this->depth_chart)) {
-            $this->depth_chart = Json::encode($this->depth_chart);
+        $jsonFields = [
+            'coaches',
+            'depth_chart',
+            'scheme',
+            'ratings',
+            'volume',
+            'roles',
+            'support',
+            'sustainability',
+            'personnel',
+            'sis_info'
+        ];
+
+        foreach ($jsonFields as $field) {
+            if (is_array($this->$field)) {
+                $this->$field = Json::encode($this->$field);
+            }
         }
     }
 }

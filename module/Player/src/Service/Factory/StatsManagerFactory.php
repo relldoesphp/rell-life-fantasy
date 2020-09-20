@@ -13,6 +13,7 @@ use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Player\Model\Stats\StatsCommandInterface;
 use Player\Model\Stats\StatsRepositoryInterface;
+use Player\Service\SportsInfoApi;
 use Player\Service\StatsManager;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
@@ -37,7 +38,8 @@ class StatsManagerFactory implements FactoryInterface
             $container->get(PlayerCommandInterface::class),
             $container->get(PlayerRepositoryInterface::class),
             $container->get(StatsCommandInterface::class),
-            $container->get(StatsRepositoryInterface::class)
+            $container->get(StatsRepositoryInterface::class),
+            $container->get(SportsInfoApi::class)
         );
     }
 }

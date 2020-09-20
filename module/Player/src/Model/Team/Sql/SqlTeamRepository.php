@@ -104,4 +104,34 @@ class SqlTeamRepository implements TeamRepositoryInterface
         $resultSet->initialize($result);
         return $resultSet->current();
     }
+
+    public function queryTeams($query)
+    {
+        // TODO: Implement queryPlayers() method.
+        $query = str_replace(' ', '', $query);
+        $sql = new Sql($this->db);
+        $select = $sql->select('teams')->columns([
+            'id',
+            'team_name' => new Expression("concat(city,' ',name)"),
+            'team'
+        ]);
+        $select->where->nest()
+            ->like('team', $query . "%")
+            ->or
+            ->like('city', $query . "%")
+            ->or
+            ->like('name', $query . "%")
+            ->unnest();
+
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        return $resultSet->toArray();
+    }
 }

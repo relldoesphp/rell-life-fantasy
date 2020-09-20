@@ -261,12 +261,69 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         return $player;
     }
 
+    public function findPlayerByInfo($firstname, $lastname, $position)
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select('player_test');
+        $select->where([
+            'first_name = ?' => $firstname,
+            'last_name = ?' => $lastname,
+            'position = ?' => $position,
+        ]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult() || $result->count() == 0) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
+        $resultSet->initialize($result);
+        try {
+            $player = $resultSet->current();
+        } catch (\Exception $e) {
+            print_r($result);
+            die();
+        }
+
+
+        $select = $sql->select('season_stats');
+        $select->where(['sleeper_id = ?' => $player->getSleeperId()]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($result);
+        $player->seasonStats = $resultSet->toArray();
+        return $player;
+    }
+
+
     public function findPlayerBySleeperId($sleeperId)
     {
         $sql    = new Sql($this->db);
         $select = $sql->select();
         $select->from(['p' => 'player_test']);
         $select->where(['p.sleeper_id = ?' => $sleeperId]);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
+        $resultSet->initialize($result);
+        return $resultSet->current();
+    }
+
+
+    public function findPlayerBySisId($sisId)
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['p' => 'player_test']);
+        $select->where(['p.sis_id = ?' => $sisId]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

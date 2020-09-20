@@ -30,6 +30,7 @@ class PlayerManager
     private $playerRepository;
     private $statsCommand;
     private $statsRepository;
+    private $sisApi;
 
     public function __construct(
         AdapterInterface $db,
@@ -37,7 +38,8 @@ class PlayerManager
         PlayerCommandInterface $playerCommand,
         PlayerRepositoryInterface $playerRepository,
         StatsCommandInterface $statsCommand,
-        StatsRepositoryInterface $statsRepository
+        StatsRepositoryInterface $statsRepository,
+        SportsInfoApi $sisApi
     )
     {
         $this->db = $db;
@@ -46,6 +48,7 @@ class PlayerManager
         $this->playerCommand = $playerCommand;
         $this->statsCommand = $statsCommand;
         $this->statsRepository = $statsRepository;
+        $this->sisApi = $sisApi;
     }
 
     public function getPlayer($id)
@@ -294,14 +297,14 @@ class PlayerManager
 
     public function scrapCollegeJob()
     {
-        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $rbService->scrapCollegeJob();
+//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $rbService->scrapCollegeJob();
 
 //        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $teService->scrapCollegeJob();
 
-//        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $wrService->scrapCollegeJob();
+        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $wrService->scrapCollegeJob();
 
 //        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $qbService->scrapCollegeJob();
@@ -313,5 +316,24 @@ class PlayerManager
         //Dk - https://www.draftkings.com/lineup/getavailableplayerscsv?contestTypeId=21&draftGroupId=28598
         //yahoo - https://dfyql-ro.sports.yahoo.com/v2/external/playersFeed/nfl
         //
+    }
+
+    public function syncSisIds()
+    {
+        $players = $this->sisApi->getPlayers();
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, count($players));
+        $pointer = 0;
+        foreach ($players as $id => $playerInfo) {
+            $this->
+
+           $player =  $this->playerRepository->findPlayerByInfo($playerInfo['firstName'], $playerInfo['lastName'], $playerInfo['positionName']);
+           if ($player != false || empty($player->getSisId())) {
+               $player->setSisId($playerInfo['playerId']);
+               $this->playerCommand->updatePlayer($player);
+           }
+           $pointer++;
+           $progressBar->update($pointer);
+        }
+        $progressBar->finish();
     }
 }

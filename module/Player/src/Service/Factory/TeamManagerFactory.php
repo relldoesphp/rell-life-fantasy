@@ -15,6 +15,7 @@ use Player\Model\Stats\StatsCommandInterface;
 use Player\Model\Stats\StatsRepositoryInterface;
 use Player\Model\Team\TeamCommandInterface;
 use Player\Model\Team\TeamRepositoryInterface;
+use Player\Service\SportsInfoApi;
 use Player\Service\StatsManager;
 use Player\Service\TeamManager;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
@@ -39,7 +40,9 @@ class TeamManagerFactory implements FactoryInterface
             $container->get(TeamRepositoryInterface::class),
             $container->get(TeamCommandInterface::class),
             $container->get(PlayerRepositoryInterface::class),
-            new Console()
+            new Console(),
+            $container->get('teamCache'),
+            $container->get(SportsInfoApi::class)
         );
     }
 }

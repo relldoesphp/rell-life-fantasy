@@ -13,31 +13,61 @@ use Player\Model\Team\TeamCommandInterface;
 use Player\Model\Team\TeamRepositoryInterface;
 use Laminas\ProgressBar\Adapter\Console;
 use Laminas\ProgressBar\ProgressBar;
+use Player\Model\Team\Team;
+use Player\Service\SportsInfoApi;
 
 class TeamManager
 {
     public $teamRepository;
     public $playerRepository;
     public $teamCommand;
+    private $teamCache;
     private $consoleAdapter;
+    private $sportsInfoApi;
 
     public function __construct(
         TeamRepositoryInterface $teamRepository,
         TeamCommandInterface $teamCommand,
         PlayerRepositoryInterface $playerRepository,
-        Console $consoleAdapter
+        Console $consoleAdapter,
+        $cache,
+        SportsInfoApi $api
     ){
         $this->teamRepository = $teamRepository;
         $this->teamCommand = $teamCommand;
         $this->playerRepository = $playerRepository;
         $this->consoleAdapter = $consoleAdapter;
+        $this->teamCache = $cache;
+        $this->sportsInfoApi = $api;
     }
 
     public function getTeam($name)
     {
         $team = $this->teamRepository->getTeamByName($name);
+        if ($team == null) {
+            return null;
+        }
         $team->decodeJson();
         return $team;
+    }
+
+    public function saveTeam(Team $team)
+    {
+       return $this->teamCommand->saveTeam($team);
+    }
+
+    public function queryTeams($team)
+    {
+        return $this->teamRepository->queryTeams($team);
+    }
+
+    public function getDepthChart($team)
+    {
+        $depthChart = $this->teamCache->getItem($team);
+        if ($depthChart == null) {
+           // $this->buildDepthCharts();
+        }
+        return json_decode($depthChart, 1);
     }
 
     public function buildDepthCharts()
@@ -48,6 +78,7 @@ class TeamManager
         foreach ($teams as $team) {
             $players = $this->playerRepository->getPlayersByTeam($team->getTeam());
             $depthChart = [];
+            $fullDepthChart = [];
             foreach($players as $player) {
                 $player->decodeJson();
                 $teamInfo = $player->getTeamInfo();
@@ -63,11 +94,14 @@ class TeamManager
 
                 //mukbang
                 if ($teamInfo['depth_chart_order'] == null) {
-                    $depthChart[$teamInfo['position']]['bench'][] = $player->getAllInfo();
+                    $depthChart[$teamInfo['position']]['bench'][] = $player->getId();
+                    $fullDepthChart[$teamInfo['position']]['bench'][] = $player->getAllInfo();
                 } else {
-                    $depthChart[$teamInfo['depth_chart_position']][$teamInfo['depth_chart_order']] = $player->getAllInfo();
+                    $depthChart[$teamInfo['depth_chart_position']][$teamInfo['depth_chart_order']] = $player->getId();
+                    $fullDepthChart[$teamInfo['depth_chart_position']][$teamInfo['depth_chart_order']] = $player->getAllInfo();
                 }
             }
+
             $team->setDepthChart($depthChart);
 
 //            foreach ($depthChart as $position => $players) {
@@ -186,11 +220,29 @@ class TeamManager
 //            $team->dfront = $dfront;
 
             $this->teamCommand->saveTeam($team);
+            $this->teamCache->setItem($team->getTeam(),json_encode($fullDepthChart));
             $pointer++;
             $progressBar->update($pointer);
         }
         $progressBar->finish();
     }
 
+    public function sync()
+    {
+        $teams = $this->sportsInfoApi->getTeams();
+        foreach ($teams as $info) {
+            $team = new Team();
+            $team->setTeam($info['abbr']);
+            $team->setCity($info['cityName']);
+            $team->setName($info['nickName']);
+            $team->setSisInfo($info);
+            $this->teamCommand->saveTeam($team);
+        }
+
+        $games = $this->sportsInfoApi->getSchedule('2020');
+        foreach ($games as $game) {
+
+        }
+    }
 
 }

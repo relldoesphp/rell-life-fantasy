@@ -24,7 +24,8 @@ class MatchupControllerFactory implements FactoryInterface
     {
         return new MatchupController(
             $container->get(TeamManager::class),
-            $container->get(MatchupManager::class)
+            $container->get(MatchupManager::class),
+            $container->get('teamCache')
         );
     }
 }

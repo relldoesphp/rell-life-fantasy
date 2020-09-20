@@ -16,4 +16,6 @@ interface TeamRepositoryInterface
     public function getTeamById($id);
 
     public function getTeamByName($name);
+
+    public function queryTeams($query);
 }

@@ -501,11 +501,11 @@ class ServiceAbstract
                 $percentiles[$name] = (array_key_exists($id, $percentileArrays[$name])) ? $percentileArrays[$name][$id] * 100 : "";
             }
 
-            if ($type == "WR" || $type == "TE") {
-                if ($percentiles['routeAgility'] < $percentiles['jukeAgility']) {
-                    $percentiles['routeAgility'] = $percentiles['jukeAgility'];
-                }
-            }
+//            if ($type == "WR" || $type == "TE") {
+//                if ($percentiles['routeAgility'] < $percentiles['jukeAgility']) {
+//                    $percentiles['routeAgility'] = $percentiles['jukeAgility'];
+//                }
+//            }
 
             $player->setPercentiles($percentiles);
             $this->command->save($player);

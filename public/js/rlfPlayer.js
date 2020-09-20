@@ -994,7 +994,7 @@ var rlf =  {
         rlf.makeRoleFits(roleFits);
 
         if (rlfData.player.seasonStats !== undefined && rlfData.player.seasonStats.length !== 0) {
-            var currentStats = rlfData.player.seasonStats["2019"];
+            var currentStats = rlfData.player.seasonStats["2020"];
 
             $('#summary-stats').DataTable({
                 "paging": false,
@@ -1152,7 +1152,7 @@ var rlf =  {
 
             rlf.makeGameLogTable(gameLogColumns);
 
-            var currentStats = rlfData.player.seasonStats["2019"];
+            var currentStats = rlfData.player.seasonStats["2020"];
             if (currentStats !== undefined) {
                 $('#summary-stats').DataTable({
                     "paging": false,
@@ -1399,7 +1399,7 @@ var rlf =  {
 
             rlf.makeGameLogTable(gameLogColumns);
 
-            var currentStats = rlfData.player.seasonStats["2019"];
+            var currentStats = rlfData.player.seasonStats["2020"];
             if (currentStats != undefined) {
                 $('#summary-stats').DataTable({
                     "paging": false,
@@ -2214,6 +2214,19 @@ var rlf =  {
             }
         });
 
+        var teams = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team_name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            // `states` is an array of state names defined in "The Basics"
+            remote: {
+                url: '/team/query/%QUERY',
+                wildcard: '%QUERY'
+            },
+            dupDetector: function(remoteMatch, localMatch) {
+                return remoteMatch.id === localMatch.id;
+            }
+        });
+
 
         $('.player-search .typeahead').typeahead(
             {
@@ -2227,6 +2240,18 @@ var rlf =  {
                 display: 'full_name'
             });
 
+        $('.team-search .typeahead').typeahead(
+            {
+                hint: true,
+                highlight: true,
+                minLength: 1
+            },
+            {
+                name: 'best-pictures',
+                source: teams,
+                display: 'team_name'
+            });
+
         $('#search-players .typeahead').on('typeahead:selected', function(evt, item){
             var url = "/player/view/"+item.id+"?"+item.nohash;
             window.location.href=url;
@@ -2234,6 +2259,11 @@ var rlf =  {
 
         $('#edit-players .typeahead').on('typeahead:selected', function(evt, item){
             var url = "/admin/editplayer/"+item.id;
+            window.location.href=url;
+        });
+
+        $('#edit-teams .typeahead').on('typeahead:selected', function(evt, item){
+            var url = "/admin/editteam/"+item.team;
             window.location.href=url;
         });
 

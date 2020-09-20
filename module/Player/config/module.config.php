@@ -41,7 +41,8 @@ return [
             Service\TeamManager::class => Service\Factory\TeamManagerFactory::class,
             Model\Matchup\Sql\SqlMatchupCommand::class => Model\Matchup\Sql\Factory\SqlMatchupCommandFactory::class,
             Model\Matchup\Sql\SqlMatchupRepository::class => Model\Matchup\Sql\Factory\SqlMatchupRepositoryFactory::class,
-            Service\MatchupManager::class => Service\Factory\MatchupManagerFactory::class
+            Service\MatchupManager::class => Service\Factory\MatchupManagerFactory::class,
+            Service\SportsInfoApi::class =>Service\Factory\SportsInfoApiFactory::class,
         ],
     ],
 
@@ -143,6 +144,9 @@ return [
         ],
     ],
 
+    'sis_client_id' => 'tyrellcook@hotmail.com',
+    'sis_client_secret' => 'iffGDt+V/1srEUVUp2tcknM2t0W3vOxUK7hCu3sN//A=',
+
     // The 'access_filter' key is used by the User module to restrict or permit
     // access to certain controller actions for unauthorized visitors.
     'access_filter' => [
@@ -175,6 +179,9 @@ return [
                 ['actions' => ['search', 'view', 'rankings', 'compare', 'query'], 'allow' => '*'],
                 // Allow authorized users to visit "settings" action
                 ['actions' => ['settings'], 'allow' => '@']
+            ],
+            Controller\TeamController::class => [
+                ['actions' => '*', 'allow' => '*']
             ]
         ]
     ],
@@ -301,6 +308,17 @@ return [
                         'defaults' => [
                             'controller' => Controller\ScriptController::class,
                             'action'     => 'buildDepthCharts',
+                        ],
+                    ],
+                ],
+                'update-teams' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'update-teams',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'updateTeams',
                         ],
                     ],
                 ],

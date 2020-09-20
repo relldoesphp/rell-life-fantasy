@@ -82,7 +82,8 @@ class SqlPlayerCommand implements PlayerCommandInterface
             'percentiles' => $player->getPercentiles(),
             'college_stats' => $player->getCollegeStats(),
             'images' => $player->getImages(),
-            'headshot' => $player->getHeadshot()
+            'headshot' => $player->getHeadshot(),
+            "sis_id" => $player->getSisId()
         ]);
 
         $stmt = $sql->prepareStatementForSqlObject($insert);
@@ -120,7 +121,8 @@ class SqlPlayerCommand implements PlayerCommandInterface
             'college_stats' => $player->getCollegeStats(),
             'images' => $player->getImages(),
             'sleeper_id' => $player->getSleeperId(),
-            'headshot' => $player->getHeadshot()
+            'headshot' => $player->getHeadshot(),
+            "sis_id" => $player->getSisId()
         ]);
         $update->where(['id = ?' => $player->getId()]);
         $stmt   = $sql->prepareStatementForSqlObject($update);

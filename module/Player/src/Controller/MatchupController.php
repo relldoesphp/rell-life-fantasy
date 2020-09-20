@@ -18,12 +18,13 @@ class MatchupController extends AbstractActionController
 {
     public $teamManager;
     public $matchupManager;
+    public $teamCache;
 
-    public function __construct(TeamManager $teamManager, MatchupManager $matchupManager)
+    public function __construct(TeamManager $teamManager, MatchupManager $matchupManager, $cache)
     {
         $this->teamManager = $teamManager;
         $this->matchupManager = $matchupManager;
-
+        $this->teamCache = $cache;
     }
 
     public function indexAction(){
@@ -56,7 +57,8 @@ class MatchupController extends AbstractActionController
         foreach($teams as $key => $team){
             //build offensive line
             $team->decodeJson();
-            $depthChart = $team->depth_chart;
+            $depthChart = $this->teamManager->getDepthChart($team->getTeam());
+            $team->setDepthChart($depthChart);
             $defScheme = $team->def_base;
             $LBs = [];
 

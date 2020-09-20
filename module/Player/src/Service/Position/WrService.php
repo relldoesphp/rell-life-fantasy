@@ -892,7 +892,7 @@ class WrService extends ServiceAbstract
         $pointer = 0;
 
         foreach ($wrs as $wr) {
-            if ($wr->getId() == 3279) {
+            if ($wr->getId() == 26449) {
                 $wr->decodeJson();
                 $result = $this->scrapCollegeStats($wr);
                 if ($result == false) {
