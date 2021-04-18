@@ -239,10 +239,13 @@ var rlf =  {
             $(".player-skillz-role1").text("Slot:");
             $(".player-skillz-role2").text("Deep Threat:");
             $(".player-skillz-role3").text("Outside X:");
+            $(".player-skillz-role4").text("Overall:");
 
             var slotpercent = Math.round(rlfData.players[0].percentiles.slot);
             var deeppercent = Math.round(rlfData.players[0].percentiles.deep);
             var alphapercent = Math.round(rlfData.players[0].percentiles.alpha);
+            var outsidepercent = Math.round(rlfData.players[0].percentiles.outsideX);
+
 
             $("#player1-skill .role-one-bar .determinate").css("width", slotpercent + "%");
             $("#player1-skill .role-one-score").text(rlfData.players[0].metrics['slot']);
@@ -252,13 +255,17 @@ var rlf =  {
             $("#player1-skill .role-two-score").text(rlfData.players[0].metrics['deep']);
 
 
-            $("#player1-skill .role-three-bar .determinate").css("width", alphapercent + "%");
-            $("#player1-skill .role-three-score").text(rlfData.players[0].metrics['alpha']);
+            $("#player1-skill .role-three-bar .determinate").css("width", outsidepercent + "%");
+            $("#player1-skill .role-three-score").text(rlfData.players[0].metrics['outsideX']);
+
+            $("#player1-skill .role-four-bar .determinate").css("width", alphapercent + "%");
+            $("#player1-skill .role-four-score").text(rlfData.players[0].metrics['alpha']);
 
             /*** Player2 ***/
             var slotpercent = Math.round(rlfData.players[1].percentiles.slot);
             var deeppercent = Math.round(rlfData.players[1].percentiles.deep);
             var alphapercent = Math.round(rlfData.players[1].percentiles.alpha);
+            var outsidepercent = Math.round(rlfData.players[1].percentiles.outsideX);
 
             $("#player2-skill .role-one-bar .determinate").css("width", slotpercent + "%");
             $("#player2-skill .role-one-score").text(rlfData.players[1].metrics['slot']);
@@ -266,74 +273,96 @@ var rlf =  {
             $("#player2-skill .role-two-bar .determinate").css("width", deeppercent + "%");
             $("#player2-skill .role-two-score").text(rlfData.players[1].metrics['deep']);
 
-            $("#player2-skill .role-three-bar .determinate").css("width", alphapercent + "%");
-            $("#player2-skill .role-three-score").text(rlfData.players[1].metrics['alpha']);
+            $("#player2-skill .role-three-bar .determinate").css("width", outsidepercent + "%");
+            $("#player2-skill .role-three-score").text(rlfData.players[1].metrics['outsideX']);
+
+            $("#player2-skill .role-four-bar .determinate").css("width", alphapercent + "%");
+            $("#player2-skill .role-four-score").text(rlfData.players[1].metrics['alpha']);
         }
 
         if (position == "RB") {
-            var grinderpercent1 = Math.round(rlfData.players[0].metrics.grinder);
-            var passCatcherpercent1 = Math.round(rlfData.players[0].metrics.passCatcher);
+            var insidePercent1 = Math.round(rlfData.players[0].metrics.inside);
+            var outsidePercent1 = Math.round(rlfData.players[0].metrics.outside);
+            var receiverPercent1 = Math.round(rlfData.players[0].metrics.passCatcher)
             var alphapercent1 = Math.round(rlfData.players[0].metrics.alpha);
 
-            $(".player-skillz-role1").text("Grinder:");
-            $(".player-skillz-role2").text("Receiver:");
-            $(".player-skillz-role3").text("3 Down:");
+            $(".player-skillz-role1").text("Run Through Contact:");
+            $(".player-skillz-role2").text("Outside | Zone Runner:");
+            $(".player-skillz-role3").text("Receiver:");
+            $(".player-skillz-role4").text("Overall:");
 
-            $("#player1-skill .role-one-bar .determinate").css("width", grinderpercent1 + "%");
-            $("#player1-skill .role-one-score").text(grinderpercent1)
+            $("#player1-skill .role-one-bar .determinate").css("width", insidePercent1 + "%");
+            $("#player1-skill .role-one-score").text(insidePercent1)
 
-            $("#player1-skill .role-two-bar .determinate").css("width", passCatcherpercent1 + "%");
-            $("#player1-skill .role-two-score").text(passCatcherpercent1)
+            $("#player1-skill .role-two-bar .determinate").css("width", outsidePercent1 + "%");
+            $("#player1-skill .role-two-score").text(outsidePercent1)
 
-            $("#player1-skill .role-three-bar .determinate").css("width", alphapercent1 + "%");
-            $("#player1-skill .role-three-score").text(alphapercent1)
+            $("#player1-skill .role-three-bar .determinate").css("width", receiverPercent1 + "%");
+            $("#player1-skill .role-three-score").text(receiverPercent1)
+
+            $("#player1-skill .role-four-bar .determinate").css("width", alphapercent1 + "%");
+            $("#player1-skill .role-four-score").text(alphapercent1)
 
             /*** Player2 ***/
-            var grinderpercent2 = Math.round(rlfData.players[1].metrics.grinder);
-            var passCatcherpercent2 = Math.round(rlfData.players[1].metrics.passCatcher);
+            var insidePercent2 = Math.round(rlfData.players[1].metrics.inside);
+            var outsidePercent2 = Math.round(rlfData.players[1].metrics.outside);
+            var receiverPercent2 = Math.round(rlfData.players[1].metrics.passCatcher)
             var alphapercent2 = Math.round(rlfData.players[1].metrics.alpha);
 
-            $("#player2-skill .role-one-bar .determinate").css("width", grinderpercent2 + "%");
-            $("#player2-skill .role-one-score").text(grinderpercent2)
+            $("#player2-skill .role-one-bar .determinate").css("width", insidePercent2 + "%");
+            $("#player2-skill .role-one-score").text(insidePercent2)
 
-            $("#player2-skill .role-two-bar .determinate").css("width", passCatcherpercent2 + "%");
-            $("#player2-skill .role-two-score").text(passCatcherpercent2)
+            $("#player2-skill .role-two-bar .determinate").css("width", outsidePercent2 + "%");
+            $("#player2-skill .role-two-score").text(outsidePercent2)
 
-            $("#player2-skill .role-three-bar .determinate").css("width", alphapercent2 + "%");
-            $("#player2-skill .role-three-score").text(alphapercent2)
+            $("#player2-skill .role-three-bar .determinate").css("width", receiverPercent2 + "%");
+            $("#player2-skill .role-three-score").text(receiverPercent2)
+
+            $("#player2-skill .role-four-bar .determinate").css("width", alphapercent2 + "%");
+            $("#player2-skill .role-four-score").text(alphapercent2)
         }
 
         if (position == "TE") {
-            var move1 = Math.round(rlfData.players[0].metrics.move)
+            var short1 = Math.round(rlfData.players[0].metrics.slot);
+            var deep1 = Math.round(rlfData.players[0].metrics.deep);
             var inline1 = Math.round(rlfData.players[0].metrics.inLine);
             var alpha1 = Math.round(rlfData.players[0].metrics.alpha);
 
-            $(".player-skillz-role1").text("Move:");
-            $(".player-skillz-role2").text("In Line:");
-            $(".player-skillz-role3").text("2 Way TE:");
+            $(".player-skillz-role1").text("Short Area:");
+            $(".player-skillz-role2").text("Seam Threat:");
+            $(".player-skillz-role3").text("Inline:");
+            $(".player-skillz-role4").text("Overall");
 
-            $("#player1-skill .role-one-bar .determinate").css("width", move1 + "%");
-            $("#player1-skill .role-one-score").text(move1)
 
-            $("#player1-skill .role-two-bar .determinate").css("width", inline1 + "%");
-            $("#player1-skill .role-two-score").text(inline1)
+            $("#player1-skill .role-one-bar .determinate").css("width", short1 + "%");
+            $("#player1-skill .role-one-score").text(short1);
 
-            $("#player1-skill .role-three-bar .determinate").css("width", alpha1 + "%");
-            $("#player1-skill .role-three-score").text(alpha1)
+            $("#player1-skill .role-two-bar .determinate").css("width", deep1 + "%");
+            $("#player1-skill .role-two-score").text(deep1);
+
+            $("#player1-skill .role-three-bar .determinate").css("width", inline1 + "%");
+            $("#player1-skill .role-three-score").text(inline1);
+
+            $("#player1-skill .role-four-bar .determinate").css("width", alpha1 + "%");
+            $("#player1-skill .role-four-score").text(alpha1);
 
             /*** Player2 ***/
-            var move2 = Math.round(rlfData.players[1].metrics.move)
+            var short2 = Math.round(rlfData.players[1].metrics.slot);
+            var deep2 = Math.round(rlfData.players[1].metrics.deep);
             var inline2 = Math.round(rlfData.players[1].metrics.inLine);
             var alpha2 = Math.round(rlfData.players[1].metrics.alpha);
 
-            $("#player2-skill .role-one-bar .determinate").css("width", move2 + "%");
-            $("#player2-skill .role-one-score").text(move2)
+            $("#player2-skill .role-one-bar .determinate").css("width", short2 + "%");
+            $("#player2-skill .role-one-score").text(short2)
 
-            $("#player2-skill .role-two-bar .determinate").css("width", inline2 + "%");
-            $("#player2-skill .role-two-score").text(inline2)
+            $("#player2-skill .role-two-bar .determinate").css("width", deep2 + "%");
+            $("#player2-skill .role-two-score").text(deep2)
 
-            $("#player2-skill .role-three-bar .determinate").css("width", alpha2 + "%");
-            $("#player2-skill .role-three-score").text(alpha2)
+            $("#player2-skill .role-three-bar .determinate").css("width", inline2 + "%");
+            $("#player2-skill .role-three-score").text(inline2)
+
+            $("#player2-skill .role-four-bar .determinate").css("width", alpha2 + "%");
+            $("#player2-skill .role-four-score").text(alpha1);
         }
     },
 
@@ -622,7 +651,7 @@ var rlf =  {
             }
         ];
 
-        rlf.makeRoleFits(roleFits);
+        // rlf.makeRoleFits(roleFits);
 
         var seasonColumns = [
             {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
@@ -651,16 +680,16 @@ var rlf =  {
             {title: "Year", searchable: true, data: "year"},
             {title: "Wk", data: "week"},
             {title: "Pts",  data: "stats.pts_ppr", "defaultContent":0},
-            {title: "Pass Yds", data: "stats.pass_yd", "defaultContent":0},
-            {title: "Pass Tds", data: "stats.pass_td", "defaultContent":0},
-            {title: "Completions", data: "stats.pass_cmp", "defaultContent":0},
-            {title: "Pass Atts", data: "stats.pass_att", "defaultContent":0},
-            {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
-            {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
-            {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
+            // {title: "Pass Yds", data: "stats.pass_yd", "defaultContent":0},
+            // {title: "Pass Tds", data: "stats.pass_td", "defaultContent":0},
+            // {title: "Completions", data: "stats.pass_cmp", "defaultContent":0},
+            // {title: "Pass Atts", data: "stats.pass_att", "defaultContent":0},
+            // {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
+            // {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
+            // {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
         ];
 
-        rlf.makeGameLogTable(gameLogColumns);
+        // rlf.makeGameLogTable(gameLogColumns);
 
         var collegeColumns = [
             { title: "Year", data: "year", "defaultContent":0},
@@ -687,7 +716,7 @@ var rlf =  {
         var metrics = rlfData.player.metrics;
         var ordinals = rlfData.player.ordinals;
         var chartData = {
-            labels: ['Speed', 'Agility', 'Run Power', 'Elusiveness', 'Throw Power', 'Accuracy', 'Wonderlic'],
+            labels: ['Speed', 'Agility', 'Run Power', 'Elusiveness', 'Throw Power', 'Wonderlic'],
             datasets: [{
                 type: 'bar',
                 stack: 'Stack One',
@@ -695,9 +724,9 @@ var rlf =  {
                 label: 'QB Skills',
                 borderWidth: 2,
                 fill: false,
-                data: [percent.fortyTime, percent.agility, percent.power, percent.elusiveness, percent.throwVelocity, percent.depthAdjPct, percent.wonderlic],
-                ordinals: [ordinals.fortyTime, ordinals.agility, ordinals.power, ordinals.elusiveness, ordinals.throwVelocity, ordinals.depthAdjPct, ordinals.wonderlic],
-                metrics: [metrics.fortyTime, metrics.agility, metrics.power, metrics.elusiveness, metrics.throwVelocity, metrics.depthAdjPct, metrics.wonderlic]
+                data: [percent.fortyTime, percent.agility, percent.power, percent.elusiveness, percent.throwVelocity, percent.wonderlic],
+                ordinals: [ordinals.fortyTime, ordinals.agility, ordinals.power, ordinals.elusiveness, ordinals.throwVelocity, ordinals.wonderlic],
+                metrics: [metrics.fortyTime, metrics.agility, metrics.power, metrics.elusiveness, metrics.throwVelocity, metrics.wonderlic]
             }]
         };
         rlf.makeProspectChart(chartData);
@@ -995,7 +1024,80 @@ var rlf =  {
 
         if (rlfData.player.seasonStats !== undefined && rlfData.player.seasonStats.length !== 0) {
             var currentStats = rlfData.player.seasonStats["2020"];
+            if (currentStats !== undefined) {
+                $('#summary-stats').DataTable({
+                    "paging": false,
+                    "ordering": false,
+                    "searching": false,
+                    "info": false,
+                    "className": 'compact',
+                    "columns": [
+                        {title: "Avg", data: "avg", "defaultContent": "n/a"},
+                        {title: "PPR", data: "points", "defaultContent": "n/a"},
+                        {title: "Atts", data: "runs", "defaultContent": "n/a"},
+                        {title: "Recs", data: "recs", "defaultContent": "n/a"},
+                        {title: "Yds", data: "yds", "defaultContent": "n/a"},
+                        {title: "Tds", data: "tds", "defaultContent": ""}
+                    ],
+                    "data": [
+                        {
+                            "avg": currentStats.stats.pts_ppr_avg,
+                            "points": currentStats.stats.pts_ppr,
+                            "runs": currentStats.stats.rush_att,
+                            "recs": currentStats.stats.rec,
+                            "yds": (currentStats.stats.rec_yd + currentStats.stats.rush_yd),
+                            "tds": currentStats.stats.all_td
+                        },
+                        {
+                            "avg": currentStats.ranks.pts_ppr_avg,
+                            "points": currentStats.ranks.pts_ppr,
+                            "runs": currentStats.ranks.rush_att,
+                            "recs": currentStats.ranks.rec,
+                            "yds": currentStats.ranks.rush_yd,
+                            "tds": currentStats.ranks.all_td
+                        }
+                    ]
+                });
+                var seasonColumns = [
+                    {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent": 0},
+                    {title: "GP", data: "stats.gp", "defaultContent": 0},
+                    {title: "PPR Points", data: "stats.pts_ppr", "defaultContent": 0},
+                    {title: "PPR PPG", data: "stats.pts_ppr_avg", "defaultContent": 0},
+                    {title: "Rank", data: "ranks.pts_ppr", "defaultContent": 0},
+                    {title: "Rush Atts", data: "stats.rush_att", "defaultContent": 0},
+                    {title: "Rush Yds", data: "stats.rush_yd", "defaultContent": 0},
+                    {title: "Rush Tds", data: "stats.rush_td", "defaultContent": 0},
+                    {title: "Recs", data: "stats.rec", "defaultContent": 0},
+                    {title: "Tgts", data: "stats.rec_tgt", "defaultContent": 0},
+                    {title: "Rec Yds", data: "stats.rec_yd", "defaultContent": 0},
+                    {title: "Rec Tds", data: "stats.rec_td", "defaultContent": 0},
+                    {title: "Rec Fds", data: "stats.rec_fd", "defaultContent": "N/A"},
+                    {title: "Rush Fds", data: "stats.rush_fd", "defaultContent": "N/A"},
+                ];
+                $('#season-stats').append("<tfoot><th colspan=\"2\">Career Average:<br>Career Total:</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tfoot>");
+                rlf.makeSeasonTable(seasonColumns);
 
+                var gameLogColumns = [
+                    {title: "Year", searchable: true, data: "year"},
+                    {title: "Wk", data: "week"},
+                    {title: "PPR Points", data: "stats.pts_ppr", "defaultContent": 0},
+                    {title: "PRR Rank", data: "ranks.pts_ppr", "defaultContent": 0},
+                    {title: "Rush Atts", data: "stats.rush_att", "defaultContent": 0},
+                    {title: "Rush Yds", data: "stats.rush_yd", "defaultContent": 0},
+                    {title: "Rush Tds", data: "stats.rush_td", "defaultContent": 0},
+                    {title: "Recs", data: "stats.rec", "defaultContent": 0},
+                    {title: "Tgts", data: "stats.rec_tgt", "defaultContent": 0},
+                    {title: "Rec Yds", data: "stats.rec_yd", "defaultContent": 0},
+                    {title: "Rec Tds", data: "stats.rec_td", "defaultContent": 0},
+                    {title: "Rec 1st Downs", data: "stats.rec_fd", "defaultContent": 0},
+                    {title: "Rush 1st Downs", data: "stats.rush_fd", "defaultContent": 0}
+                ];
+
+                rlf.makeGameLogTable(gameLogColumns);
+            }
+        } else if (rlfData.player.collegeTable !== undefined && rlfData.player.collegeTable.length !== 0) {
+            var collegeStuff = rlfData.player.collegeTable;
+            var currentStats = collegeStuff[collegeStuff.length - 1];
             $('#summary-stats').DataTable({
                 "paging": false,
                 "ordering": false,
@@ -1003,69 +1105,24 @@ var rlf =  {
                 "info":false,
                 "className":'compact',
                 "columns": [
-                    {title:"Avg", data: "avg", "defaultContent":"n/a"},
-                    {title:"PPR", data: "points", "defaultContent":"n/a"},
-                    {title:"Atts", data: "runs", "defaultContent":"n/a"},
-                    {title:"Recs", data: "recs", "defaultContent":"n/a"},
-                    {title:"Yds", data: "yds", "defaultContent":"n/a"},
-                    {title:"Tds", data: "tds", "defaultContent":""}
+                    {title:"Class", data: "class", "defaultContent":""},
+                    {title:"Games", data: "games", "defaultContent":""},
+                    {title:"Recs", data: "recs", "defaultContent":""},
+                    {title:"Yds", data: "yds", "defaultContent":""},
+                    {title:"Tds", data: "tds", "defaultContent":""},
+                    {title:"Dominator", data: "dominator", "defaultContent":""}
                 ],
                 "data":[
                     {
-                        "avg":currentStats.stats.pts_ppr_avg,
-                        "points":currentStats.stats.pts_ppr,
-                        "runs":currentStats.stats.rush_att,
-                        "recs":currentStats.stats.rec,
-                        "yds":(currentStats.stats.rec_yd + currentStats.stats.rush_yd),
-                        "tds":currentStats.stats.all_td
-                    },
-                    {
-                        "avg":currentStats.ranks.pts_ppr_avg,
-                        "points":currentStats.ranks.pts_ppr,
-                        "runs":currentStats.ranks.rush_att,
-                        "recs":currentStats.ranks.rec,
-                        "yds":currentStats.ranks.rush_yd,
-                        "tds":currentStats.ranks.all_td
+                        "games":currentStats.games,
+                        "class":currentStats.class,
+                        "recs":currentStats.recs,
+                        "yds":currentStats.recYds,
+                        "tds":currentStats.recTds,
+                        "dominator":currentStats.dominator
                     }
                 ]
             });
-
-            var seasonColumns = [
-                {title: "Year", searchable: true, targets: 0, data: "year", "defaultContent":0},
-                {title: "GP", data: "stats.gp", "defaultContent":0},
-                {title: "PPR Points", data: "stats.pts_ppr", "defaultContent":0},
-                {title: "PPR PPG", data: "stats.pts_ppr_avg", "defaultContent":0},
-                {title: "Rank", data: "ranks.pts_ppr", "defaultContent":0},
-                {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
-                {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
-                {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
-                {title: "Recs", data: "stats.rec", "defaultContent":0},
-                {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
-                {title: "Rec Yds", data: "stats.rec_yd", "defaultContent":0},
-                {title: "Rec Tds", data: "stats.rec_td", "defaultContent":0},
-                {title: "Rec Fds", data: "stats.rec_fd", "defaultContent":"N/A"},
-                {title: "Rush Fds", data: "stats.rush_fd", "defaultContent":"N/A"},
-            ];
-            $('#season-stats').append("<tfoot><th colspan=\"2\">Career Average:<br>Career Total:</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tfoot>");
-            rlf.makeSeasonTable(seasonColumns);
-
-            var gameLogColumns = [
-                {title: "Year", searchable: true, data: "year"},
-                {title: "Wk", data: "week"},
-                {title: "PPR Points",  data: "stats.pts_ppr", "defaultContent":0},
-                {title: "PRR Rank", data: "ranks.pts_ppr", "defaultContent":0},
-                {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
-                {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
-                {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
-                {title: "Recs", data: "stats.rec", "defaultContent":0},
-                {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
-                {title: "Rec Yds", data: "stats.rec_yd", "defaultContent":0},
-                {title: "Rec Tds", data: "stats.rec_td", "defaultContent":0},
-                {title: "Rec 1st Downs", data: "stats.rec_fd", "defaultContent":0},
-                {title: "Rush 1st Downs", data: "stats.rush_fd", "defaultContent":0}
-            ];
-
-            rlf.makeGameLogTable(gameLogColumns);
         }
     },
 
@@ -1247,15 +1304,21 @@ var rlf =  {
                 "percent":rlfData.player.percentiles.deep
             },
             {
-                "name":"Elite WR Score:",
+                "name":"Outside X Score:",
+                "value":rlfData.player.metrics.outsideX,
+                "percentile":rlfData.player.ordinals.outsideX,
+                "percent":rlfData.player.percentiles.outsideX
+            },
+            {
+                "name":"Overall Prospect Score:",
                 "value":rlfData.player.metrics.alpha,
                 "percentile":rlfData.player.ordinals.alpha,
                 "percent":rlfData.player.percentiles.alpha
-
             }
         ];
 
         rlf.makeRoleFits(roleFits);
+
 
         if (rlfData.player.metrics.collegeScore !== null) {
             $(".college-row-one p").text("Full Breakout Class: " + rlfData.player.metrics.breakoutClass);
@@ -1350,6 +1413,72 @@ var rlf =  {
             }
         });
 
+
+        var currentStats = rlfData.player.seasonStats["2020"];
+        if (currentStats != undefined) {
+            $('#summary-stats').DataTable({
+                "paging": false,
+                "ordering": false,
+                "searching": false,
+                "info":false,
+                "className":'compact',
+                "columns": [
+                    {title:"Avg", data: "avg", "defaultContent":"n/a"},
+                    {title:"PPR", data: "points", "defaultContent":"n/a"},
+                    {title:"Recs", data: "recs", "defaultContent":"n/a"},
+                    {title:"Tgts", data: "targets", "defaultContent":"n/a"},
+                    {title:"Yds", data: "yds", "defaultContent":"n/a"},
+                    {title:"Tds", data: "tds", "defaultContent":""}
+                ],
+                "data":[
+                    {
+                        "avg":currentStats.stats.pts_ppr_avg,
+                        "points":currentStats.stats.pts_ppr,
+                        "recs":currentStats.stats.rec,
+                        "targets":currentStats.stats.rec_tgt,
+                        "yds":currentStats.stats.rec_yd,
+                        "tds":currentStats.stats.all_td
+                    },
+                    {
+                        "avg":currentStats.ranks.pts_ppr_avg,
+                        "points":currentStats.ranks.pts_ppr,
+                        "recs":currentStats.ranks.rec,
+                        "targets":currentStats.ranks.rec_tgt,
+                        "yds":currentStats.ranks.rec_yd,
+                        "tds":currentStats.ranks.all_td
+                    }
+                ]
+            });
+        } else if (rlfData.player.collegeTable !== undefined && rlfData.player.collegeTable.length !== 0) {
+            var collegeStuff = rlfData.player.collegeTable;
+            var currentStats = collegeStuff[collegeStuff.length - 1];
+            $('#summary-stats').DataTable({
+                "paging": false,
+                "ordering": false,
+                "searching": false,
+                "info": false,
+                "className": 'compact',
+                "columns": [
+                    {title: "Class", data: "class", "defaultContent": ""},
+                    {title: "Games", data: "games", "defaultContent": ""},
+                    {title: "Recs", data: "recs", "defaultContent": ""},
+                    {title: "Yds", data: "yds", "defaultContent": ""},
+                    {title: "Tds", data: "tds", "defaultContent": ""},
+                    {title: "Dominator", data: "dominator", "defaultContent": ""}
+                ],
+                "data": [
+                    {
+                        "games": currentStats.games,
+                        "class": currentStats.class,
+                        "recs": currentStats.recs,
+                        "yds": currentStats.recYds,
+                        "tds": currentStats.recTds,
+                        "dominator": currentStats.dom
+                    }
+                ]
+            });
+        }
+
         var collegeColumns = [
             { title: "Year", data: "year", "defaultContent":0},
             { title: "College", data: "college", "defaultContent": "n/a"},
@@ -1398,45 +1527,7 @@ var rlf =  {
             ];
 
             rlf.makeGameLogTable(gameLogColumns);
-
-            var currentStats = rlfData.player.seasonStats["2020"];
-            if (currentStats != undefined) {
-                $('#summary-stats').DataTable({
-                    "paging": false,
-                    "ordering": false,
-                    "searching": false,
-                    "info":false,
-                    "className":'compact',
-                    "columns": [
-                        {title:"Avg", data: "avg", "defaultContent":"n/a"},
-                        {title:"PPR", data: "points", "defaultContent":"n/a"},
-                        {title:"Recs", data: "recs", "defaultContent":"n/a"},
-                        {title:"Tgts", data: "targets", "defaultContent":"n/a"},
-                        {title:"Yds", data: "yds", "defaultContent":"n/a"},
-                        {title:"Tds", data: "tds", "defaultContent":""}
-                    ],
-                    "data":[
-                        {
-                            "avg":currentStats.stats.pts_ppr_avg,
-                            "points":currentStats.stats.pts_ppr,
-                            "recs":currentStats.stats.rec,
-                            "targets":currentStats.stats.rec_tgt,
-                            "yds":currentStats.stats.rec_yd,
-                            "tds":currentStats.stats.all_td
-                        },
-                        {
-                            "avg":currentStats.ranks.pts_ppr_avg,
-                            "points":currentStats.ranks.pts_ppr,
-                            "recs":currentStats.ranks.rec,
-                            "targets":currentStats.ranks.rec_tgt,
-                            "yds":currentStats.ranks.rec_yd,
-                            "tds":currentStats.ranks.all_td
-                        }
-                    ]
-                });
-            }
         }
-
 
         var roleFits = [
             {
@@ -1453,7 +1544,7 @@ var rlf =  {
 
             },
             {
-                "name":"2 Way TE",
+                "name":"Overall Prospect Score",
                 "value":Math.round(rlfData.player.metrics.alpha),
                 "percentile": rlfData.player.ordinals.alpha,
                 "percent": rlfData.player.percentiles.move
@@ -1508,7 +1599,7 @@ var rlf =  {
         var metrics = rlfData.player.metrics;
         var ordinals = rlfData.player.ordinals;
         var chartData = {
-            labels: ['Speed', 'Route Agility', 'Jumpball', 'Elusiveness', 'Run Power', 'Bully Score', 'Run Block'],
+            labels: ['Speed', 'Route Agility', 'Jumpball', 'Elusiveness', 'Run Power', 'Bully Score'],
             datasets: [{
                 type: 'bar',
                 stack: 'Stack One',
@@ -1516,16 +1607,16 @@ var rlf =  {
                 backgroundColor: 'rgb(29, 233, 195, 0.4)',
                 borderWidth: 2,
                 fill: false,
-                data: [percent.fortyTime, percent.routeAgility, percent.jumpball, percent.elusiveness, percent.power, percent.bully, percent.runBlock],
-                ordinals: [ordinals.fortyTime, ordinals.routeAgility, ordinals.jumpball, ordinals.elusiveness, ordinals.power, ordinals.bully, ordinals.runBlock ],
-                metrics: [metrics.fortyTime, metrics.routeAgility, metrics.jumpball, metrics.elusiveness, metrics.power, metrics.bully, metrics.runBlock]
+                data: [percent.fortyTime, percent.routeAgility, percent.jumpball, percent.elusiveness, percent.power, percent.bully],
+                ordinals: [ordinals.fortyTime, ordinals.routeAgility, ordinals.jumpball, ordinals.elusiveness, ordinals.power, ordinals.bully],
+                metrics: [metrics.fortyTime, metrics.routeAgility, metrics.jumpball, metrics.elusiveness, metrics.power, metrics.bully]
             },
                 {
                     type: 'line',
                     backgroundColor: 'rgba(174, 3, 230, 0.25)',
                     fill: true,
                     label: 'Average NFL Safety',
-                    data: [70, 67, 61, 22, 15, 10, 9],
+                    data: [70, 67, 61, 22, 15, 10],
                     ordinals: ["", "", "", "", "", "", ""],
                     metrics: ["", "", "", "", "", "", ""]
                 },
@@ -2695,6 +2786,31 @@ var rlf =  {
 
         if (roleFits[2].percent < 39) {
             $(".role-three-bar .determinate").css("background-color", "red");
+        }
+
+        if (roleFits[3] !== undefined) {
+            $(".overall-bar .determinate").css("width", roleFits[3].value + "%");
+            $(".overall-title").text(roleFits[3].name);
+            if (roleFits[3].value !== 0 && roleFits[3].value !== null) {
+                $(".overall-score").text(roleFits[3].value)
+                $(".overall-percentile").text("("+roleFits[3].percentile + " percentile)");
+            }
+
+            if (roleFits[3].percent > 69) {
+                $(".overall-bar .determinate").css("background-color", "green");
+            }
+
+            if (roleFits[3].percent < 69.98 && roleFits[3].percent > 55.01) {
+                $(".overall-bar .determinate").css("background-color", "lightgreen");
+            }
+
+            if (roleFits[3].percent < 55 && roleFits[3].percent > 40) {
+                $(".overall-bar .determinate").css("background-color", "yellow");
+            }
+
+            if (roleFits[3].percent < 39) {
+                $(".overall-bar .determinate").css("background-color", "red");
+            }
         }
     },
 

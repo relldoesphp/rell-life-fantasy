@@ -11,8 +11,9 @@ class SportsInfoApi
 {
     private $client_id;
     private $client_secret;
-    private $access_token;
+    private $access_token = null;
     private $base_url = "https://api.sportsinfosolutions.com/api/v1/nfl/";
+    private $college_url = "https://api.sportsinfosolutions.com/api/v1/cfb/";
 
     /**
      * SportsInfoApi constructor.
@@ -23,7 +24,6 @@ class SportsInfoApi
     {
         $this->client_id = $client_id;
         $this->client_secret = $client_secret;
-        $this->authorize();
     }
 
     private function authorize()
@@ -45,6 +45,9 @@ class SportsInfoApi
 
     public function makeRequest($endpoint)
     {
+        if ($this->access_token == null) {
+            $this->authorize();
+        }
         $request = new Request();
         $uri = $this->base_url.$endpoint;
         $request->setUri($uri);
@@ -61,7 +64,7 @@ class SportsInfoApi
         $html = $response->getBody();
         if (strpos($html,"API calls quota") !== false) {
             $gotAproblem = true;
-            usleep(30000000);
+            usleep(600000000);
             $response = $client->send($request);
             $html = $response->getBody();
         }
@@ -80,6 +83,16 @@ class SportsInfoApi
         return $result['data'];
     }
 
+    public function testRequest()
+    {
+        $result = $this->getPlayersQuery("2020", "receiving", [
+            'ReceivingFilters.MinAirYards' => '20',
+            'ReceivingFilters.MaxAirYards' => '100',
+            'GameFilters.Team' => '2',
+        ]);
+        return $result;
+    }
+
     public function getSchedule($year)
     {
         $request = $this->makeRequest("/schedule/season/{$year}");
@@ -90,6 +103,12 @@ class SportsInfoApi
     public function getPlayers()
     {
         $request = $this->makeRequest("seasons/2020/players");
+        return $this->doRequest($request);
+    }
+
+    public function getPlayerIds()
+    {
+        $request = $this->makeRequest("PlayerIds");
         return $this->doRequest($request);
     }
 
@@ -354,7 +373,7 @@ class SportsInfoApi
             "AdjustedBB.MinPassSnaps" => 1
         ];
 
-        $request = $this->makeRequest('teams/12/1/plays/3');
+        $request = $this->makeRequest('teams/query');
         foreach ($defaultQuery as $query => $value) {
             $request->getPost()->set($query, $value);
         }
@@ -474,6 +493,49 @@ class SportsInfoApi
     public function getLeaders($year, $type) {
         $request = $this->makeRequest("seasons/2019/leaders/rushing");
         return $this->doRequest($request);
+    }
+
+    /***** College Requests *****/
+    public function makeCollegeRequest($endpoint)
+    {
+        if ($this->access_token == null) {
+            $this->authorize();
+        }
+        $request = new Request();
+        $uri = $this->college_url.$endpoint;
+        $request->setUri($uri);
+        $headers = $request->getHeaders()->addHeaders([
+            "Authorization" => "Bearer ".$this->access_token]);
+        $request->setHeaders($headers);
+        return $request;
+    }
+
+    public function getCollegeStats($playerId, $type)
+    {
+        $request = $this->makeCollegeRequest("players/{$playerId}/{$type}");
+        $result = $this->doRequest($request);
+        if (array_key_exists('data', $result)) {
+            return $result['data'];
+        } else {
+            return $result;
+        }
+    }
+
+    public function getCollegeTeamStats($year, $teamId, $type)
+    {
+        $request = $this->makeCollegeRequest("seasons/{$year}/teams/{$teamId}/{$type}");
+        $result = $this->doRequest($request);
+        if (!array_key_exists('data', $result)) {
+            return $result;
+        }
+        return $result['data'];
+    }
+
+    public function getCollegePlayers($year)
+    {
+        $request = $this->makeCollegeRequest("seasons/{$year}/players");
+        $result = $this->doRequest($request);
+        return $result['data'];
     }
 
 

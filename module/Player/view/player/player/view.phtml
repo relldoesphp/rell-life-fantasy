@@ -1,6 +1,7 @@
 <?php
     $this->headTitle($player['first_name']." ".$player['last_name'], 'PREPEND');
 
+
 ?>
 
 <div class="section white full-height container">
@@ -73,18 +74,20 @@
     </div>
     <div class="row player-prospect container scrollspy" id="player-prospect">
         <a class="waves-effect waves-light btn-small right center modal-trigger dark" href="#modal2">Glossary<i class="material-icons">live_help</i></a>
-        <div class="col s12 center brand-logo"><h5>Draft Prospect Breakdown</h5></div>
+        <div class="col s12 center brand-logo">
+            <h5>Draft Prospect Breakdown</h5>
+        </div>
         <?php if ($player['position'] == 'RB'): ?>
             <?php
-            $player['metrics']['inside'] = (array_key_exists('inside', $player['metrics'])) ? $player['metrics']['inside'] : "-";
-            $player['metrics']['outside'] = (array_key_exists('outside', $player['metrics'])) ? $player['metrics']['outside'] : "-";
-            $player['metrics']['passCatcher'] = (array_key_exists('passCatcher', $player['metrics'])) ? $player['metrics']['passCatcher'] : "-";
-            $player['metrics']['alpha'] = (array_key_exists('alpha', $player['metrics'])) ? $player['metrics']['alpha'] : "-";
+            $player['metrics']['inside'] = (array_key_exists('inside', $player['metrics'])) ? $player['metrics']['inside'] : null;
+            $player['metrics']['outside'] = (array_key_exists('outside', $player['metrics'])) ? $player['metrics']['outside'] : null;
+            $player['metrics']['passCatcher'] = (array_key_exists('passCatcher', $player['metrics'])) ? $player['metrics']['passCatcher'] : null;
+            $player['metrics']['alpha'] = (array_key_exists('alpha', $player['metrics'])) ? $player['metrics']['alpha'] : null;
             ?>
             <div class="row">
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Between the Tackles:</div>
-                    <div class="combine-score"><?= (array_key_exists('inside', $player['metrics'])) ? $player['metrics']['inside'] : 0?></div>
+                    <div style="margin-top:10px" class="combine-title">Tackle Breaker:</div>
+                    <div class="combine-score"><?= ($player['metrics']['inside'] != null) ? $player['metrics']['inside'] : "-"?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['inside'] ?>%"></div>
                     </div>
@@ -92,7 +95,7 @@
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Zone / Explosive Runs:</div>
-                    <div class="combine-score"><?= (array_key_exists('outside', $player['metrics'])) ? $player['metrics']['outside'] : 0?></div>
+                    <div class="combine-score"><?= ($player['metrics']['outside'] != null) ? $player['metrics']['outside'] : "-"?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['outside'] ?>%"></div>
                     </div>
@@ -100,15 +103,15 @@
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Receiver Score:</div>
-                    <div class="combine-score"><?= (array_key_exists('passCatcher', $player['metrics'])) ? $player['metrics']['passCatcher'] : 0?></div>
+                    <div class="combine-score"><?= ($player['metrics']['passCatcher'] != null) ? $player['metrics']['passCatcher'] : "-"?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['passCatcher'] ?>%"></div>
                     </div>
                     <div class="bench-percentile percentile">(<?= $player['ordinals']['passCatcher'] ?> percentile)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Three Down Back:</div>
-                    <div class="combine-score"><?= (array_key_exists('alpha', $player['metrics'])) ? $player['metrics']['alpha'] : 0 ?></div>
+                    <div style="margin-top:10px" class="combine-title">Overall Prospect Score:</div>
+                    <div class="combine-score"><?= ($player['metrics']['alpha'] != null) ? $player['metrics']['alpha'] : "-" ?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['alpha'] ?>%"></div>
                     </div>
@@ -117,85 +120,105 @@
             </div>
         <?php elseif ($player['position'] == 'TE'): ?>
             <?php
-            $player['metrics']['slot'] = (array_key_exists('slot', $player['metrics'])) ? $player['metrics']['slot'] : "-";
-            $player['metrics']['deep'] = (array_key_exists('deep', $player['metrics'])) ? $player['metrics']['deep'] : "-";
-            $player['metrics']['inLine'] = (array_key_exists('inLine', $player['metrics'])) ? $player['metrics']['inLine'] : "-";
-            $player['metrics']['alpha'] = (array_key_exists('alpha', $player['metrics'])) ? $player['metrics']['alpha'] : "-";
+            $player['metrics']['slot'] = (array_key_exists('slot', $player['metrics'])) ? $player['metrics']['slot'] : null;
+            $player['metrics']['deep'] = (array_key_exists('deep', $player['metrics'])) ? $player['metrics']['deep'] : null;
+            $player['metrics']['inLine'] = (array_key_exists('inLine', $player['metrics'])) ? $player['metrics']['inLine'] : null;
+            $player['metrics']['alpha'] = (array_key_exists('alpha', $player['metrics'])) ? $player['metrics']['alpha'] : null;
             ?>
             <div class="row">
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Short Area Score</div>
-                    <div class="combine-score"><?= (array_key_exists('slot', $player['metrics'])) ? $player['metrics']['slot'] : 0?></div>
+                    <div class="combine-score"><?= ($player['metrics']['slot'] != null) ? $player['metrics']['slot'] : "-"?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['slot'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile"></div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['slot'] ?> percentile)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Seam Threat Score</div>
-                    <div class="combine-score"><?= (array_key_exists('deep', $player['metrics'])) ? $player['metrics']['deep'] : 0?></div>
+                    <div class="combine-score"><?= ($player['metrics']['deep'] != null) ? $player['metrics']['deep'] : "-"?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['deep'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile"></div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['deep'] ?> percentile)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Inline Score:</div>
-                    <div class="combine-score"><?= (array_key_exists('inLine', $player['metrics'])) ? $player['metrics']['inLine'] : 0?></div>
+                    <div class="combine-score"><?= ($player['metrics']['inLine'] != null) ? $player['metrics']['inLine'] : "-"?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['inLine'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile"></div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['inLine'] ?> percentile)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Two Way TE Score:</div>
-                    <div class="combine-score"><?= (array_key_exists('alpha', $player['metrics'])) ? $player['metrics']['alpha'] : 0 ?></div>
+                    <div style="margin-top:10px" class="combine-title">Overall Prospect Score:</div>
+                    <div class="combine-score"><?= ($player['metrics']['alpha'] != null) ? $player['metrics']['alpha'] : "-" ?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['alpha'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile"></div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['alpha'] ?> percentile)</div>
+                </div>
+            </div>
+        <?php elseif ($player['position'] == 'WR'): ?>
+            <?php
+            $player['metrics']['slot'] = (array_key_exists('slot', $player['metrics'])) ? $player['metrics']['slot'] : null;
+            $player['metrics']['deep'] = (array_key_exists('deep', $player['metrics'])) ? $player['metrics']['deep'] : null;
+            $player['metrics']['outsideX'] = (array_key_exists('outsideX', $player['metrics'])) ? $player['metrics']['outsideX'] : null;
+            $player['metrics']['alpha'] = (array_key_exists('alpha', $player['metrics'])) ? $player['metrics']['alpha'] : null;
+            ?>
+            <div class="row">
+                <div class="bench-box center col m3 s6">
+                    <div style="margin-top:10px" class="combine-title">Slot Score</div>
+                    <div class="combine-score"><?= ($player['metrics']['slot'] != null) ? $player['metrics']['slot'] : "-"?></div>
+                    <div class="progress bench-bar">
+                        <div class="determinate" style="width: <?= $player['percentiles']['slot'] ?>%"></div>
+                    </div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['slot'] ?> percentile)</div>
+                </div>
+                <div class="bench-box center col m3 s6">
+                    <div style="margin-top:10px" class="combine-title">Big Play Score</div>
+                    <div class="combine-score"><?= ($player['metrics']['deep'] != null) ? $player['metrics']['deep'] : "-"?></div>
+                    <div class="progress bench-bar">
+                        <div class="determinate" style="width: <?= $player['percentiles']['deep'] ?>%"></div>
+                    </div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['deep'] ?> percentile)</div>
+                </div>
+                <div class="bench-box center col m3 s6">
+                    <div style="margin-top:10px" class="combine-title">Outside X Score:</div>
+                    <div class="combine-score"><?= ($player['metrics']['outsideX'] != null) ? $player['metrics']['outsideX'] : "-"?></div>
+                    <div class="progress bench-bar">
+                        <div class="determinate" style="width: <?= $player['percentiles']['outsideX'] ?>%"></div>
+                    </div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['outsideX'] ?> percentile)</div>
+                </div>
+                <div class="bench-box center col m3 s6">
+                    <div style="margin-top:10px" class="combine-title">Overall Prospect Score:</div>
+                    <div class="combine-score"><?= ($player['metrics']['alpha'] != null) ? $player['metrics']['alpha'] : "-" ?></div>
+                    <div class="progress bench-bar">
+                        <div class="determinate" style="width: <?= $player['percentiles']['alpha'] ?>%"></div>
+                    </div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['alpha'] ?> percentile)</div>
                 </div>
             </div>
         <?php else: ?>
-            <div class="col s12 skillset hoverable z-depth-2">
-                <div class="slot-box center col m4 s4">
-                    <div style="margin-top:10px" class="role-one-title combine-title"></div>
-                    <div class="role-one-score combine-score"></div>
-                    <div class="progress role-one-bar">
-                        <div class="determinate" style="width: 0%"></div>
-                    </div>
-                    <div class="role-one-percentile percentile hide-on-small-only"></div>
-                </div>
-                <div class="deep-box center col m4 s4">
-                    <div style="margin-top:10px" class="role-two-title combine-title"></div>
-                    <div class="role-two-score combine-score"></div>
-                    <div class="progress role-two-bar">
-                        <div class="determinate" style="width: 0%"></div>
-                    </div>
-                    <div class="role-two-percentile percentile hide-on-small-only"></div>
-                </div>
-                <div class="alpha-box center col m4 s4">
-                    <div style="margin-top:10px" class="role-three-title combine-title"></div>
-                    <div class="role-three-score combine-score"></div>
-                    <div class="progress role-three-bar">
-                        <div class="determinate" style="width: 0%"></div>
-                    </div>
-                    <div class="role-three-percentile percentile hide-on-small-only"></div>
-                </div>
-            </div>
+
         <?php endif; ?>
 
         <?php if ($player['position'] == 'WR'): ?>
             <?php
-                $player['metrics']['beatPress'] = (array_key_exists('beatPress', $player['metrics'])) ? $player['metrics']['beatPress'] : "-";
-                $player['metrics']['separation'] = (array_key_exists('separation', $player['metrics'])) ? $player['metrics']['separation'] : "-";
-                $player['metrics']['contested'] = (array_key_exists('contested', $player['metrics'])) ? $player['metrics']['contested'] : "-";
-                $player['metrics']['yac'] = (array_key_exists('yac', $player['metrics'])) ? $player['metrics']['yac'] : "-";
+                $player['metrics']['beatPress'] = (array_key_exists('beatPress', $player['metrics'])) ? $player['metrics']['beatPress'] : null;
+                $player['metrics']['separation'] = (array_key_exists('separation', $player['metrics'])) ? $player['metrics']['separation'] : null;
+                $player['metrics']['contested'] = (array_key_exists('contested', $player['metrics'])) ? $player['metrics']['contested'] : null;
+                $player['metrics']['yac'] = (array_key_exists('yac', $player['metrics'])) ? $player['metrics']['yac'] : null;
+                $player['percentiles']['beatPress'] = (array_key_exists('beatPress', $player['metrics'])) ? $player['metrics']['beatPress'] : null;
+                $player['percentiles']['separation'] = (array_key_exists('separation', $player['metrics'])) ? $player['metrics']['separation'] : null;
+                $player['percentiles']['contested'] = (array_key_exists('contested', $player['metrics'])) ? $player['metrics']['contested'] : null;
+                $player['percentiles']['yac'] = (array_key_exists('yac', $player['metrics'])) ? $player['metrics']['yac'] : null;
             ?>
             <div class="row">
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Beat Press</div>
-                    <div class="combine-score"><?= (array_key_exists('beatPress', $player['metrics'])) ? $player['metrics']['beatPress'] : 0?></div>
+                    <div class="combine-score"><?= ($player['metrics']['beatPress'] != null) ? $player['metrics']['beatPress'] : "-" ?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['beatPress'] ?>%"></div>
                     </div>
@@ -203,7 +226,7 @@
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Separation</div>
-                    <div class="combine-score"><?= (array_key_exists('separation', $player['metrics'])) ? $player['metrics']['separation'] : 0?></div>
+                    <div class="combine-score"><?= ($player['metrics']['separation'] != null) ? $player['metrics']['separation'] : "-" ?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['separation'] ?>%"></div>
                     </div>
@@ -211,7 +234,7 @@
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Contested Catch</div>
-                    <div class="combine-score"><?= (array_key_exists('contested', $player['metrics'])) ? $player['metrics']['contested'] : 0?></div>
+                    <div class="combine-score"><?= ($player['metrics']['contested'] != null) ? $player['metrics']['contested'] : "-"?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['contested'] ?>%"></div>
                     </div>
@@ -219,7 +242,7 @@
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">YAC Score</div>
-                    <div class="combine-score"><?= (array_key_exists('yac', $player['metrics'])) ? $player['metrics']['yac'] : 0 ?></div>
+                    <div class="combine-score"><?= ($player['metrics']['yac'] != null) ? $player['metrics']['yac'] : "-" ?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['yac'] ?>%"></div>
                     </div>
@@ -334,6 +357,9 @@
                     <li class="tab col s4"><a class="purple-text" href="#test1">NFL Stats</a></li>
                     <li class="tab col s4"><a class="purple-text" href="#test2">NFL Game Logs</a></li>
                     <li class="tab col s4"><a class="active purple-text" href="#test3">College Stats</a></li>
+                <?php elseif ($player['position'] == 'QB') : ?>
+                    <li class="tab col s4"><a class="active purple-text" href="#test1">NFL Stats</a></li>
+                    <li class="tab col s4"><a id="college-tab" class="purple-text" href="#test3">College Stats</a></li>
                 <?php else: ?>
                     <li class="tab col s4"><a class="active purple-text" href="#test1">NFL Stats</a></li>
                     <li class="tab col s4"><a class="purple-text" href="#test2">NFL Game Logs</a></li>

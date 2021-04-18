@@ -82,6 +82,12 @@ class PlayerManager
         if ($gameLogs !== false && count($gameLogs) != 0) {
             foreach ($gameLogs as $gameLog) {
                 $gameLog->decodeJson();
+                $ranks = $gameLog->getRanks();
+                if (count($gameLog->getRanks()) == 1) {
+                    $gameLog->setRanks([
+                        "pts_ppr" => ""
+                    ]);
+                }
                 $logs[] = $gameLog;
             }
             $player->setGameLogs($logs);
@@ -109,6 +115,10 @@ class PlayerManager
         $pointer = 0;
         foreach ($json as $key => $value) {
             $sleeperId = $value->player_id;
+
+            if ($sleeperId == 7528) {
+                $found = true;
+            }
             
             $player = $this->playerRepository->findPlayerBySleeperId($sleeperId);
             if (empty($player)) {
@@ -127,6 +137,8 @@ class PlayerManager
                 }
             }
 
+
+
             if ($player->getSleeperId() == null) {
                 $player->setSleeperId($value->player_id);
             }
@@ -135,9 +147,10 @@ class PlayerManager
             $player->setLastName($value->last_name);
             $player->setSearchFullName($value->search_full_name);
             $player->setPosition($value->position);
-//            if ($player->getTeam() !== 'Rookie') {
-            $player->setTeam($value->team);
-//            }
+            if ($player->getTeam() !== 'Rookie') {
+                $player->setTeam($value->team);
+            }
+
             if ($value->team == null) {
                 $player->setTeam("FA");
             }
@@ -219,7 +232,7 @@ class PlayerManager
 
     public function updateWrMetrics()
     {
-        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
         $wrService->calculateMetrics();
         $wrService->calculatePercentiles();
         $wrService->calculateSpecialScores();
@@ -228,7 +241,7 @@ class PlayerManager
 
     public function updateRbMetrics()
     {
-        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
         $rbService->calculateMetrics();
         $rbService->calculatePercentiles();
         $rbService->calculateSpecialScores();
@@ -237,7 +250,7 @@ class PlayerManager
 
     public function updateTeMetrics()
     {
-        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
         $teService->calculateMetrics();
         $teService->calculatePercentiles();
         $teService->calculateSpecialScores();
@@ -246,7 +259,7 @@ class PlayerManager
 
     public function updateQbMetrics()
     {
-        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
         $qbService->calculateMetrics();
         $qbService->calculatePercentiles();
         $qbService->calculateSpecialScores();
@@ -255,7 +268,7 @@ class PlayerManager
 
     public function updateOlMetrics()
     {
-        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $olService = new Position\OffLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
         $olService->calculateMetrics();
         $olService->calculatePercentiles();
         $olService->calculateSpecialScores();
@@ -297,14 +310,14 @@ class PlayerManager
 
     public function scrapCollegeJob()
     {
-//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
 //        $rbService->scrapCollegeJob();
 
-//        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $teService->scrapCollegeJob();
-
-        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-        $wrService->scrapCollegeJob();
+        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+        $teService->scrapCollegeJob();
+//
+//         $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+//         $wrService->scrapCollegeJob();
 
 //        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
 //        $qbService->scrapCollegeJob();
@@ -320,19 +333,34 @@ class PlayerManager
 
     public function syncSisIds()
     {
+//        $playerIds = $this->sisApi->getPlayerIds();
+//        $progressBar = new ProgressBar($this->consoleAdapter, 0, count($playerIds));
+//        $pointer = 0;
+//        foreach ($playerIds as $playerInfo) {
+//           $player =  $this->playerRepository->findPlayerByGsisId($playerInfo['gsisPlayerId']);
+//           if ($player != null) {
+//               $player->setSisId($playerInfo['sisPlayerId']);
+//               $this->playerCommand->updatePlayer($player);
+//           }
+//           $pointer++;
+//           $progressBar->update($pointer);
+//        }
+//        $progressBar->finish();
+
         $players = $this->sisApi->getPlayers();
         $progressBar = new ProgressBar($this->consoleAdapter, 0, count($players));
         $pointer = 0;
-        foreach ($players as $id => $playerInfo) {
-            $this->
-
-           $player =  $this->playerRepository->findPlayerByInfo($playerInfo['firstName'], $playerInfo['lastName'], $playerInfo['positionName']);
-           if ($player != false || empty($player->getSisId())) {
-               $player->setSisId($playerInfo['playerId']);
-               $this->playerCommand->updatePlayer($player);
-           }
-           $pointer++;
-           $progressBar->update($pointer);
+        foreach ($players as $playerInfo) {
+            $player =  $this->playerRepository->findPlayerBySisId($playerInfo['playerId']);
+            if ($player == null) {
+                $player = $this->playerRepository->findPlayerByInfo($playerInfo['firstName'], $playerInfo['lastName'], $playerInfo['positionName']);
+                if ($player != null) {
+                    $player->setSisId($playerInfo['playerId']);
+                    $this->playerCommand->updatePlayer($player);
+                }
+            }
+            $pointer++;
+            $progressBar->update($pointer);
         }
         $progressBar->finish();
     }

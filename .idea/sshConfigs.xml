@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="nannyleaks.com" id="ad7f84dd-5c20-4442-889b-bd19d71e55c4" port="22" customName="nannyleaks" nameFormat="CUSTOM" username="webadmin">
+        <option name="customName" value="nannyleaks" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

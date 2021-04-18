@@ -100,6 +100,7 @@
       <path value="$PROJECT_DIR$/vendor/patreon/patreon" />
       <path value="$PROJECT_DIR$/vendor/laminas/laminas-serializer" />
       <path value="$PROJECT_DIR$/vendor/laminas/laminas-permissions-rbac" />
+      <path value="$PROJECT_DIR$/vendor/tightenco/collect" />
     </include_path>
   </component>
 </project>

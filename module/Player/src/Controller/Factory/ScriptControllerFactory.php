@@ -9,6 +9,7 @@
 namespace Player\Controller\Factory;
 
 use Player\Model\Player\PlayerRepositoryInterface;
+use Player\Service\MatchupManager;
 use Player\Service\StatsManager;
 use Player\Service\TeamManager;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -33,7 +34,8 @@ class ScriptControllerFactory implements FactoryInterface
             $container->get(PlayerRepositoryInterface::class),
             $container->get(PlayerManager::class),
             $container->get(StatsManager::class),
-            $container->get(TeamManager::class)
+            $container->get(TeamManager::class),
+            $container->get(MatchupManager::class)
         );
     }
 }

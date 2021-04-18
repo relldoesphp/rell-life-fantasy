@@ -1,4 +1,25 @@
 <?php
+
+foreach ($team1->dfront as $position => $info) {
+    if (empty($info)) {
+        $team1->dfront[$position] = [
+                "first_name" => "",
+                "last_name" => "",
+                "sleeper_id" => "",
+            ];
+    }
+}
+
+foreach ($team2->dfront as $position => $info) {
+    if (empty($info)) {
+        $team2->dfront[$position] = [
+            "first_name" => "",
+            "last_name" => "",
+            "sleeper_id" => "",
+        ];
+    }
+}
+
 ?>
 <div class="section white full-height container">
     <div class="row container">
@@ -263,9 +284,9 @@
                         </div>
                         <?php if ($team1->def_base == "3-4" || in_array($team1->team,["SF","ATL","OAK"])): ?>
                         <div class="col s2">
-                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/<?= $team1->dfront["RT"]["sleeper_id"] ?>.jpg">
+                            <img class="responsive-img" style="width:80px" src="https://sleepercdn.com/content/nfl/players/.jpg">
                             <br>
-                            <?= $team1->dfront["RT"]["first_name"]." ".$team1->dfront["RT"]["last_name"] ?>
+<!--                            --><?//= $team1->dfront["RT"]["first_name"]." ".$team1->dfront["RT"]["last_name"] ?>
                         </div>
                         <?php endif; ?>
                     </div>

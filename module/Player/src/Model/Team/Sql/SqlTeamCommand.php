@@ -97,6 +97,7 @@ class SqlTeamCommand implements TeamCommandInterface
             "name" => $team->getName(),
             "coaches" => $team->getCoaches(),
             "scheme" => $team->getScheme(),
+            "stats" => $team->getStats(),
             "ratings" => $team->getRatings(),
             "volume" => $team->getVolume(),
             "roles" => $team->getRoles(),

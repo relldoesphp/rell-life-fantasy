@@ -11,6 +11,7 @@ namespace Player\Controller;
 use Player\Model\Player;
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
+use Player\Service\MatchupManager;
 use Player\Service\PlayerManager;
 use Player\Service\StatsManager;
 use Player\Service\TeamManager;
@@ -25,13 +26,15 @@ class ScriptController extends AbstractActionController
     private $playerManager;
     private $statsManager;
     private $teamManager;
+    private $matchupManager;
 
     public function __construct(
         PlayerCommandInterface $command,
         PlayerRepositoryInterface $repository,
         PlayerManager $playerManager,
         StatsManager $statsManager,
-        TeamManager $teamManager
+        TeamManager $teamManager,
+        MatchupManager $matchupManager
     )
     {
         $this->command = $command;
@@ -39,6 +42,7 @@ class ScriptController extends AbstractActionController
         $this->playerManager = $playerManager;
         $this->statsManager = $statsManager;
         $this->teamManager = $teamManager;
+        $this->matchupManager = $matchupManager;
     }
 
     public function indexAction()
@@ -73,7 +77,6 @@ class ScriptController extends AbstractActionController
 
     public function dataScrapperAction()
     {
-
         $this->playerManager->scrapCollegeJob();
     }
 
@@ -95,8 +98,9 @@ class ScriptController extends AbstractActionController
 
     public function updateSleeperInfoAction()
     {
-       // $this->playerManager->updateSleeperInfo();
+        $this->playerManager->updateSleeperInfo();
         $this->playerManager->syncSisIds();
+        //$this->matchupManager->importGames();
     }
 
     public function getSleeperLogsAction()
@@ -127,6 +131,6 @@ class ScriptController extends AbstractActionController
 
     public function updateTeamsAction()
     {
-        $this->teamManager->sync();
+        $this->teamManager->createPassingStats();
     }
 }

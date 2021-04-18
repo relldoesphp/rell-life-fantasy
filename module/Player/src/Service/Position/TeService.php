@@ -18,12 +18,15 @@ use Laminas\Db\Sql\Select;
 use Laminas\Http\Request;
 use Laminas\Http\Client;
 use Laminas\Dom\Query;
+use Player\Service\SportsInfoApi;
+
 class TeService extends ServiceAbstract
 {
     private $consoleAdapter;
     private $repository;
     private $command;
     private $db;
+    private $sisApi;
 
     public $specialMetrics = [
         'move' => [
@@ -52,12 +55,19 @@ class TeService extends ServiceAbstract
         ]
     ];
 
-    public function __construct(AdapterInterface $db, Console $consoleAdapter, PlayerCommandInterface $command, PlayerRepositoryInterface $repository)
+    public function __construct(
+        AdapterInterface $db,
+        Console $consoleAdapter,
+        PlayerCommandInterface $command,
+        PlayerRepositoryInterface $repository,
+        SportsInfoApi $sisApi
+    )
     {
-        parent::__construct($db, $consoleAdapter, $command, $repository);
+        parent::__construct($db, $consoleAdapter, $command, $repository, $sisApi);
         $this->repository = $repository;
         $this->command = $command;
         $this->consoleAdapter = $consoleAdapter;
+        $this->sisApi = $sisApi;
     }
 
     public function calculateMetrics()
@@ -81,7 +91,7 @@ class TeService extends ServiceAbstract
         $progressBar = new ProgressBar($this->consoleAdapter, 0, count($tes));
         $pointer = 0;
         foreach ($tes as $te) {
-            if ($te->getId() == 113) {
+            if ($te->getId() == 27395) {
                 $gothim = true;
             }
 
@@ -142,7 +152,7 @@ class TeService extends ServiceAbstract
             if ($noCone) {
                 $slot = null;
             } else {
-                $slot = round(($percentiles['routeAgility'] * .7) + ($percentiles['elusiveness'] * .3),2);
+                $slot = round(($percentiles['routeAgility'] * .7) + ($percentiles['jukeAgility'] * .3),2);
             }
             $metrics["slot"] = $slot;
 
@@ -150,9 +160,36 @@ class TeService extends ServiceAbstract
             if ($noForty)  {
                 $deep = null;
             } else {
-                $deep = round(($percentiles['fortyTime'] * .7) + ($percentiles['jumpball'] * .3), 2);
+                $deep = round(($percentiles['fortyTime'] * .6) + ($percentiles['jumpball'] * .4), 2);
             }
             $metrics["deep"] = $deep;
+
+            /*** New Move Score ***/
+            /*** Calculate Move Score ***/
+            //Move - TE Speed + Jumpball + Route Agility
+            $data['move'] = 0;
+            if ($metrics['deep'] != null && $metrics['slot'] != null) {
+                $data['move'] = ($metrics['slot'] *.60) + ($metrics['deep'] * .40);
+            } else {
+                if (array_key_exists('routeAgility', $metrics) && !in_array($metrics['routeAgility'], [null, "-", "", "null"])
+                    && !in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
+                    $data['move'] = ($percentiles['routeAgility'] * .70) + ($percentiles['fortyTime'] * .30);
+                }
+
+                if (array_key_exists('routeAgility', $metrics) && !in_array($metrics['routeAgility'], [null, "-", "", "null"])
+                    && in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
+                    $data['move'] = $percentiles['routeAgility'];
+                }
+
+                if (array_key_exists('routeAgiltiy', $metrics) && in_array($metrics['routeAgility'], [null, "-", "", "null"])
+                    && !in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
+                    $data['move'] = $percentiles['fortyTime'];
+                }
+
+                if (array_key_exists('verticalJump', $metrics) && !in_array($metrics['verticalJump'], [null, "-", "", "null"])) {
+                    $data['move'] = ($percentiles['verticalJump'] * .25) + ($data['move'] * .75);
+                }
+            }
 
             /*** Calculate Run Block ***/
             $data['runBlock'] = null;
@@ -174,59 +211,36 @@ class TeService extends ServiceAbstract
             /*** Calculate Pass Block ***/
             if (array_key_exists('shuttle', $metrics) && !in_array($metrics['shuttle'], [null, "-", "", "null"])
                 && !in_array($metrics['benchPress'], [null, "-", "", "null"]) ) {
-                $data['passBlock'] = ($percentiles->bully * .40) + ($percentiles->elusiveness * .60);
+                $data['passBlock'] = ($percentiles['bully'] * .40) + ($percentiles['elusiveness'] * .60);
             }
 
             if (array_key_exists('shuttle', $metrics)
                 && array_key_exists('benchPress', $metrics)
                 && in_array($metrics['shuttle'], [null, "-", "", "null"])
                 && !in_array($metrics['benchPress'], [null, "-", "", "null"]) ) {
-                $data['passBlock'] = ($percentiles->bully * .40) + ($percentiles->speedScore * .60);
+                $data['passBlock'] = ($percentiles['bully'] * .40) + ($percentiles['speedScore'] * .60);
             }
 
-            /*** Calculate Move Score ***/
-            //Move - TE Speed + Jumpball + Route Agility
-            $data['move'] = 0;
 
-            if (array_key_exists('routeAgility', $metrics) && !in_array($metrics['routeAgility'], [null, "-", "", "null"])
-                && !in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
-                $data['move'] = ($percentiles['routeAgility'] * .70) + ($percentiles['fortyTime'] * .30);
-            }
-
-            if (array_key_exists('routeAgility', $metrics) && !in_array($metrics['routeAgility'], [null, "-", "", "null"])
-                && in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
-                $data['move'] = $percentiles['routeAgility'];
-            }
-
-            if (array_key_exists('routeAgiltiy', $metrics) && in_array($metrics['routeAgility'], [null, "-", "", "null"])
-                && !in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
-                $data['move'] = $percentiles['fortyTime'];
-            }
-
-            if (array_key_exists('verticalJump', $metrics) && !in_array($metrics['verticalJump'], [null, "-", "", "null"])) {
-                $data['move'] = ($percentiles['verticalJump'] * .25) + ($data['move'] * .75);
-            }
 
             /*** Calculate InLine Score ***/
-            if (!in_array($data['runBlock'], [null, "-", "", "null"])
-                && array_key_exists("runBlock", $percentiles)
-                && !in_array($percentiles['bmi'], [null, "-", "", "null"])) {
-                $data['inLine'] = ($percentiles['runBlock'] * .60) + ($percentiles['bmi'] * .20) + ($percentiles['weight'] * .20);
-            }
-
-            if (in_array($data['runBlock'], [null, "-", "", "null"])
-                && !in_array($percentiles['weight'], [null, "-", "", "null"]) ) {
+            if ($data['runBlock'] !== null) {
+                $data['inLine'] = ($data['runBlock'] * .60) + ($percentiles['bmi'] * .20) + ($percentiles['weight'] * .20);
+            } else  {
                 $data['inLine'] = ($percentiles['speedScore'] * .60) + ($percentiles['bmi'] * .20) + ($percentiles['weight'] * .20);
             }
 
 
-
             //Alpha -  Move+Line
-            $data['alpha'] = ($data['inLine'] + $data['move'])/2;
+            if ($data['move'] != null) {
+                $data['alpha'] = ($data['inLine'] *.30) + ($data['move'] * .70);
+            }
 
             $metrics['move'] = round($data['move'], 2);
             $metrics['inLine'] = round($data['inLine'], 2);
             $metrics['alpha'] = round($data['alpha'], 2);
+            $metrics['runBlock'] = round($data['runBlock'], 2);
+            $metrics['passBlock'] = round($data['passBlock'], 2);
 
             /*** Make College Score ***/
             if ($te->college_stats != null) {
@@ -243,6 +257,9 @@ class TeService extends ServiceAbstract
                 $metrics['collegeSeasons'] = $college['collegeSeasons'];
                 $metrics['bestDominator'] = $college['bestDominator'];
                 $te->setCollegeStats($college['collegeStats']);
+
+                $metrics['alpha'] = ($metrics['alpha'] * .7) + (($college['collegeScore']/19) * .3);
+                $metrics['alpha'] = round($metrics['alpha'], 2);
             } else {
                 $metrics['collegeScore'] = null;
                 $metrics['bestSeason'] = null;
@@ -559,10 +576,30 @@ class TeService extends ServiceAbstract
         $tes = $this->repository->findAllPlayers("TE");
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $tes->count());
         $pointer = 0;
+        $collegePlayers = $this->sisApi->getCollegePlayers('2020');
+        $collect = collect($collegePlayers);
 
         foreach ($tes as $te) {
-            if ($te->getTeam() == "Rookie") {
+            $te->decodeJson();
+            $metrics = $te->getMetrics();
+            if ($te->getTeam() == "Rookie" && array_key_exists('collegeScore', $metrics) && $metrics['collegeScore'] == null) {
                 $te->decodeJson();
+                $apiInfo = $te->getApiInfo();
+                $playerInfo = $te->getPlayerInfo();
+                $firstName = $te->getFirstName();
+                $lastName = $te->getLastName();
+                $result = $collect->firstWhere('fullName', $firstName." ".$lastName);
+                if (empty($result)) {
+                    $result = [];
+                } else {
+                    $playerInfo['birth_date'] = $result['birthdate'];
+                    $playerInfo['heightInches'] = $result['height'];
+                    $playerInfo['draft_year'] = $result['season'] + 1;
+                    $playerInfo['redShirt'] = $result['redShirt'];
+                    $apiInfo['cfb_id'] = $result['playerId'];
+                    $te->setApiInfo($apiInfo);
+                    $te->setPlayerInfo($playerInfo);
+                }
                 $result = $this->scrapCollegeStats($te);
                 if ($result == false) {
                     continue;
@@ -631,6 +668,7 @@ class TeService extends ServiceAbstract
             // $result is a DOMElement
         }
 
+        $collegeStats = $this->getSisMissingCollegeStats($te, $collegeStats);
         $te->setCollegeStats($collegeStats);
         $this->command->save($te);
         return true;
@@ -670,5 +708,44 @@ class TeService extends ServiceAbstract
         }
 
         return $total;
+    }
+
+    public function getSisMissingCollegeStats($te, $collegeStats)
+    {
+        $apiInfo = $te->getApiInfo();
+        if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
+            $recSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "receiving");
+            foreach ($recSeasons as $recSeason) {
+                if ($recSeason['teamId'] != null) {
+                    $recTotals = $this->sisApi->getCollegeTeamStats($recSeason['season'], $recSeason['teamId'], "receiving");
+                    $team = collect($recTotals);
+                    $totals['targets'] = $team->sum('targets');
+                    $totals['recs'] = $team->sum('recs');
+                    $totals['yds'] = $team->sum('yards');
+                    $totals['tds'] = $team->sum('td');
+                } else {
+                    $totals['targets'] = 0;
+                    $totals['recs'] = 0;
+                    $totals['yds'] = 0;
+                    $totals['tds'] = 0;
+                }
+                $year = $recSeason['season'];
+                $collegeStats[$year]['totals'] = $totals;
+                $collegeStats[$year]['year'] = $year;
+                $collegeStats[$year]['team'] = $recSeason['team'];
+                $collegeStats[$year]['games'] = $recSeason['g'];
+                $collegeStats[$year]['targets'] = $recSeason['targets'];
+                $collegeStats[$year]['recs'] = $recSeason['recs'];
+                $collegeStats[$year]['recYds'] = $recSeason['yards'];
+                $collegeStats[$year]['recAvg'] = $recSeason['yardsPerRec'];
+                $collegeStats[$year]['recTds'] = $recSeason['td'];
+            }
+
+            if (array_key_exists('Career', $collegeStats)) {
+                unset($collegeStats['Career']);
+            }
+        }
+
+        return $collegeStats;
     }
 }

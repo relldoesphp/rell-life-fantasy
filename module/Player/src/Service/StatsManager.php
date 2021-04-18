@@ -111,7 +111,7 @@ EOT;
         $progressBar->finish();
     }
 
-    public function getSeasonStats($year)
+    public function getSeasonStatsLong()
     {
         $list = $this->sisApi->getPlayers();
         $progressBar = new ProgressBar($this->consoleAdapter, 0, count($list));
@@ -203,8 +203,10 @@ EOT;
         }
         $progressBar->finish();
         return;
+    }
 
-
+    public function getSeasonStats($year)
+    {
         $offensive = ["passing", "rushing", "receiving"];
         foreach ($offensive as $type) {
             $players = $this->sisApi->getPlayersQuery($year, $type);
@@ -385,6 +387,11 @@ EOT;
             $progressBar->finish();
             $week++;
         }
+    }
+
+    public function test()
+    {
+        $result = $this->sisApi->testRequest();
     }
 
     public function getGameLogs($year)
@@ -655,7 +662,7 @@ EOT;
         ];
 
         $yards = ["rush_yd", "pass_yd", "rec_yd"];
-        $multipliers = ["pass_cmp", "pass_td", "rush_att", "rush_td", "pass_int","fumble"];
+        $multipliers = ["pass_cmp", "pass_td", "rush_att", "rush_td", "rec_td","pass_int","fumble"];
         $points = 0;
 
         foreach ($stats as $key => $value) {
@@ -677,6 +684,12 @@ EOT;
             $stats['pts_half_ppr'] = $points;
             $stats["pts_std"] = $points;
         }
+
+        $passTd= (array_key_exists('pass_td', $stats)) ? $stats['pass_td'] : 0;
+        $rushTd = (array_key_exists('rush_td', $stats)) ? $stats['rush_td'] : 0;
+        $recTd = (array_key_exists('rec_td', $stats)) ? $stats['rec_td'] : 0;
+
+        $stats['all_td'] = $passTd + $rushTd + $recTd;
 
         return $stats;
     }

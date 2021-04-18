@@ -287,7 +287,8 @@ class Team
             'support',
             'sustainability',
             'personnel',
-            'sis_info'
+            'sis_info',
+            'stats'
         ];
 
         foreach ($jsonFields as $field) {
@@ -309,7 +310,8 @@ class Team
             'support',
             'sustainability',
             'personnel',
-            'sis_info'
+            'sis_info',
+            'stats'
         ];
 
         foreach ($jsonFields as $field) {

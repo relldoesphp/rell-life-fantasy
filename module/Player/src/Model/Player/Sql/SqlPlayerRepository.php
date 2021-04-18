@@ -320,10 +320,28 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
 
     public function findPlayerBySisId($sisId)
     {
-        $sql    = new Sql($this->db);
+        $sql = new Sql($this->db);
         $select = $sql->select();
         $select->from(['p' => 'player_test']);
         $select->where(['p.sis_id = ?' => $sisId]);
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->playerPrototype);
+        $resultSet->initialize($result);
+        return $resultSet->current();
+    }
+
+    public function findPlayerByGsisId($gsisId)
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select();
+        $select->from(['p' => 'player_test']);
+        $select->where(["p.api_info->'$.gsis_id' = ?" => $gsisId]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

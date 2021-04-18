@@ -388,8 +388,8 @@ rlf.initMatchup = function(off, def, id) {
 
     var metricsDefault = "Not Available<div class='progress'><div class='determinate' style='width:0%'></div></div>";
 
-    var LWR = off.depth_chart.LWR[1];
-    var RCB = def.depth_chart.RCB[1];
+    var LWR = off.depth_chart.LWR[0];
+    var RCB = def.depth_chart.RCB[0];
 
     $('#'+id+'-LWR').DataTable({
         "paging": false,
@@ -424,8 +424,8 @@ rlf.initMatchup = function(off, def, id) {
         ]
     });
 
-    var LWR = off.depth_chart.RWR[1];
-    var RCB = def.depth_chart.LCB[1];
+    var LWR = off.depth_chart.RWR[0];
+    var RCB = def.depth_chart.LCB[0];
 
     $('#'+id+'-RWR').DataTable({
         "paging": false,
@@ -460,7 +460,7 @@ rlf.initMatchup = function(off, def, id) {
         ]
     });
 
-    var LWR = off.depth_chart.SWR[1];
+    var LWR = off.depth_chart.SWR[0];
     var RCB = def.CB.slot;
 
     $('#'+id+'-SWR').DataTable({
@@ -497,7 +497,7 @@ rlf.initMatchup = function(off, def, id) {
     });
 
 
-    var TE = off.depth_chart.TE[1];
+    var TE = off.depth_chart.TE[0];
     var MLB = def.LBs.middle[0];
     $('#'+id+'-TE').DataTable({
         "paging": false,
@@ -532,7 +532,7 @@ rlf.initMatchup = function(off, def, id) {
         ]
     });
 
-    var FS = def.depth_chart.FS[1];
+    var FS = def.depth_chart.FS[0];
     $('#'+id+'-FS').DataTable({
         "paging": false,
         "ordering": false,
@@ -555,7 +555,7 @@ rlf.initMatchup = function(off, def, id) {
     });
 
 
-    var SS = def.depth_chart.SS[1];
+    var SS = def.depth_chart.SS[0];
     $('.'+id+'-SS').DataTable({
         "paging": false,
         "ordering": false,
@@ -593,7 +593,7 @@ rlf.initMatchup = function(off, def, id) {
     //     '  <table id="'+id+'-RB2" width="100%"></table>\n' +
     //     '</div>');
 
-    var RB1 = off.depth_chart.RB[1];
+    var RB1 = off.depth_chart.RB[0];
     $('#'+id+'-RB1').DataTable({
         "paging": false,
         "ordering": false,
@@ -618,7 +618,7 @@ rlf.initMatchup = function(off, def, id) {
         ]
     });
 
-    var RB1 = off.depth_chart.RB[2];
+    var RB1 = off.depth_chart.RB[1];
     $('#'+id+'-RB2').DataTable({
         "paging": false,
         "ordering": false,
@@ -676,7 +676,7 @@ rlf.initMatchup = function(off, def, id) {
     });
 
 
-    var WR1 = off.depth_chart.LWR[1];
+    var WR1 = off.depth_chart.LWR[0];
     $('#'+id+'-WR1').DataTable({
         "paging": false,
         "ordering": false,
@@ -701,7 +701,7 @@ rlf.initMatchup = function(off, def, id) {
         ]
     });
 
-    var WR1 = off.depth_chart.RWR[1];
+    var WR1 = off.depth_chart.RWR[0];
     $('#'+id+'-WR2').DataTable({
         "paging": false,
         "ordering": false,
@@ -726,7 +726,7 @@ rlf.initMatchup = function(off, def, id) {
         ]
     });
 
-    var WR1 = off.depth_chart.SWR[1];
+    var WR1 = off.depth_chart.SWR[0];
     $('#'+id+'-slot').DataTable({
         "paging": false,
         "ordering": false,
@@ -751,7 +751,7 @@ rlf.initMatchup = function(off, def, id) {
         ]
     });
 
-    var WR1 = off.depth_chart.TE[1];
+    var WR1 = off.depth_chart.TE[0];
     $('#'+id+'-TE1').DataTable({
         "paging": false,
         "ordering": false,
@@ -776,7 +776,7 @@ rlf.initMatchup = function(off, def, id) {
         ]
     });
 
-    var CB1 = def.depth_chart.LCB[1];
+    var CB1 = def.depth_chart.LCB[0];
     $("."+id+"-CB1").DataTable({
         "paging": false,
         "ordering": false,
@@ -801,7 +801,7 @@ rlf.initMatchup = function(off, def, id) {
         ]
     });
 
-    var CB2 = def.depth_chart.RCB[1];
+    var CB2 = def.depth_chart.RCB[0];
     $("."+id+"-CB2").DataTable({
         "paging": false,
         "ordering": false,

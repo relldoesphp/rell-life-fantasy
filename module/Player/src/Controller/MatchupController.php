@@ -32,9 +32,17 @@ class MatchupController extends AbstractActionController
         $year = $this->params()->fromQuery("year");
 
         $matchups = $this->matchupManager->getMatchups($week,$year);
+        $games = [];
+        foreach ($matchups as $i => $info) {
+            $away = $this->teamManager->getTeamById($info->away);
+            $games[$i] = $info;
+            $games[$i]->away = $away->team;
+            $home = $this->teamManager->getTeamById($info->home);
+            $games[$i]->home = $home->team;
+        }
 
         $viewModel = new ViewModel([
-            'matchups' => $matchups,
+            'matchups' => $games
         ]);
 
         return $viewModel;
@@ -46,8 +54,13 @@ class MatchupController extends AbstractActionController
         $id = $this->params("id");
         $matchup = $this->matchupManager->getMatchupById($id);
 
-        $team1 = $this->teamManager->getTeam($matchup->away);
-        $team2 = $this->teamManager->getTeam($matchup->home);
+        if (is_numeric($matchup->away)) {
+            $team1 = $this->teamManager->getTeamById($matchup->away);
+            $team2 = $this->teamManager->getTeamById($matchup->home);
+        } else {
+            $team1 = $this->teamManager->getTeam($matchup->away);
+            $team2 = $this->teamManager->getTeam($matchup->home);
+        }
 
         $teams = [
             "team1" => $team1,
@@ -79,7 +92,15 @@ class MatchupController extends AbstractActionController
             if (array_key_exists("LT", $depthChart)) {
                 $offLine["LT"] = array_values($depthChart["LT"]);
             } else {
-                $offLine["LT"] = array_values($depthChart["OT"]["bench"]);
+                if (array_key_exists('T', $depthChart) && !empty($depthChart['T'])) {
+                    $offLine["LT"] = array_values($depthChart["T"]["bench"]);
+                } elseif (array_key_exists('OT', $depthChart) && !empty($depthChart['OT'])) {
+                    $offLine["LT"] = array_values($depthChart["OT"]["bench"]);
+                } elseif (array_key_exists('OL', $depthChart) && !empty($depthChart['OL'])) {
+                    $offLine["LT"] = array_values($depthChart["OL"]["bench"]);
+                } else {
+                    $offLine["LT"] = array_values($depthChart["G"]["bench"]);
+                }
             }
 
             $offLine["LG"] = array_values($depthChart["LG"]);
@@ -143,8 +164,8 @@ class MatchupController extends AbstractActionController
                     $dfront["C"] = array_values($depthChart["RDT"]);
                     $dfront["RG"] = array_values($depthChart["RDE"]);
                     $dfront["RT"] = array_values($depthChart["DE"]);
-                    $LBs["weak"] = array_values($depthChart["SLB"]);
-                    $LBs["middle"] = array_values($depthChart["MLB"]);
+                    $LBs["weak"] = array_values($depthChart["LB"]);
+                    $LBs["middle"] = array_values($depthChart["LB"]);
                     break;
                 case "CHI":
                     $dfront["LT"] = array_values($depthChart["LOLB"]);
@@ -239,7 +260,7 @@ class MatchupController extends AbstractActionController
                     $dfront["LG"] = array_values($depthChart["DT"]);
                     $dfront["C"] = array_values($depthChart["RDE"]);
                     $dfront["RG"] = array_values($depthChart["LB"]);
-                    $dfront["RT"][] = $depthChart["LDE"][2];
+                    $dfront["RT"][] = $depthChart["OLB"];
                     $LBs["middle"][] =$depthChart["FS"][2];
                     $LBs["weak"][] = $depthChart["LB"][2];
                     $cb["slot"] = $depthChart["LCB"][2];
@@ -347,7 +368,7 @@ class MatchupController extends AbstractActionController
                 case "IND":
                     $dfront["LT"] = array_values($depthChart["LDE"]);
                     $dfront["LG"] = array_values($depthChart["NT"]);
-                    $dfront["C"] = array_values($depthChart["UT"]);
+                    $dfront["C"] = array_values($depthChart["DT"]);
                     $dfront["RG"] = array_values($depthChart["RDE"]);
                     $dfront["RT"] = array_values($depthChart["SLB"]);
                     $LBs["middle"] = array_values($depthChart["MLB"]);
@@ -378,14 +399,14 @@ class MatchupController extends AbstractActionController
 //                    $LBs["strong"][] = array_values($depthChart["SLB"][2]);
                     break;
                 case "CAR":
-                    $dfront["LT"] = array_values($depthChart["ROLB"]);
-                    $dfront["LG"] = array_values($depthChart["LDE"]);
-                    $dfront["C"] = array_values($depthChart["NT"]);
+                    $dfront["LT"] = array_values($depthChart["LDE"]);
+                    $dfront["LG"] = array_values($depthChart["LDT"]);
+                    $dfront["C"] = array_values($depthChart["RDT"]);
                     $dfront["RG"] = array_values($depthChart["RDE"]);
-                    $dfront["RT"] = array_values($depthChart["LOLB"]);
-                    $LBs["middle"] = array_values($depthChart["RILB"]);
-                    $LBs["weak"] = array_values($depthChart["LILB"]);
-                    $cb["slot"] = $depthChart["LCB"][2];
+                    $dfront["RT"] = array_values($depthChart["SAM"]);
+                    $LBs["middle"] = array_values($depthChart["MLB"]);
+                    $LBs["weak"] = array_values($depthChart["WILL"]);
+                    $cb["slot"] = $depthChart["LCB"][1];
 //                    $LBs["strong"][] = array_values($depthChart["SLB"][2]);
                     break;
                 case "TEN":
@@ -400,7 +421,7 @@ class MatchupController extends AbstractActionController
 //                    $LBs["strong"][] = array_values($depthChart["SLB"][2]);
                     break;
                 case "BUF":
-                    $dfront["LT"] = array_values($depthChart["LDE"]);
+                    $dfront["LT"] = array_values($depthChart["LDE"][1]);
                     $dfront["LG"] = array_values($depthChart["LDT"]);
                     $dfront["C"] = array_values($depthChart["RDT"]);
                     $dfront["RG"] = array_values($depthChart["RDE"]);
@@ -411,13 +432,13 @@ class MatchupController extends AbstractActionController
 //                    $LBs["strong"][] = array_values($depthChart["SLB"][2]);
                     break;
                 case "WAS":
-                    $dfront["LT"] = array_values($depthChart["WLB"]);
-                    $dfront["LG"] = array_values($depthChart["LDE"]);
-                    $dfront["C"] = array_values($depthChart["NT"]);
+                    $dfront["LT"] = array_values($depthChart["LDE"]);
+                    $dfront["LG"] = array_values($depthChart["LDT"]);
+                    $dfront["C"] = array_values($depthChart["RDT"]);
                     $dfront["RG"] = array_values($depthChart["RDE"]);
-                    $dfront["RT"] = array_values($depthChart["SLB"]);
+                    $dfront["RT"] = array_values($depthChart["ROLB"]);
                     $LBs["middle"][] = $depthChart["MLB"][1];
-                    $LBs["weak"][] = $depthChart["MLB"][2];
+                    $LBs["weak"][] = $depthChart["LOLB"][1];
 //                    $LBs["strong"][] = array_values($depthChart["SLB"][2]);
                     break;
                 case "HOU":
@@ -451,24 +472,24 @@ class MatchupController extends AbstractActionController
 //                    $LBs["strong"][] = array_values($depthChart["SLB"][2]);
                     break;
                 case "ARI":
-                    $dfront["LT"] = array_values($depthChart["WILL"]);
-                    $dfront["LG"] = array_values($depthChart["LDE"]);
+                    $dfront["LT"] = array_values($depthChart["OLB"]);
+                    $dfront["LG"] = array_values($depthChart["DT"]);
                     $dfront["C"] = array_values($depthChart["NT"]);
                     $dfront["RG"] = array_values($depthChart["RDE"]);
                     $dfront["RT"] = array_values($depthChart["SLB"]);
-                    $LBs["middle"] = array_values($depthChart["MLB"]);
-                    $LBs["weak"] = array_values($depthChart["SLB"]);
-                    $cb["slot"] = $depthChart["LCB"][2];
+                    $LBs["middle"] = array_values($depthChart["LILB"]);
+                    $LBs["weak"] = array_values($depthChart["RILB"]);
+                    $cb["slot"] = $depthChart["LCB"][1];
 //                    $LBs["strong"][] = array_values($depthChart["SLB"][2]);
                     break;
                 case "KC":
-                    $dfront["LT"][] = $depthChart["RDE"][2];
-                    $dfront["LG"] = array_values($depthChart["NT"]);
-                    $dfront["C"] = array_values($depthChart["DT"]);
+                    $dfront["LT"] = array_values($depthChart["LDE"]);
+                    $dfront["LG"] = array_values($depthChart["LDT"]);
+                    $dfront["C"] = array_values($depthChart["RDT"]);
                     $dfront["RG"] = array_values($depthChart["RDE"]);
-                    $dfront["RT"] = array_values($depthChart["RDE"]);
-                    $LBs["middle"][] = $depthChart["LB"][1];
-                    $LBs["weak"][] = $depthChart["LB"][2];
+                    $dfront["RT"] = array_values($depthChart["LB"][1]);
+                    $LBs["middle"][] = $depthChart["LB"][2];
+                    $LBs["weak"][] = $depthChart["LB"][3];
 //                    $LBs["strong"][] = array_values($depthChart["LB"][3]);
                     break;
                 default:

@@ -29,6 +29,11 @@ class TeamController extends AbstractActionController
 
     }
 
+    public function passingAction()
+    {
+
+    }
+
     public function queryAction()
     {
         $query = $this->params()->fromRoute('team', '');

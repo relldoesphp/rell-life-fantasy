@@ -17,6 +17,7 @@ use Player\Model\Matchup\MatchupCommandInterface;
 use Player\Model\Stats\StatsCommandInterface;
 use Player\Model\Stats\StatsRepositoryInterface;
 use Player\Model\Team\TeamRepositoryInterface;
+use Player\Service\SportsInfoApi;
 
 class MatchupManagerFactory implements FactoryInterface
 {
@@ -32,7 +33,8 @@ class MatchupManagerFactory implements FactoryInterface
             $container->get(MatchupRepositoryInterface::class),
             $container->get(StatsCommandInterface::class),
             $container->get(StatsRepositoryInterface::class),
-            $container->get(TeamRepositoryInterface::class)
+            $container->get(TeamRepositoryInterface::class),
+            $container->get(SportsInfoApi::class)
         );
     }
 }

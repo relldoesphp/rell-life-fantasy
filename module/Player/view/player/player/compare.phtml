@@ -30,7 +30,7 @@ $this->headTitle("{$players[0]['first_name']} {$players[0]['last_name']} vs {$pl
                 <div class="card-content player-card-content center">
                     <a class="btn-floating right halfway-fab waves-effect waves-light activator"><i class="material-icons teal-text">arrow_upward</i></a>
                     <span class="player-title activator white-text text-darken-4"><?= $players[0]['first_name']." ".$players[0]['last_name'] ?></span>
-                    <p class="player-title activator teal-text"><?=$players[0]['team_info']['number'] ?> <?=$players[0]['position']?> <?= $players[0]['team']?></p>
+                    <p class="player-title activator teal-text">#<?= (array_key_exists('number', $players[0]['team_info'])) ? $players[0]['team_info']['number'] : '0' ?> <?=$players[0]['position']?> <?= $players[0]['team']?></p>
                 </div>
                 <div class="card-reveal player-card-reveal">
                     <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>
@@ -74,7 +74,7 @@ $this->headTitle("{$players[0]['first_name']} {$players[0]['last_name']} vs {$pl
                     <div class="card-content player-card-content center">
                         <a class="btn-floating right halfway-fab waves-effect waves-light activator"><i class="material-icons teal-text">arrow_upward</i></a>
                         <span class="player-title activator white-text text-darken-4"><?= $players[1]['first_name']." ".$players[1]['last_name'] ?></span>
-                        <p class="player-title activator teal-text"><?=$players[1]['team_info']['number'] ?> <?=$players[1]['position']?> <?= $players[1]['team']?></p>
+                        <p class="player-title activator teal-text">#<?= (array_key_exists('number', $players[1]['team_info'])) ? $players[1]['team_info']['number'] : '0' ?> <?=$players[1]['position']?> <?= $players[1]['team']?></p>
                     </div>
                     <div class="card-reveal player-card-reveal">
                         <span class="card-title white-text">Player Info<i class="material-icons right">arrow_downward</i></span>
@@ -89,25 +89,32 @@ $this->headTitle("{$players[0]['first_name']} {$players[0]['last_name']} vs {$pl
             </div>
     </div>
     <div class="row player-prospect container scrollspy" id="player-prospect" style="margin-top:50px">
-        <div class="col m5" id="player1-skill">
-            <div class="col m4">
+        <div class="col m5 s12" id="player1-skill">
+            <div class="col s6">
                 <div class="player-skillz-role1 center combine-title"></div>
                 <div class="role-one-score center combine-score"></div>
                 <div class="progress role-one-bar">
                     <div class="determinate" style=""></div>
                 </div>
             </div>
-            <div class="col m4">
+            <div class="col s6">
                 <div class="player-skillz-role2 center combine-title"></div>
                 <div class="role-two-score center combine-score"></div>
                 <div class="progress role-two-bar">
                     <div class="determinate" style=""></div>
                 </div>
             </div>
-            <div class="col m4">
+            <div class="col s6">
                 <div class="player-skillz-role3 center combine-title"></div>
                 <div class="role-three-score center combine-score"></div>
                 <div class="progress role-three-bar">
+                    <div class="determinate" style=""></div>
+                </div>
+            </div>
+            <div class="col s6">
+                <div class="player-skillz-role4 center combine-title"></div>
+                <div class="role-four-score center combine-score"></div>
+                <div class="progress role-four-bar">
                     <div class="determinate" style=""></div>
                 </div>
             </div>
@@ -139,28 +146,35 @@ $this->headTitle("{$players[0]['first_name']} {$players[0]['last_name']} vs {$pl
 <!--                    </td>-->
 <!--                </tr>-->
 <!--            </table>-->
-        <div class="col m2 center">
+        <div class="col m2 s12 center">
             <h4>VS.</h4>
         </div>
         <div class="col m5" id="player2-skill">
-                <div class="col m4">
+                <div class="col m6">
                     <div class="player-skillz-role1 center combine-title"></div>
                     <div class="role-one-score center combine-score"></div>
                     <div class="progress role-one-bar ">
                         <div class="determinate" style=""></div>
                     </div>
                 </div>
-                <div class="col m4">
+                <div class="col m6">
                     <div class="player-skillz-role2 center combine-title"></div>
                     <div class="role-two-score center combine-score"></div>
                     <div class="progress role-two-bar">
                         <div class="determinate" style=""></div>
                     </div>
                 </div>
-                <div class="col m4">
+                <div class="col m6">
                     <div class="player-skillz-role3 center combine-title"></div>
                     <div class="role-three-score center combine-score"></div>
                     <div class="progress role-three-bar">
+                        <div class="determinate" style=""></div>
+                    </div>
+                </div>
+                <div class="col m6">
+                    <div class="player-skillz-role4 center combine-title"></div>
+                    <div class="role-four-score center combine-score"></div>
+                    <div class="progress role-four-bar">
                         <div class="determinate" style=""></div>
                     </div>
                 </div>
@@ -234,9 +248,9 @@ $this->headTitle("{$players[0]['first_name']} {$players[0]['last_name']} vs {$pl
         </div>
     </div>
     <div class="row container white">
-        <div class="col s12 m12">
-            <h5>2019 Season Stats</h5>
-            <table id="season-stats">
+<!--        <div class="col s12 m12">-->
+<!--            <h5>2019 Season Stats</h5>-->
+<!--            <table id="season-stats">-->
 <!--                <tr>-->
 <!--                    <th></th>-->
 <!--                    <th>PPG</th>-->
@@ -267,8 +281,8 @@ $this->headTitle("{$players[0]['first_name']} {$players[0]['last_name']} vs {$pl
 <!--                    <td>--><?//= $players[1]['seasonTable'][0]['stats']['rec_td']?><!--</td>-->
 <!--                    <td>--><?//= $players[1]['seasonTable'][0]['stats']['rec_ypt']?><!--</td>-->
 <!--                </tr>-->
-            </table>
-        </div>
+<!--            </table>-->
+<!--        </div>-->
     </div>
 </div>
     <div id="modal2" class="modal">

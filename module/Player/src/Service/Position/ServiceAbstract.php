@@ -16,6 +16,7 @@ use Laminas\Http\Client;
 use Player\Model\Player\PlayerCommandInterface;
 use Player\Model\Player\PlayerRepositoryInterface;
 use Laminas\ProgressBar\ProgressBar;
+use Player\Service\SportsInfoApi;
 
 
 class ServiceAbstract
@@ -24,6 +25,7 @@ class ServiceAbstract
     private $consoleAdapter;
     private $command;
     private $repository;
+    private $sisApi;
 
     public $percentileMetrics = [
         'heightInches' => [
@@ -127,15 +129,16 @@ class ServiceAbstract
         AdapterInterface $db,
         Console $consoleAdapter,
         PlayerCommandInterface $command,
-        PlayerRepositoryInterface $repository
+        PlayerRepositoryInterface $repository,
+        SportsInfoApi $sisApi
     )
     {
         $this->repository = $repository;
         $this->consoleAdapter = $consoleAdapter;
         $this->command = $command;
         $this->repository = $repository;
+        $this->sisApi = $sisApi;
     }
-
 
     public function calculateMetrics($type)
     {
@@ -274,14 +277,17 @@ class ServiceAbstract
                 // divide the weight by the squared height to get the BMI value
                 $prep_bmi = $adjusted_weight/$adjusted_height_final;
                 $info['bmi'] = number_format($prep_bmi, 1);
+                $player->setPlayerInfo($info);
             }
 
             if ($player->getTeam() == "Rookie") {
                 if (!array_key_exists("hashtag", $info) || empty($info['hashtag']) || $info['hashtag'] == null) {
                     if ($player->getTeam() == "Rookie") {
                         $info["hashtag"] = "#{$player->getFirstName()}{$player->getLastName()}-NFL-Rookie-0";
+                        $player->setPlayerInfo($info);
                     }
                 }
+
 
                 $metrics = $player->getMetrics();
                 if (array_key_exists("benchPress", $metrics) && $metrics['benchPress'] != null && $metrics['benchPress'] != '-') {

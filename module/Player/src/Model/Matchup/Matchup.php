@@ -26,6 +26,23 @@ class Matchup
     public $home_score;
     public $result;
     public $plays;
+    public $gameId;
+
+    /**
+     * @return mixed
+     */
+    public function getGameId()
+    {
+        return $this->gameId;
+    }
+
+    /**
+     * @param mixed $gameId
+     */
+    public function setGameId($gameId)
+    {
+        $this->gameId = $gameId;
+    }
 
     /**
      * Matchup constructor.

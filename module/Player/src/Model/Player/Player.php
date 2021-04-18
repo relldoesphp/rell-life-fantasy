@@ -43,14 +43,14 @@ class Player implements InputFilterAwareInterface
     public $image4= "";
     public $status="";
     public $headshot = "";
-    public $sisId="";
+    public $sis_id = 0;
 
     /**
      * @return string
      */
     public function getSisId()
     {
-        return $this->sisId;
+        return $this->sis_id;
     }
 
     /**
@@ -58,7 +58,7 @@ class Player implements InputFilterAwareInterface
      */
     public function setSisId($sisId)
     {
-        $this->sisId = $sisId;
+        $this->sis_id = $sisId;
     }
 
     /**
@@ -541,6 +541,7 @@ class Player implements InputFilterAwareInterface
                         "recDom" => round(($stats['recs'] / $stats['totals']['recs']) * 100, 1)."%",
                         "ydDom" => round((($stats['rushYds'] + $stats['recYds']) / $stats['totals']['yds']) * 100, 1)."%",
                         "tdDom" => round((($stats['rushTds'] + $stats['recTds']) / $stats['totals']['tds']) * 100, 1)."%",
+                        "dominator" => $stats['dominator']
                     ];
                 }
 
@@ -557,6 +558,7 @@ class Player implements InputFilterAwareInterface
                         "recDom" => round($stats['recs']/$stats['totals']['recs'] * 100,1)."%",
                         "ydsDom" => round($stats['recYds']/$stats['totals']['yds'] * 100, 1)."%",
                         "tdsDom" => round($stats['recTds']/$stats['totals']['tds'] * 100,1)."%",
+                        "dom" => $stats['dominator']
                     ];
                 }
             }

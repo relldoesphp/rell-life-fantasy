@@ -8,6 +8,7 @@
 
 namespace Player\Model\Matchup\Sql;
 
+use Laminas\Db\Sql\Sql;
 use Player\Model\Matchup\Matchup;
 use Player\Model\Matchup\MatchupCommandInterface;
 use Laminas\ProgressBar\Adapter\Console;
@@ -31,7 +32,11 @@ class SqlMatchupCommand implements MatchupCommandInterface
      */
     public function saveMatchup(Matchup $matchup)
     {
-        // TODO: Implement saveMatchup() method.
+        if ($matchup->getId() != null) {
+            $this->updateMatchup($matchup);
+        } else {
+            $this->createMatchup($matchup);
+        }
     }
 
     /**
@@ -40,7 +45,25 @@ class SqlMatchupCommand implements MatchupCommandInterface
      */
     public function createMatchup(Matchup $matchup)
     {
-        // TODO: Implement createMatchup() method.
+        /** Insert new matchup **/
+        $sql    = new Sql($this->db);
+        $insert = $sql->insert('matchups');
+        $insert->values([
+            'year' => $matchup->getYear(),
+            'week' => $matchup->getWeek(),
+            'away' => $matchup->getAway(),
+            'home' => $matchup->getHome(),
+            'date' => $matchup->getDate(),
+            "gameId" => $matchup->getGameId()
+        ]);
+
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        try {
+            $result = $stmt->execute();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -49,7 +72,25 @@ class SqlMatchupCommand implements MatchupCommandInterface
      */
     public function updateMatchup(Matchup $matchup)
     {
-        // TODO: Implement updateMatchup() method.
+        /** Insert new matchup **/
+        $sql    = new Sql($this->db);
+        $update = $sql->update('matchups');
+        $update->set([
+            'year' => $matchup->getYear(),
+            'week' => $matchup->getWeek(),
+            'away' => $matchup->getAway(),
+            'home' => $matchup->getHome(),
+            'date' => $matchup->getDate(),
+            'gameId' => $matchup->getGameId()
+        ]);
+        $update->where(['id = ?' => $matchup->getId()]);
+        $stmt = $sql->prepareStatementForSqlObject($update);
+        try {
+            $result = $stmt->execute();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**

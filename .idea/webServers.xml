@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="356be53c-fe87-43d4-8ce1-ba361091c662" name="nannyleaks" url="https://nannyleaks.com">
+        <fileTransfer accessType="SFTP" host="nannyleaks.com" port="22" sshConfigId="ad7f84dd-5c20-4442-889b-bd19d71e55c4" sshConfig="nannyleaks">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
