@@ -91,7 +91,7 @@
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['inside'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['inside'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['inside'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Zone / Explosive Runs:</div>
@@ -99,7 +99,7 @@
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['outside'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['outside'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['outside'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Receiver Score:</div>
@@ -107,15 +107,16 @@
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['passCatcher'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['passCatcher'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['passCatcher'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Overall Prospect Score:</div>
+                    <div style="margin-top:10px" class="combine-title hide-on-small-only">Overall Prospect Score:</div>
+                    <div style="margin-top:10px" class="combine-title show-small-only">Overall Score:</div>
                     <div class="combine-score"><?= ($player['metrics']['alpha'] != null) ? $player['metrics']['alpha'] : "-" ?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['alpha'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['alpha'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['alpha'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
             </div>
         <?php elseif ($player['position'] == 'TE'): ?>
@@ -132,7 +133,7 @@
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['slot'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['slot'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['slot'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Seam Threat Score</div>
@@ -140,7 +141,7 @@
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['deep'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['deep'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['deep'] ?> <span class="hide-on-small-only">percentile)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Inline Score:</div>
@@ -148,7 +149,7 @@
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['inLine'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['inLine'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['inLine'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Overall Prospect Score:</div>
@@ -156,7 +157,7 @@
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['alpha'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['alpha'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['alpha'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
             </div>
         <?php elseif ($player['position'] == 'WR'): ?>
@@ -173,7 +174,7 @@
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['slot'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['slot'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['slot'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Big Play Score</div>
@@ -181,7 +182,7 @@
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['deep'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['deep'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['deep'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
                     <div style="margin-top:10px" class="combine-title">Outside X Score:</div>
@@ -189,15 +190,15 @@
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['outsideX'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['outsideX'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['outsideX'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Overall Prospect Score:</div>
+                    <div style="margin-top:10px" class="combine-title hide-on-small-only">Overall <span class="hide-on-small-only">Prospect</span> Score:</div>
                     <div class="combine-score"><?= ($player['metrics']['alpha'] != null) ? $player['metrics']['alpha'] : "-" ?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['alpha'] ?>%"></div>
                     </div>
-                    <div class="bench-percentile percentile">(<?= $player['ordinals']['alpha'] ?> percentile)</div>
+                    <div class="bench-percentile percentile">(<?= $player['ordinals']['alpha'] ?> <span class="hide-on-small-only">percentile</span>)</div>
                 </div>
             </div>
         <?php else: ?>
@@ -261,27 +262,27 @@
         <?php
             $fortyTime = (!empty($player['metrics']['fortyTime'])) ? $player['metrics']['fortyTime'] : "-";
             $fortyPercent = (!empty($player['percentiles']['fortyTime'])) ? $player['percentiles']['fortyTime'] : 0;
-            $fortyOrdinal = ($player['ordinals']['fortyTime'] !== "0th") ? "( ".$player['ordinals']['fortyTime']." percentile )" : "N/A";
+            $fortyOrdinal = ($player['ordinals']['fortyTime'] !== "0th") ? "( ".$player['ordinals']['fortyTime'] : "N/A";
 
             $shuttle = (!empty($player['metrics']['shuttle'])) ? $player['metrics']['shuttle'] : "-";
             $shuttlePercent = (!empty($player['percentiles']['shuttle'])) ? $player['percentiles']['shuttle'] : 0;
-            $shuttleOrdinal = ($player['percentiles']['shuttle'] > O) ? "( ".$player['ordinals']['shuttle']." percentile )" : "N/A";
+            $shuttleOrdinal = ($player['percentiles']['shuttle'] > O) ? "( ".$player['ordinals']['shuttle'] : "N/A";
 
             $cone = (!empty($player['metrics']['cone'])) ? $player['metrics']['cone'] : "-";
             $conePercent = (!empty($player['percentiles']['cone'])) ? $player['percentiles']['cone'] : 0;
-            $coneOrdinal = ($player['percentiles']['cone'] > O) ? "( ".$player['ordinals']['cone']." percentile )" : "N/A";
+            $coneOrdinal = ($player['percentiles']['cone'] > O) ? "( ".$player['ordinals']['cone'] : "N/A";
 
             $vertical = (!empty($player['metrics']['verticalJump'])) ? $player['metrics']['verticalJump'] : "-";
             $verticalPercent = (!empty($player['percentiles']['verticalJump'])) ? $player['percentiles']['verticalJump'] : 0;
-            $verticalOrdinal = ($player['percentiles']['verticalJump'] > O) ? "( ".$player['ordinals']['verticalJump']." percentile )" : "N/A";
+            $verticalOrdinal = ($player['percentiles']['verticalJump'] > O) ? "( ".$player['ordinals']['verticalJump'] : "N/A";
 
             $broad = (!empty($player['metrics']['broadJump'])) ? $player['metrics']['broadJump'] : "-";
             $broadPercent = (!empty($player['percentiles']['broadJump'])) ? $player['percentiles']['broadJump'] : 0;
-            $broadOrdinal = ($player['percentiles']['broadJump'] > O) ? "( ".$player['ordinals']['broadJump']." percentile )" : "N/A";
+            $broadOrdinal = ($player['percentiles']['broadJump'] > O) ? "( ".$player['ordinals']['broadJump'] : "N/A";
 
             $bench = (!empty($player['metrics']['benchPress'])) ? $player['metrics']['benchPress'] : "-";
             $benchPercent = (!empty($player['percentiles']['benchPress'])) ? $player['percentiles']['benchPress'] : 0;
-            $benchOrdinal = ($player['percentiles']['benchPress'] > O) ? "( ".$player['ordinals']['benchPress']." percentile )" : "N/A";
+            $benchOrdinal = ($player['percentiles']['benchPress'] > O) ? "( ".$player['ordinals']['benchPress'] : "N/A";
         ?>
         <div class="col s12 combine z-depth-2 hoverable ">
             <div class="forty-box center col m2 s4">
@@ -290,7 +291,7 @@
                 <div class="progress forty-bar">
                     <div class="determinate" style="width: <?= $fortyPercent ?>%"></div>
                 </div>
-                <div class="forty-percentile percentile"><?= $fortyOrdinal ?></div>
+                <div class="forty-percentile percentile"><?= $fortyOrdinal ?> <span class="hide-on-small-only">percentile</span></div>
             </div>
             <div class="shuttle-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">Shuttle</div>
@@ -298,7 +299,7 @@
                 <div class="progress shuttle-bar">
                     <div class="determinate" style="width: <?= $shuttlePercent ?>%"></div>
                 </div>
-                <div class="shuttle-percentile percentile"><?= $shuttleOrdinal ?></div>
+                <div class="shuttle-percentile percentile"><?= $shuttleOrdinal ?> <span class="hide-on-small-only">percentile</span></div>
             </div>
             <div class="cone-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">3 Cone</div>
@@ -306,7 +307,7 @@
                 <div class="progress cone-bar">
                     <div class="determinate" style="width: <?= $conePercent?>%"></div>
                 </div>
-                <div class="cone-percentile percentile"><?= $coneOrdinal ?></div>
+                <div class="cone-percentile percentile"><?= $coneOrdinal ?> <span class="hide-on-small-only">percentile</span> )</div>
             </div>
             <div class="vertical-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">Vertical</div>
@@ -314,7 +315,7 @@
                 <div class="progress vertical-bar">
                     <div class="determinate" style="width: <?= $verticalPercent?>%"></div>
                 </div>
-                <div class="vertical-percentile percentile"><?= $verticalOrdinal ?></div>
+                <div class="vertical-percentile percentile"><?= $verticalOrdinal ?> <span class="hide-on-small-only">percentile</span> )</div>
             </div>
             <div class="broad-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">Broad Jump</div>
@@ -322,7 +323,7 @@
                 <div class="progress broad-bar">
                     <div class="determinate" style="width: <?= $broadPercent ?>%"></div>
                 </div>
-                <div class="broad-percentile percentile"><?= $broadOrdinal ?></div>
+                <div class="broad-percentile percentile"><?= $broadOrdinal ?> <span class="hide-on-small-only">percentile</span> )</div>
             </div>
             <div class="bench-box center col m2 s4">
                 <div style="margin-top:10px" class="combine-title">Bench Press</div>
@@ -330,7 +331,7 @@
                 <div class="progress bench-bar">
                     <div class="determinate" style="width: <?= $benchPercent ?>%"></div>
                 </div>
-                <div class="bench-percentile percentile"><?= $benchOrdinal ?></div>
+                <div class="bench-percentile percentile"><?= $benchOrdinal ?> <span class="hide-on-small-only">percentile</span> )</div>
             </div>
         </div>
     </div>
