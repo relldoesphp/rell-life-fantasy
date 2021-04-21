@@ -197,8 +197,9 @@ class WrService extends ServiceAbstract
 
 
             //slot score
+            $info = $wr->getPlayerInfo();
             if ($noAgility == false) {
-                if ($percentiles['shuttle'] > 69 && $percentiles['cone'] < 41) {
+                if ($percentiles['shuttle'] > 69 && $percentiles['cone'] < 41 && $info['heightInches'] < 73) {
                     $percentiles['routeAgility'] = ($percentiles['jukeAgility'] * .6) + ($percentiles['routeAgility'] * .4);
                 }
             }

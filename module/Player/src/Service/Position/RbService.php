@@ -353,8 +353,8 @@ class RbService extends ServiceAbstract
 
             /** Weight Penalty **/
             if ($info['weight'] < 206 && $data['inside'] != null) {
-                if ($metrics['inside'] > 65) {
-                    $metrics['inside'] = $metrics['inside'] - 10;
+                if ($data['inside'] > 65) {
+                    $data['inside'] = $data['inside'] - 10;
                 }
             }
 
@@ -373,12 +373,12 @@ class RbService extends ServiceAbstract
 
             if ($metrics['collegeScore'] !== null && $data['grinder'] != null && $data['receiver'] != null) {
                 if ($data['receiver'] < 30) {
-                    $data['alpha'] = ($data['receiver'] * .20) + ($runner * .80);
+                    $data['alpha'] = ($data['receiver'] * .10) + ($runner * .90);
                 } else {
-                    $data['alpha'] = ($data['receiver'] * .35) + ($runner * .65);
+                    $data['alpha'] = ($data['receiver'] * .25) + ($runner * .75);
                 }
 
-                $data['alpha'] = round(((($metrics['collegeScore']/21) * 100) * .4) + ($data['alpha'] * .6), 2);
+                $data['alpha'] = round(((($metrics['collegeScore']/30) * 100) * .2) + ($data['alpha'] * .8), 2);
 
 
 //                if ($metrics['collegeScore'] > 16) {
@@ -400,8 +400,8 @@ class RbService extends ServiceAbstract
 
             /** Weight Penalty **/
             if ($info['weight'] < 206 && $data['alpha'] != null) {
-                if ($metrics['alpha'] > 70) {
-                    $metrics['alpha'] = $metrics['alpha'] - 10;
+                if ($data['alpha'] > 70) {
+                    $data['alpha'] = $data['alpha'] - 10;
                 }
             }
 
@@ -664,6 +664,14 @@ class RbService extends ServiceAbstract
                     $collegeScore = $collegeScore - 2;
                 }
 
+                if ($stats['rushYds'] > 1200) {
+                    $collegeScore = $collegeScore + 2;
+                }
+
+                if ($stats['rushYds'] > 2000) {
+                    $collegeScore = $collegeScore + 5;
+                }
+
                 $collegeScore = $collegeScore + $breakout;
 
                 //save last breakout
@@ -712,11 +720,11 @@ class RbService extends ServiceAbstract
         $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
         $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
         if (in_array($conf, $power5)) {
-            $collegeScore = $collegeScore + 4;
+            $collegeScore = $collegeScore + 5;
         } elseif (in_array($conf, $minor5)) {
             $collegeScore = $collegeScore + 0;
         } else {
-            $collegeScore = $collegeScore - 2;
+            $collegeScore = $collegeScore - 5;
         }
 
 
