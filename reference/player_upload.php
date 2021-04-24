@@ -10,6 +10,20 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $csv = array_map('str_getcsv', file('/Users/tcook/Sites/rell/rell-life-fantasy/data/qb_player.csv'));
+    /** RB csv
+     * 0 = Name
+     * 1 = Position
+     * 2 = Draft Year
+     * 3 = Weight
+     * 4 = Height Inches
+     * 5 = Draft Pick
+     * 6 = popularity
+     * 7 = Age
+     * 8 = Arm Length
+     * 9 = Height
+     * 10 = Hand Size
+     * 11 = College
+     */
 
     foreach ($csv as $data) {
         if ($data[0] !== "Full Name") {
@@ -22,7 +36,7 @@ try {
             $sql = <<<EOT
 Select id, first_name, last_name, sleeper_id
 from player_test
-WHERE search_full_name = :searchName AND position in ('QB');
+WHERE search_full_name = :searchName AND position in ('RB');
 EOT;
             $stmt= $conn->prepare($sql);
             $stmt->execute($player);
@@ -30,13 +44,12 @@ EOT;
             if (!empty($row->id)) {
                 $player = [];
                 $player['id'] = $row->id;
-                $player['bmi'] = $data[4];
                 $player['draft_pick'] = $data[5];
-                $player['draft_year'] = $data[6];
-                $player['arms'] = $data[2];
-                $player['heightInches'] = $data[3];
+                $player['draft_year'] = $data[2];
+                $player['arms'] = $data[8];
+                $player['heightInches'] = $data[4];
 
-                $arms = explode(" ", $data[2]);
+                $arms = explode(" ", $data[8]);
                 if (array_key_exists(1, $arms)) {
                     $armFraction = explode("/", $arms[1]);
                     if (is_array($armFraction) && array_key_exists(1, $armFraction) && $armFraction[1] > 0) {
@@ -48,7 +61,7 @@ EOT;
                     $player['armsInches'] = $arms[0];
                 }
 
-                $hands = explode(" ", $data[7]);
+                $hands = explode(" ", $data[10]);
                 if (array_key_exists(1, $hands)) {
                     $handsFraction = explode("/", $hands[1]);
                     if (is_array($handsFraction) && array_key_exists(1, $handsFraction) && $handsFraction[1] > 0) {
@@ -62,7 +75,7 @@ EOT;
 
                 $sql = <<<EOT
 Update player_test 
-SET player_info = json_set(player_info, '$.bmi', :bmi, '$.draft_pick', :draft_pick, '$.draft_year', :draft_pick, '$.arms', :arms,'$.armsInches', :armsInches,'$.heightInches', :heightInches, '$.hands', :hands)
+SET player_info = json_set(player_info, '$.draft_pick', :draft_pick, '$.draft_year', :draft_pick, '$.arms', :arms,'$.armsInches', :armsInches,'$.heightInches', :heightInches, '$.hands', :hands)
 WHERE id = :id;
 EOT;
                 $stmt= $conn->prepare($sql);
@@ -73,7 +86,20 @@ EOT;
     }
 
     $csv = array_map('str_getcsv', file('/Users/tcook/Sites/rell/rell-life-fantasy/data/qb_metrics.csv'));
-
+    /** WR csv
+     * 0 = Name
+     * 1 = Position
+     * 2 = Draft Year
+     * 3 = Weight
+     * 4 = Height Inches
+     * 5 = Draft Pick
+     * 6 = popularity
+     * 7 = Age
+     * 8 = Arm Length
+     * 9 = Height
+     * 10 = Hand Size
+     * 11 = College
+     */
     foreach ($csv as $data) {
         if ($data[0] !== "Full Name") {
             $player = [];

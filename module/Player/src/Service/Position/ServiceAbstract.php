@@ -438,6 +438,9 @@ class ServiceAbstract
                     $totalJump = round(($metrics['broadJump'] * 1.30),2);
                 }
                 $weightRate = $posInfo[$type]['broadAvg']/$posInfo[$type]['weightAvg'];
+                if (!array_key_exists('weight', $info)) {
+                    $found = true;
+                }
                 $broadPerPound = ($info['weight'] - $posInfo[$type]['weightAvg']) * $weightRate;
 //                $heightAdj = $posInfo[$type]['broadAvg']/$posInfo[$type]['heightAvg'];
 //                $heightBroad = ($info['heightInches'] - $posInfo[$type]['heightAvg']) * $heightAdj;

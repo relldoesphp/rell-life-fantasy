@@ -1041,8 +1041,8 @@ var rlf =  {
                     ],
                     "data": [
                         {
-                            "avg": currentStats.stats.pts_ppr_avg,
-                            "points": currentStats.stats.pts_ppr,
+                            "avg": currentStats.stats.pts_ppr_avg.toFixed(2),
+                            "points": currentStats.stats.pts_ppr.toFixed(2),
                             "runs": currentStats.stats.rush_att,
                             "recs": currentStats.stats.rec,
                             "yds": (currentStats.stats.rec_yd + currentStats.stats.rush_yd),
@@ -1149,7 +1149,7 @@ var rlf =  {
                     backgroundColor: 'rgba(174, 3, 230, 0.25)',
                     fill: true,
                     label: 'Average NFL Inside Linebacker',
-                    data: [53, 67, 61, 50, 55, 70],
+                    data: [26, 78, 48, 45, 90, 76],
                     ordinals: ["", "", "", "", "", "", ""],
                     metrics: ["", "", "", "", "", "", ""]
                 },
@@ -1227,8 +1227,8 @@ var rlf =  {
                     ],
                     "data":[
                         {
-                            "avg":currentStats.stats.pts_ppr_avg,
-                            "points":currentStats.stats.pts_ppr,
+                            "avg":currentStats.stats.pts_ppr_avg.toFixed(2),
+                            "points":currentStats.stats.pts_ppr.toFixed(2),
                             "recs":currentStats.stats.rec,
                             "targets":currentStats.stats.rec_tgt,
                             "yds":currentStats.stats.rec_yd,
@@ -1373,8 +1373,8 @@ var rlf =  {
                     type: 'line',
                     backgroundColor: 'rgba(174, 3, 230, 0.25)',
                     fill: true,
-                    label: 'Average Corner',
-                    data: [0, 44, 60, 54, 46, 55, 40],
+                    label: 'Average Starting Corner',
+                    data: [0, 49, 70, 63, 30, 71, 49],
                     ordinals: ["", "", "", "", "", "",""],
                     metrics: ["", "", "", "", "", "",""]
                 },
@@ -1432,8 +1432,8 @@ var rlf =  {
                 ],
                 "data":[
                     {
-                        "avg":currentStats.stats.pts_ppr_avg,
-                        "points":currentStats.stats.pts_ppr,
+                        "avg":currentStats.stats.pts_ppr_avg.toFixed(2),
+                        "points":currentStats.stats.pts_ppr.toFixed(2),
                         "recs":currentStats.stats.rec,
                         "targets":currentStats.stats.rec_tgt,
                         "yds":currentStats.stats.rec_yd,
@@ -1615,8 +1615,8 @@ var rlf =  {
                     type: 'line',
                     backgroundColor: 'rgba(174, 3, 230, 0.25)',
                     fill: true,
-                    label: 'Average NFL Safety',
-                    data: [70, 67, 61, 22, 15, 10],
+                    label: 'Average Starting MLB',
+                    data: [82, 72, 21, 84, 55, 83],
                     ordinals: ["", "", "", "", "", "", ""],
                     metrics: ["", "", "", "", "", "", ""]
                 },

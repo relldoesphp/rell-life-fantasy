@@ -371,7 +371,22 @@ class RbService extends ServiceAbstract
                 }
             }
 
-            if ($metrics['collegeScore'] !== null && $data['grinder'] != null && $data['receiver'] != null) {
+            /** Receiver penalty **/
+            if ($metrics['collegeScore'] != null) {
+                if ($data['receiver'] > 60 && $metrics['bestRecDominator'] < 10) {
+                    $data['receiver'] = $data['receiver'] - 10;
+                }
+
+                if ($data['receiver'] > 60 && $metrics['bestRecDominator'] < 7) {
+                    $data['receiver'] = $data['receiver'] - 10;
+                }
+
+                if ($data['receiver'] > 60 && $metrics['bestRecDominator'] < 4) {
+                    $data['receiver'] = $data['receiver'] - 5;
+                }
+            }
+
+            if ($metrics['collegeScore'] !== null && $data['inside'] != null && $data['receiver'] != null) {
                 if ($data['receiver'] < 30) {
                     $data['alpha'] = ($data['receiver'] * .10) + ($runner * .90);
                 } else {
@@ -380,21 +395,12 @@ class RbService extends ServiceAbstract
 
                 $data['alpha'] = round(((($metrics['collegeScore']/30) * 100) * .2) + ($data['alpha'] * .8), 2);
 
-
-//                if ($metrics['collegeScore'] > 16) {
-//                    $data['alpha'] = $data['alpha'] + ($metrics['collegeScore'] - 16);
-//                }
-//
-//                if ($metrics['collegeScore'] < 15 && $data['alpha'] > 70) {
-//                    $data['alpha'] = $data['alpha'] - 7;
-//                }
+                if ($metrics['bestDominator'] < 14 && $data['alpha'] > 60) {
+                    $data['alpha'] = $data['alpha'] - 10;
+                }
 
             } else {
                 $data['alpha'] = ($data['receiver'] * .4) + ($data['inside'] * .30) + ($data['outside'] * .30);
-            }
-
-            if ($data['receiver'] == null && $data['grinder'] == null) {
-                $data['alpha'] = null;
             }
 
 
@@ -404,6 +410,7 @@ class RbService extends ServiceAbstract
                     $data['alpha'] = $data['alpha'] - 10;
                 }
             }
+
 
             $metrics['alpha'] = ($data['alpha'] != null) ? round($data['alpha'],2) : null;
             $metrics['passCatcher'] = ($data['receiver']) != null ? round($data['receiver'],2) : null;
@@ -468,6 +475,10 @@ class RbService extends ServiceAbstract
                         "bestRec" => null,
                         "collegeStats" => $collegeStats,
                     ];
+                }
+
+                if (!array_key_exists('rushTds', $stats)) {
+                    continue;
                 }
 
                 if (!array_key_exists("scrimmageTds", $stats)) {

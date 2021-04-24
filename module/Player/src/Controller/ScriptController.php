@@ -80,6 +80,12 @@ class ScriptController extends AbstractActionController
         $this->playerManager->scrapCollegeJob();
     }
 
+    public function playerProfilerAction()
+    {
+        $this->playerManager->playerProfilerInfo();
+        $this->playerManager->playerProfilerMetrics();
+    }
+
     public function getSleeperStatsAction()
     {
         $this->statsManager->getSeasonStats('2020');

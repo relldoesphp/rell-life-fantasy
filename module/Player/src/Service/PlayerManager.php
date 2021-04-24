@@ -74,6 +74,7 @@ class PlayerManager
                     'stats' => $seasonStat->stats,
                     'ranks' => $seasonStat->ranks
                 ];
+
             }
             $player->setSeasonStats($stats);
         }
@@ -157,19 +158,15 @@ class PlayerManager
                 if ($value->team == null) {
                     $player->setTeam("FA");
                 }
-            }
+                if (!empty($value->height)) {
+                    $playerInfo['height'] = $value->height;
+                }
 
+                $playerInfo['status'] = $value->status;
 
-
-
-            if (!empty($value->height)) {
-                $playerInfo['height'] = $value->height;
-            }
-
-            $playerInfo['status'] = $value->status;
-
-            if (!empty($value->weight)) {
-                $playerInfo['weight'] = $value->weight;
+                if (!empty($value->weight)) {
+                    $playerInfo['weight'] = $value->weight;
+                }
             }
 
             $playerInfo['college'] = $value->college;
@@ -316,7 +313,7 @@ class PlayerManager
     {
 //        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
 //        $rbService->scrapCollegeJob();
-
+//
 //        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
 //        $teService->scrapCollegeJob();
 
@@ -367,5 +364,248 @@ class PlayerManager
             $progressBar->update($pointer);
         }
         $progressBar->finish();
+    }
+
+    public function playerProfilerInfo()
+    {
+        $positions = ['RB','WR','TE'];
+
+        $files = [
+            'RB' => '/home/rell/Documents/rookie-rb.csv',
+            'WR' => '/home/rell/Documents/rookie-wr.csv',
+            'TE' => '/home/rell/Documents/rookie-te.csv',
+        ];
+
+        $indexes['RB'] = [
+            'name' => 0,
+            'position' => 1,
+            'draft_year' => 2,
+            'draft_pick' => 5,
+            'weight' => 3,
+            'heightInches' => 4,
+            'popularity' => 6,
+            'age' => 7,
+            'arms' => 8,
+            'height' => 9,
+            'hand' => 10,
+            'college' => 11
+        ];
+
+        $indexes['WR'] = [
+            'name' => 0,
+            'position' => 1,
+            'draft_year' => 8,
+            'draft_pick' => 7,
+            'weight' => 6,
+            'heightInches' => 10,
+            'popularity' => 11,
+            'age' => 2,
+            'arms' => 3,
+            'height' => 5,
+            'hand' => 9,
+            'college' => 4
+        ];
+
+        $indexes['TE'] = [
+            'name' => 0,
+            'position' => 1,
+            'draft_year' => 3,
+            'draft_pick' => 8,
+            'weight' => 2,
+            'heightInches' => 11,
+            'popularity' => 9,
+            'age' => 5,
+            'arms' => 7,
+            'height' => 6,
+            'hand' => 4,
+            'college' => 10
+        ];
+
+        $fractions = [
+            "1/2" => .5,
+            "3/4" => .75,
+            "1/4" => .25,
+            "1/8" => .125,
+            "3/8" => .375,
+            "5/8" => .625,
+            "6/8" => .75,
+            "7/8" => .875
+        ];
+
+        foreach ($positions as $position) {
+            $index = [];
+            $csv = array_map('str_getcsv', file($files[$position]));
+            $index = $indexes[$position];
+            $progressBar = new ProgressBar($this->consoleAdapter, 0, (count($csv) - 1));
+            $pointer = 0;
+            foreach ($csv as $data) {
+                if ($data[0] == "Full Name") {
+                    continue;
+                }
+
+                $name = explode(' ', $data[$index['name']]); // Replaces all spaces with hyphens.
+                //check for player
+                $player = $this->playerRepository->findPlayerByInfo(
+                    $name[0],
+                    $name[1],
+                    $data[$index['position']]
+                );
+
+                if (empty($player)) {
+                    $player = new Player();
+                    $player->setFirstName($name[0]);
+                    $player->setLastName($name[1]);
+
+                    $searchName = str_replace(' ', '', $data[$index['name']]); // Replaces all spaces with hyphens.
+                    $searchName = str_replace('.', '', $searchName);
+                    $searchName = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', $searchName));
+
+                    $player->setSearchFullName($searchName);
+                    $player->setPosition($data[$index['position']]);
+                    $player->setTeam("Rookie");
+                }
+
+                $playerInfo = Json::decode($player->getPlayerInfo(),1);
+                $playerInfo['draft_pick'] = $data[$index['draft_pick']];
+                $playerInfo['draft_year'] = $data[$index['draft_year']];
+                $playerInfo['arms'] = $data[$index['arms']];
+                $playerInfo['height'] = $data[$index['height']];
+                $playerInfo['heightInches'] = $data[$index['heightInches']];
+                $playerInfo['weight'] = str_replace(" lbs", "", $data[$index['weight']]);
+                $playerInfo['college'] = $data[$index['college']];
+                $playerInfo['age'] = $data[$index['age']];
+
+                $arms = explode(" ", $data[$index['arms']]);
+                if (array_key_exists(1, $arms) && array_key_exists($arms[1], $fractions)) {
+                    $playerInfo['armsInches'] = (int)$arms[0] + $fractions[$arms[1]];
+                } else {
+                    $playerInfo['armsInches'] = $arms[0];
+                }
+
+                $hands = explode(" ", $data[$index['hand']]);
+                if (array_key_exists(1, $hands) && !empty($hands[1])) {
+                    $playerInfo['hands'] = (int)$hands[0] + $fractions[$hands[1]];
+                } else {
+                    $playerInfo['hands'] = $hands[0];
+                }
+
+                $player->setPlayerInfo($playerInfo);
+
+                $this->playerCommand->save($player);
+                $pointer++;
+                $progressBar->update($pointer);
+            }
+            $progressBar->finish();
+        }
+    }
+
+    public function playerProfilerMetrics()
+    {
+        $positions = ['RB','WR','TE'];
+
+        $files = [
+            'RB' => '/home/rell/Documents/rookie-rb-metrics.csv',
+            'WR' => '/home/rell/Documents/rookie-wr-metrics.csv',
+            'TE' => '/home/rell/Documents/rookie-te-metrics.csv',
+        ];
+
+        $indexes['RB'] = [
+            'name' => 0,
+            'position' => 1,
+            'shuttle' => 3,
+            'cone' => 2,
+            'fortyTime' => 4,
+            'bench' => 5,
+            'vertical' => 7,
+            'broad' => 6,
+        ];
+
+        $indexes['WR'] = [
+            'name' => 0,
+            'position' => 1,
+            'shuttle' => 2,
+            'cone' => 3,
+            'fortyTime' => 7,
+            'bench' => 4,
+            'vertical' => 5,
+            'broad' => 6,
+        ];
+
+        $indexes['TE'] = [
+            'name' => 0,
+            'position' => 1,
+            'shuttle' => 2,
+            'cone' => 3,
+            'fortyTime' => 5,
+            'bench' => 4,
+            'vertical' => 7,
+            'broad' => 6,
+        ];
+
+        $fractions = [
+            "1/2" => .5,
+            "3/4" => .75,
+            "1/4" => .25,
+            "1/8" => .125,
+            "3/8" => .375,
+            "5/8" => .625,
+            "6/8" => .75,
+            "7/8" => .875
+        ];
+
+        foreach ($positions as $position) {
+            $index = [];
+            $csv = array_map('str_getcsv', file($files[$position]));
+            $index = $indexes[$position];
+            $progressBar = new ProgressBar($this->consoleAdapter, 0, (count($csv) - 1));
+            $pointer = 0;
+            foreach ($csv as $data) {
+                if ($data[0] == "Full Name") {
+                    continue;
+                }
+
+                $name = explode(' ', $data[$index['name']]); // Replaces all spaces with hyphens.
+                //check for player
+                $player = $this->playerRepository->findPlayerByInfo(
+                    $name[0],
+                    $name[1],
+                    $data[$index['position']]
+                );
+
+                if (empty($player)) {
+                    $player = new Player();
+                    $player->setFirstName($name[0]);
+                    $player->setLastName($name[1]);
+
+                    $searchName = str_replace(' ', '', $data[$index['name']]); // Replaces all spaces with hyphens.
+                    $searchName = str_replace('.', '', $searchName);
+                    $searchName = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', $searchName));
+
+                    $player->setSearchFullName($searchName);
+                    $player->setPosition($data[$index['position']]);
+                    $player->setTeam("Rookie");
+                }
+
+                $metrics = Json::decode($player->getMetrics(),1);
+                $metrics['shuttle'] = $data[$index['shuttle']];
+                $metrics['cone'] = $data[$index['cone']];
+                $metrics['benchPress'] = $data[$index['bench']];
+                $metrics['verticalJump'] = $data[$index['vertical']];
+                $metrics['broadJump'] = $data[$index['broad']];
+
+                if (!in_array($data[$index['fortyTime']], ["-", ""])) {
+                    $metrics['fortyTime'] = round((float)$data[$index['fortyTime']] + .05, 2);
+                } else {
+                    $metrics['fortyTime'] = $data[$index['fortyTime']];
+                }
+
+                $player->setMetrics($metrics);
+
+                $this->playerCommand->save($player);
+                $pointer++;
+                $progressBar->update($pointer);
+            }
+            $progressBar->finish();
+        }
     }
 }

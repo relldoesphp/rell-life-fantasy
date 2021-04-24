@@ -256,6 +256,17 @@ return [
                         ],
                     ],
                 ],
+                'player-profiler' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'player-profiler',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'playerProfiler',
+                        ],
+                    ],
+                ],
                 'sleeper-stats' => [
                     'type'    => 'simple',  // This is the default, and may be omitted; more on
                     // types below

@@ -52,7 +52,11 @@ class TeService extends ServiceAbstract
         'deep' => [
             'field' => 'metrics',
             'sort' => 'ASC'
-        ]
+        ],
+        'yac' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
     ];
 
     public function __construct(
@@ -167,9 +171,9 @@ class TeService extends ServiceAbstract
             /*** New Move Score ***/
             /*** Calculate Move Score ***/
             //Move - TE Speed + Jumpball + Route Agility
-            $data['move'] = 0;
+            $data['move'] = null;
             if ($metrics['deep'] != null && $metrics['slot'] != null) {
-                $data['move'] = ($metrics['slot'] *.60) + ($metrics['deep'] * .40);
+                $data['move'] = ($metrics['slot'] *.50) + ($metrics['deep'] * .50);
             } else {
                 if (array_key_exists('routeAgility', $metrics) && !in_array($metrics['routeAgility'], [null, "-", "", "null"])
                     && !in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
@@ -195,7 +199,7 @@ class TeService extends ServiceAbstract
             $data['runBlock'] = null;
             if (array_key_exists('benchPress', $metrics) && !in_array($metrics['benchPress'], [null, "-", "", "null"])
                 && !in_array($metrics['broadJump'], [null, "-", "", "null"]) ) {
-                $data['runBlock'] = ($percentiles['bully'] * .30) + ($percentiles['power'] * .70);
+                $data['runBlock'] = ($percentiles['bully'] * .20) + ($percentiles['power'] * .80);
             }
 
             if (array_key_exists('benchPress', $metrics) && in_array($metrics['benchPress'], [null, "-", "", "null"])
@@ -221,19 +225,31 @@ class TeService extends ServiceAbstract
                 $data['passBlock'] = ($percentiles['bully'] * .40) + ($percentiles['speedScore'] * .60);
             }
 
-
+            if ($metrics['elusiveness'] != null) {
+                if ($metrics['power'] != null) {
+                    $metrics['yac'] = round((($percentiles['elusiveness'] * .35) + ($percentiles['power'] * .5)) + ($percentiles['fortyTime'] * .15),2);
+                } else {
+                    $metrics['yac'] = round(($percentiles['elusiveness'] * .7),2);
+                }
+            } else {
+                if ($metrics['power'] != null) {
+                    $metrics['yac'] = round(($percentiles['power'] * .7),2);
+                } else {
+                    $metrics['yac'] = null;
+                }
+            }
 
             /*** Calculate InLine Score ***/
-            if ($data['runBlock'] !== null) {
-                $data['inLine'] = ($data['runBlock'] * .60) + ($percentiles['bmi'] * .20) + ($percentiles['weight'] * .20);
+            if ($data['runBlock'] !== null && $metrics['yac']) {
+                $data['inLine'] = ($data['runBlock'] * .75) + ($percentiles['bmi'] * .10) + ($percentiles['weight'] * .15);
             } else  {
-                $data['inLine'] = ($percentiles['speedScore'] * .60) + ($percentiles['bmi'] * .20) + ($percentiles['weight'] * .20);
+                $data['inLine'] = ($percentiles['speedScore'] * .75) + ($percentiles['bmi'] * .10) + ($percentiles['weight'] * .15);
             }
 
 
             //Alpha -  Move+Line
-            if ($data['move'] != null) {
-                $data['alpha'] = ($data['inLine'] *.30) + ($data['move'] * .70);
+            if ($data['move'] != null && $data['inLine'] != null) {
+                $data['alpha'] = ($metrics['yac'] * .20) + ($data['move'] * .70) + ($data['inLine'] * .10);
             }
 
             $metrics['move'] = round($data['move'], 2);
@@ -258,7 +274,7 @@ class TeService extends ServiceAbstract
                 $metrics['bestDominator'] = $college['bestDominator'];
                 $te->setCollegeStats($college['collegeStats']);
 
-                $metrics['alpha'] = ($metrics['alpha'] * .7) + (($college['collegeScore']/19) * .3);
+                $metrics['alpha'] = ($metrics['alpha'] * .8) + (($college['collegeScore']/20) * .2);
                 $metrics['alpha'] = round($metrics['alpha'], 2);
             } else {
                 $metrics['collegeScore'] = null;
@@ -361,7 +377,7 @@ class TeService extends ServiceAbstract
                 }
 
                 // determine breakout class
-                if ($breakout == 3 ) {
+                if ($breakout == 3 && array_key_exists('class', $stats)) {
                     if ($breakoutClass == "None") {
                         if ($i == 1) {
                             if ($stats['class'] == "FR") {
@@ -477,7 +493,12 @@ class TeService extends ServiceAbstract
                     $conf = "";
                 }
 
-                $lastYear = $stats['class'];
+                if (array_key_exists('class', $stats)) {
+                    $lastYear = $stats['class'];
+                } else {
+                    $lastYear = "";
+                }
+
             }
         }
         //$collegeScore = round(($breakoutSeasons/$i) * 10, 2);

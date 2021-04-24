@@ -673,7 +673,7 @@ class Player implements InputFilterAwareInterface
         $images = "";
         if (empty($this->images)) {
             if ($this->sleeper_id == null) {
-                $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='/img/favicon.png'  style='height:280px; width:280px; margin:auto;'></a>";
+                $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://www.freeiconspng.com/uploads/profile-icon-png-profiles-13.png' style='height:355px; margin:auto;'></a>";
             } else {
                 $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; margin:auto;'></a>";
             }
@@ -682,7 +682,7 @@ class Player implements InputFilterAwareInterface
             foreach ($this->images as $key => $url) {
                 if (empty($url) && $i == 0) {
                     if ($this->sleeper_id == null) {
-                        $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='/img/favicon.png'  style='height:280px; width:280px; margin:auto;'></a>";
+                        $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://www.freeiconspng.com/uploads/profile-icon-png-profiles-13.png' style='height:355px; margin:auto;'></a>";
                     } else {
                         $images = "<a class='carousel-item' href='#one!'><img class='sleeper_img' src='https://sleepercdn.com/content/nfl/players/{$this->sleeper_id}.jpg'  style='height:280px; margin:auto;'></a>";
                     }
