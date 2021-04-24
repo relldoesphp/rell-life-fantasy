@@ -1148,7 +1148,7 @@ var rlf =  {
                     type: 'line',
                     backgroundColor: 'rgba(174, 3, 230, 0.25)',
                     fill: true,
-                    label: 'Average NFL Inside Linebacker',
+                    label: 'Average Starting MLB',
                     data: [26, 78, 48, 45, 90, 76],
                     ordinals: ["", "", "", "", "", "", ""],
                     metrics: ["", "", "", "", "", "", ""]
