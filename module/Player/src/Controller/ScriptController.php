@@ -72,7 +72,11 @@ class ScriptController extends AbstractActionController
 
     public function updateOLMetricsAction()
     {
-        $this->playerManager->updateWrMetrics();
+        $this->playerManager->updateOlMetrics();
+        $this->playerManager->updateDlMetrics();
+        $this->playerManager->updateLbMetrics();
+        $this->playerManager->updateCBMetrics();
+        $this->playerManager->updateSafetyMetrics();
     }
 
     public function dataScrapperAction()

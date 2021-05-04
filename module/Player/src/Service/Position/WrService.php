@@ -496,6 +496,11 @@ class WrService extends ServiceAbstract
                 }
             }
 
+            $metrics['slot'] = round($metrics['slot'], 2);
+            $metrics['deep'] = round($metrics['deep'], 2);
+            $metrics['outsideX'] = round($metrics['outsideX'], 2);
+            $metrics['alpha'] = round($metrics['alpha'], 2);
+
             $wr->setMetrics($metrics);
 
             $this->command->save($wr);

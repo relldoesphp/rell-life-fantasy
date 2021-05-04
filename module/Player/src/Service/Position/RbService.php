@@ -453,7 +453,7 @@ class RbService extends ServiceAbstract
         $bestYPC = 0;
         $bestCarryDom = 0;
         $bestRec = 0;
-
+        $conf = "";
         $collegeStats = $rb->getCollegeStats();
         foreach ($collegeStats as $year => $stats) {
             if ($stats->year != "Career") {
@@ -495,6 +495,12 @@ class RbService extends ServiceAbstract
                     }
                     $stats["scrimmageYds"] = $stats["rushYds"] + $stats['recYds'];
                 }
+
+                if (!array_key_exists("rushAtt", $stats)) {
+                    $stats["rushAtt"] = 0;
+                    continue;
+                }
+
 
                 // determine dominators
                 $dominator['td'] = round(($stats['scrimmageTds'] / $stats['totals']['tds']) * 100, 2);

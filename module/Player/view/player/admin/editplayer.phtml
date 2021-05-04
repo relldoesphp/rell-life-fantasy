@@ -265,6 +265,8 @@ $this->headTitle($title);
             </ul>
         </fieldset>
 
+
+        <?php if (array_key_exists('college-0', $collegeStats)): ?>
         <fieldset>
             <legend>College Stats</legend>
             <ul class="collapsible">
@@ -297,6 +299,7 @@ $this->headTitle($title);
                 </li>
             </ul>
         </fieldset>
+        <?php endif; ?>
 
         <fieldset>
             <legend>Images</legend>

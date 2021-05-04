@@ -1634,9 +1634,13 @@ var rlf =  {
 
     /************************* OL Line **************************/
     initOlPage : function() {
-        rlf.initProsChartsOl();
-        rlf.initOppChartsTE();
-        rlf.initMesChartsTE();
+
+        $(window).one('scroll' , function(){
+            if ($(".prospect").is(":visible")) {
+                rlf.initProsChartsOl();
+                rlf.initMesChartsTE();
+            }
+        });
 
         var runBlock = Math.round((rlfData.player.metrics.runBlock));
 
@@ -1693,108 +1697,21 @@ var rlf =  {
         var percent = rlfData.player.percentiles;
         var metrics = rlfData.player.metrics;
         var ordinals = rlfData.player.ordinals;
-        // var avgLB = rlfData.average.LB;
-        var xValue = ['Bully Score', 'Speed', 'Agility','Power', 'Speed Score'];
-        var yValue = [percent.bully, percent.fortyTime, '', percent.power, percent.speedScore];
-
-        var trace1 = {
-            x: xValue,
-            y: yValue,
-            name: 'OL Ability',
-            type: 'bar',
-            text: [
-                metrics.bully+'<br>'+ordinals.bully+'%',
-                metrics.fortyTime+'<br>'+ordinals.fortyTime+'%',
-                '',
-                metrics.power+'<br>'+ordinals.power+'%',
-                metrics.speedScore+'<br>'+ordinals.speedScore+'%'
-            ],
-            textposition: 'auto',
-            hoverinfo: 'none',
-            opacity: 0.8,
+        var chartData = {
+            labels: ['Bully Score', 'Speed', 'Agility', 'Elusiveness', 'Power', 'Speed Score'],
+            datasets: [{
+                type: 'bar',
+                stack: 'Stack One',
+                label: 'OL Skills',
+                backgroundColor: 'rgb(29, 233, 195, 0.4)',
+                borderWidth: 2,
+                fill: false,
+                data: [percent.bully, percent.fortyTime, percent.jukeAgility, percent.elusiveness, percent.power, percent.speedScore],
+                ordinals: [ordinals.bully, ordinals.fortyTime, ordinals.jukeAgility, ordinals.elusiveness, ordinals.power, ordinals.speedScore],
+                metrics: [metrics.bully, metrics.fortyTime, metrics.jukeAgility, metrics.elusiveness, metrics.power, metrics.speedScore]
+            }]
         };
-
-        var cone = percent.agility * .5;
-        var shuttle = percent.agility * .5;
-        var agilitypercent = Math.round(cone+shuttle);
-        var coneTrace = {
-            x:['Agility'],
-            y: [cone],
-            name: '3 cone ('+Math.round(percent.cone)+'%)',
-            text: [
-                metrics.cone
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgb(158,202,225)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var shuttleTrace = {
-            x:['Agility'],
-            y: [ shuttle],
-            name: 'Shuttle ('+Math.round(percent.shuttle)+'%)',
-            text: [
-                metrics.shuttle
-            ],
-            textposition: 'auto',
-            type: 'bar',
-            marker: {
-                color: 'rgba(58,200,225,.5)',
-                line: {
-                    color: 'rgb(8,48,107)',
-                    width: 1.5
-                }
-            }
-        };
-
-        var trace2 = {
-            x: xValue,
-            y: [30, 89, 74, 45, 20],
-            name: 'Average NFL Safety',
-            type: 'scatter'
-        };
-
-        var lineBacker = {
-            x: xValue,
-            y: [70, 67, 61, 22, 41],
-            name: 'Average NFL Safety',
-            type: 'scatter'
-        };
-
-        var data = [trace1, trace2, coneTrace, shuttleTrace];
-
-        var layout = {
-            font: {size: 12},
-            yaxis: {title: 'percentile', range: [0, 100]},
-            yaxis2: {
-                titlefont: {color: 'rgb(148, 103, 189)'},
-                tickfont: {color: 'rgb(148, 103, 189)'},
-                overlaying: 'y',
-                side: 'right'
-            },
-            margin: {
-                l: 50,
-                r: 20,
-                b: 20,
-                t: 25,
-                pad: 0
-            },
-            height: 350,
-            barmode: 'stack',
-            showlegend: true,
-            legend: {
-                x: 1,
-                y: 0.5
-            }
-        };
-
-        Plotly.newPlot('prospect-graph', data, layout, {responsive: true, displayModeBar: false});
+        rlf.makeProspectChart(chartData);
     },
     /************************* OL Line **************************/
     initDlPage : function() {

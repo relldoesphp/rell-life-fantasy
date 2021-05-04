@@ -40,6 +40,7 @@ class ZendDbSqlRepository implements ArticleRepositoryInterface
     {
         $sql    = new Sql($this->db);
         $select = $sql->select('posts');
+        $select->order('id DESC');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

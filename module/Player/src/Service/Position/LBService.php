@@ -18,6 +18,7 @@ use Laminas\Db\Sql\Select;
 use Laminas\Http\Request;
 use Laminas\Http\Client;
 use Laminas\Dom\Query;
+use Player\Service\SportsInfoApi;
 
 class LBService extends ServiceAbstract
 {
@@ -25,6 +26,7 @@ class LBService extends ServiceAbstract
     private $repository;
     private $command;
     private $db;
+    private $sisApi;
 
     public $specialMetrics = [
         'runStuff' => [
@@ -44,12 +46,19 @@ class LBService extends ServiceAbstract
         ]
     ];
 
-    public function __construct(AdapterInterface $db, Console $consoleAdapter, PlayerCommandInterface $command, PlayerRepositoryInterface $repository)
+    public function __construct(
+        AdapterInterface $db,
+        Console $consoleAdapter,
+        PlayerCommandInterface $command,
+        PlayerRepositoryInterface $repository,
+        SportsInfoApi $sisApi
+    )
     {
-        parent::__construct($db, $consoleAdapter, $command, $repository);
+        parent::__construct($db, $consoleAdapter, $command, $repository, $sisApi);
         $this->repository = $repository;
         $this->command = $command;
         $this->consoleAdapter = $consoleAdapter;
+        $this->sisApi = $sisApi;
     }
 
     public function calculateMetrics()

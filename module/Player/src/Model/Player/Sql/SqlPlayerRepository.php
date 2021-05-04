@@ -94,14 +94,14 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
             ->like('last_name', $query."%")
             ->or
             ->like('search_full_name', $query."%")
-            ->unnest()
-            ->and
-            ->in("position", ["QB","RB","WR","TE"]);
+            ->unnest();
+//            ->and
+//            ->in("position", ["QB","RB","WR","TE"]);
 
-//        $select->order([
-//            new Expression("json_unquote(player_info->'$.active') DESC"),
-//            new Expression("json_unquote(team_info->'$.depth_chart_order') ASC"),
-//        ]);
+        $select->order([
+            new Expression("json_unquote(player_info->'$.active') DESC"),
+            new Expression("json_unquote(team_info->'$.depth_chart_order') ASC"),
+        ]);
 
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();

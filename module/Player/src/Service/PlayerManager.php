@@ -278,7 +278,7 @@ class PlayerManager
 
     public function updateDlMetrics()
     {
-        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $dlService = new Position\DefLineService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
         $dlService->calculateMetrics();
         $dlService->calculatePercentiles();
         $dlService->calculateSpecialScores();
@@ -287,7 +287,7 @@ class PlayerManager
 
     public function updateLbMetrics()
     {
-        $lbService = new Position\LBService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $lbService = new Position\LBService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
         $lbService->calculateMetrics();
         $lbService->calculatePercentiles();
         $lbService->calculateSpecialScores();
@@ -296,14 +296,14 @@ class PlayerManager
 
     public function updateCbMetrics()
     {
-        $cbService = new Position\CbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $cbService = new Position\CbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
         $cbService->calculateMetrics();
         $cbService->calculatePercentiles();
     }
 
-    public function updatteSafetiesMetrics()
+    public function updateSafetyMetrics()
     {
-        $safetyService = new Position\SafetyService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
+        $safetyService = new Position\SafetyService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
         $safetyService->calculateMetrics();
         $safetyService->calculatePercentiles();
     }
@@ -368,12 +368,19 @@ class PlayerManager
 
     public function playerProfilerInfo()
     {
-        $positions = ['RB','WR','TE'];
+        $positions = ['OL', 'DE', 'LB', 'CB', 'S'];;
 
         $files = [
             'RB' => '/home/rell/Documents/rookie-rb.csv',
             'WR' => '/home/rell/Documents/rookie-wr.csv',
             'TE' => '/home/rell/Documents/rookie-te.csv',
+            'OL' => '/home/rell/Documents/rookie-ol.csv',
+            'DL' => '/home/rell/Documents/rookie-dl.csv',
+            'DE' => '/home/rell/Documents/rookie-edge.csv',
+            'LB' => '/home/rell/Documents/rookie-lb.csv',
+            'CB' => '/home/rell/Documents/rookie-cb.csv',
+            'S' => '/home/rell/Documents/rookie-s.csv',
+
         ];
 
         $indexes['RB'] = [
@@ -421,6 +428,92 @@ class PlayerManager
             'college' => 10
         ];
 
+        $indexes['OL'] = [
+            'name' => 0,
+            'position' => 1,
+            'draft_year' => 2,
+            'draft_pick' => 9,
+            'weight' => 8,
+            'heightInches' => 10,
+            'popularity' => 9,
+            'age' => 4,
+            'arms' => 5,
+            'height' => 7,
+            'hand' => 3,
+            'college' => 6
+        ];
+
+        $indexes['DL'] = [
+            'name' => 0,
+            'position' => 1,
+            'draft_year' => 2,
+            'draft_pick' => 10,
+            'weight' => 6,
+            'heightInches' => 9,
+            'age' => 3,
+            'arms' => 8,
+            'height' => 5,
+            'hand' => 4,
+            'college' => 7
+        ];
+
+        $indexes['DE'] = [
+            'name' => 0,
+            'position' => 1,
+            'draft_year' => 2,
+            'draft_pick' => 10,
+            'weight' => 8,
+            'heightInches' => 9,
+            'popularity' => 9,
+            'age' => 3,
+            'arms' => 5,
+            'height' => 7,
+            'hand' => 4,
+            'college' => 6
+        ];
+
+        $indexes['LB'] = [
+            'name' => 0,
+            'position' => 1,
+            'draft_year' => 2,
+            'draft_pick' => 9,
+            'weight' => 8,
+            'heightInches' => 10,
+            'age' => 3,
+            'arms' => 5,
+            'height' => 7,
+            'hand' => 4,
+            'college' => 6
+        ];
+
+        $indexes['CB'] = [
+            'name' => 0,
+            'position' => 1,
+            'draft_year' => 2,
+            'draft_pick' => 9,
+            'weight' => 8,
+            'heightInches' => 10,
+            'age' => 3,
+            'arms' => 5,
+            'height' => 7,
+            'hand' => 4,
+            'college' => 6
+        ];
+
+        $indexes['S'] = [
+            'name' => 0,
+            'position' => 1,
+            'draft_year' => 10,
+            'draft_pick' => 8,
+            'weight' => 7,
+            'heightInches' => 9,
+            'age' => 2,
+            'arms' => 4,
+            'height' => 6,
+            'hand' => 3,
+            'college' => 5
+        ];
+
         $fractions = [
             "1/2" => .5,
             "3/4" => .75,
@@ -444,6 +537,10 @@ class PlayerManager
                 }
 
                 $name = explode(' ', $data[$index['name']]); // Replaces all spaces with hyphens.
+                if (count($name) < 2) {
+                    $found = true;
+                    $name = explode("\t", $data[$index['name']]);
+                }
                 //check for player
                 $player = $this->playerRepository->findPlayerByInfo(
                     $name[0],
@@ -501,12 +598,18 @@ class PlayerManager
 
     public function playerProfilerMetrics()
     {
-        $positions = ['RB','WR','TE'];
+        $positions = ['OL', 'DE', 'LB', 'CB', 'S'];
 
         $files = [
             'RB' => '/home/rell/Documents/rookie-rb-metrics.csv',
             'WR' => '/home/rell/Documents/rookie-wr-metrics.csv',
             'TE' => '/home/rell/Documents/rookie-te-metrics.csv',
+            'OL' => '/home/rell/Documents/rookie-ol-metrics.csv',
+            'DL' => '/home/rell/Documents/rookie-dl-metrics.csv',
+            'DE' => '/home/rell/Documents/rookie-edge-metrics.csv',
+            'LB' => '/home/rell/Documents/rookie-lb-metrics.csv',
+            'CB' => '/home/rell/Documents/rookie-cb-metrics.csv',
+            'S' => '/home/rell/Documents/rookie-s-metrics.csv',
         ];
 
         $indexes['RB'] = [
@@ -542,6 +645,72 @@ class PlayerManager
             'broad' => 6,
         ];
 
+        $indexes['OL'] = [
+            'name' => 0,
+            'position' => 1,
+            'shuttle' => 2,
+            'cone' => 4,
+            'fortyTime' => 7,
+            'bench' => 5,
+            'vertical' => 3,
+            'broad' => 8,
+        ];
+
+        $indexes['DL'] = [
+            'name' => 0,
+            'position' => 1,
+            'shuttle' => 2,
+            'cone' => 3,
+            'fortyTime' => 6,
+            'bench' => 4,
+            'vertical' => 5,
+            'broad' => 7,
+        ];
+
+        $indexes['DE'] = [
+            'name' => 0,
+            'position' => 1,
+            'shuttle' => 10,
+            'cone' => 4,
+            'fortyTime' => 4,
+            'bench' => 8,
+            'vertical' => 9,
+            'broad' => 7,
+        ];
+
+        $indexes['LB'] = [
+            'name' => 0,
+            'position' => 1,
+            'shuttle' => 2,
+            'cone' => 3,
+            'fortyTime' => 6,
+            'bench' => 4,
+            'vertical' => 5,
+            'broad' => 7,
+        ];
+
+        $indexes['CB'] = [
+            'name' => 0,
+            'position' => 1,
+            'shuttle' => 2,
+            'cone' => 4,
+            'fortyTime' => 7,
+            'bench' => 6,
+            'vertical' => 3,
+            'broad' => 5,
+        ];
+
+        $indexes['S'] = [
+            'name' => 0,
+            'position' => 1,
+            'shuttle' => 2,
+            'cone' => 4,
+            'fortyTime' => 7,
+            'bench' => 5,
+            'vertical' => 3,
+            'broad' => 6,
+        ];
+
         $fractions = [
             "1/2" => .5,
             "3/4" => .75,
@@ -565,6 +734,10 @@ class PlayerManager
                 }
 
                 $name = explode(' ', $data[$index['name']]); // Replaces all spaces with hyphens.
+                if (count($name) < 2) {
+                    $found = true;
+                    $name = explode("\t", $data[$index['name']]);
+                }
                 //check for player
                 $player = $this->playerRepository->findPlayerByInfo(
                     $name[0],
@@ -587,17 +760,17 @@ class PlayerManager
                 }
 
                 $metrics = Json::decode($player->getMetrics(),1);
-                $metrics['shuttle'] = $data[$index['shuttle']];
-                $metrics['cone'] = $data[$index['cone']];
-                $metrics['benchPress'] = $data[$index['bench']];
-                $metrics['verticalJump'] = $data[$index['vertical']];
-                $metrics['broadJump'] = $data[$index['broad']];
-
-                if (!in_array($data[$index['fortyTime']], ["-", ""])) {
-                    $metrics['fortyTime'] = round((float)$data[$index['fortyTime']] + .05, 2);
-                } else {
-                    $metrics['fortyTime'] = $data[$index['fortyTime']];
-                }
+                $metrics['shuttle'] = ($data[$index['shuttle']] == "-") ? null : $data[$index['shuttle']];
+                $metrics['cone'] = ($data[$index['cone']] == "-") ? null : $data[$index['cone']];
+                $metrics['benchPress'] = ($data[$index['bench']] == "-") ? null : $data[$index['bench']];
+                $metrics['verticalJump'] = ($data[$index['vertical']] == "-") ? null : $data[$index['vertical']];
+                $metrics['broadJump'] = ($data[$index['broad']] == "-") ? null : $data[$index['broad']];
+                $metrics['fortyTime'] = ($data[$index['fortyTime']] == "-") ? null : $data[$index['fortyTime']];
+//                if (!in_array($data[$index['fortyTime']], ["-", ""])) {
+//                    $metrics['fortyTime'] = round((float)$data[$index['fortyTime']] + .05, 2);
+//                } else {
+//
+//                }
 
                 $player->setMetrics($metrics);
 

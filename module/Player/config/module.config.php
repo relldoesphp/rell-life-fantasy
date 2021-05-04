@@ -245,6 +245,17 @@ return [
                         ],
                     ],
                 ],
+                'ol-metrics' => [
+                    'type'    => 'simple',  // This is the default, and may be omitted; more on
+                    // types below
+                    'options' => [
+                        'route'    => 'update-ol-metrics',
+                        'defaults' => [
+                            'controller' => Controller\ScriptController::class,
+                            'action'     => 'updateOLMetrics',
+                        ],
+                    ],
+                ],
                 'data-scrap' => [
                     'type'    => 'simple',  // This is the default, and may be omitted; more on
                     // types below

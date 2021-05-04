@@ -88,7 +88,7 @@ class PlayerController extends AbstractActionController
 
         $jsVars['players'] = $players;
         $jsVars['list'] = $this->playerList;
-        $sjVars['lists']['all'] = $this->playerList;
+        $jsVars['lists']['all'] = $this->playerList;
         $jsVars['lists']['WR'] = $this->playerRepository->getPlayerNames("WR");
         $jsVars['lists']['RB'] = $this->playerRepository->getPlayerNames("RB");
         $jsVars['lists']['TE'] = $this->playerRepository->getPlayerNames("TE");
