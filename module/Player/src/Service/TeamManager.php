@@ -322,7 +322,7 @@ class TeamManager
             foreach ($areas as $area) {
                 $players = [];
                 $teamStats = [];
-                $players = $this->sportsInfoApi->getPlayersQuery("2020", "receiving", [
+                $players = $this->sportsInfoApi->getPlayersQuery("2021", "receiving", [
                     'ReceivingFilters.MinAirYards' => $area['low'],
                     'ReceivingFilters.MaxAirYards' => $area['high'],
                     'GameFilters.Team' => $sisInfo['teamId']]);

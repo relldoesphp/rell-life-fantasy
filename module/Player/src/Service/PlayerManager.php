@@ -20,6 +20,7 @@ use Player\Model\Stats\StatsCommandInterface;
 use Player\Model\Stats\StatsRepositoryInterface;
 use Laminas\ProgressBar\ProgressBar;
 use Player\Service\Position;
+use Tightenco\Collect\Support\Collection;
 
 
 class PlayerManager
@@ -117,8 +118,37 @@ class PlayerManager
         foreach ($json as $key => $value) {
             $sleeperId = $value->player_id;
 
-            if ($sleeperId == 7528) {
+            if ($sleeperId == 5826) {
                 $found = true;
+            }
+
+            //fix height
+            if ($value->height > 66 and $value->height < 82) {
+                $value->heightInches = $value->height;
+                $heightArray = [
+                    '66' => '5\'6"',
+                    '67' => '5\'7"',
+                    '68' => '5\'8"',
+                    '69' => '5\'9"',
+                    '70' => '5\'10"',
+                    '71' => '5\'11"',
+                    '72' => '6\'0"',
+                    '73' => '6\'1"',
+                    '74' => '6\'2"',
+                    '75' => '6\'3"',
+                    '76' => '6\'4"',
+                    '77' => '6\'5"',
+                    '78' => '6\'6"',
+                    '79' => '6\'7"',
+                    '80' => '6\'8"',
+                    '81' => '6\'9"',
+                    '82' => '6\'10"',
+                ];
+                $value->height = $heightArray[$value->height];
+            } else {
+                if (!empty($value->height)) {
+                    $playerInfo['height'] = $value->height;
+                }
             }
             
             $player = $this->playerRepository->findPlayerBySleeperId($sleeperId);
@@ -148,25 +178,32 @@ class PlayerManager
             $player->setLastName($value->last_name);
             $player->setSearchFullName($value->search_full_name);
             $player->setPosition($value->position);
-            $playerInfo = Json::decode($player->getPlayerInfo(),1);
+            if ($player->getPlayerInfo() != null) {
+                $playerInfo = Json::decode($player->getPlayerInfo(),1);
+            } else {
+                $playerInfo = [];
+            }
 
             $playerInfo['sport'] = $value->sport;
 
-            if ($player->getTeam() !== 'Rookie') {
-                $player->setTeam($value->team);
+            if ($player->getTeam() == 'Rookie') {
                 $playerInfo['age'] = $value->age;
-                if ($value->team == null) {
-                    $player->setTeam("FA");
-                }
-                if (!empty($value->height)) {
-                    $playerInfo['height'] = $value->height;
-                }
+//                if ($value->team == null) {
+//                    $player->setTeam("FA");
+//                }
+//                if (!empty($value->height)) {
+//                    $playerInfo['height'] = $value->height;
+//                }
 
                 $playerInfo['status'] = $value->status;
 
-                if (!empty($value->weight)) {
-                    $playerInfo['weight'] = $value->weight;
-                }
+//                if (!empty($value->weight)) {
+//                    $playerInfo['weight'] = $value->weight;
+//                }
+            } else {
+                $playerInfo['height'] = $value->height;
+                $playerInfo['heightInches'] = $value->heightInches;
+                $playerInfo['weight'] = $value->weight;
             }
 
             $playerInfo['college'] = $value->college;
@@ -188,7 +225,7 @@ class PlayerManager
             $playerInfo['search_last_name'] = $value->search_last_name;
             $player->setPlayerInfo($playerInfo);
 
-            $apiInfo = Json::decode($player->getApiInfo(),1);
+            $apiInfo = ($player->getApiInfo() == null) ? [] : Json::decode($player->getApiInfo(),1);
             $apiInfo['espn_id'] = $value->espn_id;
             $apiInfo['yahoo_id'] = $value->yahoo_id;
             $apiInfo['rotoworld_id'] = $value->rotoworld_id;
@@ -198,14 +235,14 @@ class PlayerManager
             $apiInfo['gsis_id'] = $value->gsis_id;
             $player->setApiInfo($apiInfo);
 
-            $injuryInfo = Json::decode($player->getInjuryInfo(),1);
+            $injuryInfo = ($player->getInjuryInfo() == null) ? [] : Json::decode($player->getInjuryInfo(),1);
             $injuryInfo['injury_status'] = $value->injury_status;
             $injuryInfo['injury_notes'] = $value->injury_notes;
             $injuryInfo['injury_body_part'] = $value->injury_body_part;
             $injuryInfo['injury_start_date'] = $value->injury_start_date;
             $player->setInjuryInfo( $injuryInfo);
 
-            $teamInfo = Json::decode($player->getTeamInfo(),1);
+            $teamInfo = ($player->getTeamInfo() == null) ? [] : Json::decode($player->getTeamInfo(),1);
             $teamInfo['team'] = $value->team;
             $teamInfo['position'] = $value->position;
             $teamInfo['number'] = $value->number;
@@ -234,8 +271,10 @@ class PlayerManager
     public function updateWrMetrics()
     {
         $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
-        $wrService->calculateMetrics();
-        $wrService->calculatePercentiles();
+//        $wrService->calculateMetrics();
+//        $wrService->calculatePercentiles();
+        $wrService->calculateSpecialScores();
+        $wrService->calculateSpecialPercentiles();
         $wrService->calculateSpecialScores();
         $wrService->calculateSpecialPercentiles();
     }
@@ -245,6 +284,8 @@ class PlayerManager
         $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
         $rbService->calculateMetrics();
         $rbService->calculatePercentiles();
+        $rbService->calculateSpecialScores();
+        $rbService->calculateSpecialPercentiles();
         $rbService->calculateSpecialScores();
         $rbService->calculateSpecialPercentiles();
     }
@@ -311,17 +352,44 @@ class PlayerManager
 
     public function scrapCollegeJob()
     {
-//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+ //       $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+//        $rbService->findCfbId('2021');
+//        $rbService->findCfbId('2020');
+//        $rbService->findCfbId('2019');
+//        $rbService->findCfbId('2018');
+//        $rbService->findCfbId('2017');
+//        $rbService->findCfbId('2016');
+   //     $rbService->makeCollegeBreakdown();
 //        $rbService->scrapCollegeJob();
+////
+        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+        $teService->findCfbId('2022');
+        $teService->scrapCollegeJob();
 //
-//        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
-//        $teService->scrapCollegeJob();
+//        $teService->findCfbId('2021');
+//        $teService->findCfbId('2020');
+//        $teService->findCfbId('2019');
+//        $teService->findCfbId('2018');
+//        $teService->findCfbId('2017');
+//        $teService->findCfbId('2016');
+        $teService->makeCollegeBreakdown();
 
-         $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
-         $wrService->scrapCollegeJob();
+   //     $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+       // $wrService->findCfbId('2022');
+     //   $wrService->scrapCollegeJob();
+       // $wrService->makeCollegeBreakdown();
+
+//        $wrService->findCfbId('2021');
+//        $wrService->findCfbId('2020');
+//        $wrService->findCfbId('2019');
+//        $wrService->findCfbId('2018');
+//        $wrService->findCfbId('2017');
+//        $wrService->findCfbId('2016');
+
+
 
 //        $qbService = new Position\QbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository);
-//        $qbService->scrapCollegeJob();
+//        $qbService->scrapCollegeJob();$collect = collect($collegePlayers);
 
     }
 
@@ -368,7 +436,7 @@ class PlayerManager
 
     public function playerProfilerInfo()
     {
-        $positions = ['OL', 'DE', 'LB', 'CB', 'S'];;
+        $positions = ['OL', 'DE', 'LB', 'CB', 'S'];
 
         $files = [
             'RB' => '/home/rell/Documents/rookie-rb.csv',
@@ -780,5 +848,214 @@ class PlayerManager
             }
             $progressBar->finish();
         }
+    }
+
+    public function getCollegePassing($year)
+    {
+        $areas = [
+            [
+                "area" => "underneath",
+                "low" => -10,
+                "high" => 0,
+            ],
+            [
+                "area" => "short",
+                "low" => 1,
+                "high" => 9,
+            ],
+            [
+                "area" => "intermediate",
+                "low" => 10,
+                "high" => 20,
+            ],
+            [
+                "area" => "deep",
+                "low" => 21,
+                "high" => 100,
+            ],
+            [
+                "area" => "all",
+                "low" => -20,
+                "high" => 100,
+            ]
+        ];
+        $players = [];
+        $stats = [];
+        $wrs = $this->playerRepository->findAllPlayers("WR");
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
+        $pointer = 0;
+        $players = $this->sisApi->getCollegePassing($year, "receiving");
+        foreach ($players as $player) {
+
+        }
+        foreach ($areas as $area) {
+            $players = $this->sisApi->getCollegePassing($year, "receiving", [
+                'ReceivingFilters.MinAirYards' => $area['low'],
+                'ReceivingFilters.MaxAirYards' => $area['high'],
+
+            ]);
+            foreach ($players as $player) {
+                $stats[$player['playerId']][$area['area']] = [
+                    'playerId' => $player['playerId'],
+                    'player' => $player['player'],
+                    'yards' => $player['yards'],
+                    'receptions' => $player['receptions'],
+                    'ybContact' => $player['ybContact'],
+                    'yaContact' => $player['yaContact'],
+                    'aDoT' => $player['aDoT'],
+                    'airYards' => $player['airYards'],
+                    'tds' => $player['tDs'],
+                    'yac' => $player['yac'],
+                ];
+
+                $statsByName[$player['player']][$area['area']] = [
+                    'playerId' => $player['playerId'],
+                    'player' => $player['player'],
+                    'yards' => $player['yards'],
+                    'tDs' => $player['tDs'],
+                    'receptions' => $player['receptions'],
+                    'ybContact' => $player['ybContact'],
+                    'yaContact' => $player['yaContact'],
+                    'aDoT' => $player['aDoT'],
+                    'airYards' => $player['airYards'],
+                    'tds' => $player['tDs'],
+                    'yac' => $player['yac'],
+                ];
+            }
+        }
+
+        $wrs = $this->playerRepository->findAllPlayers("WR");
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
+        $pointer = 0;
+        foreach ($wrs as $wr) {
+            $receiving = [];
+            $wr->decodeJson();
+            $apiInfo = $wr->getApiInfo();
+            $collegeStats = $wr->getCollegeStats();
+            if (array_key_exists($year, $collegeStats)) {
+                if (array_key_exists('cfb_id', $apiInfo) && array_key_exists($apiInfo['cfb_id'], $stats))
+                    $receiving = $stats[$apiInfo['cfb_id']];
+                else {
+                    $firstName = $wr->getFirstName();
+                    $lastName = $wr->getLastName();
+                    if (array_key_exists($firstName." ".$lastName, $statsByName)) {
+                        $receiving = $statsByName[$firstName . " " . $lastName];
+
+                    } else {
+                        continue;
+                    }
+                }
+
+
+                if (empty($receiving)) {
+                    continue;
+                }
+                $collegeStats[$year]['recBreakdown'] = $receiving;
+                foreach ($areas as $area) {
+                    if (!array_key_exists($area['area'], $receiving)) {
+                        $receiving[$area['area']] = [
+                            'playerId' => 0,
+                            'player' => 0,
+                            'yards' => 0,
+                            'tDs' => 0,
+                            'receptions' => 0,
+                            'ybContact' => 0,
+                            'yaContact' => 0,
+                            'aDoT' => 0,
+                            'airYards' => 0,
+                            'tds' => 0,
+                            'yac' => 0,
+                        ];
+                    }
+                }
+
+                if (!empty($collegeStats[$year]['recs']) && $receiving['all']['yards'] > 0) {
+                    $totals = $receiving['all'];
+                    $recPercents = [];
+                    if (array_key_exists('deep', $receiving)) {
+                        $recPercents['yards']['separation']['deepSeparation'] = round(($receiving['deep']['airYards'] / $totals['yards']) * 100,2);
+                        $recPercents['yards']['ybc']['deepYBC'] = round(($receiving['deep']['ybContact'] / $totals['yards']) * 100,2);
+                        $recPercents['yards']['yac']['deepYAC'] = round(($receiving['deep']['yaContact'] / $totals['yards']) * 100,2);
+                        $recPercents['recs']['deepRecs'] = round(($receiving['deep']['receptions'] / $totals['receptions']) * 100,2);
+                    } else {
+                        $receiving['deep'] = [
+                            'yards' => 0,
+                            'tds' => 0,
+                            'receptions' => 0,
+                            'ybContact' => 0,
+                            'yaContact' => 0,
+                            'aDoT' => 0,
+                            'airYards' => 0,
+                            'yac' => 0
+                        ];
+                    }
+
+                    if (array_key_exists('intermediate', $receiving)) {
+                        $recPercents['yards']['separation']['midSeparation'] = round(($receiving['intermediate']['airYards'] / $totals['yards']) * 100, 2);
+                        $recPercents['yards']['ybc']['midYBC'] = round(($receiving['intermediate']['ybContact'] / $totals['yards']) * 100, 2);
+                        $recPercents['yards']['yac']['midYAC'] = round(($receiving['intermediate']['yaContact'] / $totals['yards']) * 100, 2);
+                        $recPercents['recs']['midRecs'] = round(($receiving['intermediate']['receptions'] / $totals['receptions']) * 100,2);
+                    } else {
+                        $receiving['intermediate'] = [
+                            'yards' => 0,
+                            'tds' => 0,
+                            'receptions' => 0,
+                            'ybContact' => 0,
+                            'yaContact' => 0,
+                            'aDoT' => 0,
+                            'airYards' => 0,
+                            'yac' => 0
+                        ];
+                    }
+
+                    if (array_key_exists('short', $receiving)) {
+                        $recPercents['yards']['separation']['shortSeparation'] = round(($receiving['short']['airYards'] / $totals['yards']) * 100, 2);
+                        $recPercents['yards']['yac']['shortYAC'] = round(($receiving['short']['yaContact'] / $totals['yards']) * 100,2);
+                        $recPercents['yards']['ybc']['shortYBC'] = round(($receiving['short']['ybContact'] / $totals['yards']) * 100,2);
+                        $recPercents['recs']['shortRecs'] = round(($receiving['short']['receptions'] / $totals['receptions']) * 100,2);
+                    } else {
+                        $receiving['short'] = [
+                            'yards' => 0,
+                            'tDs' => 0,
+                            'receptions' => 0,
+                            'ybContact' => 0,
+                            'yaContact' => 0,
+                            'aDoT' => 0,
+                            'airYards' => 0,
+                            'yac' => 0
+                        ];
+                    }
+
+                    if (array_key_exists('underneath', $receiving)) {
+                        $recPercents['yards']['ybc']['underYBC'] = round(($receiving['underneath']['ybContact'] / $totals['yards']) * 100, 2);
+                        $recPercents['yards']['yac']['underYAC'] = round(($receiving['underneath']['yaContact'] / $totals['yards']) * 100,2);
+                        $recPercents['recs']['underRecs'] = round(($receiving['underneath']['receptions'] / $totals['receptions']) * 100,2);
+                    } else {
+                        $receiving['underneath'] = [
+                            'yards' => 0,
+                            'tDs' => 0,
+                            'receptions' => 0,
+                            'ybContact' => 0,
+                            'yaContact' => 0,
+                            'aDoT' => 0,
+                            'airYards' => 0,
+                            'yac' => 0
+                        ];
+                    }
+                    $collegeStats[$year]['recs'] = $totals['receptions'];
+                    $collegeStats[$year]['recYds'] = $totals['yards'];
+                    $collegeStats[$year]['recsTds'] = $totals['tds'];
+                    $collegeStats[$year]['yac'] = $totals['yac'];
+                    $collegeStats[$year]['recBreakdown'] = $receiving;
+                    $collegeStats[$year]['recPercents'] = $recPercents;
+                }
+                $wr->setCollegeStats($collegeStats);
+                $this->playerCommand->save($wr);
+
+                $pointer++;
+                $progressBar->update($pointer);
+            }
+        }
+        $progressBar->finish();
     }
 }

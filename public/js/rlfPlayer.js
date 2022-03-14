@@ -366,7 +366,7 @@ var rlf =  {
         }
     },
 
-    initCompareTables : function(position){
+    initCompareTables : function(position) {
         var player1 = rlfData.players[0];
         var player2 = rlfData.players[1];
 
@@ -375,29 +375,29 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
-                "info":false,
+                "info": false,
                 "columns": [
-                    {title: "Year", data: "name", "defaultContent":0},
-                    {title: "GP", data: "stats.gp", "defaultContent":0},
-                    {title: "PPG", data: "ppg", "defaultContent":0},
-                    {title: "Recs", data: "stats.rec", "defaultContent":0},
-                    {title: "Yds", data: "stats.rec_yd", "defaultContent":0},
-                    {title: "Tds", data: "stats.rec_td", "defaultContent":0},
-                    {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
-                    {title: "YPR", data: "stats.rec_ypr", "defaultContent":0},
-                    {title: "YPT", data: "stats.rec_ypt", "defaultContent":0},
-                    {title: "Deep Yds", data: "stats.rec_ypt", "defaultContent":0}
+                    {title: "Year", data: "name", "defaultContent": 0},
+                    {title: "GP", data: "stats.gp", "defaultContent": 0},
+                    {title: "PPG", data: "ppg", "defaultContent": 0},
+                    {title: "Recs", data: "stats.rec", "defaultContent": 0},
+                    {title: "Yds", data: "stats.rec_yd", "defaultContent": 0},
+                    {title: "Tds", data: "stats.rec_td", "defaultContent": 0},
+                    {title: "Tgts", data: "stats.rec_tgt", "defaultContent": 0},
+                    {title: "YPR", data: "stats.rec_ypr", "defaultContent": 0},
+                    {title: "YPT", data: "stats.rec_ypt", "defaultContent": 0},
+                    {title: "Deep Yds", data: "stats.rec_ypt", "defaultContent": 0}
                 ],
-                data:[
+                data: [
                     {
-                        "name":player1.first_name+" "+player1.last_name,
-                        "stats":player1.seasonTable[0].stats,
-                        "ppg":(player1.seasonTable[0].stats.pts_ppr/player1.seasonTable[0].stats.gp).toFixed(1),
+                        "name": player1.first_name + " " + player1.last_name,
+                        "stats": player1.seasonTable[0].stats,
+                        "ppg": (player1.seasonTable[0].stats.pts_ppr / player1.seasonTable[0].stats.gp).toFixed(1),
                     },
                     {
-                        "name":player2.first_name+" "+player2.last_name,
-                        "stats":player2.seasonTable[0].stats,
-                        "ppg":(player2.seasonTable[0].stats.pts_ppr/player2.seasonTable[0].stats.gp).toFixed(1),
+                        "name": player2.first_name + " " + player2.last_name,
+                        "stats": player2.seasonTable[0].stats,
+                        "ppg": (player2.seasonTable[0].stats.pts_ppr / player2.seasonTable[0].stats.gp).toFixed(1),
                     }
                 ]
             });
@@ -408,42 +408,54 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
-                "info":false,
+                "info": false,
                 "columns": [
-                    {title: "", data: "name", "defaultContent":0},
-                    {title: player1.first_name+" "+player1.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-                    {title: player2.first_name+" "+player2.last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+                    {title: "", data: "name", "defaultContent": 0},
+                    {
+                        title: player1.first_name + " " + player1.last_name,
+                        data: "metric1",
+                        "defaultContent": metricsDefault,
+                        className: "dt-center",
+                        targets: "_all"
+                    },
+                    {
+                        title: player2.first_name + " " + player2.last_name,
+                        data: "metric2",
+                        "defaultContent": metricsDefault,
+                        className: "dt-center",
+                        targets: "_all"
+                    },
                 ],
-                data:[
+                data: [
                     {
                         "name": "40 time",
-                        "metric1": player1.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.fortyTime+"%'></div></div>",
-                        "metric2": player2.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.fortyTime+"%'></div></div>",
+                        "metric1": player1.metrics.fortyTime + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.fortyTime + "%'></div></div>",
+                        "metric2": player2.metrics.fortyTime + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.fortyTime + "%'></div></div>",
                     },
                     {
                         "name": "3 cone",
-                        "metric1": player1.metrics.cone+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.cone+"%'></div></div>",
-                        "metric2": player2.metrics.cone+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.cone+"%'></div></div>",
+                        "metric1": player1.metrics.cone + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.cone + "%'></div></div>",
+                        "metric2": player2.metrics.cone + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.cone + "%'></div></div>",
                     },
                     {
                         "name": "Shuttle",
-                        "metric1": player1.metrics.shuttle+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.shuttle+"%'></div></div>",
-                        "metric2": player2.metrics.shuttle+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.shuttle+"%'></div></div>",
+                        "metric1": player1.metrics.shuttle + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.shuttle + "%'></div></div>",
+                        "metric2": player2.metrics.shuttle + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.shuttle + "%'></div></div>",
                     },
                     {
                         "name": "Vertical Jump",
-                        "metric1": player1.metrics.verticalJump+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.verticalJump+"%'></div></div>",
-                        "metric2": player2.metrics.verticalJump+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.verticalJump+"%'></div></div>",
+                        "metric1": player1.metrics.verticalJump + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.verticalJump + "%'></div></div>",
+                        "metric2": player2.metrics.verticalJump + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.verticalJump + "%'></div></div>",
                     },
                     {
                         "name": "Broad Jump",
-                        "metric1": player1.metrics.broadJump+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.broadJump+"%'></div></div>",
-                        "metric2": player2.metrics.broadJump+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.broadJump+"%'></div></div>",
+                        "metric1": player1.metrics.broadJump + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.broadJump + "%'></div></div>",
+                        "metric2": player2.metrics.broadJump + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.broadJump + "%'></div></div>",
                     },
                     {
                         "name": "Bench",
-                        "metric1": player1.metrics.benchPress+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.benchPress+"%'></div></div>",
-                        "metric2": player2.metrics.benchPress+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.benchPress+"%'></div></div>",
+                        "metric1": player1.metrics.benchPress + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.benchPress + "%'></div></div>",
+                        "metric2": player2.metrics.benchPress + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.benchPress + "%'></div></div>",
                     }
                 ]
             });
@@ -452,13 +464,25 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
-                "info":false,
+                "info": false,
                 "columns": [
-                    {title: "", data: "name", "defaultContent":0},
-                    {title: player1.first_name+" "+player1.last_name, data: "metric1", "defaultContent":0, className: "dt-center", targets: "_all"},
-                    {title: player2.first_name+" "+player2.last_name, data: "metric2", "defaultContent":0, className: "dt-center", targets: "_all"},
+                    {title: "", data: "name", "defaultContent": 0},
+                    {
+                        title: player1.first_name + " " + player1.last_name,
+                        data: "metric1",
+                        "defaultContent": 0,
+                        className: "dt-center",
+                        targets: "_all"
+                    },
+                    {
+                        title: player2.first_name + " " + player2.last_name,
+                        data: "metric2",
+                        "defaultContent": 0,
+                        className: "dt-center",
+                        targets: "_all"
+                    },
                 ],
-                "data":[
+                "data": [
                     {
                         "name": "College",
                         "metric1": player1.player_info.college,
@@ -471,23 +495,23 @@ var rlf =  {
                     },
                     {
                         "name": "Breakout Class",
-                        "metric1": player1.metrics.breakoutClass+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.breakoutClass+"%'></div></div>",
-                        "metric2": player2.metrics.breakoutClass+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutClass+"%'></div></div>",
+                        "metric1": player1.metrics.breakoutClass + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.breakoutClass + "%'></div></div>",
+                        "metric2": player2.metrics.breakoutClass + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.breakoutClass + "%'></div></div>",
                     },
                     {
                         "name": "Breakout Years",
-                        "metric1": player1.metrics.breakoutSeasons+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.breakoutYears+"%'></div></div>",
-                        "metric2": player2.metrics.breakoutSeasons+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutYears+"%'></div></div>",
+                        "metric1": player1.metrics.breakoutSeasons + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.breakoutYears + "%'></div></div>",
+                        "metric2": player2.metrics.breakoutSeasons + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.breakoutYears + "%'></div></div>",
                     },
                     {
                         "name": "Best Dominator",
-                        "metric1": player1.metrics.bestDominator+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.breakoutDominator+"%'></div></div>",
-                        "metric2": player2.metrics.bestDominator+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutDominator+"%'></div></div>",
+                        "metric1": player1.metrics.bestDominator + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.breakoutDominator + "%'></div></div>",
+                        "metric2": player2.metrics.bestDominator + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.breakoutDominator + "%'></div></div>",
                     },
                     {
                         "name": "College Score",
-                        "metric1": player1.metrics.collegeScore+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.collegeScore+"%'></div></div>",
-                        "metric2": player2.metrics.collegeScore+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.collegeScore+"%'></div></div>",
+                        "metric1": player1.metrics.collegeScore + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.collegeScore + "%'></div></div>",
+                        "metric2": player2.metrics.collegeScore + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.collegeScore + "%'></div></div>",
                     }
                 ]
             });
@@ -498,29 +522,29 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
-                "info":false,
+                "info": false,
                 "columns": [
-                    {title: "Year", data: "name", "defaultContent":0},
-                    {title: "GP", data: "stats.gp", "defaultContent":0},
-                    {title: "PPG", data: "ppg", "defaultContent":0},
-                    {title: "Rush Yds", data: "stats.rush_yd", "defaultContent":0},
-                    {title: "Rush Tds", data: "stats.rush_td", "defaultContent":0},
-                    {title: "Rush Atts", data: "stats.rush_att", "defaultContent":0},
-                    {title: "Recs", data: "stats.rec", "defaultContent":0},
-                    {title: "Tgts", data: "stats.rec_tgt", "defaultContent":0},
-                    {title: "Rec Yds", data: "stats.rec_yd", "defaultContent":0},
-                    {title: "Rec Tds", data: "stats.rec_td", "defaultContent":0}
+                    {title: "Year", data: "name", "defaultContent": 0},
+                    {title: "GP", data: "stats.gp", "defaultContent": 0},
+                    {title: "PPG", data: "ppg", "defaultContent": 0},
+                    {title: "Rush Yds", data: "stats.rush_yd", "defaultContent": 0},
+                    {title: "Rush Tds", data: "stats.rush_td", "defaultContent": 0},
+                    {title: "Rush Atts", data: "stats.rush_att", "defaultContent": 0},
+                    {title: "Recs", data: "stats.rec", "defaultContent": 0},
+                    {title: "Tgts", data: "stats.rec_tgt", "defaultContent": 0},
+                    {title: "Rec Yds", data: "stats.rec_yd", "defaultContent": 0},
+                    {title: "Rec Tds", data: "stats.rec_td", "defaultContent": 0}
                 ],
-                data:[
+                data: [
                     {
-                        "name":player1.first_name+" "+player1.last_name,
-                        "stats":player1.seasonTable[0].stats,
-                        "ppg":(player1.seasonTable[0].stats.pts_ppr/player1.seasonTable[0].stats.gp).toFixed(1),
+                        "name": player1.first_name + " " + player1.last_name,
+                        "stats": player1.seasonTable[0].stats,
+                        "ppg": (player1.seasonTable[0].stats.pts_ppr / player1.seasonTable[0].stats.gp).toFixed(1),
                     },
                     {
-                        "name":player2.first_name+" "+player2.last_name,
-                        "stats":player2.seasonTable[0].stats,
-                        "ppg":(player2.seasonTable[0].stats.pts_ppr/player2.seasonTable[0].stats.gp).toFixed(1),
+                        "name": player2.first_name + " " + player2.last_name,
+                        "stats": player2.seasonTable[0].stats,
+                        "ppg": (player2.seasonTable[0].stats.pts_ppr / player2.seasonTable[0].stats.gp).toFixed(1),
                     }
                 ]
             });
@@ -531,42 +555,54 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
-                "info":false,
+                "info": false,
                 "columns": [
-                    {title: "", data: "name", "defaultContent":0},
-                    {title: player1.first_name+" "+player1.last_name, data: "metric1", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
-                    {title: player2.first_name+" "+player2.last_name, data: "metric2", "defaultContent":metricsDefault, className: "dt-center", targets: "_all"},
+                    {title: "", data: "name", "defaultContent": 0},
+                    {
+                        title: player1.first_name + " " + player1.last_name,
+                        data: "metric1",
+                        "defaultContent": metricsDefault,
+                        className: "dt-center",
+                        targets: "_all"
+                    },
+                    {
+                        title: player2.first_name + " " + player2.last_name,
+                        data: "metric2",
+                        "defaultContent": metricsDefault,
+                        className: "dt-center",
+                        targets: "_all"
+                    },
                 ],
-                data:[
+                data: [
                     {
                         "name": "40 time",
-                        "metric1": player1.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.fortyTime+"%'></div></div>",
-                        "metric2": player2.metrics.fortyTime+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.fortyTime+"%'></div></div>",
+                        "metric1": player1.metrics.fortyTime + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.fortyTime + "%'></div></div>",
+                        "metric2": player2.metrics.fortyTime + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.fortyTime + "%'></div></div>",
                     },
                     {
                         "name": "3 cone",
-                        "metric1": player1.metrics.cone+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.cone+"%'></div></div>",
-                        "metric2": player2.metrics.cone+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.cone+"%'></div></div>",
+                        "metric1": player1.metrics.cone + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.cone + "%'></div></div>",
+                        "metric2": player2.metrics.cone + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.cone + "%'></div></div>",
                     },
                     {
                         "name": "Shuttle",
-                        "metric1": player1.metrics.shuttle+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.shuttle+"%'></div></div>",
-                        "metric2": player2.metrics.shuttle+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.shuttle+"%'></div></div>",
+                        "metric1": player1.metrics.shuttle + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.shuttle + "%'></div></div>",
+                        "metric2": player2.metrics.shuttle + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.shuttle + "%'></div></div>",
                     },
                     {
                         "name": "Vertical Jump",
-                        "metric1": player1.metrics.verticalJump+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.verticalJump+"%'></div></div>",
-                        "metric2": player2.metrics.verticalJump+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.verticalJump+"%'></div></div>",
+                        "metric1": player1.metrics.verticalJump + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.verticalJump + "%'></div></div>",
+                        "metric2": player2.metrics.verticalJump + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.verticalJump + "%'></div></div>",
                     },
                     {
                         "name": "Broad Jump",
-                        "metric1": player1.metrics.broadJump+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.broadJump+"%'></div></div>",
-                        "metric2": player2.metrics.broadJump+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.broadJump+"%'></div></div>",
+                        "metric1": player1.metrics.broadJump + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.broadJump + "%'></div></div>",
+                        "metric2": player2.metrics.broadJump + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.broadJump + "%'></div></div>",
                     },
                     {
                         "name": "Bench",
-                        "metric1": player1.metrics.benchPress+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.benchPress+"%'></div></div>",
-                        "metric2": player2.metrics.benchPress+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.benchPress+"%'></div></div>",
+                        "metric1": player1.metrics.benchPress + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.benchPress + "%'></div></div>",
+                        "metric2": player2.metrics.benchPress + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.benchPress + "%'></div></div>",
                     }
                 ]
             });
@@ -575,13 +611,25 @@ var rlf =  {
                 "paging": false,
                 "ordering": false,
                 "searching": false,
-                "info":false,
+                "info": false,
                 "columns": [
-                    {title: "", data: "name", "defaultContent":0},
-                    {title: player1.first_name+" "+player1.last_name, data: "metric1", "defaultContent":0, className: "dt-center", targets: "_all"},
-                    {title: player2.first_name+" "+player2.last_name, data: "metric2", "defaultContent":0, className: "dt-center", targets: "_all"},
+                    {title: "", data: "name", "defaultContent": 0},
+                    {
+                        title: player1.first_name + " " + player1.last_name,
+                        data: "metric1",
+                        "defaultContent": 0,
+                        className: "dt-center",
+                        targets: "_all"
+                    },
+                    {
+                        title: player2.first_name + " " + player2.last_name,
+                        data: "metric2",
+                        "defaultContent": 0,
+                        className: "dt-center",
+                        targets: "_all"
+                    },
                 ],
-                "data":[
+                "data": [
                     {
                         "name": "College",
                         "metric1": player1.player_info.college,
@@ -594,32 +642,266 @@ var rlf =  {
                     },
                     {
                         "name": "Breakout Class",
-                        "metric1": player1.metrics.breakoutClass+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.breakoutClass+"%'></div></div>",
-                        "metric2": player2.metrics.breakoutClass+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutClass+"%'></div></div>",
+                        "metric1": player1.metrics.breakoutClass + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.breakoutClass + "%'></div></div>",
+                        "metric2": player2.metrics.breakoutClass + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.breakoutClass + "%'></div></div>",
                     },
                     {
                         "name": "Breakout Seasons",
-                        "metric1": player1.metrics.breakoutSeasons+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.breakoutSeasons+"%'></div></div>",
-                        "metric2": player2.metrics.breakoutSeasons+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.breakoutSeasons+"%'></div></div>",
+                        "metric1": player1.metrics.breakoutSeasons + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.breakoutSeasons + "%'></div></div>",
+                        "metric2": player2.metrics.breakoutSeasons + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.breakoutSeasons + "%'></div></div>",
                     },
                     {
                         "name": "Best Dominator",
-                        "metric1": player1.metrics.bestDominator+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.bestDominator+"%'></div></div>",
-                        "metric2": player2.metrics.bestDominator+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.bestDominator+"%'></div></div>",
+                        "metric1": player1.metrics.bestDominator + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.bestDominator + "%'></div></div>",
+                        "metric2": player2.metrics.bestDominator + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.bestDominator + "%'></div></div>",
                     },
                     {
                         "name": "Best Reception Share",
-                        "metric1": player1.metrics.bestRecDominator+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.bestRecDominator+"%'></div></div>",
-                        "metric2": player2.metrics.bestRecDominator+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.bestRecDominator+"%'></div></div>",
+                        "metric1": player1.metrics.bestRecDominator + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.bestRecDominator + "%'></div></div>",
+                        "metric2": player2.metrics.bestRecDominator + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.bestRecDominator + "%'></div></div>",
                     },
                     {
                         "name": "College Score",
-                        "metric1": player1.metrics.collegeScore+"<div class='progress'><div class='determinate' style='width:"+player1.percentiles.collegeScore+"%'></div></div>",
-                        "metric2": player2.metrics.collegeScore+"<div class='progress'><div class='determinate' style='width:"+player2.percentiles.collegeScore+"%'></div></div>",
+                        "metric1": player1.metrics.collegeScore + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.collegeScore + "%'></div></div>",
+                        "metric2": player2.metrics.collegeScore + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.collegeScore + "%'></div></div>",
                     }
                 ]
             });
         }
+
+        if (position == "WR" || position == "TE") {
+        var lastyear = Object.keys(rlfData.players[0].college_stats).sort().reverse()[0];
+        var recYards = rlfData.players[0].metrics.collegeRecBreakdown;
+        console.log(recYards);
+        if (typeof (recYards) != "undefined") {
+            // College Years
+            const polarData = {
+                labels: [
+                    'deep airyards',
+                    'mid airyards',
+                    'short airyards',
+                    'short yac',
+                    'mid yac',
+                    'deep yac',
+                ],
+                datasets: [{
+                    label: 'Yard Distrubution',
+                    data: [
+                        recYards.deep.airYards,
+                        recYards.intermediate.airYards,
+                        recYards.short.airYards,
+                        recYards.short.yac + recYards.underneath.yac,
+                        recYards.intermediate.yac,
+                        recYards.deep.yac,
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'purple',
+                        'rgb(54, 162, 235)',
+                        'skyblue',
+                        'orange',
+                    ]
+                }],
+                options: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: false,
+                        text: 'College Yards'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            const polarConfig = {
+                type: 'polarArea',
+                data: polarData,
+                options: {}
+            };
+
+            var polarCtx = document.getElementById('college-yards-0').getContext('2d');
+            var myPolar = new Chart(polarCtx, polarConfig);
+        } else {
+            // College Years
+            const polarData1 = {
+                labels: [
+                    'deep airyards',
+                    'mid airyards',
+                    'short airyards',
+                    'short yac',
+                    'mid yac',
+                    'deep yac',
+                ],
+                datasets: [{
+                    label: 'Yard Distrubution',
+                    data: [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'purple',
+                        'rgb(54, 162, 235)',
+                        'skyblue',
+                        'orange',
+                    ]
+                }],
+                options: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: false,
+                        text: 'College Yards'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            const polarConfig1 = {
+                type: 'polarArea',
+                data: polarData1,
+                options: {}
+            };
+
+            var polarCtx1 = document.getElementById('college-yards-0').getContext('2d');
+            var myPolar1 = new Chart(polarCtx1, polarConfig1);
+        }
+
+        var lastyear1 = Object.keys(rlfData.players[1].college_stats).sort().reverse()[0];
+        var recYards1 = rlfData.players[1].metrics.collegeRecBreakdown;
+        ;
+        console.log(recYards1);
+        if (typeof (recYards1) != "undefined") {
+            // College Years
+            const polarData1 = {
+                labels: [
+                    'deep airyards',
+                    'mid airyards',
+                    'short airyards',
+                    'short yac',
+                    'mid yac',
+                    'deep yac',
+                ],
+                datasets: [{
+                    label: 'Yard Distrubution',
+                    data: [
+                        recYards1.deep.airYards,
+                        recYards1.intermediate.airYards,
+                        recYards1.short.airYards,
+                        recYards1.short.yac + recYards1.underneath.yac,
+                        recYards1.intermediate.yac,
+                        recYards1.deep.yac,
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'purple',
+                        'rgb(54, 162, 235)',
+                        'skyblue',
+                        'orange',
+                    ]
+                }],
+                options: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: false,
+                        text: 'College Yards'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            const polarConfig1 = {
+                type: 'polarArea',
+                data: polarData1,
+                options: {}
+            };
+
+            var polarCtx1 = document.getElementById('college-yards-1').getContext('2d');
+            var myPolar1 = new Chart(polarCtx1, polarConfig1);
+        } else {
+            // College Years
+            const polarData1 = {
+                labels: [
+                    'deep airyards',
+                    'mid airyards',
+                    'short airyards',
+                    'short yac',
+                    'mid yac',
+                    'deep yac',
+                ],
+                datasets: [{
+                    label: 'Yard Distrubution',
+                    data: [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'purple',
+                        'rgb(54, 162, 235)',
+                        'skyblue',
+                        'orange',
+                    ]
+                }],
+                options: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: false,
+                        text: 'College Yards'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            const polarConfig1 = {
+                type: 'polarArea',
+                data: polarData1,
+                options: {}
+            };
+
+            var polarCtx1 = document.getElementById('college-yards-1').getContext('2d');
+            var myPolar1 = new Chart(polarCtx1, polarConfig1);
+        }
+    }
+
 
         rlf.colorDeterminates();
     },
@@ -1023,8 +1305,14 @@ var rlf =  {
         rlf.makeRoleFits(roleFits);
 
         if (rlfData.player.seasonStats !== undefined && rlfData.player.seasonStats.length !== 0) {
-            var currentStats = rlfData.player.seasonStats["2020"];
-            if (currentStats !== undefined) {
+            var lastyear = Object.keys(rlfData.player.seasonStats).sort().reverse()[0];
+            console.log(lastyear);
+            var currentStats = rlfData.player.seasonStats[lastyear];
+            console.log(currentStats);
+            if (currentStats !== undefined && currentStats.stats !== undefined) {
+                if (currentStats.stats.pts_ppr_avg === undefined) {
+                    return;
+                }
                 $('#summary-stats').DataTable({
                     "paging": false,
                     "ordering": false,
@@ -1124,6 +1412,109 @@ var rlf =  {
                 ]
             });
         }
+
+        var rushYards = rlfData.player.metrics.collegeRushBreakdown;
+        console.log(rushYards);
+        if (typeof(rushYards) != "undefined") {
+            // College Years
+            const polarData = {
+                labels: [
+                    'outside YBC',
+                    'outside YAC',
+                    'inside YBC',
+                    'inside YAC',
+                    'receiving',
+                ],
+                datasets: [{
+                    label: 'Yard Distrubution',
+                    data: [
+                        rushYards.outside.ybContact,
+                        rushYards.outside.yaContact,
+                        rushYards.inside.ybContact,
+                        rushYards.inside.yaContact,
+                        rushYards.receiving.yards
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'purple',
+                        'rgb(54, 162, 235)'
+                    ]
+                }],
+                options: {
+                    legend: {
+                        position:'bottom'
+                    },
+                    title: {
+                        display:false,
+                        text: 'College Yards'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            const polarConfig = {
+                type: 'polarArea',
+                data: polarData,
+                options: {}
+            };
+
+            var polarCtx = document.getElementById('college-yards').getContext('2d');
+            var myPolar = new Chart(polarCtx, polarConfig);
+
+            // College Years
+            const polarData2 = {
+                labels: [
+                    'outside YBC',
+                    'outside YAC',
+                    'inside YBC',
+                    'inside YAC'
+                ],
+                datasets: [{
+                    label: 'Yard Averages',
+                    data: [
+                        rushYards.outside.ybcAtt,
+                        rushYards.outside.yacAtt,
+                        rushYards.inside.ybcAtt,
+                        rushYards.inside.yacAtt,
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'purple',
+                    ]
+                }],
+                options: {
+                    legend: {
+                        position:'bottom'
+                    },
+                    title: {
+                        display:false,
+                        text: 'College Recs'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            const polarConfig2 = {
+                type: 'polarArea',
+                data: polarData2,
+                options: {}
+            };
+
+            var polarCtx2 = document.getElementById('college-recs').getContext('2d');
+            var myPolar = new Chart(polarCtx2, polarConfig2);
+        }
     },
 
     initProsChartsRB : function(){
@@ -1209,8 +1600,9 @@ var rlf =  {
 
             rlf.makeGameLogTable(gameLogColumns);
 
-            var currentStats = rlfData.player.seasonStats["2020"];
-            if (currentStats !== undefined) {
+            var lastyear = Object.keys(rlfData.player.seasonStats).sort().reverse()[0];
+            var currentStats = rlfData.player.seasonStats[lastyear];
+            if (currentStats !== undefined && currentStats.stats !== undefined && currentStats.stats.pts_ppr_avg !== undefined) {
                 $('#summary-stats').DataTable({
                     "paging": false,
                     "ordering": false,
@@ -1360,6 +1752,115 @@ var rlf =  {
             var myDoughut = new Chart(ctx, config);
         }
 
+        var lastyear = Object.keys(rlfData.player.college_stats).sort().reverse()[0];
+        var recYards = rlfData.player.metrics.collegeRecBreakdown;;
+        console.log(recYards);
+        if (typeof(recYards) != "undefined") {
+
+            // College Years
+            const polarData = {
+                labels: [
+                    'deep airyards',
+                    'mid airyards',
+                    'short airyards',
+                    'short yac',
+                    'mid yac',
+                    'deep yac',
+                ],
+                datasets: [{
+                    label: 'Yard Distrubution',
+                    data: [
+                        recYards.deep.airYards,
+                        recYards.intermediate.airYards,
+                        recYards.short.airYards,
+                        recYards.short.yac + recYards.underneath.yac,
+                        recYards.intermediate.yac,
+                        recYards.deep.yac,
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'purple',
+                        'rgb(54, 162, 235)',
+                        'skyblue',
+                        'orange',
+                    ]
+                }],
+                options: {
+                    legend: {
+                        position:'bottom'
+                    },
+                    title: {
+                        display:false,
+                        text: 'College Yards'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            const polarConfig = {
+                type: 'polarArea',
+                data: polarData,
+                options: {}
+            };
+
+            var polarCtx = document.getElementById('college-yards').getContext('2d');
+            var myPolar = new Chart(polarCtx, polarConfig);
+
+            // College Years
+            const polarData2 = {
+                labels: [
+                    'deep recs',
+                    'mid recs',
+                    'short recs',
+                    'screens',
+                ],
+                datasets: [{
+                    label: 'Yard Distrubution',
+                    data: [
+                        recYards.deep.receptions,
+                        recYards.intermediate.receptions,
+                        recYards.short.receptions,
+                        recYards.underneath.receptions,
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'purple',
+                    ]
+                }],
+                options: {
+                    legend: {
+                        position:'bottom'
+                    },
+                    title: {
+                        display:false,
+                        text: 'College Recs'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            const polarConfig2 = {
+                type: 'polarArea',
+                data: polarData2,
+                options: {}
+            };
+
+            var polarCtx2 = document.getElementById('college-recs').getContext('2d');
+            var myPolar = new Chart(polarCtx2, polarConfig2);
+        }
+
     },
 
     initProsChartsWR : function(){
@@ -1414,8 +1915,10 @@ var rlf =  {
         });
 
 
-        var currentStats = rlfData.player.seasonStats["2020"];
-        if (currentStats != undefined) {
+        var lastyear = Object.keys(rlfData.player.seasonStats).sort().reverse()[0];
+        console.log(lastyear);
+        var currentStats = rlfData.player.seasonStats[lastyear];
+        if (currentStats != undefined && currentStats.stats !== undefined) {
             $('#summary-stats').DataTable({
                 "paging": false,
                 "ordering": false,
@@ -1592,6 +2095,118 @@ var rlf =  {
             var ctx = document.getElementById('college-doughnut').getContext('2d');
             var myDoughut = new Chart(ctx, config);
         }
+
+        var lastyear = Object.keys(rlfData.player.college_stats).sort().reverse()[0];
+        var recYards = rlfData.player.metrics.collegeRecBreakdown;
+        console.log(recYards);
+        if (typeof(recYards) != "undefined") {
+
+            // College Years
+            const polarData = {
+                labels: [
+                    'deep airyards',
+                    'mid airyards',
+                    'short airyards',
+                    'short yac',
+                    'mid yac',
+                    'deep ybc',
+                ],
+                datasets: [{
+                    label: 'Yard Distrubution',
+                    data: [
+                        recYards.deep.airYards,
+                        recYards.intermediate.airYards,
+                        recYards.short.airYards,
+                        recYards.short.yac + recYards.underneath.yac,
+                        recYards.intermediate.yac,
+                        recYards.deep.yac,
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'purple',
+                        'rgb(54, 162, 235)',
+                        'skyblue',
+                        'orange',
+                    ]
+                }],
+                options: {
+                    legend: {
+                        position:'bottom'
+                    },
+                    title: {
+                        display:false,
+                        text: 'College Yards'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            const polarConfig = {
+                type: 'polarArea',
+                data: polarData,
+                options: {}
+            };
+
+            var polarCtx = document.getElementById('college-yards').getContext('2d');
+            var myPolar = new Chart(polarCtx, polarConfig);
+
+            // College Years
+            const polarData2 = {
+                labels: [
+                    'deep recs',
+                    'mid recs',
+                    'short recs',
+                    'screens',
+                ],
+                datasets: [{
+                    label: 'Yard Distrubution',
+                    data: [
+                        recYards.deep.receptions,
+                        recYards.intermediate.receptions,
+                        recYards.short.receptions,
+                        recYards.underneath.receptions,
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'purple',
+                    ]
+                }],
+                options: {
+                    legend: {
+                        position:'bottom'
+                    },
+                    title: {
+                        display:false,
+                        text: 'College Recs'
+                    },
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            const polarConfig2 = {
+                type: 'polarArea',
+                data: polarData2,
+                options: {}
+            };
+
+            var polarCtx2 = document.getElementById('college-recs').getContext('2d');
+            var myPolar = new Chart(polarCtx2, polarConfig2);
+        }
+
+
+
     },
 
     initProsChartsTE : function(){

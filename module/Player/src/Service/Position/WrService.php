@@ -67,6 +67,14 @@ class WrService extends ServiceAbstract
             'field' => 'metrics',
             'sort' => 'ASC'
         ],
+        'skillScore' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
+        'athleteScore' => [
+            'field' => 'metrics',
+            'sort' => 'ASC'
+        ],
     ];
 
     public function __construct(
@@ -110,35 +118,36 @@ class WrService extends ServiceAbstract
             $metrics = $wr->getMetrics();
             $percentiles = $wr->getPercentiles();
 
-            if ($wr->getId() == "102") {
+            if ($wr->getId() == "279") {
                 $gotem = true;
             }
 
+            if ($wr->getTeam() == "Rookie") {
+                if ($wr->college_stats != null) {
+                    $college = $this->makeCollegeScore($wr);
+                    $metrics['collegeScore'] = $college['collegeScore'];
+                    $metrics['bestSeason'] = $college['bestSeason'];
+                    $metrics['breakoutClass'] = $college['breakoutClass'];
+                    $metrics['breakoutSeasons'] = $college['breakoutSeasons'];
+                    $metrics['collegeSeasons'] = $college['collegeSeasons'];
+                    $metrics['bestDominator'] = $college['bestDominator'];
+                    $wr->college_stats = $college['updateCollegeStats'];
+                } else {
+                    $metrics['collegeScore'] = null;
+                    $metrics['bestSeason'] = null;
+                    $metrics['breakoutClass'] = null;
+                }
 
-//            if ($wr->getTeam() == "Rookie" || $wr->getId() == 2868) {
-//                if ($wr->college_stats != null) {
-//                    $college = $this->makeCollegeScore($wr);
-//                    $metrics['collegeScore'] = $college['collegeScore'];
-//                    $metrics['bestSeason'] = $college['bestSeason'];
-//                    $metrics['breakoutClass'] = $college['breakoutClass'];
-//                    $metrics['breakoutSeasons'] = $college['breakoutSeasons'];
-//                    $metrics['collegeSeasons'] = $college['collegeSeasons'];
-//                    $metrics['bestDominator'] = $college['bestDominator'];
-//                    $wr->college_stats = $college['updateCollegeStats'];
-//                } else {
-//                    $metrics['collegeScore'] = null;
-//                    $metrics['bestSeason'] = null;
-//                    $metrics['breakoutClass'] = null;
-//                }
-//
-//                $metrics['beatPress'] = null;
-//                $metrics['contested'] = null;
-//                $metrics['separation'] = null;
-//                $metrics['yac'] = null;
-//                $metrics["deep"] = null;
-//                $metrics["slot"] = null;
-//                $metrics["alpha"] = null;
-//
+                $metrics['beatPress'] = null;
+                $metrics['contested'] = null;
+                $metrics['separation'] = null;
+                $metrics['yac'] = null;
+                $metrics["deep"] = null;
+                $metrics["slot"] = null;
+                $metrics["alpha"] = null;
+                $metrics["athleteScore"] = null;
+                $metrics["skillScore"] = null;
+
 //                $wr->setMetrics($metrics);
 //
 //                $this->command->save($wr);
@@ -147,30 +156,18 @@ class WrService extends ServiceAbstract
 //                $progressBar->update($pointer);
 //
 //                continue;
-//            }
+            }
 
             if (empty($metrics) || !array_key_exists('bully', $metrics)) {
                 continue;
             }
 
+            // if no combine metrics available
             if (!array_key_exists('benchPress', $metrics)) {
                 continue;
             }
 
-            if (in_array($metrics['shuttle'], ["-", "", null])
-                && in_array($metrics['cone'], ["-", "", null])) {
-                $noAgility = true;
-            } else{
-                $noAgility = false;
-            }
-
-            if (in_array($metrics['verticalJump'], ["-", "", null])
-                && in_array($metrics['broadJump'], ["-", "", null])) {
-                $noJump = true;
-            } else{
-                $noJump = false;
-            }
-
+            // determine what metrics we have available
             if (in_array($metrics['fortyTime'], ["-", "", null])) {
                 $noForty = true;
             } else{
@@ -195,75 +192,36 @@ class WrService extends ServiceAbstract
                 $noCone = false;
             }
 
-
-            //slot score
-            $info = $wr->getPlayerInfo();
-            if ($noAgility == false) {
-                if ($percentiles['shuttle'] > 69 && $percentiles['cone'] < 41 && $info['heightInches'] < 73) {
-                    $percentiles['routeAgility'] = ($percentiles['jukeAgility'] * .6) + ($percentiles['routeAgility'] * .4);
-                }
-            }
-            $slot = null;
-            if ($noCone) {
-                $slot = null;
+            if (in_array($metrics['shuttle'], ["-", "", null])) {
+                $noShuttle = true;
             } else {
-                $slot = round(($percentiles['routeAgility'] * .65) + ($percentiles['elusiveness'] * .35),2);
+                $noShuttle = false;
             }
 
-            $metrics['slot'] = $slot;
-
-
-            //deep score
-            if ($noForty)  {
-                $deep = null;
-            } else {
-                $deep = round(($percentiles['fortyTime'] * .7) + ($percentiles['jumpball'] * .3), 2);
-            }
-            $metrics["deep"] = round($deep,2);
-
-
-            if ($wr->college_stats != null) {
-                $college = $this->makeCollegeScore($wr);
-                $metrics['collegeScore'] = $college['collegeScore'];
-                $metrics['bestSeason'] = $college['bestSeason'];
-                $metrics['breakoutClass'] = $college['breakoutClass'];
-                $metrics['breakoutSeasons'] = $college['breakoutSeasons'];
-                $metrics['collegeSeasons'] = $college['collegeSeasons'];
-                $metrics['bestDominator'] = $college['bestDominator'];
-                $wr->college_stats = $college['updateCollegeStats'];
-            } else {
-                $metrics['collegeScore'] = null;
-                $metrics['bestSeason'] = null;
-                $metrics['breakoutClass'] = null;
+            if (in_array($metrics['shuttle'], ["-", "", null])
+                && in_array($metrics['cone'], ["-", "", null])) {
+                $noAgility = true;
+            } else{
+                $noAgility = false;
             }
 
-            if ($noBench == false) {
-                if ($metrics['elusiveness'] != null) {
-                    $metrics['beatPress'] = round((($percentiles['bully'] * .75) + ($percentiles['elusiveness'] * .25)),2);
-                } else {
-                    $metrics['beatPress'] = round($percentiles['bully'], 2);
-                }
-            } else {
-                if ($metrics['elusiveness'] != null) {
-                    $metrics['beatPress'] = round(($percentiles['elusiveness'] * .75), 2);
-                } else {
-                    $metrics['beatPress'] = null;
-                }
+            if (in_array($metrics['verticalJump'], ["-", "", null])
+                && in_array($metrics['broadJump'], ["-", "", null])) {
+                $noJump = true;
+            } else{
+                $noJump = false;
             }
 
-            if ($noCone == false) {
-                if ($noForty == false) {
-                    $metrics['separation'] = round((($percentiles['routeAgility'] * .65) + ($percentiles['fortyTime'] * .35)),2);
-                } else {
-                    $metrics['separation'] = round((($percentiles['routeAgility'] * .75)),2);
-                }
-            } else {
-                $metrics['separation'] = null;
-            }
+            /**** Athletic Scores ****/
 
+            /** YAC **/
+            // 1. Elusiveness + Power + speedScore
+            // 2. No Broad + Shuttle + (Elusiveness + SpeedScore)
+            // 3. No Shuttle + jump and forty (Power + SpeedScore)
+            // 4. No forty + jump (Elusiveness + Power)
             if ($metrics['elusiveness'] != null) {
                 if ($metrics['power'] != null) {
-                    $metrics['yac'] = round((($percentiles['elusiveness'] * .6) + ($percentiles['power'] * .25)) + ($percentiles['fortyTime'] * .15),2);
+                    $metrics['yac'] = round((($percentiles['elusiveness'] * .7) + ($percentiles['power'] * .15)) + ($percentiles['fortyTime'] * .15),2);
                 } else {
                     $metrics['yac'] = round(($percentiles['elusiveness'] * .7),2);
                 }
@@ -275,9 +233,28 @@ class WrService extends ServiceAbstract
                 }
             }
 
+            /*** Separation ***/
+            switch (true) {
+                case ($noCone == false && $noShuttle == false && $noForty == false):
+                    $metrics['separation'] = round((($percentiles['routeAgility'] * .65) + ($percentiles['fortyTime'] * .35)),2);
+                    break;
+                case ($noCone == true && $noShuttle == false && $noForty == false):
+                    $metrics['separation'] = round((($percentiles['shuttle'] * .35) + ($percentiles['fortyTime'] * .35) + (50 * .30)),2);
+                    break;
+                case ($noForty && $noAgility == false):
+                    $metrics['separation'] = round((($percentiles['routeAgility'] * .75)),2);
+                    break;
+                case ($noForty == false && $noCone == false && $noShuttle):
+                    $metrics['separation'] = round((($percentiles['cone'] * .65) + ($percentiles['fortyTime'] * .35)),2);
+                    break;
+                default:
+                    $metrics['separation'] = null;
+            }
+
+            /*** Contested ***/
             if ($metrics['jumpball'] != null) {
-                if ($metrics['bully'] != null) {
-                    $metrics['contested'] = round((($percentiles['bully'] * .15) + ($percentiles['jumpball'] * .85)),2);
+                if ($info['bmi'] != null) {
+                    $metrics['contested'] = round((($percentiles['bmi'] * .15) + ($percentiles['jumpball'] * .85)),2);
                 } else {
                     $metrics['contested'] = round((($percentiles['jumpball'] * .85)),2);
                 }
@@ -285,11 +262,94 @@ class WrService extends ServiceAbstract
                 $metrics['contested'] = null;
             }
 
-            // outside X
-            if ($metrics['beatPress'] != null && $metrics['separation'] != null && $metrics['contested'] != null && $metrics['yac'] != null) {
-                $metrics['outsideX'] = round(($metrics['beatPress'] *.15) + ($metrics['separation'] *.15) + ($metrics['contested'] *.45) + ($metrics['deep'] *.25),2);
-            } elseif ($metrics['beatPress'] != null && $metrics['separation'] == null && $metrics['contested'] != null && $metrics['yac'] != null) {
+            /*** Beat Press ***/
+            if ($noBench == false) {
+                if ($metrics['elusiveness'] != null) {
+                    $metrics['beatPress'] = round((($percentiles['bully'] * .65) + ($percentiles['elusiveness'] * .35)),2);
+                } else {
+                    $metrics['beatPress'] = round($percentiles['bully'], 2);
+                }
+            } else {
+                if ($metrics['elusiveness'] != null) {
+                    $metrics['beatPress'] = round(($percentiles['elusiveness'] * .75), 2);
+                } else {
+                    $metrics['beatPress'] = null;
+                }
+            }
+
+            /*********** College Stuff *******************/
+            if ($wr->college_stats != null) {
+                $college = $this->makeCollegeScore($wr);
+                $metrics['collegeScore'] = $college['collegeScore'];
+                $metrics['bestSeason'] = $college['bestSeason'];
+                $metrics['breakoutClass'] = $college['breakoutClass'];
+                $metrics['breakoutSeasons'] = $college['breakoutSeasons'];
+                $metrics['collegeSeasons'] = $college['collegeSeasons'];
+                $metrics['bestDominator'] = $college['bestDominator'];
+                $wr->college_stats = $college['updateCollegeStats'];
+                $metrics['collegeGames'] = $college['games'];
+            } else {
+                $metrics['collegeScore'] = null;
+                $metrics['bestSeason'] = null;
+                $metrics['breakoutClass'] = null;
+                $metrics['collegeGames'] = null;
+            }
+
+
+            /*************** slot score ***************************/
+            $info = $wr->getPlayerInfo();
+
+            if ($noAgility == false && $noCone == false) {
+                $slotAgility = ($percentiles['jukeAgility'] * .4) + ($percentiles['routeAgility'] * .6);
+                $slot = round(($slotAgility * .85) + ($percentiles['elusiveness'] * .15),2);
+                if ($metrics['yac'] != null) {
+                    $slot = ($slot * .7) + ($metrics['yac'] * .3);
+                }
+            } else {
+                $slot = null;
+            }
+
+            //slot build = 71.5 inches 198 pounds 27 bmi
+            //height penalty
+            if (array_key_exists('heightInches', $info)
+                && $info['heightInches'] > 71.5
+                && $slot != null)
+            {
+                $heightPenalty = (($info['heightInches'] - 71.5) * 1.5);
+                $slot = $slot - $heightPenalty;
+            }
+
+            $metrics['slot'] = $slot;
+
+
+            /********* Deep Score ***********/
+            if ($noForty)  {
+                $deep = null;
+            } else {
+                $deep = round(($percentiles['fortyTime'] * .7) + ($percentiles['jumpball'] * .3), 2);
+            }
+            $metrics["deep"] = round($deep,2);
+
+            /******* Outside X ******/
+            // Off-line (Shuttle + bully) - Mid Area + (cone weighted + Contested) + deep )
+            if ($noAgility == false) {
+                if ($noCone == false && $noShuttle == false) {
+                    $xAgility = ($percentiles['jukeAgility'] * .25) + ($percentiles['routeAgility'] * .75);
+                } elseif ($noCone == false && $noShuttle == true) {
+                    $xAgility = round(($percentiles['routeAgility'] * .85),2);
+                } else {
+                    $xAgility = null;
+                }
+            } else {
+                $xAgility = null;
+            }
+
+            if ($metrics['beatPress'] != null && $xAgility != null && $metrics['contested'] != null && $metrics['yac'] != null) {
+                $metrics['outsideX'] = round(($metrics['beatPress'] *.10) + ($xAgility *.25) + ($metrics['contested'] *.50) + ($metrics['deep'] *.15),2);
+            } elseif ($metrics['beatPress'] != null && $xAgility == null && $metrics['contested'] != null && $metrics['yac'] != null) {
                 $metrics['outsideX'] = round(($metrics['beatPress'] *.25) + ($metrics['contested'] *.50) + ($metrics['deep'] *.25),2);
+            } elseif ($metrics['beatPress'] == null && $xAgility != null && $metrics['contested'] != null && $metrics['yac'] != null ) {
+                $metrics['outsideX'] = round(($percentiles['bmi'] *.10) + ($xAgility *.25) + ($metrics['contested'] *.50) + ($metrics['deep'] *.15),2);
             } else {
                 $metrics['outsideX'] = null;
             }
@@ -331,14 +391,6 @@ class WrService extends ServiceAbstract
                 if ($metrics['bully'] < 13 ) {
                     $metrics['outsideX'] = $metrics['outsideX'] - 2;
                 }
-
-                if ($metrics['outsideX'] > 60 && $info['heightInches'] < 72) {
-                    $metrics['outsideX'] = $metrics['outsideX'] - 5;
-                }
-
-                if ($metrics['outsideX'] > 60 && $info['heightInches'] < 70) {
-                    $metrics['outsideX'] = $metrics['outsideX'] - 5;
-                }
 //
 //                if ($metrics['bully'] < 9) {
 //                    $metrics['outsideX'] = $metrics['outsideX'] - 3;
@@ -353,70 +405,254 @@ class WrService extends ServiceAbstract
                 }
             }
 
+            if (array_key_exists('weight', $info)
+                && $info['weight'] < 215
+                && $metrics['outsideX'] != null)
+            {
+                $weightPenalty = ((215 - $info['weight']) * .35);
+                $metrics['outsideX'] = $metrics['outsideX'] - $weightPenalty;
+            }
+
+
+            if (array_key_exists('heightInches', $info)
+                && $info['heightInches'] < 74.5
+                && $metrics['outsideX'] != null)
+            {
+                $heightPenalty = ((74.5 - $info['heightInches']) * 1.5);
+                $metrics['outsideX'] = $metrics['outsideX'] - $heightPenalty;
+            }
+
+
+            // Skill Score
+            if ($wr->getId() == '26635') {
+                $gothim = true;
+            }
+            $metrics['skillScore'] = null;
+            $metrics['athleteScore'] = null;
+            if ($metrics['separation'] != null && $metrics['contested'] != null && $metrics['yac'] != null) {
+                switch ($info['heightInches']) {
+                    case ($info['heightInches'] < 72):
+                        $metrics['athleteScore'] = ($metrics['separation'] * 1) + ($metrics['contested'] * 1) + ($metrics['yac'] * 1);
+                        break;
+                    case (($info['heightInches'] > 74)):
+                        $metrics['athleteScore'] = ($metrics['separation'] * 1) + ($metrics['contested'] * 1) + ($metrics['yac'] * 1);
+                        break;
+                    default:
+                        $metrics['athleteScore'] = ($metrics['separation'] * 1) + ($metrics['contested'] * 1) + ($metrics['yac'] * 1);
+                }
+
+                if ($metrics['collegeScore'] != null) {
+                    $expectedCollegeScore = round(.1075 * $metrics['athleteScore'], 2);
+                    $expectedCollegeScore = ($expectedCollegeScore < 8) ? 8 : $expectedCollegeScore;
+                    $expectedCollegeScore = ($expectedCollegeScore > 25) ? 25 : $expectedCollegeScore;
+                    if ($metrics['collegeGames'] < 28 && $metrics['collegeGames'] > 0) {
+                        $expectedCollegeScore = round((($metrics['collegeGames']/28) * $expectedCollegeScore), 2);
+                    }
+                    $metrics['skillScore'] = round(($metrics['collegeScore'] - $expectedCollegeScore), 2) + 20;
+                }
+            } elseif ($metrics['yac'] != null && $metrics['contested'] != null && $metrics['collegeScore'] != null) {
+                $expectedCollegeScore = round(.1075 * ($metrics['yac'] + $metrics['contested'] + 40), 2);
+                $expectedCollegeScore = ($expectedCollegeScore < 8) ? 8 : $expectedCollegeScore;
+                $expectedCollegeScore = ($expectedCollegeScore > 25) ? 25 : $expectedCollegeScore;
+                if ($metrics['collegeGames'] < 28 && $metrics['collegeGames'] > 0) {
+                    $expectedCollegeScore = round((($metrics['collegeGames']/28) * $expectedCollegeScore), 2);
+                }
+                $metrics['skillScore'] = round(($metrics['collegeScore'] - $expectedCollegeScore), 2) + 20;
+            }
+
+            $info = $wr->getPlayerInfo();
+            if (array_key_exists('collegeRecBreakdown', $metrics)) {
+                /*** Slot ***/
+                // get short percentages
+                $shortP = $metrics['collegeRecPercents']['yards']['separation']['shortSeparation'];
+                if (!array_key_exists('midSlot', $metrics['collegeRecPercents']['yards']['separation'])) {
+                    $metrics['collegeRecPercents']['yards']['separation']['midSlot'] = 0;
+                    $metrics['collegeRecBreakdown']['midSlot']['airYards'] = 0;
+                }
+                $midP = $metrics['collegeRecPercents']['yards']['separation']['midSlot'];
+                $shortYards = $metrics['collegeRecBreakdown']['short']['airYards'];
+                $midYards = $metrics['collegeRecBreakdown']['midSlot']['airYards'];
+                //controls: mid cannot be more than 10 percent of short
+
+                $slotPercents = $shortP + $midP;
+                $slotAir = (($shortYards + $midYards) / 10);
+                $slotPerformance = $slotPercents + $slotAir;
+                if ($noAgility == false) {
+                    $metrics['slot'] = round(($slotPerformance * .4) + ($slot * .6), 2);
+                } else {
+                    $metrics['slot'] = round(($slotPerformance * .4) + (45 * .6), 2);
+                    //slot build = 71.5 inches 198 pounds 27 bmi
+                    //height penalty
+                    if (array_key_exists('heightInches', $info)
+                        && $info['heightInches'] > 71.5
+                        && $metrics['slot'] != null)
+                    {
+                        $heightPenalty = (($info['heightInches'] - 71.5) * 1.5);
+                        $metrics['slot'] = $metrics['slot'] - $heightPenalty;
+                    }
+                }
+
+                /***** Deep ****/
+                $deepP = $metrics['collegeRecPercents']['yards']['separation']['deepSeparation'];
+                $deepYards = $metrics['collegeRecBreakdown']['deep']['airYards'];
+                $deepPercents = (($deepP * 1.25));
+                $deepAir = (($deepYards) / 10);
+                $deepPerformance = $deepPercents + $deepAir;
+                if ($deep != null) {
+                    $metrics['deep'] = round(($deepPerformance * .3) + ($deep * .7), 2);
+                } else {
+                    $metrics['deep'] = round(($deepPerformance * .3) + (45 * .7), 2);
+                }
+
+                /****** Outside X *****/
+                // $recPercents['yards']['separation']['midSlot']
+                $midOutYards = $metrics['collegeRecBreakdown']['intermediate']['airYards'] - $metrics['collegeRecBreakdown']['midSlot']['airYards'];
+                $midOutP = $metrics['collegeRecPercents']['yards']['separation']['midSeparation'] - $metrics['collegeRecPercents']['yards']['separation']['midSlot'];
+                $deepP = $metrics['collegeRecPercents']['yards']['separation']['deepSeparation'];
+                $deepYards = $metrics['collegeRecBreakdown']['deep']['airYards'];
+
+                $xPercents = $deepP + $midOutP;
+                $xAir = (($deepYards + $midOutYards) / 10);
+                $xPerformance = $xPercents + $xAir;
+                if ($metrics['outsideX'] != null) {
+                    $metrics['outsideX'] = round(($xPerformance * .3) + ($metrics['outsideX'] * .7), 2);
+                } else {
+                    if ($metrics['contested'] != null) {
+                        $metrics['outsideX'] = round(($xPerformance * .4) + ($metrics['contested'] * .6), 2);
+                    } else {
+                        $metrics['outsideX'] = round(($xPerformance * .4) + (45 * .6), 2);
+                    }
+
+                    if (array_key_exists('weight', $info)
+                        && $info['weight'] < 215
+                        && $metrics['outsideX'] != null)
+                    {
+                        $weightPenalty = ((215 - $info['weight']) * .35);
+                        $metrics['outsideX'] = $metrics['outsideX'] - $weightPenalty;
+                    }
+
+                    if (array_key_exists('heightInches', $info)
+                        && $info['heightInches'] < 74.5
+                        && $metrics['outsideX'] != null)
+                    {
+                        $heightPenalty = ((74.5 - $info['heightInches']) * 1.5);
+                        $metrics['outsideX'] = $metrics['outsideX'] - $heightPenalty;
+                    }
+
+                    if (array_key_exists('bmi', $info)
+                        && $info['bmi'] < 27.5
+                        && $metrics['outsideX'] != null)
+                    {
+                        $bmiPenalty = ((27.5 - $info['bmi']) * 3);
+                        $metrics['outsideX'] = $metrics['outsideX'] - $bmiPenalty;
+                    }
+                }
+
+                /*** Skillscore adjust ****/
+
+                if ($metrics['skillScore'] != null) {
+                    $ybcAdjustment = $metrics['collegeRecPercents']['yards']['ybc']['shortYBC'] + $metrics['collegeRecPercents']['yards']['ybc']['underYBC'];
+                    $metrics['skillScore'] = round($metrics['skillScore'] * ((100 - $ybcAdjustment)/100), 2);
+                }
+            } else {
+                //use averages for adjustments when we don't have college breakdown
+                if (array_key_exists("bestDominator", $college) && $college['bestDominator'] > 20) {
+                    if ($college['bestSeason']['recAvg'] < 14.51 && $metrics['slot'] != 0) {
+                        if ($noAgility == false) {
+                            $metrics['slot'] = $metrics['slot'] + 5;
+                        }
+                    }
+
+                    if ($college['bestSeason']['recAvg'] > 17 && $metrics['deep'] != 0) {
+                        if ($noForty == false) {
+                            $metrics['deep'] = $metrics['deep'] + 5;
+                        }
+                    }
+
+                    if ($college['bestSeason']['recAvg'] > 14.51 && $college['bestSeason']['recAvg'] < 17 && $metrics['alpha'] != 0) {
+                        if ($metrics['outsideX'] !== null) {
+                            $metrics['outsideX'] = $metrics['outsideX'] + 5;
+                        }
+                    }
+                }
+            }
 
             // new alpha
             if ($metrics['slot'] != null && $metrics['outsideX'] != null && $metrics['deep'] != null && $metrics['collegeScore'] != null) {
-                $halfAlpha = ($metrics['slot'] * .45) + ($metrics['outsideX'] *.40) + ($metrics['deep'] *.20);
-                $alphaScore = round(((($metrics['collegeScore']/35) * 100) * .45) + ($halfAlpha * .55), 2);
+                switch ($info['heightInches']) {
+                    case ($info['heightInches'] < 72):
+                        $halfAlpha = ($metrics['slot'] * 1.20) + ($metrics['deep'] * 1) + ($metrics['outsideX'] * .8);
+                        break;
+                    case ($info['heightInches'] > 74):
+                    case ($info['weight'] > 214):
+                        $halfAlpha = ($metrics['slot'] * .8) + ($metrics['deep'] * 1) + ($metrics['outsideX'] * 1.2);
+                        break;
+                    default:
+                        $halfAlpha = ($metrics['slot'] * 1) + ($metrics['deep'] * 1) + ($metrics['outsideX'] * 1);
+                }
+                $halfAlpha = round(($halfAlpha/3), 2);
+
+                if ($metrics['skillScore'] != null) {
+                    $skillCollege = ((($metrics['skillScore']/40) * 100) * 1.2) + ((($metrics['collegeScore']/35) * 100) *.8);
+                    $alphaScore = round((($skillCollege/2) * .35) + ($halfAlpha * .65),2);
+                } else {
+                    $alphaScore = round(((($metrics['collegeScore']/35) * 100) * .35) + ($halfAlpha * .65), 2);
+                }
             } else {
                 $alphaScore = null;
             }
 
-            if ($alphaScore !== null && $noForty == false && $noBench == false) {
-                if ($alphaScore > 70 && $metrics['slot'] < 60) {
-                    $alphaScore = $alphaScore - 5;
-                }
-//
-                if ($alphaScore > 70 && $metrics['deep'] < 60) {
-                    $alphaScore = $alphaScore - 5;
-                }
-//
-                if ($alphaScore > 60 && $metrics['slot'] < 35) {
-                    $alphaScore = $alphaScore - 5;
-                }
-//
-                if ($alphaScore > 60 && $metrics['deep'] < 35) {
-                    $alphaScore = $alphaScore - 5;
-                }
-//
-                if ($alphaScore > 55 && $metrics['beatPress'] < 50) {
-                    if ($metrics['slot'] < 50) {
-                        $alphaScore = $alphaScore - 7;
-                    } else {
-                        $alphaScore = $alphaScore - 3.5;
-                    }
-                }
-
-                if ($alphaScore > 55 && $metrics['beatPress'] < 30) {
-                    $alphaScore = $alphaScore - 3;
-                }
-
-
-//
-//                if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 30) {
+//            if ($alphaScore !== null && $noForty == false && $noBench == false) {
+//                if ($alphaScore > 70 && $metrics['slot'] < 60) {
 //                    $alphaScore = $alphaScore - 5;
 //                }
-
-//                if ($noBench == false) {
-//                    if ($metrics['beatPress'] < 20) {
-//                        $alphaScore = $alphaScore -5;
+////
+//                if ($alphaScore > 70 && $metrics['deep'] < 60) {
+//                    $alphaScore = $alphaScore - 5;
+//                }
+////
+//                if ($alphaScore > 60 && $metrics['slot'] < 35) {
+//                    $alphaScore = $alphaScore - 5;
+//                }
+////
+//                if ($alphaScore > 60 && $metrics['deep'] < 35) {
+//                    $alphaScore = $alphaScore - 5;
+//                }
+////
+//                if ($alphaScore > 55 && $metrics['beatPress'] < 50) {
+//                    if ($metrics['slot'] < 50) {
+//                        $alphaScore = $alphaScore - 7;
+//                    } else {
+//                        $alphaScore = $alphaScore - 3.5;
 //                    }
 //                }
-            }
-
-
-
+//
+//                if ($alphaScore > 55 && $metrics['beatPress'] < 30) {
+//                    $alphaScore = $alphaScore - 3;
+//                }
+//
+//
+////
+////                if ($metrics['fortyTime'] > 4.57 && $metrics['beatPress'] < 30) {
+////                    $alphaScore = $alphaScore - 5;
+////                }
+//
+////                if ($noBench == false) {
+////                    if ($metrics['beatPress'] < 20) {
+////                        $alphaScore = $alphaScore -5;
+////                    }
+////                }
+//            }
+//
             if ($alphaScore !== null && $noAgility == false) {
-                if ($alphaScore > 60 && $metrics['separation'] < 40) {
-                    $alphaScore = $alphaScore - 5;
-                }
-
-                if ($alphaScore > 50 && $metrics['separation'] < 30) {
-                    $alphaScore = $alphaScore - 5;
-                }
-
-                if ($metrics['separation'] < 20 && $alphaScore != null) {
-                    $alphaScore = $alphaScore - 5;
+                switch ($metrics['separation']) {
+                    case ($alphaScore > 60 && $metrics['separation'] < 40):
+                        $alphaScore = round(($alphaScore * .9), 2);
+                        break;
+                    case ($alphaScore > 50 && $metrics['separation'] < 35):
+                        $alphaScore = round(($alphaScore * .9), 2);
+                        break;
+                    default:
                 }
             }
 
@@ -476,26 +712,6 @@ class WrService extends ServiceAbstract
                 $metrics['alpha'] = null;
             }
 
-            if (array_key_exists("bestDominator", $college) && $college['bestDominator'] > 20) {
-                if ($college['bestSeason']['recAvg'] < 14.51 && $metrics['slot'] != 0) {
-                    if ($noAgility == false) {
-                        $metrics['slot'] = $metrics['slot'] + 5;
-                    }
-                }
-
-                if ($college['bestSeason']['recAvg'] > 17 && $metrics['deep'] != 0) {
-                    if ($noForty == false) {
-                        $metrics['deep'] = $metrics['deep'] + 5;
-                    }
-                }
-
-                if ($college['bestSeason']['recAvg'] > 14.51 && $college['bestSeason']['recAvg'] < 17 && $metrics['alpha'] != 0) {
-                    if ($metrics['outsideX'] !== null) {
-                        $metrics['outsideX'] = $metrics['outsideX'] + 5;
-                    }
-                }
-            }
-
             $metrics['slot'] = round($metrics['slot'], 2);
             $metrics['deep'] = round($metrics['deep'], 2);
             $metrics['outsideX'] = round($metrics['outsideX'], 2);
@@ -516,7 +732,7 @@ class WrService extends ServiceAbstract
     {
         $collegeStats = $wr->college_stats;
         unset($collegeStats['Career']);
-        if ($wr->getId() == 27445) {
+        if ($wr->getId() == '27417') {
             $gotHim = true;
         }
 
@@ -534,11 +750,19 @@ class WrService extends ServiceAbstract
         $lastClass = "";
         $conf = "";
         $bestRush = 0;
+        $games = 0;
         foreach ($collegeStats as $year => $stats) {
             if ($stats->year != "Career") {
-                $i++;
+                if (!array_key_exists('totals', $stats)) {
+                    continue;
+                }
 
-                if ($stats['totals']['yds'] == 0 || !array_key_exists('totals', $stats)) {
+                if ($stats['totals']['yds'] == 0
+                    || !array_key_exists('totals', $stats)
+                    || !array_key_exists('college', $stats)) {
+                    if ($stats->year == '2020') {
+                        continue;
+                    }
                     //we don't have team totals so we can't do calculations
                     return [
                         'collegeScore' => null,
@@ -549,20 +773,29 @@ class WrService extends ServiceAbstract
                         "collegeSeasons" => null,
                         "bestDominator" => null,
                         "updateCollegeStats" => $collegeStats,
-                        "bestRush" => $bestRush
+                        "bestRush" => $bestRush,
+                        "games" => 0
                     ];
                 }
+
+                $i++;
+                $games = $games + $stats['games'];
+//                if ($stats['games'] > 1) {
+//                    $i++;
+//                } else {
+//                    continue;
+//                }
 
                 // determine dominators
                 $dominator['td'] = round(($stats['recTds'] / $stats['totals']['tds'] ) * 100, 2);
                 $dominator['yd'] = round(($stats['recYds'] / $stats['totals']['yds']) * 100, 2);
                 $dominator['rec'] = round(($stats['recs'] / $stats['totals']['recs']) * 100, 2);
 
-                if ($stats['games'] > 4 && $stats['games'] < 9) {
-                    $dominator['td'] = round(($dominator['td']/$stats['games']) * 12,2);
-                    $dominator['yd'] = round(($dominator['yd']/$stats['games']) * 12,2);
-                    $dominator['rec'] = round(($dominator['rec']/$stats['games']) * 12,2);
-                }
+//                if ($stats['games'] > 4 && $stats['games'] < 9 && $stats['year'] != 2020) {
+//                    $dominator['td'] = round(($dominator['td']/$stats['games']) * 12,2);
+//                    $dominator['yd'] = round(($dominator['yd']/$stats['games']) * 12,2);
+//                    $dominator['rec'] = round(($dominator['rec']/$stats['games']) * 12,2);
+//                }
 
                 $collegeStats[$year]['dominator'] = round(($dominator['yd'] + $dominator['td'])/2, 2);
                 $collegeStats[$year]['tdDominator'] = round($dominator['td'] * 100, 2);
@@ -570,7 +803,7 @@ class WrService extends ServiceAbstract
                 $collegeStats[$year]['ydDominator'] = round($dominator['yd'] * 100, 2);
                 $breakout = 0;
 
-                if ($dominator['rec'] > 20 && (($dominator['yd'] + $dominator['td'])/2) > 20) {
+                if ($dominator['rec'] > 20 && $collegeStats[$year]['dominator'] > 20) {
                     $breakout = 3;
                 } else {
                     // get breakout season score
@@ -606,14 +839,14 @@ class WrService extends ServiceAbstract
                     default:
                 }
 
-                if ($stats['class'] == $lastClass) {
+                if (array_key_exists('class', $stats) && $stats['class'] == $lastClass) {
                     $redshirt = true;
                 } else {
                     $redshirt = false;
                 }
 
                 // determine breakout class
-                if ($breakout == 3 ) {
+                if ($breakout >= 3) {
                     if ($breakoutClass == "None") {
                         if ($i == 1) {
                             if ($stats['class'] == "FR") {
@@ -660,7 +893,7 @@ class WrService extends ServiceAbstract
                 }
 
                 // determine best dominator
-                $currentDominator = round((array_sum([$dominator['yd'], $dominator['td']])) / 2, 2);
+                $currentDominator = $collegeStats[$year]['dominator'];
                 if ($currentDominator > $bestDominator) {
                     $bestDominator = $currentDominator;
                     $bestSeason = $stats;
@@ -776,27 +1009,28 @@ class WrService extends ServiceAbstract
                     }
                 }
 
-                $collegeTeammates = $this->repository->getCollegeTeammates($stats['year'], $stats['college'], 'WR');
-                $collegeStats[$year]['teammates'] = $collegeTeammates;
-                foreach ($collegeTeammates as $key => $teammate) {
-                    if ($teammate['id'] !== $wr->getId()) {
-                        $collegeStats[$year]['teammates'][$key] = $collegeTeammates;
-                        if ($teammate['dominator'] > 19 && $currentDominator > 10) {
-                            if ($currentDominator < 20) {
-                                $bonus = $bonus + 1;
-                            } else {
-                                $bonus = $bonus + .5;
+                if (array_key_exists('college', $stats)) {
+                    $collegeTeammates = $this->repository->getCollegeTeammates($stats['year'], $stats['college'], 'WR');
+                    $collegeStats[$year]['teammates'] = $collegeTeammates;
+                    foreach ($collegeTeammates as $key => $teammate) {
+                        if ($teammate['id'] !== $wr->getId()) {
+                            $collegeStats[$year]['teammates'][$key] = $collegeTeammates;
+                            if ($teammate['dominator'] > 19 && $currentDominator > 10) {
+                                if ($currentDominator < 20) {
+                                    $bonus = $bonus + 1;
+                                } else {
+                                    $bonus = $bonus + .5;
+                                }
                             }
                         }
                     }
                 }
-
             }
         }
 
-//        if ($i == 2) {
-//            $i = 3;
-//        }
+        if ($i == 2) {
+            $i = 3;
+        }
 
         //$collegeScore = round(($breakoutSeasons/$i) * 10, 2);
         // Coming out as a junior, add last breakout to simulate senior season
@@ -806,7 +1040,7 @@ class WrService extends ServiceAbstract
 
         $info = $wr->getPlayerInfo();
         if (!array_key_exists(2020, $collegeStats) && array_key_exists('draft_year', $info) && $info['draft_year'] == '2021') {
-            $collegeScore = $collegeScore + $lastBreakout + 2;
+ //           $collegeScore = $collegeScore + $lastBreakout + 2;
         }
 
         /**** Bonuses ****/
@@ -833,13 +1067,13 @@ class WrService extends ServiceAbstract
         $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
         $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
         if (in_array($conf, $power5) ) {
-            $collegeScore = $collegeScore + 2;
+            $collegeScore = $collegeScore + 3;
         } elseif (in_array($conf, $minor5)) {
             $collegeScore = $collegeScore + 0;
         } else {
-            if ($collegeScore > 15) {
+           // if ($collegeScore > 15) {
                 $collegeScore = $collegeScore - 2;
-            }
+           // }
         }
 //
         // Best breakout score
@@ -898,7 +1132,9 @@ class WrService extends ServiceAbstract
             "collegeSeasons" => $i,
             "bestDominator" => $bestDominator,
             "updateCollegeStats" => $collegeStats,
-            "bestRush" => $bestRush
+            "bestRush" => $bestRush,
+            "games" => $games,
+            "conf" => $conf
         ];
 
     }
@@ -908,39 +1144,43 @@ class WrService extends ServiceAbstract
         $wrs = $this->repository->findAllPlayers("WR");
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
         $pointer = 0;
-        $collegePlayers = $this->sisApi->getCollegePlayers('2020');
+        $collegePlayers = $this->sisApi->getCollegePlayers('2021');
         $collect = collect($collegePlayers);
-
+        $needsFix = [];
         foreach ($wrs as $wr) {
-            $wr->decodeJson();
-            $metrics = $wr->getMetrics();
-            if ($wr->getTeam() == "Rookie" && array_key_exists('collegeScore', $metrics) && $metrics['collegeScore'] == null) {
+            if ($wr->getTeam() == 'Rookie' && $wr->getCollegeStats() == null) {
+                $wr->decodeJson();
+                $metrics = $wr->getMetrics();
                 $apiInfo = $wr->getApiInfo();
                 $playerInfo = $wr->getPlayerInfo();
-                $firstName = $wr->getFirstName();
-                $lastName = $wr->getLastName();
-                $result = $collect->firstWhere('fullName', $firstName." ".$lastName);
-                if (empty($result)) {
-                    $result = [];
-                } else {
-                    $playerInfo['birth_date'] = $result['birthdate'];
-                    $playerInfo['heightInches'] = $result['height'];
-                    $playerInfo['draft_year'] = $result['season'] + 1;
-                    $playerInfo['redShirt'] = $result['redShirt'];
-                    $apiInfo['cfb_id'] = $result['playerId'];
-                    $wr->setApiInfo($apiInfo);
-                    $wr->setPlayerInfo($playerInfo);
+                if (!array_key_exists('cfb_id', $apiInfo)) {
+                    $firstName = $wr->getFirstName();
+                    $lastName = $wr->getLastName();
+                    $result = $collect->firstWhere('fullName', $firstName." ".$lastName);
+                    if (empty($result)) {
+                        $result = [];
+                    } else {
+                        $playerInfo['birth_date'] = $result['birthdate'];
+                        $playerInfo['heightInches'] = $result['height'];
+                        $playerInfo['redShirt'] = $result['redShirt'];
+                        $apiInfo['cfb_id'] = $result['playerId'];
+                        $wr->setApiInfo($apiInfo);
+                        $wr->setPlayerInfo($playerInfo);
+                        $this->command->save($wr);
+                    }
                 }
-
-                $result = $this->scrapCollegeStats($wr);
+                $result = $this->getSisCollegeStats($wr);
                 if ($result == false) {
-                    continue;
+                    $firstName = $wr->getFirstName();
+                    $lastName = $wr->getLastName();
+                    $needsFix[] = "{$firstName} {$lastName}";
                 }
+                $pointer++;
+                $progressBar->update($pointer);
             }
-            $pointer++;
-            $progressBar->update($pointer);
         }
         $progressBar->finish();
+        print_r($needsFix);
     }
 
     public function scrapCollegeStats($wr)
@@ -1129,6 +1369,243 @@ class WrService extends ServiceAbstract
         return $collegeStats;
     }
 
+    public function findCfbId($year){
+//        $wrs = $this->repository->findAllPlayers("WR");
+//        $collegePlayers = $this->sisApi->getCollegePlayers('2018');
+//        $collect = collect($collegePlayers);
+//        $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
+//        $pointer = 0;
+//        foreach ($wrs as $wr) {
+//            $apiInfo = $wr->getApiInfo();
+//            if (!array_key_exists('cfb_id', $apiInfo)) {
+//                $playerInfo = $wr->getPlayerInfo();
+//                $firstName = $wr->getFirstName();
+//                $lastName = $wr->getLastName();
+//                $result = $collect->firstWhere('fullName', $firstName." ".$lastName);
+//                if (empty($result)) {
+//                    continue;
+//                } else {
+//                    $playerInfo['birth_date'] = $result['birthdate'];
+//                    $playerInfo['heightInches'] = $result['height'];
+//                    $playerInfo['redShirt'] = $result['redShirt'];
+//                    $apiInfo['cfb_id'] = $result['playerId'];
+//                    $wr->setApiInfo($apiInfo);
+//                    $wr->setPlayerInfo($playerInfo);
+//                    $this->command->save($wr);
+//                }
+//            }
+//            $pointer++;
+//            $progressBar->update($pointer);
+//        }
+//        $progressBar->finish();
+        //**** phase 2 use passing info *****//
+        $wrs = $this->repository->findAllPlayers("WR");
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
+        $pointer = 0;
+        $collegeYear = $year - 1;
+        $players = $this->sisApi->getCollegePassing($collegeYear, "receiving", [
+            'ReceivingFilters.MinAirYards' => -20,
+            'ReceivingFilters.MaxAirYards' => 100,
+        ]);
+        $collect = collect($players);
+        $broken = [];
+        foreach ($wrs as $wr) {
+            $wr->decodeJson();
+            $apiInfo = $wr->getApiInfo();
+            $info = $wr->getPlayerInfo();
+            if (!array_key_exists('cfb_id', $apiInfo) && $wr->getTeam() == 'Rookie') {
+                $playerInfo = $wr->getPlayerInfo();
+                $firstName = $wr->getFirstName();
+                $lastName = $wr->getLastName();
+                $result = $collect->firstWhere('player', $firstName . " " . $lastName);
+                if (empty($result)) {
+                    $broken[] ="{$firstName } {$lastName}";
+                } else {
+                    $apiInfo['cfb_id'] = $result['playerId'];
+                    $wr->setApiInfo($apiInfo);
+                    $this->command->save($wr);
+                }
+            }
+            $pointer++;
+            $progressBar->update($pointer);
+        }
+        $progressBar->finish();
+        print_r($broken);
+    }
+
+    public function makeCollegeBreakdown(){
+        $wrs = $this->repository->findAllPlayers("WR");
+        $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
+        $pointer = 0;
+        $missing = [];
+        foreach ($wrs as $wr) {
+            if (1) {
+            $wr->decodeJson();
+            $metrics = $wr->getMetrics();
+            $apiInfo = $wr->getApiInfo();
+            $info = $wr->getPlayerInfo();
+            if (array_key_exists('cfb_id', $apiInfo)
+                && $wr->getTeam() == 'Rookie'
+                && !array_key_exists('collegeRecBreakdown', $metrics)
+            ) {
+                $collegeStats = $wr->getCollegeStats();
+                if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
+                    $recSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "receiving");
+                    if (empty($recSeasons)) {
+                        $missing[$apiInfo['cfb_id']] = $wr->getFirstName()." ".$wr->getLastName();
+                        continue;
+                    }
+                    $bestSeason = 0;
+                    $mostYards = 0;
+                    foreach ($recSeasons as $recSeason) {
+                        if ($recSeason['g'] < 2) {
+                            continue;
+                        }
+                        if ($recSeason['teamId'] != null) {
+                            $areas = [
+                                [
+                                    "area" => "underneath",
+                                    "low" => -10,
+                                    "high" => 0,
+                                ],
+                                [
+                                    "area" => "short",
+                                    "low" => 1,
+                                    "high" => 9,
+                                ],
+                                [
+                                    "area" => "intermediate",
+                                    "low" => 10,
+                                    "high" => 20,
+                                ],
+                                [
+                                    "area" => "deep",
+                                    "low" => 21,
+                                    "high" => 100,
+                                ],
+                                [
+                                    "area" => "midSlot",
+                                    "low" => 10,
+                                    "high" => 20
+                                ]
+                            ];
+                            $recBreakdown = [];
+                            foreach ($areas as $area) {
+                                //set default values
+                                $recBreakdown[$area['area']] = [
+                                    'playerId' => 0,
+                                    'player' => 0,
+                                    'yards' => 0,
+                                    'tDs' => 0,
+                                    'receptions' => 0,
+                                    'ybContact' => 0,
+                                    'yaContact' => 0,
+                                    'aDoT' => 0,
+                                    'airYards' => 0,
+                                    'tds' => 0,
+                                    'yac' => 0,
+                                ];
+                                $filters = [
+                                    'ReceivingFilters.MinAirYards' => $area['low'],
+                                    'ReceivingFilters.MaxAirYards' => $area['high'],
+                                    "GameFilters.Team" => $recSeason['teamId']
+                                ];
+                                if ($area['area'] == 'midSlot') {
+                                    $filters['ReceivingFilters.TargetLinedUp'] = 3;
+                                }
+                                $stats = $this->sisApi->getCollegePassing($recSeason['season'], "receiving", $filters);
+                                //loop through team results for area
+                                foreach ($stats as $stat) {
+                                    if ($stat['playerId'] == $apiInfo['cfb_id']) {
+                                        $recBreakdown[$area['area']] = [
+                                            'playerId' => $stat['playerId'],
+                                            'player' => $stat['player'],
+                                            'yards' => $stat['yards'],
+                                            'tDs' => $stat['tDs'],
+                                            'receptions' => $stat['receptions'],
+                                            'ybContact' => $stat['ybContact'],
+                                            'yaContact' => $stat['yaContact'],
+                                            'aDoT' => $stat['aDoT'],
+                                            'airYards' => $stat['airYards'],
+                                            'tds' => $stat['tDs'],
+                                            'yac' => $stat['yac'],
+                                        ];
+                                        break;
+                                    }
+                                }
+                            }
+                            if ($recSeason['recs'] > 0 && $recSeason['yards'] > 0) {
+                                $recPercents = [];
+                                if (array_key_exists('deep', $recBreakdown)) {
+                                    $recPercents['yards']['separation']['deepSeparation'] = round(($recBreakdown['deep']['airYards'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['ybc']['deepYBC'] = round(($recBreakdown['deep']['ybContact'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['yac']['deepYAC'] = round(($recBreakdown['deep']['yaContact'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['recs']['deepRecs'] = round(($recBreakdown['deep']['receptions'] / $recSeason['recs']) * 100, 2);
+                                }
+
+                                if (array_key_exists('intermediate', $recBreakdown)) {
+                                    $recPercents['yards']['separation']['midSeparation'] = round(($recBreakdown['intermediate']['airYards'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['ybc']['midYBC'] = round(($recBreakdown['intermediate']['ybContact'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['yac']['midYAC'] = round(($recBreakdown['intermediate']['yaContact'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['recs']['midRecs'] = round(($recBreakdown['intermediate']['receptions'] / $recSeason['recs']) * 100, 2);
+                                }
+
+                                if (array_key_exists('midSlot', $recBreakdown)) {
+                                    $recPercents['yards']['separation']['midSlot'] = round((($recBreakdown['intermediate']['airYards'] - $recBreakdown['midSlot']['airYards']) / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['yac']['midSlotYAC'] = round((($recBreakdown['intermediate']['yaContact'] - $recBreakdown['midSlot']['yaContact']) / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['ybc']['midSlotYBC'] = round((($recBreakdown['intermediate']['ybContact'] - $recBreakdown['midSlot']['ybContact']) / $recSeason['yards']) * 100, 2);
+                                    $recPercents['recs']['midSlotRecs'] = round((($recBreakdown['intermediate']['receptions'] - $recBreakdown['midSlot']['receptions'])/ $recSeason['recs']) * 100, 2);
+
+                                    $recPercents['yards']['separation']['midOut'] = round(($recBreakdown['midSlot']['airYards'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['yac']['midOutYAC'] = round(($recBreakdown['midSlot']['yaContact'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['ybc']['midOutYBC'] = round(($recBreakdown['midSlot']['ybContact'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['recs']['midOutRecs'] = round(($recBreakdown['midSlot']['receptions'] / $recSeason['recs']) * 100, 2);
+                                }
+
+                                if (array_key_exists('short', $recBreakdown)) {
+                                    $recPercents['yards']['separation']['shortSeparation'] = round(($recBreakdown['short']['airYards'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['yac']['shortYAC'] = round(($recBreakdown['short']['yaContact'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['ybc']['shortYBC'] = round(($recBreakdown['short']['ybContact'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['recs']['shortRecs'] = round(($recBreakdown['short']['receptions'] / $recSeason['recs']) * 100, 2);
+                                }
+
+                                if (array_key_exists('underneath', $recBreakdown)) {
+                                    $recPercents['yards']['ybc']['underYBC'] = round(($recBreakdown['underneath']['ybContact'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['yards']['yac']['underYAC'] = round(($recBreakdown['underneath']['yaContact'] / $recSeason['yards']) * 100, 2);
+                                    $recPercents['recs']['underRecs'] = round(($recBreakdown['underneath']['receptions'] / $recSeason['recs']) * 100, 2);
+                                }
+                                $year = $recSeason['season'];
+//                                $collegeStats[$year]['yac'] = $recSeason['yac'];//
+                                $collegeStats[$year]['recBreakdown'] = $recBreakdown;
+                                $collegeStats[$year]['recPercents'] = $recPercents;
+
+                                if ($recSeason['yards'] > $mostYards) {
+                                    $mostYards = $recSeason['yards'];
+                                    $bestSeason = $recSeason['season'];
+                                }
+                            }
+                        }
+                    }
+                    if ($mostYards > 0 && $bestSeason > 0) {
+                        $metrics['collegeRecBreakdown'] = $collegeStats[$bestSeason]['recBreakdown'];
+                        $metrics['collegeRecPercents'] = $collegeStats[$bestSeason]['recPercents'];
+                        $wr->setMetrics($metrics);
+                    }
+
+                    $wr->setCollegeStats($collegeStats);
+                    $this->command->save($wr);
+
+                    $pointer++;
+                    $progressBar->update($pointer);
+                }
+                }
+            }
+        }
+        $progressBar->finish();
+        print_r($missing);
+    }
+
+
     //    public function apiCollegeJob()
 //    {
 //        $wrs = $this->repository->findAllPlayers("WR");
@@ -1149,81 +1626,81 @@ class WrService extends ServiceAbstract
 //        $progressBar->finish();
 //    }
 //
-//    public function getSisCollegeStats($wr)
-//    {
-//        $apiInfo = $wr->getApiInfo();
-//        if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
-//            $collegeStats = [];
-//            $recSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "receiving");
-//            foreach ($recSeasons as $recSeason) {
-//                if ($recSeason['teamId'] != null) {
-//                    $recTotals = $this->sisApi->getCollegeTeamStats($recSeason['season'], $recSeason['teamId'], "receiving");
-//                    $team = collect($recTotals);
-//                    $totals['targets'] = $team->sum('targets');
-//                    $totals['recs'] = $team->sum('recs');
-//                    $totals['yds'] = $team->sum('yards');
-//                    $totals['tds'] = $team->sum('td');
-//                } else {
-//                    $totals['targets'] = 0;
-//                    $totals['recs'] = 0;
-//                    $totals['yds'] = 0;
-//                    $totals['tds'] = 0;mysql.infoschema
-//                }
-//                $year = $recSeason['season'];
-//                $collegeStats[$year]['totals'] = $totals;
-//                $collegeStats[$year]['year'] = $year;
-//                $collegeStats[$year]['team'] = $recSeason['team'];
-//                $collegeStats[$year]['games'] = $recSeason['g'];
-//                $collegeStats[$year]['targets'] = $recSeason['targets'];
-//                $collegeStats[$year]['recs'] = $recSeason['recs'];
-//                $collegeStats[$year]['recYds'] = $recSeason['yards'];
-//                $collegeStats[$year]['recAvg'] = $recSeason['yardsPerRec'];
-//                $collegeStats[$year]['recTds'] = $recSeason['td'];
-//                $collegeStats[$year]['rushAtt'] = 0;
-//                $collegeStats[$year]['rushYds'] = 0;
-//                $collegeStats[$year]['rushAvg'] = 0;
-//                $collegeStats[$year]['rushTds'] = 0;
-//                $collegeStats[$year]['returnStats'] = [
-//                    'kickYds' => 0,
-//                    'kickAvg' => 0,
-//                    'kickTds' => 0,
-//                    'puntYds' => 0,
-//                    'puntAvg' => 0,
-//                    'puntTds' => 0
-//                ];
-//            };
-//
-//            $rushSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "rushing");
-//            if (!empty($rushSeasons)) {
-//                foreach ($rushSeasons as $rushSeason){
-//                    $year = $recSeason['season'];
-//                    $collegeStats[$year]['rushAtt'] = $rushSeason['att'];
-//                    $collegeStats[$year]['rushYds'] = $rushSeason['yards'];
-//                    $collegeStats[$year]['rushAvg'] = $rushSeason['yardsPerAtt'];
-//                    $collegeStats[$year]['rushTds'] = $rushSeason['td'];
-//                }
-//            }
-//
-//            $kickSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "kickret");
-//            if (!empty($kickSeasons)) {
-//                foreach($kickSeasons as $kickSeason) {
-//                    $year = $kickSeason['season'];
-//                    $collegeStats[$year]['returnStats']['kickYds'] = $kickSeason['yards'];
-//                    $collegeStats[$year]['returnStats']['kickAvg'] = $kickSeason['avg'];
-//                    $collegeStats[$year]['returnStats']['kickTds'] = $kickSeason['td'];
-//                }
-//            }
-//
-//            $puntSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "puntret");
-//            if (!empty($puntrSeasons)) {
-//                foreach($puntSeasons as $puntSeason) {
-//                    $year = $puntSeason['season'];
-//                    $collegeStats[$year]['returnStats']['puntYds'] = $puntSeason['yards'];
-//                    $collegeStats[$year]['returnStats']['puntAvg'] = $puntSeason['avg'];
-//                    $collegeStats[$year]['returnStats']['puntTds'] = $puntSeason['td'];
-//                }
-//            }
-//
+    public function getSisCollegeStats($wr)
+    {
+        $apiInfo = $wr->getApiInfo();
+        if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
+            $collegeStats = [];
+            $recSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "receiving");
+            foreach ($recSeasons as $recSeason) {
+                if ($recSeason['teamId'] != null) {
+                    $recTotals = $this->sisApi->getCollegeTeamStats($recSeason['season'], $recSeason['teamId'], "receiving");
+                    $team = collect($recTotals);
+                    $totals['targets'] = $team->sum('targets');
+                    $totals['recs'] = $team->sum('recs');
+                    $totals['yds'] = $team->sum('yards');
+                    $totals['tds'] = $team->sum('td');
+                } else {
+                    $totals['targets'] = 0;
+                    $totals['recs'] = 0;
+                    $totals['yds'] = 0;
+                    $totals['tds'] = 0;
+                }
+                $year = $recSeason['season'];
+                $collegeStats[$year]['totals'] = $totals;
+                $collegeStats[$year]['year'] = $year;
+                $collegeStats[$year]['team'] = $recSeason['team'];
+                $collegeStats[$year]['games'] = $recSeason['g'];
+                $collegeStats[$year]['targets'] = $recSeason['targets'];
+                $collegeStats[$year]['recs'] = $recSeason['recs'];
+                $collegeStats[$year]['recYds'] = $recSeason['yards'];
+                $collegeStats[$year]['recAvg'] = $recSeason['yardsPerRec'];
+                $collegeStats[$year]['recTds'] = $recSeason['td'];
+                $collegeStats[$year]['rushAtt'] = 0;
+                $collegeStats[$year]['rushYds'] = 0;
+                $collegeStats[$year]['rushAvg'] = 0;
+                $collegeStats[$year]['rushTds'] = 0;
+                $collegeStats[$year]['returnStats'] = [
+                    'kickYds' => 0,
+                    'kickAvg' => 0,
+                    'kickTds' => 0,
+                    'puntYds' => 0,
+                    'puntAvg' => 0,
+                    'puntTds' => 0
+                ];
+            };
+
+            $rushSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "rushing");
+            if (!empty($rushSeasons)) {
+                foreach ($rushSeasons as $rushSeason){
+                    $year = $recSeason['season'];
+                    $collegeStats[$year]['rushAtt'] = $rushSeason['att'];
+                    $collegeStats[$year]['rushYds'] = $rushSeason['yards'];
+                    $collegeStats[$year]['rushAvg'] = $rushSeason['yardsPerAtt'];
+                    $collegeStats[$year]['rushTds'] = $rushSeason['td'];
+                }
+            }
+
+            $kickSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "kickret");
+            if (!empty($kickSeasons)) {
+                foreach($kickSeasons as $kickSeason) {
+                    $year = $kickSeason['season'];
+                    $collegeStats[$year]['returnStats']['kickYds'] = $kickSeason['yards'];
+                    $collegeStats[$year]['returnStats']['kickAvg'] = $kickSeason['avg'];
+                    $collegeStats[$year]['returnStats']['kickTds'] = $kickSeason['td'];
+                }
+            }
+
+            $puntSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "puntret");
+            if (!empty($puntrSeasons)) {
+                foreach($puntSeasons as $puntSeason) {
+                    $year = $puntSeason['season'];
+                    $collegeStats[$year]['returnStats']['puntYds'] = $puntSeason['yards'];
+                    $collegeStats[$year]['returnStats']['puntAvg'] = $puntSeason['avg'];
+                    $collegeStats[$year]['returnStats']['puntTds'] = $puntSeason['td'];
+                }
+            }
+
 //            // Run scrapper to get missing info
 //            $request = new Request();
 //            $apiInfo = $wr->getApiInfo();
@@ -1274,12 +1751,12 @@ class WrService extends ServiceAbstract
 //            if (array_key_exists('Career', $collegeStats)) {
 //                unset($collegeStats['Career']);
 //            }
-//
-//            $wr->setCollegeStats($collegeStats);
-//            $this->command->save($wr);
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+
+            $wr->setCollegeStats($collegeStats);
+            $this->command->save($wr);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

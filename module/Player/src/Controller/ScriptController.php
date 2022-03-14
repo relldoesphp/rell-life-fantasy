@@ -92,11 +92,11 @@ class ScriptController extends AbstractActionController
 
     public function getSleeperStatsAction()
     {
-        $this->statsManager->getSeasonStats('2020');
+        $this->statsManager->getSeasonStats('2021');
         $positions = ["WR", "RB", "TE", "QB"];
         foreach($positions as $position) {
-            $this->statsManager->makeSeasonAverages($position, "2020");
-            $this->statsManager->makeSeasonRanks($position, "2020");
+            $this->statsManager->makeSeasonAverages($position, "2021");
+            $this->statsManager->makeSeasonRanks($position, "2021");
         }
     }
 
@@ -115,11 +115,11 @@ class ScriptController extends AbstractActionController
 
     public function getSleeperLogsAction()
     {
-        $this->statsManager->getGameLogs("2020");
-        $this->statsManager->makeGameLogRanks("RB", "2020");
-        $this->statsManager->makeGameLogRanks("TE", "2020");
-        $this->statsManager->makeGameLogRanks("QB", "2020");
-        $this->statsManager->makeGameLogRanks("WR", "2020");
+        $this->statsManager->getGameLogs("2021");
+        $this->statsManager->makeGameLogRanks("RB", "2021");
+        $this->statsManager->makeGameLogRanks("TE", "2021");
+        $this->statsManager->makeGameLogRanks("QB", "2021");
+        $this->statsManager->makeGameLogRanks("WR", "2021");
 //
 //        $this->statsManager->getSleeperGameLogs("2017");
 //        $this->statsManager->makeGameLogRanks("QB", "2017");
@@ -141,6 +141,7 @@ class ScriptController extends AbstractActionController
 
     public function updateTeamsAction()
     {
-        $this->teamManager->createPassingStats();
+
+        $this->playerManager->getCollegePassing('2021');
     }
 }

@@ -280,6 +280,32 @@ class ServiceAbstract
                 $player->setPlayerInfo($info);
             }
 
+            //fix height
+            if (array_key_exists('height', $info) && $info['height'] > 66 and $info['height'] < 82) {
+                $info['heightInches'] = $info['height'];
+                $heightArray = [
+                    '66' => '5\'6"',
+                    '67' => '5\'7"',
+                    '68' => '5\'8"',
+                    '69' => '5\'9"',
+                    '70' => '5\'10"',
+                    '71' => '5\'11"',
+                    '72' => '6\'0"',
+                    '73' => '6\'1"',
+                    '74' => '6\'2"',
+                    '75' => '6\'3"',
+                    '76' => '6\'4"',
+                    '77' => '6\'5"',
+                    '78' => '6\'6"',
+                    '79' => '6\'7"',
+                    '80' => '6\'8"',
+                    '81' => '6\'9"',
+                    '82' => '6\'10"',
+                ];
+                $info['height'] = $heightArray[$info['height']];
+                $player->setPlayerInfo($info);
+            }
+
             if ($player->getTeam() == "Rookie") {
                 if (!array_key_exists("hashtag", $info) || empty($info['hashtag']) || $info['hashtag'] == null) {
                     if ($player->getTeam() == "Rookie") {
@@ -314,7 +340,6 @@ class ServiceAbstract
                 continue;
             }
 
-
             if (!array_key_exists('shuttle', $metrics)) {
                 $metrics['shuttle'] = null;
             }
@@ -333,6 +358,16 @@ class ServiceAbstract
 
             if (!array_key_exists('fortyTime', $metrics)) {
                 $metrics['fortyTime'] = null;
+            }
+
+            $metrics['noTesting'] = false;
+            if ($metrics['fortyTime'] == null
+                && $metrics['verticalJump'] == null
+                && $metrics['broadJump'] == null
+                && $metrics['cone'] == null
+                && $metrics['shuttle'] == null
+            ) {
+                $metrics['noTesting'] = true;
             }
 
             if (in_array($metrics['shuttle'], ["-", "", null])

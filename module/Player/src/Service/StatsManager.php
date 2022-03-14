@@ -396,98 +396,107 @@ EOT;
 
     public function getGameLogs($year)
     {
-        $offensive = ["passing", "rushing", "receiving"];
+        $offensive = ["rushing", "receiving", "passing"];
         foreach ($offensive as $type) {
-            $games = $this->sisApi->getPlayersQuery('2020', $type, ["TimeFilters.ByGame" => 1]);
-            $progressBar = new ProgressBar($this->consoleAdapter, 0, count($games));
-            $pointer = 0;
-            foreach ($games as $playerInfo) {
-                if (empty($playerInfo)) {
-                    continue;
-                }
-                $player = $this->playerRepository->findPlayerBySisId($playerInfo['playerId']);
-                if ($player == null) {
-                    $problem = true;
-                    continue;
-                }
+            for ($i=1; $i < 33; $i++) {
+                for ($week=1; $week < 18; $week++) {
+                    $games = $this->sisApi->getPlayersQuery('2021', $type, [
+                        "TimeFilters.StartWeek" => $week,
+                        "TimeFilters.EndWeek" => $week,
+                        "GameFilters.Team" => $i
+                    ]);
+                    $progressBar = new ProgressBar($this->consoleAdapter, 0, count($games));
+                    $pointer = 0;
+                    foreach ($games as $playerInfo) {
+                        if (empty($playerInfo)) {
+                            continue;
+                        }
+                        $player = $this->playerRepository->findPlayerBySisId($playerInfo['playerId']);
+                        if ($player == null) {
+                            $problem = true;
+                            continue;
+                        }
 
-                    $gameLog = $this->statsRepository->getGameLogsByWeekYearSleeper(
-                        $playerInfo['week'],
-                        $year,
-                        $player->getSleeperId());
-                    if ($gameLog == false) {
-                        $gameLog = new GameLog();
-                    }
-                    $gameLog->setSleeperId($player->getSleeperId());
-                    $gameLog->setPlayerId($player->getId());
-                    $gameLog->setYear($year);
-                    $gameLog->setWeek($playerInfo['week']);
-                    $gameLog->setOpponent($playerInfo['opp']);
-                    $gameLog->setTeam($playerInfo['team']);
-                    $gameLog->decodeJson();
-                    $stats = $gameLog->getStats();
-                    switch ($type) {
-                        case "passing":
-                            $stats['passing'] = $playerInfo;
-                            $formattedStats = [
-                                "gp" => $stats['passing']['games'],
-                                "gs" => $stats['passing']['games'],
-                                "pass_att" => $stats['passing']['attempts'],
-                                "pass_cmp" => $stats['passing']['completions'],
-                                "pass_int" => $stats['passing']['ints'],
-                                "pass_rtg" => $stats['passing']['qbRating'],
-                                "pass_ypa" => $stats['passing']['ypa'],
-                                "pass_ypc" => $stats['passing']['yards'] / $stats['passing']['completions'],
-                                "pass_td" => $stats['passing']['tDs'],
-                                "pass_yd" => $stats['passing']['yards'],
-                            ];
-                            $stats = array_merge($stats, $formattedStats);
-                            break;
-                        case "rushing":
-                            $stats['rushing'] = $playerInfo;
-                            $formattedStats = [
-                                "gp" => $stats['rushing']['games'],
-                                "gs" => $stats['rushing']['games'],
-                                "rush_att" => $stats['rushing']['carries'],
-                                "rush_yd" => $stats['rushing']['yards'],
-                                "rush_ypa" => $stats['rushing']['ypa'],
-                                "rush_td" => $stats['rushing']['tDs'],
-                                "rush_fd" => $stats['rushing']['firstDowns'],
-                            ];
-                            $stats = array_merge($stats, $formattedStats);
-                            break;
-                        case "receiving":
-                            $stats['receiving'] = $playerInfo;
-                            $formattedStats = [
-                                "gp" => $stats['receiving']['games'],
-                                "gs" => $stats['receiving']['games'],
-                                "rec" => $stats['receiving']['receptions'],
-                                "rec_fd" => $stats['receiving']['firstDowns'],
-                                "rec_td" => $stats['receiving']['tDs'],
-                                "rec_yd" => $stats['receiving']['yards'],
-                                "rec_tgt" => $stats['receiving']['targets'],
-                                "rec_ypr" => $stats['receiving']['ypc'],
-                                "rec_ypt" => 0,
-                            ];
-                            $stats = array_merge($stats, $formattedStats);
-                        default:
-                    }
-                    $stats = $this->calculateFantasyPoints($stats);
-                    $gameLog->setStats($stats);
-                    if (empty($stats)) {
-                        continue;
-                    }
+                        $gameLog = $this->statsRepository->getGameLogsByWeekYearSleeper(
+                            $week,
+                            $year,
+                            $player->getSleeperId());
+                        if ($gameLog == false) {
+                            $gameLog = new GameLog();
+                        }
+                        $gameLog->setSleeperId($player->getSleeperId());
+                        $gameLog->setPlayerId($player->getId());
+                        $gameLog->setYear($year);
+                        $gameLog->setWeek($week);
+                        $gameLog->setOpponent($playerInfo['opp']);
+                        $gameLog->setTeam($playerInfo['team']);
+                        $gameLog->decodeJson();
+                        $stats = $gameLog->getStats();
+                        switch ($type) {
+                            case "passing":
+                                $stats['passing'] = $playerInfo;
+                                $formattedStats = [
+                                    "gp" => $stats['passing']['games'],
+                                    "gs" => $stats['passing']['games'],
+                                    "pass_att" => $stats['passing']['attempts'],
+                                    "pass_cmp" => $stats['passing']['completions'],
+                                    "pass_int" => $stats['passing']['ints'],
+                                    "pass_rtg" => $stats['passing']['qbRating'],
+                                    "pass_ypa" => $stats['passing']['ypa'],
+                                    "pass_ypc" => $stats['passing']['yards'] / $stats['passing']['completions'],
+                                    "pass_td" => $stats['passing']['tDs'],
+                                    "pass_yd" => $stats['passing']['yards'],
+                                ];
+                                $stats = array_merge($stats, $formattedStats);
+                                break;
+                            case "rushing":
+                                $stats['rushing'] = $playerInfo;
+                                $formattedStats = [
+                                    "gp" => $stats['rushing']['games'],
+                                    "gs" => $stats['rushing']['games'],
+                                    "rush_att" => $stats['rushing']['carries'],
+                                    "rush_yd" => $stats['rushing']['yards'],
+                                    "rush_ypa" => $stats['rushing']['ypa'],
+                                    "rush_td" => $stats['rushing']['tDs'],
+                                    "rush_fd" => $stats['rushing']['firstDowns'],
+                                ];
+                                $stats = array_merge($stats, $formattedStats);
+                                break;
+                            case "receiving":
+                                $stats['receiving'] = $playerInfo;
+                                $formattedStats = [
+                                    "gp" => $stats['receiving']['games'],
+                                    "gs" => $stats['receiving']['games'],
+                                    "rec" => $stats['receiving']['receptions'],
+                                    "rec_fd" => $stats['receiving']['firstDowns'],
+                                    "rec_td" => $stats['receiving']['tDs'],
+                                    "rec_yd" => $stats['receiving']['yards'],
+                                    "rec_tgt" => $stats['receiving']['targets'],
+                                    "rec_ypr" => $stats['receiving']['ypc'],
+                                    "rec_ypt" => 0,
+                                ];
+                                $stats = array_merge($stats, $formattedStats);
+                            default:
+                        }
+                        $stats = $this->calculateFantasyPoints($stats);
+                        $gameLog->setStats($stats);
+                        if (empty($stats)) {
+                            continue;
+                        }
 
-                    try {
-                        $this->statsCommand->saveGameLog($gameLog);
-                    } catch(\Exception $e) {
-                        $wrong = true;
+                        try {
+                            $this->statsCommand->saveGameLog($gameLog);
+                        } catch (\Exception $e) {
+                            $wrong = true;
+                        }
+                        $pointer++;
+                        $progressBar->update($pointer);
                     }
-                    $pointer++;
-                    $progressBar->update($pointer);
+                    $progressBar->finish();
+                    print "\nTeam {$i} Week {$week} finished.\n";
                 }
-                $progressBar->finish();
             }
+        }
     }
 
     public function makeSeasonRanks($position, $year)

@@ -1,7 +1,5 @@
 <?php
     $this->headTitle($player['first_name']." ".$player['last_name'], 'PREPEND');
-
-
 ?>
 
 <div class="section white full-height container">
@@ -41,7 +39,7 @@
                     <h5 class="fade-in-out"><?= $player['player_info']['height']?>&nbsp;-&nbsp;<?= $player['player_info']['weight']?>&nbsp;lbs&nbsp;-&nbsp; <?= $player['player_info']['age']?> years old &nbsp;-&nbsp; <?= $player['player_info']['college']?></h5>
                     <h4 class="fade-in-out">#<?= (array_key_exists('number', $player['team_info'])) ? $player['team_info']['number'] : '0' ?> <?=$player['position']?> <?= $player['team']?></h4>
                     <div class="col s12 player-summary hide-on-small-only">
-                        <h5>2020 Stats</h5>
+                        <h5>2021 Stats</h5>
                         <table class="responsive-table" id="summary-stats">
                         </table>
                     </div>
@@ -72,6 +70,7 @@
 <!--            </div>-->
 <!--        </div>-->
     </div>
+    <?php if (1): ?>
     <div class="row player-prospect container scrollspy" id="player-prospect">
         <a class="waves-effect waves-light btn-small right center modal-trigger dark" href="#modal2">Glossary<i class="material-icons">live_help</i></a>
         <div class="col s12 center brand-logo">
@@ -168,7 +167,7 @@
             ?>
             <div class="row">
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Slot Score</div>
+                    <div style="margin-top:10px" class="combine-title">Short Area Score</div>
                     <div class="combine-score"><?= ($player['metrics']['slot'] != null) ? $player['metrics']['slot'] : "-"?></div>
                     <div class="progress bench-bar">
                         <div class="determinate" style="width: <?= $player['percentiles']['slot'] ?>%"></div>
@@ -206,21 +205,21 @@
 
         <?php if ($player['position'] == 'WR'): ?>
             <?php
-                $player['metrics']['beatPress'] = (array_key_exists('beatPress', $player['metrics'])) ? $player['metrics']['beatPress'] : null;
+                $player['metrics']['skillScore'] = (array_key_exists('skillScore', $player['metrics'])) ? $player['metrics']['skillScore'] : null;
                 $player['metrics']['separation'] = (array_key_exists('separation', $player['metrics'])) ? $player['metrics']['separation'] : null;
                 $player['metrics']['contested'] = (array_key_exists('contested', $player['metrics'])) ? $player['metrics']['contested'] : null;
                 $player['metrics']['yac'] = (array_key_exists('yac', $player['metrics'])) ? $player['metrics']['yac'] : null;
-                $player['percentiles']['beatPress'] = (array_key_exists('beatPress', $player['metrics'])) ? $player['metrics']['beatPress'] : null;
+                $player['percentiles']['skillScore'] = (array_key_exists('skillScore', $player['metrics'])) ? $player['percentiles']['skillScore'] : null;
                 $player['percentiles']['separation'] = (array_key_exists('separation', $player['metrics'])) ? $player['metrics']['separation'] : null;
                 $player['percentiles']['contested'] = (array_key_exists('contested', $player['metrics'])) ? $player['metrics']['contested'] : null;
                 $player['percentiles']['yac'] = (array_key_exists('yac', $player['metrics'])) ? $player['metrics']['yac'] : null;
             ?>
             <div class="row">
                 <div class="bench-box center col m3 s6">
-                    <div style="margin-top:10px" class="combine-title">Beat Press</div>
-                    <div class="combine-score"><?= ($player['metrics']['beatPress'] != null) ? $player['metrics']['beatPress'] : "-" ?></div>
+                    <div style="margin-top:10px" class="combine-title">Skill Score</div>
+                    <div class="combine-score"><?= ($player['metrics']['skillScore'] != null) ? $player['metrics']['skillScore'] : "-" ?></div>
                     <div class="progress bench-bar">
-                        <div class="determinate" style="width: <?= $player['percentiles']['beatPress'] ?>%"></div>
+                        <div class="determinate" style="width: <?= $player['percentiles']['skillScore'] ?>%"></div>
                     </div>
                     <div class="bench-percentile percentile"></div>
                 </div>
@@ -334,6 +333,7 @@
             </div>
         </div>
     </div>
+    <?php endif; ?>
 
 
     <div class="row container player-situation container scrollspy" id="player-situation" style="display:none">
@@ -395,31 +395,53 @@
             </div>
         </div>
         <div id="test3" class="col s12">
-            <div class="col s12 black-text" >
-                <div class="col m4 offset-m2">
-                    <div style="width:350px">
-                        <canvas id="college-doughnut" width="170"></canvas>
-                        <div class="donut-inner center-align">
-                            <h5></h5>
-                            <span></span>
+            <?php if(array_key_exists('collegeRecBreakdown', $player['metrics']) || array_key_exists('collegeRushBreakdown', $player['metrics'])) : ?>
+                <div class="col s12 black-text" >
+                    <div class="col m5">
+                        <div style="width:350px">
+                            <canvas id="college-doughnut" width="170"></canvas>
+                            <div class="donut-inner center-align">
+                                <h5></h5>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div>
+                            <canvas id="college-recs"></canvas>
+                        </div>
+                    </div>
+                    <div class="col m7">
+                        <div>
+                            <canvas id="college-yards"></canvas>
                         </div>
                     </div>
                 </div>
-                <div class="col m4">
-                    <div class="college-row-one">
-                        <p class="combine-title"></p>
+            <?php else: ?>
+                <div class="col s12 black-text">
+                    <div class="col m6">
+                        <div style="width:450px">
+                            <canvas id="college-doughnut" width="220"></canvas>
+                            <div class="donut-inner center-align" style="margin-top: -125px;">
+                                <h5></h5>
+                                <span></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="college-row-two">
-                        <p class="combine-title"></p>
-                    </div>
-                    <div class="college-row-three">
-                        <p class="combine-title"></p>
-                    </div>
-                    <div class="college-row-four">
-                        <p class="combine-title"></p>
+                    <div class="col m6">
+                        <div class="college-row-one">
+                            <p class="combine-title"></p>
+                        </div>
+                        <div class="college-row-two">
+                            <p class="combine-title"></p>
+                        </div>
+                        <div class="college-row-three">
+                            <p class="combine-title"></p>
+                        </div>
+                        <div class="college-row-four">
+                            <p class="combine-title"></p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php endif; ?>
             <div class="col s12">
                 <table id="college-stats" class="display cell-border compact" width="100%">
                 </table>
