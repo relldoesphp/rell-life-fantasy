@@ -443,8 +443,8 @@ class WrService extends ServiceAbstract
 
                 if ($metrics['collegeScore'] != null) {
                     $expectedCollegeScore = round(.1075 * $metrics['athleteScore'], 2);
-                    $expectedCollegeScore = ($expectedCollegeScore < 8) ? 8 : $expectedCollegeScore;
-                    $expectedCollegeScore = ($expectedCollegeScore > 25) ? 25 : $expectedCollegeScore;
+                    $expectedCollegeScore = ($expectedCollegeScore < 10) ? 10 : $expectedCollegeScore;
+                    $expectedCollegeScore = ($expectedCollegeScore > 23) ? 23 : $expectedCollegeScore;
                     if ($metrics['collegeGames'] < 28 && $metrics['collegeGames'] > 0) {
                         $expectedCollegeScore = round((($metrics['collegeGames']/28) * $expectedCollegeScore), 2);
                     }
@@ -452,8 +452,8 @@ class WrService extends ServiceAbstract
                 }
             } elseif ($metrics['yac'] != null && $metrics['contested'] != null && $metrics['collegeScore'] != null) {
                 $expectedCollegeScore = round(.1075 * ($metrics['yac'] + $metrics['contested'] + 40), 2);
-                $expectedCollegeScore = ($expectedCollegeScore < 8) ? 8 : $expectedCollegeScore;
-                $expectedCollegeScore = ($expectedCollegeScore > 25) ? 25 : $expectedCollegeScore;
+                $expectedCollegeScore = ($expectedCollegeScore < 10) ? 10 : $expectedCollegeScore;
+                $expectedCollegeScore = ($expectedCollegeScore > 23) ? 23 : $expectedCollegeScore;
                 if ($metrics['collegeGames'] < 28 && $metrics['collegeGames'] > 0) {
                     $expectedCollegeScore = round((($metrics['collegeGames']/28) * $expectedCollegeScore), 2);
                 }
@@ -480,7 +480,11 @@ class WrService extends ServiceAbstract
                 if ($noAgility == false) {
                     $metrics['slot'] = round(($slotPerformance * .4) + ($slot * .6), 2);
                 } else {
-                    $metrics['slot'] = round(($slotPerformance * .4) + (45 * .6), 2);
+                    if ($info['heightInches'] > 74) {
+                        $metrics['slot'] = round(($slotPerformance * .6) + (45 * .4), 2);
+                    } else {
+                        $metrics['slot'] = round(($slotPerformance * .6) + (60 * .4), 2);
+                    }
                     //slot build = 71.5 inches 198 pounds 27 bmi
                     //height penalty
                     if (array_key_exists('heightInches', $info)
@@ -501,7 +505,7 @@ class WrService extends ServiceAbstract
                 if ($deep != null) {
                     $metrics['deep'] = round(($deepPerformance * .3) + ($deep * .7), 2);
                 } else {
-                    $metrics['deep'] = round(($deepPerformance * .3) + (45 * .7), 2);
+                    $metrics['deep'] = round(($deepPerformance * .4) + (45 * .6), 2);
                 }
 
                 /****** Outside X *****/
@@ -520,7 +524,11 @@ class WrService extends ServiceAbstract
                     if ($metrics['contested'] != null) {
                         $metrics['outsideX'] = round(($xPerformance * .4) + ($metrics['contested'] * .6), 2);
                     } else {
-                        $metrics['outsideX'] = round(($xPerformance * .4) + (45 * .6), 2);
+                        if ($info['heightInches'] > 74) {
+                            $metrics['outsideX'] = round(($xPerformance * .4) + (60 * .6), 2);
+                        } else {
+                            $metrics['outsideX'] = round(($xPerformance * .4) + (45 * .6), 2);
+                        }
                     }
 
                     if (array_key_exists('weight', $info)
@@ -593,10 +601,10 @@ class WrService extends ServiceAbstract
                 $halfAlpha = round(($halfAlpha/3), 2);
 
                 if ($metrics['skillScore'] != null) {
-                    $skillCollege = ((($metrics['skillScore']/40) * 100) * 1.2) + ((($metrics['collegeScore']/35) * 100) *.8);
-                    $alphaScore = round((($skillCollege/2) * .35) + ($halfAlpha * .65),2);
+                    $skillCollege = ((($metrics['skillScore']/40) * 100) * 1.4) + ((($metrics['collegeScore']/35) * 100) *.6);
+                    $alphaScore = round((($skillCollege/2) * .4) + ($halfAlpha * .6),2);
                 } else {
-                    $alphaScore = round(((($metrics['collegeScore']/35) * 100) * .35) + ($halfAlpha * .65), 2);
+                    $alphaScore = round(((($metrics['collegeScore']/35) * 100) * .4) + ($halfAlpha * .6), 2);
                 }
             } else {
                 $alphaScore = null;
@@ -653,6 +661,12 @@ class WrService extends ServiceAbstract
                         $alphaScore = round(($alphaScore * .9), 2);
                         break;
                     default:
+                }
+            }
+
+            if ($alphaScore !== null && $metrics['collegeScore'] !== null) {
+                if ($alphaScore > 60 && $metrics['collegeScore'] < 15) {
+                    $alphaScore = round(($alphaScore * .9), 2);
                 }
             }
 
