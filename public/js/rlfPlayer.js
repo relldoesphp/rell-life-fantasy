@@ -509,7 +509,7 @@ var rlf =  {
                         "metric2": player2.metrics.bestDominator + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.breakoutDominator + "%'></div></div>",
                     },
                     {
-                        "name": "College Score",
+                        "name": "College Production Score",
                         "metric1": player1.metrics.collegeScore + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.collegeScore + "%'></div></div>",
                         "metric2": player2.metrics.collegeScore + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.collegeScore + "%'></div></div>",
                     }
@@ -661,7 +661,7 @@ var rlf =  {
                         "metric2": player2.metrics.bestRecDominator + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.bestRecDominator + "%'></div></div>",
                     },
                     {
-                        "name": "College Score",
+                        "name": "College Production Score",
                         "metric1": player1.metrics.collegeScore + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.collegeScore + "%'></div></div>",
                         "metric2": player2.metrics.collegeScore + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.collegeScore + "%'></div></div>",
                     }
@@ -1074,10 +1074,10 @@ var rlf =  {
                                 datasets: [{
                                     data: [],
                                     backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
-                                    label: 'College Score'
+                                    label: 'College Production Score'
                                 }],
                                 labels: [
-                                    'College Score',
+                                    'College Production Score',
                                     ''
                                 ]
                             },
@@ -1105,10 +1105,10 @@ var rlf =  {
                                 datasets: [{
                                     data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore, 2)],
                                     backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
-                                    label: 'College Score'
+                                    label: 'College Production Score'
                                 }],
                                 labels: [
-                                    'College Score',
+                                    'College Production Score',
                                     ''
                                 ]
                             },
@@ -1144,10 +1144,10 @@ var rlf =  {
                                 datasets: [{
                                     data: [],
                                     backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
-                                    label: 'College Score'
+                                    label: 'College Production Score'
                                 }],
                                 labels: [
-                                    'College Score',
+                                    'College Production Score',
                                     ''
                                 ]
                             },
@@ -1178,7 +1178,7 @@ var rlf =  {
                                     label: 'College Score'
                                 }],
                                 labels: [
-                                    'College Score',
+                                    'College Productoin Score',
                                     ''
                                 ]
                             },
@@ -1189,7 +1189,7 @@ var rlf =  {
                                 },
                                 title: {
                                     display: false,
-                                    text: 'College Score'
+                                    text: 'College Production Score'
                                 },
                                 responsive: true,
                                 animation: {
@@ -1724,10 +1724,10 @@ var rlf =  {
                     datasets: [{
                         data: [rlfData.player.percentiles.collegeScore, Math.round(100 - rlfData.player.percentiles.collegeScore, 2)],
                         backgroundColor: ['rgba(174, 3, 230, 0.25)', 'white'],
-                        label: 'College Score'
+                        label: 'College Production Score'
                     }],
                     labels: [
-                        'College Score',
+                        'College Production Score',
                         ''
                     ]
                 },
