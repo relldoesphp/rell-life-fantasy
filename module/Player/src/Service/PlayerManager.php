@@ -271,8 +271,8 @@ class PlayerManager
     public function updateWrMetrics()
     {
         $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
-//        $wrService->calculateMetrics();
-//        $wrService->calculatePercentiles();
+        $wrService->calculateMetrics();
+        $wrService->calculatePercentiles();
         $wrService->calculateSpecialScores();
         $wrService->calculateSpecialPercentiles();
         $wrService->calculateSpecialScores();

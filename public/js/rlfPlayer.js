@@ -677,12 +677,12 @@ var rlf =  {
             // College Years
             const polarData = {
                 labels: [
-                    'deep airyards',
-                    'mid airyards',
-                    'short airyards',
-                    'short yac',
-                    'mid yac',
-                    'deep yac',
+                    '20+ air yards',
+                    '10-20 air yards',
+                    '0-10 air yards',
+                    'Under 10 yac',
+                    '10-20 yac',
+                    '20+ yac',
                 ],
                 datasets: [{
                     label: 'Yard Distrubution',
@@ -732,12 +732,12 @@ var rlf =  {
             // College Years
             const polarData1 = {
                 labels: [
-                    'deep airyards',
-                    'mid airyards',
-                    'short airyards',
-                    'short yac',
-                    'mid yac',
-                    'deep yac',
+                    '20+ air yards',
+                    '10-20 air yards',
+                    '0-10 air yards',
+                    'Under 10 yac',
+                    '10-20 yac',
+                    '20+ yac',
                 ],
                 datasets: [{
                     label: 'Yard Distrubution',
@@ -793,12 +793,12 @@ var rlf =  {
             // College Years
             const polarData1 = {
                 labels: [
-                    'deep airyards',
-                    'mid airyards',
-                    'short airyards',
-                    'short yac',
-                    'mid yac',
-                    'deep yac',
+                    '20+ air yards',
+                    '10-20 air yards',
+                    '0-10 air yards',
+                    'Under 10 yac',
+                    '10-20 yac',
+                    '20+ yac',
                 ],
                 datasets: [{
                     label: 'Yard Distrubution',
@@ -848,12 +848,12 @@ var rlf =  {
             // College Years
             const polarData1 = {
                 labels: [
-                    'deep airyards',
-                    'mid airyards',
-                    'short airyards',
-                    'short yac',
-                    'mid yac',
-                    'deep yac',
+                    '20+ air yards',
+                    '10-20 air yards',
+                    '0-10 air yards',
+                    'Under 10 yac',
+                    '10-20 yac',
+                    '20+ yac',
                 ],
                 datasets: [{
                     label: 'Yard Distrubution',
@@ -1495,7 +1495,7 @@ var rlf =  {
                         position:'bottom'
                     },
                     title: {
-                        display:false,
+                        display:true,
                         text: 'College Recs'
                     },
                     responsive: true,
@@ -1760,12 +1760,12 @@ var rlf =  {
             // College Years
             const polarData = {
                 labels: [
-                    'deep airyards',
-                    'mid airyards',
-                    'short airyards',
-                    'short yac',
-                    'mid yac',
-                    'deep yac',
+                    '20+ air yards',
+                    '10-20 air yards',
+                    '0-10 air yards',
+                    'Under 10 yac',
+                    '10-20 yac',
+                    '20+ yac',
                 ],
                 datasets: [{
                     label: 'Yard Distrubution',
@@ -1792,7 +1792,7 @@ var rlf =  {
                         position:'bottom'
                     },
                     title: {
-                        display:false,
+                        display:true,
                         text: 'College Yards'
                     },
                     responsive: true,
@@ -1815,9 +1815,9 @@ var rlf =  {
             // College Years
             const polarData2 = {
                 labels: [
-                    'deep recs',
-                    'mid recs',
-                    'short recs',
+                    '20+ recs',
+                    '10-20 recs',
+                    '0-10 recs',
                     'screens',
                 ],
                 datasets: [{
@@ -2104,12 +2104,12 @@ var rlf =  {
             // College Years
             const polarData = {
                 labels: [
-                    'deep airyards',
-                    'mid airyards',
-                    'short airyards',
-                    'short yac',
-                    'mid yac',
-                    'deep ybc',
+                    '20+ air yards',
+                    '10-20 air yards',
+                    '0-10 air yards',
+                    'Under 10 yac',
+                    '10-20 yac',
+                    '20+ yac',
                 ],
                 datasets: [{
                     label: 'Yard Distrubution',
@@ -2159,9 +2159,9 @@ var rlf =  {
             // College Years
             const polarData2 = {
                 labels: [
-                    'deep recs',
-                    'mid recs',
-                    'short recs',
+                    '20+ recs',
+                    '10-20 recs',
+                    '0-10 recs',
                     'screens',
                 ],
                 datasets: [{

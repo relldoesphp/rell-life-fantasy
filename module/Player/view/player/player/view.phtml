@@ -396,21 +396,23 @@
         </div>
         <div id="test3" class="col s12">
             <?php if(array_key_exists('collegeRecBreakdown', $player['metrics']) || array_key_exists('collegeRushBreakdown', $player['metrics'])) : ?>
-                <div class="col s12 black-text" >
-                    <div class="col m5">
-                        <div style="width:350px">
-                            <canvas id="college-doughnut" width="170"></canvas>
-                            <div class="donut-inner center-align">
-                                <h5></h5>
-                                <span></span>
-                            </div>
+                <div class="col m12">
+                    <div style="width:350px; margin:auto">
+                        <canvas id="college-doughnut" width="220"></canvas>
+                        <div class="donut-inner center-align">
+                            <h5></h5>
+                            <span></span>
                         </div>
-                        <div>
+                    </div>
+                </div>
+                <div class="col s12 black-text" >
+                    <div class="col m6">
+                        <div style="width:500px">
                             <canvas id="college-recs"></canvas>
                         </div>
                     </div>
-                    <div class="col m7">
-                        <div>
+                    <div class="col m6">
+                        <div style="width:500px">
                             <canvas id="college-yards"></canvas>
                         </div>
                     </div>
@@ -446,7 +448,6 @@
                 <table id="college-stats" class="display cell-border compact" width="100%">
                 </table>
             </div>
-        </div>
     </div>
     <div class="player-menu">
         <ul class="table-of-contents">
