@@ -292,7 +292,6 @@ table#summary-stats > tbody > tr:nth-child(1) > td, .combine-score {
     padding:0px;
     font-style:italic;
     font-weight: lighter;
-    font-family: 'Permanent Marker';
 }
 
 table#summary-stats > tbody > tr:nth-child(2) > td, .combine-title {
