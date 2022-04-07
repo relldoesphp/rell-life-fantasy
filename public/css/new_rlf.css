@@ -251,6 +251,10 @@ div.skillset > div {
     height:auto;
 }
 
+.section.white h1, .section.white h2, .section.white h3, .section.white h4, .section.white h5 {
+    font-family: 'Permanent Marker', cursive;
+}
+
 .section.full-height.search-section {
     height:800px;
 }
@@ -285,9 +289,10 @@ table#summary-stats thead th{
 table#summary-stats > tbody > tr:nth-child(1) > td, .combine-score {
     font-size: 25px;
     text-transform: uppercase;
-    font-weight:bold;
     padding:0px;
     font-style:italic;
+    font-weight: lighter;
+    font-family: 'Permanent Marker';
 }
 
 table#summary-stats > tbody > tr:nth-child(2) > td, .combine-title {

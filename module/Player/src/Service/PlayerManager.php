@@ -352,19 +352,19 @@ class PlayerManager
 
     public function scrapCollegeJob()
     {
- //       $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
 //        $rbService->findCfbId('2021');
 //        $rbService->findCfbId('2020');
 //        $rbService->findCfbId('2019');
 //        $rbService->findCfbId('2018');
 //        $rbService->findCfbId('2017');
 //        $rbService->findCfbId('2016');
-   //     $rbService->makeCollegeBreakdown();
 //        $rbService->scrapCollegeJob();
+//        $rbService->makeCollegeBreakdown();
 ////
-        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
-        $teService->findCfbId('2022');
-        $teService->scrapCollegeJob();
+//        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+//        $teService->findCfbId('2022');
+//        $teService->scrapCollegeJob();
 //
 //        $teService->findCfbId('2021');
 //        $teService->findCfbId('2020');
@@ -372,12 +372,12 @@ class PlayerManager
 //        $teService->findCfbId('2018');
 //        $teService->findCfbId('2017');
 //        $teService->findCfbId('2016');
-        $teService->makeCollegeBreakdown();
+//        $teService->makeCollegeBreakdown();
 
-   //     $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
-       // $wrService->findCfbId('2022');
-     //   $wrService->scrapCollegeJob();
-       // $wrService->makeCollegeBreakdown();
+        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+//       // $wrService->findCfbId('2022');
+        $wrService->scrapCollegeJob();
+        $wrService->makeCollegeBreakdown();
 
 //        $wrService->findCfbId('2021');
 //        $wrService->findCfbId('2020');

@@ -151,8 +151,12 @@ class RbService extends ServiceAbstract
 //                continue;
 //            }
 
-            if ($rb->getId() == 4147) {
+            if ($rb->getId() == 26883) {
                 $found = true;
+            }
+
+            if (!array_key_exists('benchPress', $metrics)) {
+                continue;
             }
 
             if (in_array($metrics['shuttle'], ["-", "", null])
@@ -311,6 +315,8 @@ class RbService extends ServiceAbstract
                 $metrics['breakoutClass'] = $collegeStuff['breakoutClass'];
                 $metrics['bestYPC'] = $collegeStuff['bestYPC'];
                 $metrics['bestCarryDominator'] = $collegeStuff['bestCarryDominator'];
+                $metrics['bestRec'] = $collegeStuff['bestRec'];
+                $metrics['bestRecYds'] = $collegeStuff['bestRecYds'];
                 $rb->setCollegeStats($collegeStuff['collegeStats']);
 
                 /*** Use College Stats to adjust scores ***/
@@ -320,13 +326,13 @@ class RbService extends ServiceAbstract
                     $gotem = true;
                 }
 
-                if ($data['receiver'] != null) {
-                    if ($collegeStuff['bestRecDominator'] < 9 ) {
-                        $data['receiver'] = $data['receiver'] - 5;
-                    } else {
-                        $data['receiver'] = ($percentiles['bestRecDominator'] * .6) + ($data['receiver'] * .4);
-                    }
-                }
+//                if ($data['receiver'] != null) {
+//                    if ($collegeStuff['bestRecDominator'] < 9 ) {
+//                        $data['receiver'] = $data['receiver'] - 5;
+//                    } else {
+//                        $data['receiver'] = ($percentiles['bestRecDominator'] * .6) + ($data['receiver'] * .4);
+//                    }
+//                }
 
 
 //                if ($collegeStuff['bestRec'] >= 30) {
@@ -412,8 +418,94 @@ class RbService extends ServiceAbstract
                 $metrics['skillScore'] = round(($metrics['collegeScore'] - $expectedCollegeScore), 2) + 20;
             }
 
+            if (array_key_exists('collegeRushBreakdown', $metrics)) {
+                /*** determine performance multiplier ***/
+                if (array_key_exists('conf', $collegeStuff)) {
+                    $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
+                    $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
+                    if (in_array($collegeStuff['conf'], $power5) ) {
+                        $confMultiplier = 1.05;
+                    } elseif (in_array($collegeStuff['conf'], $minor5)) {
+                        $confMultiplier = 1;
+                    } else {
+                        $confMultiplier = .9;
+                    }
+                } else {
+                    $confMultiplier = 1;
+                }
+
+                /*** inside ***/
+                if (array_key_exists('yacAtt', $metrics['collegeRushBreakdown']['inside'])) {
+                    $insideYac = round($metrics['collegeRushBreakdown']['inside']['yacAtt'] * 2.5, 2);
+                    $insideYards = round(($metrics['collegeRushBreakdown']['inside']['ybContact'] * .8) + ($metrics['collegeRushBreakdown']['inside']['yaContact'] * 1), 2);
+                    $insideYards = round(($insideYards / 10), 2);
+                    $insidePerformance = $insideYac + $insideYards;
+                    $metrics['insidePerformance'] = round($insidePerformance * $confMultiplier, 2);
+                    if ($data['inside'] != null) {
+                        $data['inside'] = round(($metrics['insidePerformance'] * .25) + ($data['inside'] * .75), 2);
+                    } else {
+                        $data['inside'] = round(($metrics['insidePerformance'] * .4) + (45 * .6), 2);
+                    }
+
+                    if (array_key_exists('weight', $info)
+                        && $info['weight'] < 210
+                        && $data['inside'] > 45)
+                    {
+                        $weightPenalty = ((210 - $info['weight']) * 1);
+                        $data['inside'] = $data['inside'] - $weightPenalty;
+                    }
+
+                    $metrics['collegeRushBreakdown']['inside']['yacAtt'] = round($metrics['collegeRushBreakdown']['inside']['yacAtt'], 2);
+                    $metrics['collegeRushBreakdown']['inside']['ybcAtt'] = round($metrics['collegeRushBreakdown']['inside']['ybcAtt'], 2);
+                }
+
+
+                /*** outside ***/
+                if (array_key_exists('yacAtt', $metrics['collegeRushBreakdown']['outside'])) {
+                    $outsideYac = round($metrics['collegeRushBreakdown']['outside']['yacAtt'] * 2, 2);
+                    $outsideYards = round(($metrics['collegeRushBreakdown']['outside']['ybContact'] * .8) + ($metrics['collegeRushBreakdown']['outside']['yaContact'] * 1), 2);
+                    $outsideYards = round(($outsideYards / 10), 2);
+                    $outsidePerformance = $outsideYac + $outsideYards;
+                    $metrics['outsidePerformance'] = round($outsidePerformance * $confMultiplier, 2);
+                    if ($data['outside'] != null) {
+                        $data['outside'] = round(($metrics['outsidePerformance'] * .2) + ($data['outside'] * .8), 2);
+                    } else {
+                        $data['outside'] = round(($metrics['outsidePerformance'] * .3) + (45 * .7), 2);
+                    }
+                    if (array_key_exists('weight', $info)
+                        && $info['weight'] < 210
+                        && $data['outside'] > 45)
+                    {
+                        $weightPenalty = ((210 - $info['weight']) * 1);
+                        $data['outside'] = $data['outside'] - $weightPenalty;
+                    }
+                    $metrics['collegeRushBreakdown']['outside']['yacAtt'] = round($metrics['collegeRushBreakdown']['outside']['yacAtt'], 2);
+                    $metrics['collegeRushBreakdown']['outside']['ybcAtt'] = round($metrics['collegeRushBreakdown']['outside']['ybcAtt'], 2);
+                }
+
+
+                /*** receiving ***/
+                if (array_key_exists('yards', $metrics['collegeRushBreakdown']['receiving'])) {
+                    if (!array_key_exists('bestRec', $metrics) && $metrics['bestRec'] == null) {
+                        $recs = $metrics['collegeRushBreakdown']['receiving']['receptions'];
+                        $recYards = round(($metrics['collegeRushBreakdown']['receiving']['yards'] / 10), 2);
+                    } else {
+                        $recs = $metrics['bestRec'];
+                        $recYards = round(($metrics['bestRecYds'] / 10), 2);
+                    }
+                    $recPerformance = $recs + $recYards;
+                    $metrics['recPerformance'] = round($recPerformance * $confMultiplier, 2);
+                    if ($data['receiver'] != null) {
+                        $data['receiver'] = round(($metrics['recPerformance'] * .5) + ($data['receiver'] * .5), 2);
+                    } else {
+                        $data['receiver'] = round(($metrics['recPerformance'] * .5) + (45 * .5), 2);
+                    }
+                }
+            }
+
             if ($metrics['skillScore'] != null && $metrics['athleteScore'] != null) {
-                $data['alpha'] = ($percentiles['skillScore'] * .3) + ($percentiles['athleteScore'] * .7);
+                $metrics['athleteScore'] = ($data['inside'] * 1.05) + ($data['outside'] * 1.25) + ($data['receiver'] * .7);
+                $data['alpha'] =  round(((($percentiles['collegeScore'] * .25) + (($metrics['athleteScore']/3) * .75))), 2);
             } else {
                 if ($metrics['collegeScore'] !== null && $data['inside'] != null && $data['receiver'] != null) {
                     if ($data['receiver'] < 30) {
@@ -421,16 +513,15 @@ class RbService extends ServiceAbstract
                     } else {
                         $data['alpha'] = ($data['receiver'] * .25) + ($runner * .75);
                     }
-
-                    $data['alpha'] = round(((($metrics['collegeScore']/30) * 100) * .2) + ($data['alpha'] * .8), 2);
+                    $data['alpha'] = round((($data['inside'] * 1) + ($data['outside'] * 1.20) + ($data['receiver'] * .8))/3, 2);
+                    $data['alpha'] = round((($percentiles['collegeScore'] * .25) + ($data['alpha'] * .75)), 2);
 
                     if ($metrics['bestDominator'] < 14 && $data['alpha'] > 60) {
                         $data['alpha'] = $data['alpha'] - 10;
                     }
-
-
                 } else {
-                    $data['alpha'] = ($data['receiver'] * .4) + ($data['inside'] * .30) + ($data['outside'] * .30);
+                    $data['alpha'] = ($data['receiver'] * .3) + ($data['inside'] * .30) + ($data['outside'] * .40);
+                    $data['alpha'] = round(($data['alpha'] * .85), 2);
                 }
             }
 
@@ -470,7 +561,7 @@ class RbService extends ServiceAbstract
 
     public function makeCollegeScore($rb)
     {
-        if ($rb->getId() == 28140) {
+        if ($rb->getId() == 28184) {
             $gotHim = true;
         } else {
             $notHIm = true;
@@ -489,6 +580,7 @@ class RbService extends ServiceAbstract
         $bestYPC = 0;
         $bestCarryDom = 0;
         $bestRec = 0;
+        $bestRecYds = 0;
         $conf = "";
         $collegeStats = $rb->getCollegeStats();
         foreach ($collegeStats as $year => $stats) {
@@ -496,7 +588,7 @@ class RbService extends ServiceAbstract
                 //increment year count
                 $i++;
 
-                if ($stats['totals']['yds'] == 0 || !array_key_exists('totals', $stats)) {
+                if (!array_key_exists('totals', $stats) || $stats['totals']['yds'] == 0 ) {
                     if ($stats->year == '2020') {
                         continue;
                     }
@@ -513,6 +605,8 @@ class RbService extends ServiceAbstract
                         "bestCarryDominator" => null,
                         "bestRec" => null,
                         "collegeStats" => $collegeStats,
+                        "conf" => "",
+                        "bestRecYds" => ""
                     ];
                 }
 
@@ -710,6 +804,7 @@ class RbService extends ServiceAbstract
 
                 if ($stats['recs'] > $bestRec) {
                     $bestRec = $stats['recs'];
+                    $bestRecYds = $stats['recYds'];
                 }
 
                 if ($stats['rushAvg'] > 6 && $stats['rushYds'] > 500) {
@@ -792,6 +887,16 @@ class RbService extends ServiceAbstract
             $breakoutClass = "Senior";
         }
 
+        $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
+        $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
+        if (in_array($conf, $power5) ) {
+            $collegeScore = round(($collegeScore * 1.10), 1);
+        } elseif (in_array($conf, $minor5)) {
+            $collegeScore = round(($collegeScore * 1), 1);
+        } else {
+            $collegeScore = round(($collegeScore * .9),1);
+        }
+
         return [
             'collegeScore' => $collegeScore,
             'bestSeason' => $bestSeason,
@@ -803,7 +908,9 @@ class RbService extends ServiceAbstract
             "bestYPC" => $bestYPC,
             "bestCarryDominator" => $bestCarryDom,
             "bestRec" => $bestRec,
-            "collegeStats" => $collegeStats
+            "collegeStats" => $collegeStats,
+            "conf" => $conf,
+            "bestRecYds" => $bestRecYds
         ];
     }
 
@@ -818,7 +925,7 @@ class RbService extends ServiceAbstract
         foreach ($rbs as $rb) {
             $rb->decodeJson();
             $metrics = $rb->getMetrics();
-            if ($rb->getTeam() == "Rookie") {
+            if ($rb->getId() == "28412") {
                 $rb->decodeJson();
                 $apiInfo = $rb->getApiInfo();
                 $playerInfo = $rb->getPlayerInfo();
@@ -1058,10 +1165,7 @@ class RbService extends ServiceAbstract
                 $metrics = $rb->getMetrics();
                 $apiInfo = $rb->getApiInfo();
                 $info = $rb->getPlayerInfo();
-                if (array_key_exists('cfb_id', $apiInfo)
-                    && $rb->getTeam() != 'FA'
- //                   && !array_key_exists('collegeRushBreakdown', $metrics)
-                ) {
+                if ($rb->getId() == "28412") {
                     $collegeStats = $rb->getCollegeStats();
                     if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
                         $rushSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "rushing");
@@ -1199,7 +1303,7 @@ class RbService extends ServiceAbstract
                             $rb->setMetrics($metrics);
                         }
 
-                        $rb->setCollegeStats($collegeStats);
+                     //   $rb->setCollegeStats($collegeStats);
                         $this->command->save($rb);
 
                         $pointer++;

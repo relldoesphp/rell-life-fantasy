@@ -495,13 +495,13 @@ var rlf =  {
                     },
                     {
                         "name": "Breakout Class",
-                        "metric1": player1.metrics.breakoutClass + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.breakoutClass + "%'></div></div>",
-                        "metric2": player2.metrics.breakoutClass + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.breakoutClass + "%'></div></div>",
+                        "metric1": player1.metrics.breakoutClass,
+                        "metric2": player2.metrics.breakoutClass,
                     },
                     {
                         "name": "Breakout Years",
-                        "metric1": player1.metrics.breakoutSeasons + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.breakoutYears + "%'></div></div>",
-                        "metric2": player2.metrics.breakoutSeasons + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.breakoutYears + "%'></div></div>",
+                        "metric1": player1.metrics.breakoutSeasons,
+                        "metric2": player2.metrics.breakoutSeasons,
                     },
                     {
                         "name": "Best Dominator",
@@ -642,13 +642,13 @@ var rlf =  {
                     },
                     {
                         "name": "Breakout Class",
-                        "metric1": player1.metrics.breakoutClass + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.breakoutClass + "%'></div></div>",
-                        "metric2": player2.metrics.breakoutClass + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.breakoutClass + "%'></div></div>",
+                        "metric1": player1.metrics.breakoutClass,
+                        "metric2": player2.metrics.breakoutClass,
                     },
                     {
                         "name": "Breakout Seasons",
-                        "metric1": player1.metrics.breakoutSeasons + "<div class='progress'><div class='determinate' style='width:" + player1.percentiles.breakoutSeasons + "%'></div></div>",
-                        "metric2": player2.metrics.breakoutSeasons + "<div class='progress'><div class='determinate' style='width:" + player2.percentiles.breakoutSeasons + "%'></div></div>",
+                        "metric1": player1.metrics.breakoutSeasons,
+                        "metric2": player2.metrics.breakoutSeasons,
                     },
                     {
                         "name": "Best Dominator",
@@ -901,6 +901,227 @@ var rlf =  {
             var myPolar1 = new Chart(polarCtx1, polarConfig1);
         }
     }
+
+        if (position == "RB") {
+            var lastyear = Object.keys(rlfData.players[0].college_stats).sort().reverse()[0];
+            var rushYards = rlfData.players[0].metrics.collegeRushBreakdown;
+            console.log(rushYards);
+            if (typeof (rushYards) != "undefined") {
+                // College Years
+                const polarData = {
+                    labels: [
+                        'outside YBC',
+                        'outside YAC',
+                        'inside YBC',
+                        'inside YAC',
+                        'receiving',
+                    ],
+                    datasets: [{
+                        label: 'Yard Distrubution',
+                        data: [
+                            rushYards.outside.ybContact,
+                            rushYards.outside.yaContact,
+                            rushYards.inside.ybContact,
+                            rushYards.inside.yaContact,
+                            rushYards.receiving.yards
+                        ],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(75, 192, 192)',
+                            'rgb(255, 205, 86)',
+                            'purple',
+                            'rgb(54, 162, 235)'
+                        ]
+                    }],
+                    options: {
+                        legend: {
+                            position:'bottom'
+                        },
+                        title: {
+                            display:false,
+                            text: 'College Yards'
+                        },
+                        responsive: true,
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        }
+                    }
+                };
+
+                const polarConfig = {
+                    type: 'polarArea',
+                    data: polarData,
+                    options: {}
+                };
+
+                var polarCtx = document.getElementById('college-yards-0').getContext('2d');
+                var myPolar = new Chart(polarCtx, polarConfig);
+            } else {
+                // College Years
+                const polarData1 = {
+                    labels: [
+                        'outside YBC',
+                        'outside YAC',
+                        'inside YBC',
+                        'inside YAC',
+                        'receiving',
+                    ],
+                    datasets: [{
+                        label: 'Yard Distrubution',
+                        data: [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                        ],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(75, 192, 192)',
+                            'rgb(255, 205, 86)',
+                            'purple',
+                            'rgb(54, 162, 235)',
+                            'skyblue',
+                            'orange',
+                        ]
+                    }],
+                    options: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: false,
+                            text: 'College Yards'
+                        },
+                        responsive: true,
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        }
+                    }
+                };
+
+                const polarConfig1 = {
+                    type: 'polarArea',
+                    data: polarData1,
+                    options: {}
+                };
+
+                var polarCtx1 = document.getElementById('college-yards-0').getContext('2d');
+                var myPolar1 = new Chart(polarCtx1, polarConfig1);
+            }
+
+            var lastyear1 = Object.keys(rlfData.players[1].college_stats).sort().reverse()[0];
+            var rushYards1 = rlfData.players[1].metrics.collegeRushBreakdown;
+            ;
+            console.log(recYards1);
+            if (typeof (rushYards1) != "undefined") {
+                // College Years
+                const polarData1 = {
+                    labels: [
+                        'outside YBC',
+                        'outside YAC',
+                        'inside YBC',
+                        'inside YAC',
+                        'receiving',
+                    ],
+                    datasets: [{
+                        label: 'Yard Distrubution',
+                        data: [
+                            rushYards1.outside.ybContact,
+                            rushYards1.outside.yaContact,
+                            rushYards1.inside.ybContact,
+                            rushYards1.inside.yaContact,
+                            rushYards1.receiving.yards
+                        ],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(75, 192, 192)',
+                            'rgb(255, 205, 86)',
+                            'purple',
+                            'rgb(54, 162, 235)'
+                        ]
+                    }],
+                    options: {
+                        legend: {
+                            position:'bottom'
+                        },
+                        title: {
+                            display:false,
+                            text: 'College Yards'
+                        },
+                        responsive: true,
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        }
+                    }
+                };
+
+                const polarConfig1 = {
+                    type: 'polarArea',
+                    data: polarData1,
+                    options: {}
+                };
+
+                var polarCtx1 = document.getElementById('college-yards-1').getContext('2d');
+                var myPolar1 = new Chart(polarCtx1, polarConfig1);
+            } else {
+                // College Years
+                const polarData1 = {
+                    labels: [
+                        'outside YBC',
+                        'outside YAC',
+                        'inside YBC',
+                        'inside YAC',
+                        'receiving',
+                    ],
+                    datasets: [{
+                        label: 'Yard Distrubution',
+                        data: [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                        ],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(75, 192, 192)',
+                            'rgb(255, 205, 86)',
+                            'purple',
+                            'rgb(54, 162, 235)',
+                            'skyblue',
+                            'orange',
+                        ]
+                    }],
+                    options: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: false,
+                            text: 'College Yards'
+                        },
+                        responsive: true,
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        }
+                    }
+                };
+
+                const polarConfig1 = {
+                    type: 'polarArea',
+                    data: polarData1,
+                    options: {}
+                };
+
+                var polarCtx1 = document.getElementById('college-yards-1').getContext('2d');
+                var myPolar1 = new Chart(polarCtx1, polarConfig1);
+            }
+        }
 
 
         rlf.colorDeterminates();
@@ -1395,7 +1616,7 @@ var rlf =  {
                 "columns": [
                     {title:"Class", data: "class", "defaultContent":""},
                     {title:"Games", data: "games", "defaultContent":""},
-                    {title:"Recs", data: "recs", "defaultContent":""},
+                    {title:"Attempts", data: "recs", "defaultContent":""},
                     {title:"Yds", data: "yds", "defaultContent":""},
                     {title:"Tds", data: "tds", "defaultContent":""},
                     {title:"Dominator", data: "dominator", "defaultContent":""}
@@ -1404,9 +1625,9 @@ var rlf =  {
                     {
                         "games":currentStats.games,
                         "class":currentStats.class,
-                        "recs":currentStats.recs,
-                        "yds":currentStats.recYds,
-                        "tds":currentStats.recTds,
+                        "recs":currentStats.rushAtt,
+                        "yds":currentStats.rushYds,
+                        "tds":currentStats.rushTds,
                         "dominator":currentStats.dominator
                     }
                 ]
@@ -1935,8 +2156,8 @@ var rlf =  {
                 ],
                 "data":[
                     {
-                        "avg":currentStats.stats.pts_ppr_avg.toFixed(2),
-                        "points":currentStats.stats.pts_ppr.toFixed(2),
+                        "avg":currentStats.stats.pts_ppr_avg,
+                        "points":currentStats.stats.pts_ppr,
                         "recs":currentStats.stats.rec,
                         "targets":currentStats.stats.rec_tgt,
                         "yds":currentStats.stats.rec_yd,

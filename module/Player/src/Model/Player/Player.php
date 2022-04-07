@@ -576,6 +576,8 @@ class Player implements InputFilterAwareInterface
             $this->collegeTable = [];
         }
 
+        $this->collegeTable = $this->makeCollegeTable();
+
         $this->seasonTable = $this->makeSeasonStats();
         $this->gameLogTable = $this->makeGameLogs();
         $this->fillEmptyValues();

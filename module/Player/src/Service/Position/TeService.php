@@ -119,6 +119,7 @@ class TeService extends ServiceAbstract
                     $metrics['collegeSeasons'] = $college['collegeSeasons'];
                     $metrics['bestDominator'] = $college['bestDominator'];
                     $te->setCollegeStats($college['collegeStats']);
+                    $metrics['conf'] = $college['conf'];
 //
 //                    $metrics['alpha'] = ($metrics['alpha'] * .8) + (($college['collegeScore']/20) * .2);
 //                    $metrics['alpha'] = round($metrics['alpha'], 2);
@@ -126,6 +127,7 @@ class TeService extends ServiceAbstract
                     $metrics['collegeScore'] = null;
                     $metrics['bestSeason'] = null;
                     $metrics['breakoutClass'] = null;
+                    $metrics['conf'] = '';
                 }
 
 //                $te->setMetrics($metrics);
@@ -199,12 +201,107 @@ class TeService extends ServiceAbstract
             }
             $metrics["deep"] = $deep;
 
+            //yac
+            if ($metrics['elusiveness'] != null) {
+                if ($metrics['power'] != null) {
+                    $metrics['yac'] = round((($percentiles['elusiveness'] * .35) + ($percentiles['power'] * .5)) + ($percentiles['fortyTime'] * .15),2);
+                } else {
+                    $metrics['yac'] = round(($percentiles['elusiveness'] * .7),2);
+                }
+            } else {
+                if ($metrics['power'] != null) {
+                    $metrics['yac'] = round(($percentiles['power'] * .7),2);
+                } else {
+                    $metrics['yac'] = null;
+                }
+            }
+
+            $info = $te->getPlayerInfo();
+            if (array_key_exists('collegeRecBreakdown', $metrics)) {
+                /*** determine performance multiplier ***/
+                if (array_key_exists('conf', $metrics)) {
+                    $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
+                    $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
+                    if ($metrics['conf'] == "SEC") {
+                        $confMultiplier = 1.10;
+                    } elseif (in_array($metrics['conf'], $power5) ) {
+                        $confMultiplier = 1.05;
+                    } elseif (in_array($metrics['conf'], $minor5)) {
+                        $confMultiplier = 1;
+                    } else {
+                        $confMultiplier = .9;
+                    }
+                } else {
+                    $confMultiplier = 1;
+                }
+
+                /*** Move ***/
+                // get short percentages
+                $shortP = $metrics['collegeRecPercents']['yards']['separation']['shortSeparation'];
+                $shortYards = $metrics['collegeRecBreakdown']['short']['airYards'];
+                $slotAir = round(($shortYards/10),2);
+                $slotPerformance = ($shortP + $slotAir) * $confMultiplier;
+                if ($noAgility == false) {
+                    $metrics['slot'] = round(($slotPerformance * .4) + ($slot * .6), 2);
+                } else {
+                    if ($info['heightInches'] > 76) {
+                        $metrics['slot'] = round(($slotPerformance * .6) + (40 * .4), 2);
+                    } else {
+                        $metrics['slot'] = round(($slotPerformance * .6) + (50 * .4), 2);
+                    }
+                    //slot build = 71.5 inches 198 pounds 27 bmi
+                    //height penalty
+                    if (array_key_exists('heightInches', $info)
+                        && $info['heightInches'] > 76.5
+                        && $metrics['slot'] != null)
+                    {
+                        $heightPenalty = (($info['heightInches'] - 76.5) * 1.5);
+                        $metrics['slot'] = $metrics['slot'] - $heightPenalty;
+                    }
+                }
+
+                /***** Deep ****/
+                if (array_key_exists('deepSeparation', $metrics['collegeRecPercents']['yards']['separation'])) {
+                    $deepP = $metrics['collegeRecPercents']['yards']['separation']['deepSeparation'];
+                    $deepYards = $metrics['collegeRecBreakdown']['deep']['airYards'];
+                    $midYards = $metrics['collegeRecBreakdown']['intermediate']['airYards'];
+                    $midP = $metrics['collegeRecPercents']['yards']['separation']['midSeparation'];
+                    $deepPercents = $deepP + $midP;
+                    $deepAir = (($deepYards + $midYards) / 10);
+                    $deepPerformance = ($deepPercents + $deepAir) * $confMultiplier;
+                    if ($deep != null) {
+                        $metrics['deep'] = round(($deepPerformance * .3) + ($deep * .7), 2);
+                    } else {
+                        $metrics['deep'] = round(($deepPerformance * .4) + (45 * .6), 2);
+                    }
+                }
+
+
+                /*
+                 * recYards.short.yac + recYards.underneath.yac,
+                 */
+                $totalYacP = 0;
+                $totalYacYards = 0;
+                foreach ($metrics['collegeRecPercents']['yards']['yac'] as $type => $amount) {
+                    $totalYacP = $totalYacP + $amount;
+                }
+                foreach ($metrics['collegeRecBreakdown'] as $area => $stats) {
+                    $totalYacYards = $totalYacYards + $stats['yac'];
+                }
+                $yacPerformance = ($totalYacP + round(($totalYacYards/10),2)) * $confMultiplier;
+                if ($metrics['yac'] != null) {
+                    $metrics['yac'] = round(($yacPerformance * .3) + ($metrics['yac'] * .7), 2);
+                } else {
+                    $metrics['yac'] = round(($yacPerformance * .4) + (45 * .6), 2);
+                }
+            }
+
             /*** New Move Score ***/
             /*** Calculate Move Score ***/
             //Move - TE Speed + Jumpball + Route Agility
             $data['move'] = null;
             if ($metrics['deep'] != null && $metrics['slot'] != null) {
-                $data['move'] = ($metrics['slot'] *.50) + ($metrics['deep'] * .50);
+                $data['move'] = ($metrics['slot'] *.40) + ($metrics['deep'] * .60);
             } else {
                 if (array_key_exists('routeAgility', $metrics) && !in_array($metrics['routeAgility'], [null, "-", "", "null"])
                     && !in_array($metrics['fortyTime'], [null, "-", "", "null"]) ) {
@@ -256,20 +353,6 @@ class TeService extends ServiceAbstract
                 $data['passBlock'] = ($percentiles['bully'] * .40) + ($percentiles['speedScore'] * .60);
             }
 
-            if ($metrics['elusiveness'] != null) {
-                if ($metrics['power'] != null) {
-                    $metrics['yac'] = round((($percentiles['elusiveness'] * .35) + ($percentiles['power'] * .5)) + ($percentiles['fortyTime'] * .15),2);
-                } else {
-                    $metrics['yac'] = round(($percentiles['elusiveness'] * .7),2);
-                }
-            } else {
-                if ($metrics['power'] != null) {
-                    $metrics['yac'] = round(($percentiles['power'] * .7),2);
-                } else {
-                    $metrics['yac'] = null;
-                }
-            }
-
             /*** Calculate InLine Score ***/
             if ($data['runBlock'] !== null && $metrics['yac']) {
                 $data['inLine'] = ($data['runBlock'] * .75) + ($percentiles['bmi'] * .10) + ($percentiles['weight'] * .15);
@@ -279,8 +362,10 @@ class TeService extends ServiceAbstract
 
 
             //Alpha -  Move+Line
-            if ($data['move'] != null && $data['inLine'] != null) {
-                $data['alpha'] = ($metrics['yac'] * .20) + ($data['move'] * .70) + ($data['inLine'] * .10);
+            if ($data['move'] != null && $data['inLine'] != null && $metrics['yac'] ) {
+                $data['alpha'] = ($metrics['yac'] * .25) + ($data['move'] * .70) + ($data['inLine'] * .05);
+            } else {
+                $data['alpha'] = null;
             }
 
             $metrics['move'] = round($data['move'], 2);
@@ -304,16 +389,44 @@ class TeService extends ServiceAbstract
                 $metrics['collegeSeasons'] = $college['collegeSeasons'];
                 $metrics['bestDominator'] = $college['bestDominator'];
                 $te->setCollegeStats($college['collegeStats']);
-
-                $metrics['alpha'] = ($metrics['alpha'] * .8) + (($college['collegeScore']/20) * .2);
-                $metrics['alpha'] = round($metrics['alpha'], 2);
+                if ($metrics['alpha'] != null) {
+                    $metrics['alpha'] = ($metrics['alpha'] * .80) + (($college['collegeScore'] / 25) * .20);
+                    $metrics['alpha'] = round($metrics['alpha'], 2);
+                }
             } else {
                 $metrics['collegeScore'] = null;
                 $metrics['bestSeason'] = null;
                 $metrics['breakoutClass'] = null;
+                if ($metrics['alpha'] != null) {
+                    $metrics['alpha'] = round(($metrics['alpha'] * .70) + ((10/22) * .30), 2);
+                }
             }
 
-            
+            if ($metrics['alpha'] != null) {
+                if (array_key_exists('weight', $info)
+                    && $info['weight'] < 240
+                    && $metrics['alpha'] != null)
+                {
+                    $weightPenalty = ((240 - $info['weight']) * .35);
+                    $metrics['alpha'] = $metrics['alpha'] - $weightPenalty;
+                }
+
+                if (array_key_exists('heightInches', $info)
+                    && $info['heightInches'] < 75.5
+                    && $metrics['alpha'] != null)
+                {
+                    $heightPenalty = ((75.5 - $info['heightInches']) * 1.5);
+                    $metrics['alpha'] = $metrics['alpha'] - $heightPenalty;
+                }
+
+                if (array_key_exists('bmi', $info)
+                    && $info['bmi'] < 29.5
+                    && $metrics['alpha'] != null)
+                {
+                    $bmiPenalty = ((29.5 - $info['bmi']) * 3);
+                    $metrics['alpha'] = $metrics['alpha'] - $bmiPenalty;
+                }
+            }
 
             $te->setMetrics($metrics);
 
@@ -338,7 +451,7 @@ class TeService extends ServiceAbstract
         $breakoutSeasons = 0;
         $lastBreakout = 0;
         $bonus = 0;
-        $oncf = "";
+        $conf = "";
         foreach ($collegeStats as $year => $stats) {
             if ($stats->year != "Career") {
                 $i++;
@@ -357,7 +470,8 @@ class TeService extends ServiceAbstract
                         'breakoutSeasons' => null,
                         "collegeSeasons" => null,
                         "bestDominator" => null,
-                        "collegeStats" => $collegeStats
+                        "collegeStats" => $collegeStats,
+                        "conf" => ""
                     ];
                 }
 
@@ -564,21 +678,6 @@ class TeService extends ServiceAbstract
             $collegeScore = $collegeScore + 3;
         }
 
-        //Conference bonus/penalty for not Division 1
-        if (array_key_exists('conference', $stats)) {
-            $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
-            $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
-            if (in_array($conf, $power5)) {
-                $collegeScore = $collegeScore + 4;
-            } elseif (in_array($conf, $minor5)) {
-                $collegeScore = $collegeScore + 0;
-            } else {
-                if ($collegeScore > 15) {
-                    $collegeScore = $collegeScore - 4;
-                }
-            }
-        }
-
 //        // Best breakout score
 //        switch ($bestDominator) {
 //            case $bestDominator >= 35:
@@ -619,6 +718,21 @@ class TeService extends ServiceAbstract
             $breakoutClass = "Senior";
         }
 
+        //Conference bonus/penalty for not Division 1
+        $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
+        $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
+        if ($conf = "SEC") {
+            $collegeScore = round(($collegeScore * 1.10), 1);
+        } else {
+            if (in_array($conf, $power5) ) {
+                $collegeScore = round(($collegeScore * 1.05), 1);
+            } elseif (in_array($conf, $minor5)) {
+                $collegeScore = round(($collegeScore * .95), 1);
+            } else {
+                $collegeScore = round(($collegeScore * .9),1);
+            }
+        }
+
         return [
             'collegeScore' => $collegeScore,
             'bestSeason' => $bestSeason,
@@ -627,7 +741,8 @@ class TeService extends ServiceAbstract
             'breakoutSeasons' => $breakoutSeasons,
             "collegeSeasons" => $i,
             "bestDominator" => $bestDominator,
-            "collegeStats" => $collegeStats
+            "collegeStats" => $collegeStats,
+            "conf" => $conf
         ];
 
     }
@@ -643,7 +758,9 @@ class TeService extends ServiceAbstract
         foreach ($tes as $te) {
             $te->decodeJson();
             $metrics = $te->getMetrics();
-            if ($te->getTeam() == "Rookie") {
+            $broken = [];
+            $apiInfo = $te->getApiInfo();
+            if ($te->getTeam() != "FA" && array_key_exists('cfb_id', $apiInfo)) {
                 $te->decodeJson();
                 $apiInfo = $te->getApiInfo();
                 $playerInfo = $te->getPlayerInfo();
@@ -663,6 +780,7 @@ class TeService extends ServiceAbstract
                 }
                 $result = $this->scrapCollegeStats($te);
                 if ($result == false) {
+                    $broken[] ="{$firstName } {$lastName}";
                     continue;
                 }
                 $pointer++;
@@ -670,6 +788,7 @@ class TeService extends ServiceAbstract
             }
         }
         $progressBar->finish();
+        print_r($broken);
     }
 
     public function scrapCollegeStats($te)
@@ -887,8 +1006,8 @@ class TeService extends ServiceAbstract
                 $apiInfo = $wr->getApiInfo();
                 $info = $wr->getPlayerInfo();
                 if (array_key_exists('cfb_id', $apiInfo)
+                    // && $wr->getTeam() == 'Rookie'
                     && !array_key_exists('collegeRecBreakdown', $metrics)
-                    && $wr->getTeam() != 'FA'
                 ) {
                     $collegeStats = $wr->getCollegeStats();
                     if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
@@ -900,6 +1019,9 @@ class TeService extends ServiceAbstract
                         $bestSeason = 0;
                         $mostYards = 0;
                         foreach ($recSeasons as $recSeason) {
+                            if ($recSeason['g'] < 2) {
+                                continue;
+                            }
                             if ($recSeason['teamId'] != null) {
                                 $areas = [
                                     [
@@ -921,7 +1043,7 @@ class TeService extends ServiceAbstract
                                         "area" => "deep",
                                         "low" => 21,
                                         "high" => 100,
-                                    ],
+                                    ]
                                 ];
                                 $recBreakdown = [];
                                 foreach ($areas as $area) {
@@ -939,11 +1061,12 @@ class TeService extends ServiceAbstract
                                         'tds' => 0,
                                         'yac' => 0,
                                     ];
-                                    $stats = $this->sisApi->getCollegePassing($recSeason['season'], "receiving", [
+                                    $filters = [
                                         'ReceivingFilters.MinAirYards' => $area['low'],
                                         'ReceivingFilters.MaxAirYards' => $area['high'],
                                         "GameFilters.Team" => $recSeason['teamId']
-                                    ]);
+                                    ];
+                                    $stats = $this->sisApi->getCollegePassing($recSeason['season'], "receiving", $filters);
                                     //loop through team results for area
                                     foreach ($stats as $stat) {
                                         if ($stat['playerId'] == $apiInfo['cfb_id']) {
@@ -993,9 +1116,9 @@ class TeService extends ServiceAbstract
                                         $recPercents['recs']['underRecs'] = round(($recBreakdown['underneath']['receptions'] / $recSeason['recs']) * 100, 2);
                                     }
                                     $year = $recSeason['season'];
-//                                $collegeStats[$year]['yac'] = $recSeason['yac'];//
-                                    $collegeStats[$year]['recBreakdown'] = $recBreakdown;
-                                    $collegeStats[$year]['recPercents'] = $recPercents;
+//                                    $collegeStats[$year]['yac'] = $recSeason['yac'];
+//                                    $collegeStats[$year]['recBreakdown'] = $recBreakdown;
+//                                    $collegeStats[$year]['recPercents'] = $recPercents;
 
                                     if ($recSeason['yards'] > $mostYards) {
                                         $mostYards = $recSeason['yards'];
@@ -1010,7 +1133,7 @@ class TeService extends ServiceAbstract
                             $wr->setMetrics($metrics);
                         }
 
-                        $wr->setCollegeStats($collegeStats);
+     //                   $wr->setCollegeStats($collegeStats);
                         $this->command->save($wr);
 
                         $pointer++;
