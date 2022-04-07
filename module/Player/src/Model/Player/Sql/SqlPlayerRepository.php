@@ -60,7 +60,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
         ]);
 
         if (empty($type)) {
-            $select->where->in('position', ['WR','TE','RB','OB']);
+            $select->where->in('position', ['WR','TE','RB']);
         } else {
             $select->where(["position = ?" => $type]);
         }
@@ -96,7 +96,7 @@ class SqlPlayerRepository implements PlayerRepositoryInterface
             ->like('search_full_name', $query."%")
             ->unnest()
             ->and
-            ->in("position", ["QB","RB","WR","TE"]);
+            ->in("position", ["RB","WR","TE"]);
 
         $select->order([
             new Expression("json_unquote(player_info->'$.active') DESC"),
