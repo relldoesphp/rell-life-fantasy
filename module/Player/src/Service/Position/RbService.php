@@ -483,7 +483,6 @@ class RbService extends ServiceAbstract
                     $metrics['collegeRushBreakdown']['outside']['ybcAtt'] = round($metrics['collegeRushBreakdown']['outside']['ybcAtt'], 2);
                 }
 
-
                 /*** receiving ***/
                 if (array_key_exists('yards', $metrics['collegeRushBreakdown']['receiving'])) {
                     if (!array_key_exists('bestRec', $metrics) && $metrics['bestRec'] == null) {
@@ -493,6 +492,40 @@ class RbService extends ServiceAbstract
                         $recs = $metrics['bestRec'];
                         $recYards = round(($metrics['bestRecYds'] / 10), 2);
                     }
+                    $recPerformance = $recs + $recYards;
+                    $metrics['recPerformance'] = round($recPerformance * $confMultiplier, 2);
+                    if ($data['receiver'] != null) {
+                        $data['receiver'] = round(($metrics['recPerformance'] * .5) + ($data['receiver'] * .5), 2);
+                    } else {
+                        $data['receiver'] = round(($metrics['recPerformance'] * .5) + (45 * .5), 2);
+                    }
+                }
+            }
+
+            /*** for older players estimate college performance ***/
+            if (!array_key_exists('collegeRecBreakdown', $metrics)
+                && array_key_exists('bestSeason', $collegeStuff)
+                && $collegeStuff['bestSeason'] != null
+            ) {
+                /*** determine performance multiplier ***/
+                if (array_key_exists('conf', $collegeStuff)) {
+                    $power5 = ["ACC", "Big Ten", "SEC", "Big 12", "Pac-12"];
+                    $minor5 = ["MWC", "American", "CUSA", "MAC", "Sun Belt"];
+                    if (in_array($collegeStuff['conf'], $power5) ) {
+                        $confMultiplier = 1.05;
+                    } elseif (in_array($collegeStuff['conf'], $minor5)) {
+                        $confMultiplier = 1;
+                    } else {
+                        $confMultiplier = .9;
+                    }
+                } else {
+                    $confMultiplier = 1;
+                }
+
+                 /*** receiving ***/
+                if (array_key_exists('bestRec', $collegeStuff) && $collegeStuff['bestRec'] != null) {
+                    $recs = $collegeStuff['bestRec'];
+                    $recYards = round(($collegeStuff['bestRecYds'] / 10), 2);
                     $recPerformance = $recs + $recYards;
                     $metrics['recPerformance'] = round($recPerformance * $confMultiplier, 2);
                     if ($data['receiver'] != null) {
@@ -571,7 +604,7 @@ class RbService extends ServiceAbstract
         $breakout = false;
         $collegeScore = 0;
         $bestDominator = .01;
-        $bestSeason = [];
+        $bestSeason = null;
         $lastYear = "";
         $breakoutClass = "None";
         $bestRecDominator = 0;
@@ -744,6 +777,7 @@ class RbService extends ServiceAbstract
                 $currentDominator = round((array_sum([$dominator['yd'], $dominator['td']])) / 2, 2);
                 if ($currentDominator > $bestDominator) {
                     $bestDominator = $currentDominator;
+                    $bestSeason = $stats;
                 }
 
                 if ($dominator['rec'] > $bestRecDominator) {

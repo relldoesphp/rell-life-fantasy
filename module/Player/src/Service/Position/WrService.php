@@ -359,8 +359,8 @@ class WrService extends ServiceAbstract
                 $xAgility = null;
             }
 
-            if ($metrics['beatPress'] != null && $xAgility != null && $metrics['contested'] != null && $metrics['yac'] != null) {
-                $metrics['outsideX'] = round(($metrics['beatPress'] *.10) + ($xAgility *.25) + ($metrics['contested'] *.50) + ($metrics['deep'] *.15),2);
+            if ($metrics['beatPress'] != null && $metrics['separation'] != null && $metrics['contested'] != null && $metrics['yac'] != null) {
+                $metrics['outsideX'] = round(($metrics['beatPress'] *.10) + ($metrics['separation'] *.30) + ($metrics['contested'] *.60),2);
             } elseif ($metrics['beatPress'] != null && $xAgility == null && $metrics['contested'] != null && $metrics['yac'] != null) {
                 $metrics['outsideX'] = round(($metrics['beatPress'] *.25) + ($metrics['contested'] *.50) + ($metrics['deep'] *.25),2);
             } elseif ($metrics['beatPress'] == null && $xAgility != null && $metrics['contested'] != null && $metrics['yac'] != null ) {
@@ -458,19 +458,21 @@ class WrService extends ServiceAbstract
 
                 if ($metrics['collegeScore'] != null) {
                     $expectedCollegeScore = round(.1075 * $metrics['athleteScore'], 2);
-                    $expectedCollegeScore = ($expectedCollegeScore < 10) ? 10 : $expectedCollegeScore;
-                    $expectedCollegeScore = ($expectedCollegeScore > 23) ? 23 : $expectedCollegeScore;
                     if ($metrics['collegeGames'] < 28 && $metrics['collegeGames'] > 0) {
                         $expectedCollegeScore = round((($metrics['collegeGames']/28) * $expectedCollegeScore), 2);
+                    } else {
+                        $expectedCollegeScore = ($expectedCollegeScore < 10) ? 10 : $expectedCollegeScore;
+                        $expectedCollegeScore = ($expectedCollegeScore > 23) ? 23 : $expectedCollegeScore;
                     }
                     $metrics['skillScore'] = round(($metrics['collegeScore'] - $expectedCollegeScore), 2) + 20;
                 }
             } elseif ($metrics['yac'] != null && $metrics['contested'] != null && $metrics['collegeScore'] != null) {
                 $expectedCollegeScore = round(.1075 * ($metrics['yac'] + $metrics['contested'] + 40), 2);
-                $expectedCollegeScore = ($expectedCollegeScore < 10) ? 10 : $expectedCollegeScore;
-                $expectedCollegeScore = ($expectedCollegeScore > 23) ? 23 : $expectedCollegeScore;
                 if ($metrics['collegeGames'] < 28 && $metrics['collegeGames'] > 0) {
                     $expectedCollegeScore = round((($metrics['collegeGames']/28) * $expectedCollegeScore), 2);
+                } else {
+                    $expectedCollegeScore = ($expectedCollegeScore < 10) ? 10 : $expectedCollegeScore;
+                    $expectedCollegeScore = ($expectedCollegeScore > 23) ? 23 : $expectedCollegeScore;
                 }
                 $metrics['skillScore'] = round(($metrics['collegeScore'] - $expectedCollegeScore), 2) + 20;
             }
@@ -510,7 +512,7 @@ class WrService extends ServiceAbstract
                 $slotAir = (($shortYards + $midYards) / 10);
                 $slotPerformance = ($slotPercents + $slotAir) * $confMultiplier;
                 if ($noAgility == false) {
-                    $metrics['slot'] = round(($slotPerformance * .4) + ($slot * .6), 2);
+                    $metrics['slot'] = round(($slotPerformance * .35) + ($slot * .65), 2);
                 } else {
                     if ($info['heightInches'] > 74) {
                         $metrics['slot'] = round(($slotPerformance * .65) + (30 * .35), 2);
@@ -531,13 +533,13 @@ class WrService extends ServiceAbstract
                 /***** Deep ****/
                 $deepP = $metrics['collegeRecPercents']['yards']['separation']['deepSeparation'];
                 $deepYards = $metrics['collegeRecBreakdown']['deep']['airYards'];
-                $deepPercents = (($deepP * 1.25));
+                $deepPercents = (($deepP * 1.15));
                 $deepAir = (($deepYards) / 10);
                 $deepPerformance = ($deepPercents + $deepAir) * $confMultiplier;
                 if ($deep != null) {
-                    $metrics['deep'] = round(($deepPerformance * .3) + ($deep * .7), 2);
+                    $metrics['deep'] = round(($deepPerformance * .25) + ($deep * .75), 2);
                 } else {
-                    $metrics['deep'] = round(($deepPerformance * .4) + (45 * .6), 2);
+                    $metrics['deep'] = round(($deepPerformance * .3) + (45 * .7), 2);
                 }
 
                 /****** Outside X *****/
@@ -551,7 +553,7 @@ class WrService extends ServiceAbstract
                 $xAir = (($deepYards + $midOutYards) / 10);
                 $xPerformance = ($xPercents + $xAir) * $confMultiplier;
                 if ($metrics['outsideX'] != null) {
-                    $metrics['outsideX'] = round(($xPerformance * .35) + ($metrics['outsideX'] * .65), 2);
+                    $metrics['outsideX'] = round(($xPerformance * .25) + ($metrics['outsideX'] * .75), 2);
                 } else {
                     if ($metrics['contested'] != null) {
                         $fakeX = round( (50 *.25) + ($metrics['contested'] *.50) + ($percentiles['fortyTime'] *.15) + ($percentiles['bmi'] * .1),2);
@@ -680,7 +682,7 @@ class WrService extends ServiceAbstract
                 $slotAir = (($shortAir + $midSlotAir) / 10);
                 $slotPerformance = ($slotPercents + $slotAir) * $confMultiplier;
                 if ($noAgility == false) {
-                    $metrics['slot'] = round(($slotPerformance * .4) + ($slot * .6), 2);
+                    $metrics['slot'] = round(($slotPerformance * .35) + ($slot * .65), 2);
                 } else {
                     if ($info['heightInches'] > 74) {
                         $metrics['slot'] = round(($slotPerformance * .65) + (40 * .35), 2);
@@ -703,25 +705,25 @@ class WrService extends ServiceAbstract
                 $deepYards = (($deepAir) / 10);
                 $deepPerformance = ($deepPercents + $deepYards) * $confMultiplier;
                 if ($deep != null) {
-                    $metrics['deep'] = round(($deepPerformance * .3) + ($deep * .7), 2);
+                    $metrics['deep'] = round(($deepPerformance * .2) + ($deep * .8), 2);
                 } else {
-                    $metrics['deep'] = round(($deepPerformance * .4) + (45 * .6), 2);
+                    $metrics['deep'] = round(($deepPerformance * .3) + (45 * .7), 2);
                 }
 
                 $xPercents = $deepP + $midOutP;
                 $xAir = (($deepAir + $midOutAir) / 10);
                 $xPerformance = ($xPercents + $xAir) * $confMultiplier;
                 if ($metrics['outsideX'] != null) {
-                    $metrics['outsideX'] = round(($xPerformance * .35) + ($metrics['outsideX'] * .65), 2);
+                    $metrics['outsideX'] = round(($xPerformance * .3) + ($metrics['outsideX'] * .7), 2);
                 } else {
                     if ($metrics['contested'] != null) {
                         $fakeX = round( (50 *.25) + ($metrics['contested'] *.50) + ($percentiles['fortyTime'] *.15) + ($percentiles['bmi'] * .1),2);
-                        $metrics['outsideX'] = round((($xPerformance * .25) + ($fakeX * .75)), 2);
+                        $metrics['outsideX'] = round((($xPerformance * .2) + ($fakeX * .8)), 2);
                     } else {
                         if ($info['heightInches'] > 74 ) {
-                            $metrics['outsideX'] = round(($xPerformance * .3) + (50 * .7), 2);
+                            $metrics['outsideX'] = round(($xPerformance * .25) + (50 * .75), 2);
                         } else {
-                            $metrics['outsideX'] = round(($xPerformance * .3) + (40 * .7), 2);
+                            $metrics['outsideX'] = round(($xPerformance * .25) + (40 * .75), 2);
                         }
                     }
 
@@ -849,10 +851,10 @@ class WrService extends ServiceAbstract
             if ($alphaScore !== null && $metrics['skillScore'] !== null) {
                 switch ($metrics['skillScore']) {
                     case ($alphaScore > 65 && $metrics['skillScore'] < 20):
-                        $alphaScore = round(($alphaScore * .95), 2);
+                        $alphaScore = round(($alphaScore * .9), 2);
                         break;
                     case ($alphaScore > 60 && $metrics['skillScore'] < 15.5):
-                        $alphaScore = round(($alphaScore * .90), 2);
+                        $alphaScore = round(($alphaScore * .9), 2);
                         break;
                     case ($alphaScore > 60 && $metrics['skillScore'] < 20 && $metrics['collegeScore'] < 21.5):
                         $alphaScore = round(($alphaScore * .95), 2);
@@ -879,6 +881,12 @@ class WrService extends ServiceAbstract
                         $alphaScore = round(($alphaScore * .9), 2);
                         break;
                     case ($alphaScore > 55 && $metrics['separation'] < 40 && $info['heightInches'] < 73):
+                        $alphaScore = round(($alphaScore * .95), 2);
+                        break;
+                    case ($alphaScore > 55 && $metrics['separation'] < 25 && $info['heightInches'] > 73):
+                        $alphaScore = round(($alphaScore * .95), 2);
+                        break;
+                    case ($alphaScore > 50 && $metrics['separation'] < 25 && $info['heightInches'] < 73):
                         $alphaScore = round(($alphaScore * .95), 2);
                         break;
                     default:
@@ -962,8 +970,9 @@ class WrService extends ServiceAbstract
     public function makeCollegeScore($wr)
     {
         $collegeStats = $wr->college_stats;
+        $info = $wr->getPlayerInfo();
         unset($collegeStats['Career']);
-        if ($wr->getId() == '28211') {
+        if ($wr->getId() == '28198') {
             $gotHim = true;
         }
 
@@ -988,9 +997,13 @@ class WrService extends ServiceAbstract
                     continue;
                 }
 
+                if (!array_key_exists('college', $stats) && array_key_exists('college', $info)) {
+                    $stats['college'] = $info['college'];
+                }
+
                 if ($stats['totals']['yds'] == 0
                     || !array_key_exists('totals', $stats)
-                    || !array_key_exists('college', $stats)) {
+                    || (!array_key_exists('college', $stats))) {
                     if ($stats->year == '2020') {
                         continue;
                     }
@@ -1017,6 +1030,9 @@ class WrService extends ServiceAbstract
 //                } else {
 //                    continue;
 //                }
+                if (!array_key_exists('class', $stats)) {
+                    $stats['class'] = '';
+                }
 
                 // determine dominators
                 $dominator['td'] = round(($stats['recTds'] / $stats['totals']['tds'] ) * 100, 2);
@@ -1381,7 +1397,7 @@ class WrService extends ServiceAbstract
         $collect = collect($collegePlayers);
         $needsFix = [];
         foreach ($wrs as $wr) {
-            if ($wr->getId() == "28209") {
+            if ($wr->getId() == "28198") {
                 $wr->decodeJson();
                 $metrics = $wr->getMetrics();
                 $apiInfo = $wr->getApiInfo();
@@ -1402,7 +1418,7 @@ class WrService extends ServiceAbstract
                         $this->command->save($wr);
                     }
                 }
-                $result = $this->getSisCollegeStats($wr);
+                $result = $this->scrapCollegeStats($wr);
                 if ($result == false) {
                     $firstName = $wr->getFirstName();
                     $lastName = $wr->getLastName();
@@ -1677,7 +1693,7 @@ class WrService extends ServiceAbstract
             $metrics = $wr->getMetrics();
             $apiInfo = $wr->getApiInfo();
             $info = $wr->getPlayerInfo();
-            if ($wr->getId() == "28209") {
+            if ($wr->getId() == "28198") {
                 $collegeStats = $wr->getCollegeStats();
                 if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
                     $recSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "receiving");

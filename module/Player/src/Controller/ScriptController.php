@@ -89,14 +89,14 @@ class ScriptController extends AbstractActionController
         $this->playerManager->playerProfilerInfo();
         $this->playerManager->playerProfilerMetrics();
     }
-
+}
     public function getSleeperStatsAction()
     {
         $this->statsManager->getSeasonStats('2021');
         $positions = ["WR", "RB", "TE", "QB"];
         foreach($positions as $position) {
-            $this->statsManager->makeSeasonAverages($position, "2021");
-            $this->statsManager->makeSeasonRanks($position, "2021");
+            $this->statsManager->makeSeasonAverages($position, "2022");
+            $this->statsManager->makeSeasonRanks($position, "2022");
         }
     }
 
@@ -142,6 +142,6 @@ class ScriptController extends AbstractActionController
     public function updateTeamsAction()
     {
 
-        $this->playerManager->getCollegePassing('2021');
+        $this->playerManager->getCollegePassing('2022');
     }
 }
