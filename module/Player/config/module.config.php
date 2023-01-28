@@ -144,8 +144,8 @@ return [
         ],
     ],
 
-    'sis_client_id' => 'tyrellcook@hotmail.com',
-    'sis_client_secret' => 'iffGDt+V/1srEUVUp2tcknM2t0W3vOxUK7hCu3sN//A=',
+    'sis_client_id' => 'onesockrell@gmail.com',
+    'sis_client_secret' => 'tlKRYRP5IxGe1JN5EusT4sDsBrcGc4IOJMvckGnst6w=',
 
     // The 'access_filter' key is used by the User module to restrict or permit
     // access to certain controller actions for unauthorized visitors.

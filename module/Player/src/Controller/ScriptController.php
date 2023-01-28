@@ -89,10 +89,10 @@ class ScriptController extends AbstractActionController
         $this->playerManager->playerProfilerInfo();
         $this->playerManager->playerProfilerMetrics();
     }
-}
+
     public function getSleeperStatsAction()
     {
-        $this->statsManager->getSeasonStats('2021');
+        $this->statsManager->getSeasonStats('2022');
         $positions = ["WR", "RB", "TE", "QB"];
         foreach($positions as $position) {
             $this->statsManager->makeSeasonAverages($position, "2022");
@@ -115,11 +115,11 @@ class ScriptController extends AbstractActionController
 
     public function getSleeperLogsAction()
     {
-        $this->statsManager->getGameLogs("2021");
-        $this->statsManager->makeGameLogRanks("RB", "2021");
-        $this->statsManager->makeGameLogRanks("TE", "2021");
-        $this->statsManager->makeGameLogRanks("QB", "2021");
-        $this->statsManager->makeGameLogRanks("WR", "2021");
+        $this->statsManager->getGameLogs("2022");
+        $this->statsManager->makeGameLogRanks("RB", "2022");
+        $this->statsManager->makeGameLogRanks("TE", "2022");
+        $this->statsManager->makeGameLogRanks("QB", "2022");
+        $this->statsManager->makeGameLogRanks("WR", "2022");
 //
 //        $this->statsManager->getSleeperGameLogs("2017");
 //        $this->statsManager->makeGameLogRanks("QB", "2017");
