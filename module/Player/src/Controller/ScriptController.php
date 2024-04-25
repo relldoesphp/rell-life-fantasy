@@ -89,6 +89,7 @@ class ScriptController extends AbstractActionController
         $this->playerManager->playerProfilerInfo();
         $this->playerManager->playerProfilerMetrics();
     }
+
     public function getSleeperStatsAction()
     {
         $this->statsManager->getSeasonStats('2023');
@@ -107,7 +108,7 @@ class ScriptController extends AbstractActionController
 
     public function updateSleeperInfoAction()
     {
-    //    $this->playerManager->updateSleeperInfo();
+        $this->playerManager->updateSleeperInfo();
         $this->playerManager->syncSisIds();
         //$this->matchupManager->importGames();
     }

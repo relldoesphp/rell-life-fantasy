@@ -777,6 +777,13 @@ class SportsInfoApi
             'timeout'      => 100,
         ]);
         $response = $client->send($request);
+        if ($response->getStatusCode() == 403) {
+            $path = $request->getUri()->getPath();
+            print("403 api request for {$path} blocked\n");
+            print_r($request);
+            exit();
+        }
+        print_r($response);
         $html = $response->getBody();
         if (strpos($html,"API calls quota") !== false) {
             $gotAproblem = true;
@@ -1572,6 +1579,7 @@ class SportsInfoApi
 
         $request->setMethod(Request::METHOD_POST);
         $response = $this->doRequest($request);
+        print_r($response);
         return $response['data'];
     }
 

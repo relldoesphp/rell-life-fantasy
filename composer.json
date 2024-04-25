@@ -13,7 +13,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^5.6 || ^7.0",
-        "laminas/laminas-component-installer": "^1.0 || ^0.7 || ^1.0.0-dev@dev",
+        "laminas/laminas-component-installer": "*",
         "laminas/laminas-mvc": "^3.0.1",
         "laminas/laminas-development-mode": "^3.0",
         "laminas/laminas-cache": "^2.9",
@@ -34,7 +34,7 @@
         "laminas/laminas-crypt": "^3.3",
         "neilime/zf2-mobile-detect": "2.*.*",
         "laminas/laminas-hydrator": "2.4.2",
-        "laminas/laminas-dependency-plugin": "^1.0",
+        "laminas/laminas-dependency-plugin": "*",
         "patreon/patreon": "^1.0",
         "laminas/laminas-serializer": "^2.9",
         "laminas/laminas-permissions-rbac": "^3.0",
@@ -74,5 +74,11 @@
     "require-dev": {
         "laminas/laminas-developer-tools": "^1.1.0",
         "laminas/laminas-test": "^3.0.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "laminas/laminas-component-installer": true,
+            "laminas/laminas-dependency-plugin": true
+        }
     }
 }
