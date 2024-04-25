@@ -286,7 +286,12 @@ class TeService extends ServiceAbstract
                     $totalYacP = $totalYacP + $amount;
                 }
                 foreach ($metrics['collegeRecBreakdown'] as $area => $stats) {
-                    $totalYacYards = $totalYacYards + $stats['yac'];
+                    if (!array_key_exists('yac', $stats)) {
+                        $yacyards = 0;
+                    } else {
+                        $yacyards = $stats['yac'];
+                    }
+                    $totalYacYards = $totalYacYards + $yacyards;
                 }
                 $yacPerformance = ($totalYacP + round(($totalYacYards/10),2)) * $confMultiplier;
                 if ($metrics['yac'] != null) {
@@ -473,6 +478,10 @@ class TeService extends ServiceAbstract
                         "collegeStats" => $collegeStats,
                         "conf" => ""
                     ];
+                }
+
+                if (!array_key_exists('recTds', $stats)) {
+                    continue;
                 }
 
                 // determine dominators
@@ -752,7 +761,7 @@ class TeService extends ServiceAbstract
         $tes = $this->repository->findAllPlayers("TE");
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $tes->count());
         $pointer = 0;
-        $collegePlayers = $this->sisApi->getCollegePlayers('2021');
+        $collegePlayers = $this->sisApi->getCollegePlayers('2023');
         $collect = collect($collegePlayers);
 
         foreach ($tes as $te) {
@@ -760,7 +769,7 @@ class TeService extends ServiceAbstract
             $metrics = $te->getMetrics();
             $broken = [];
             $apiInfo = $te->getApiInfo();
-            if ($te->getTeam() != "FA" && array_key_exists('cfb_id', $apiInfo)) {
+            if ($te->getId() == 29253) {
                 $te->decodeJson();
                 $apiInfo = $te->getApiInfo();
                 $playerInfo = $te->getPlayerInfo();
@@ -804,9 +813,16 @@ class TeService extends ServiceAbstract
         }
         $request->setUri("https://www.sports-reference.com/cfb/players/{$cfb}.html");
 
+        sleep(20);
+
         $client = new Client();
         $response = $client->send($request);
         $html = $response->getBody();
+
+        if ($html == 'error code: 1015') {
+            print "blocked too many requests\n";
+            return false;
+        }
 
         $dom = new Query($html);
         $results = $dom->execute('#receiving tr');
@@ -829,6 +845,10 @@ class TeService extends ServiceAbstract
                     continue;
                 }
                 $year = str_replace("*", "", $year);
+                if (!is_numeric($year)) {
+                    continue;
+                }
+
                 if (! $rowChildren->item(1)->firstChild instanceof \DOMElement) {
                     return false;
                 }
@@ -924,6 +944,10 @@ class TeService extends ServiceAbstract
             if (array_key_exists('Career', $collegeStats)) {
                 unset($collegeStats['Career']);
             }
+
+            if (array_key_exists('', $collegeStats)) {
+                unset($collegeStats['']);
+            }
         }
 
         return $collegeStats;
@@ -931,7 +955,7 @@ class TeService extends ServiceAbstract
 
     public function findCfbId($year){
         $wrs = $this->repository->findAllPlayers("TE");
-        $collegePlayers = $this->sisApi->getCollegePlayers('2021');
+        $collegePlayers = $this->sisApi->getCollegePlayers('2023');
         $collect = collect($collegePlayers);
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
         $pointer = 0;
@@ -1000,15 +1024,12 @@ class TeService extends ServiceAbstract
         $pointer = 0;
         $missing = [];
         foreach ($wrs as $wr) {
-            if (1) {
+            if ($wr->getTeam() == "Rookie") {
                 $wr->decodeJson();
                 $metrics = $wr->getMetrics();
                 $apiInfo = $wr->getApiInfo();
                 $info = $wr->getPlayerInfo();
-                if (array_key_exists('cfb_id', $apiInfo)
-                    // && $wr->getTeam() == 'Rookie'
-                    && !array_key_exists('collegeRecBreakdown', $metrics)
-                ) {
+                if (array_key_exists('cfb_id', $apiInfo)) {
                     $collegeStats = $wr->getCollegeStats();
                     if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
                         $recSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "receiving");
@@ -1019,6 +1040,9 @@ class TeService extends ServiceAbstract
                         $bestSeason = 0;
                         $mostYards = 0;
                         foreach ($recSeasons as $recSeason) {
+                            if ($recSeason['season'] != 2023) {
+                                continue;
+                            }
                             if ($recSeason['g'] < 2) {
                                 continue;
                             }
@@ -1116,9 +1140,16 @@ class TeService extends ServiceAbstract
                                         $recPercents['recs']['underRecs'] = round(($recBreakdown['underneath']['receptions'] / $recSeason['recs']) * 100, 2);
                                     }
                                     $year = $recSeason['season'];
-//                                    $collegeStats[$year]['yac'] = $recSeason['yac'];
-//                                    $collegeStats[$year]['recBreakdown'] = $recBreakdown;
-//                                    $collegeStats[$year]['recPercents'] = $recPercents;
+                                    if (array_key_exists('yac', $recSeason)) {
+                                        $yacKey = 'yac';
+                                    }
+                                    if (array_key_exists('yardsAfterContact', $recSeason)) {
+                                        $yacKey = 'yardsAfterContact';
+                                    }
+
+                                    $collegeStats[$year]['yac'] = $recSeason[$yacKey];
+                                    $collegeStats[$year]['recBreakdown'] = $recBreakdown;
+                                    $collegeStats[$year]['recPercents'] = $recPercents;
 
                                     if ($recSeason['yards'] > $mostYards) {
                                         $mostYards = $recSeason['yards'];

@@ -519,7 +519,7 @@ class Player implements InputFilterAwareInterface
                         "recDom" => round($stats['recs']/$stats['totals']['recs'] * 100,1)."%",
                         "ydsDom" => round($stats['recYds']/$stats['totals']['yds'] * 100, 1)."%",
                         "tdsDom" => round($stats['recTds']/$stats['totals']['tds'] * 100,1)."%",
-                        "dom" => $stats['dominator']
+                        "dom" => array_key_exists('dominator', $stats) ? $stats['dominator'] : 0
                     ];
                 }
 
@@ -539,9 +539,9 @@ class Player implements InputFilterAwareInterface
                         "recTds" => $stats['recTds'],
                         "carryDom" => round(($stats['rushAtt'] / $stats['totals']['carries']) * 100, 1)."%",
                         "recDom" => round(($stats['recs'] / $stats['totals']['recs']) * 100, 1)."%",
-                        "ydDom" => round((($stats['rushYds'] + $stats['recYds']) / $stats['totals']['yds']) * 100, 1)."%",
+                        "ydDom" => round((($stats['rushYds'] + $stats['recYds']) / $stats['totals']['scrimmage']) * 100, 1)."%",
                         "tdDom" => round((($stats['rushTds'] + $stats['recTds']) / $stats['totals']['tds']) * 100, 1)."%",
-                        "dominator" => $stats['dominator']
+                        "dominator" => array_key_exists('dominator', $stats) ? $stats['dominator'] : 0
                     ];
                 }
 
@@ -558,7 +558,7 @@ class Player implements InputFilterAwareInterface
                         "recDom" => round($stats['recs']/$stats['totals']['recs'] * 100,1)."%",
                         "ydsDom" => round($stats['recYds']/$stats['totals']['yds'] * 100, 1)."%",
                         "tdsDom" => round($stats['recTds']/$stats['totals']['tds'] * 100,1)."%",
-                        "dom" => $stats['dominator']
+                        "dom" => array_key_exists('dominator', $stats) ? $stats['dominator'] : 0
                     ];
                 }
             }
@@ -570,6 +570,7 @@ class Player implements InputFilterAwareInterface
     {
         $this->decodeJson();
         $this->ordinals = $this->makeOrdinals();
+        $this->collegeTable = $this->makeCollegeTable();
         try {
             $this->collegeTable = $this->makeCollegeTable();
         } catch (\Exception $e) {

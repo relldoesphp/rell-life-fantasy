@@ -355,13 +355,13 @@ class PlayerForm extends Form
                     //total fieldset
                     $teamTotal = new Fieldset("totals");
                     $teamTotal->setLabel("totals");
-                    $totalFields = ["tds","yds","recs","returnTds","returnYds"];
+                    $totalFields = ["tds","yds","recs"];
                     foreach ($totalFields as $field) {
                         $newField = new Element($field);
                         $newField->setLabel($field);
                         $newField->setLabelAttributes(['class' => 'form-group col m2']);
                         $teamTotal->add($newField);
-                        if ($collegeStats != null && array_key_exists($i, $collegeStats) && array_key_exists($field, $collegeStats[$i]['totals'])) {
+                        if ($collegeStats != null && array_key_exists($i, $collegeStats) && array_key_exists('totals', $collegeStats[$i]) && array_key_exists($field, $collegeStats[$i]['totals'])) {
                             $newField->setValue($collegeStats[$i]['totals'][$field]);
                         }
                     }

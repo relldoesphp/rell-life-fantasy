@@ -148,7 +148,7 @@ class RbService extends ServiceAbstract
 //                $pointer++;
 //                $progressBar->update($pointer);
 //
-//                continue;
+//               // continue;
 //            }
 
             if ($rb->getId() == 26883) {
@@ -485,7 +485,7 @@ class RbService extends ServiceAbstract
 
                 /*** receiving ***/
                 if (array_key_exists('yards', $metrics['collegeRushBreakdown']['receiving'])) {
-                    if (!array_key_exists('bestRec', $metrics) && $metrics['bestRec'] == null) {
+                    if (!array_key_exists('bestRec', $metrics) || $metrics['bestRec'] == null) {
                         $recs = $metrics['collegeRushBreakdown']['receiving']['receptions'];
                         $recYards = round(($metrics['collegeRushBreakdown']['receiving']['yards'] / 10), 2);
                     } else {
@@ -594,7 +594,7 @@ class RbService extends ServiceAbstract
 
     public function makeCollegeScore($rb)
     {
-        if ($rb->getId() == 28184) {
+        if ($rb->getId() == 29605) {
             $gotHim = true;
         } else {
             $notHIm = true;
@@ -668,9 +668,14 @@ class RbService extends ServiceAbstract
                 }
 
 
+                if (!array_key_exists("carries", $stats['totals'])) {
+                    continue;
+                }
+
+
                 // determine dominators
                 $dominator['td'] = round(($stats['scrimmageTds'] / $stats['totals']['tds']) * 100, 2);
-                $dominator['yd'] = round(($stats['scrimmageYds'] / $stats['totals']['yds']) * 100, 2);
+                $dominator['yd'] = round(($stats['scrimmageYds'] / $stats['totals']['scrimmage']) * 100, 2);
                 $dominator['rec'] = round(($stats['recs'] / $stats['totals']['recs']) * 100, 2);
                 $dominator['carries'] = round(($stats['rushAtt'] / $stats['totals']['carries']) * 100, 2);
 
@@ -959,7 +964,7 @@ class RbService extends ServiceAbstract
         foreach ($rbs as $rb) {
             $rb->decodeJson();
             $metrics = $rb->getMetrics();
-            if ($rb->getId() == "28412") {
+            if ($rb->getId() == 28281) {
                 $rb->decodeJson();
                 $apiInfo = $rb->getApiInfo();
                 $playerInfo = $rb->getPlayerInfo();
@@ -1004,6 +1009,7 @@ class RbService extends ServiceAbstract
         }
         $request->setUri("https://www.sports-reference.com/cfb/players/{$cfb}.html");
 
+        sleep(25);
         $client = new Client();
         $response = $client->send($request);
         $html = $response->getBody();
@@ -1027,6 +1033,9 @@ class RbService extends ServiceAbstract
                 $year = $rowChildren->item(0)->nodeValue;
                 $year = str_replace("*", "", $year);
                 if ($year == "Career") {
+                    continue;
+                }
+                if (!is_numeric($year)) {
                     continue;
                 }
                 if (! $rowChildren->item(1)->firstChild instanceof \DOMElement) {
@@ -1194,12 +1203,12 @@ class RbService extends ServiceAbstract
         $pointer = 0;
         $missing = [];
         foreach ($rbs as $rb) {
-            if (1) {
+            if ($rb->getId() == 28281) {
                 $rb->decodeJson();
                 $metrics = $rb->getMetrics();
                 $apiInfo = $rb->getApiInfo();
                 $info = $rb->getPlayerInfo();
-                if ($rb->getId() == "28412") {
+                if (1) {
                     $collegeStats = $rb->getCollegeStats();
                     if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
                         $rushSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "rushing");
@@ -1357,28 +1366,32 @@ class RbService extends ServiceAbstract
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
         $pointer = 0;
         foreach ($wrs as $wr) {
-            $apiInfo = $wr->getApiInfo();
-            if (!array_key_exists('cfb_id', $apiInfo)) {
-                $playerInfo = $wr->getPlayerInfo();
-                $firstName = $wr->getFirstName();
-                $lastName = $wr->getLastName();
-                $result = $collect->firstWhere('fullName', $firstName." ".$lastName);
-                if (empty($result)) {
-                    continue;
-                } else {
-                    $playerInfo['birth_date'] = $result['birthdate'];
-                    $playerInfo['heightInches'] = $result['height'];
-                    $playerInfo['redShirt'] = $result['redShirt'];
-                    $apiInfo['cfb_id'] = $result['playerId'];
-                    $wr->setApiInfo($apiInfo);
-                    $wr->setPlayerInfo($playerInfo);
-                    $this->command->save($wr);
+            if ($wr->getTeam() == 'Rookie') {
+                $apiInfo = $wr->getApiInfo();
+                if (!array_key_exists('cfb_id', $apiInfo)) {
+                    $playerInfo = $wr->getPlayerInfo();
+                    $firstName = $wr->getFirstName();
+                    $lastName = $wr->getLastName();
+                    $result = $collect->firstWhere('fullName', $firstName . " " . $lastName);
+                    if (empty($result)) {
+                        continue;
+                    } else {
+                        $playerInfo['birth_date'] = $result['birthdate'];
+                        $playerInfo['heightInches'] = $result['height'];
+                        $playerInfo['redShirt'] = $result['redShirt'];
+                        $apiInfo['cfb_id'] = $result['playerId'];
+                        $wr->setApiInfo($apiInfo);
+                        $wr->setPlayerInfo($playerInfo);
+                        $this->command->save($wr);
+                    }
                 }
+
             }
             $pointer++;
             $progressBar->update($pointer);
         }
         $progressBar->finish();
+
         //**** phase 2 use passing info *****//
         $wrs = $this->repository->findAllPlayers("RB");
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
@@ -1391,7 +1404,7 @@ class RbService extends ServiceAbstract
             $wr->decodeJson();
             $apiInfo = $wr->getApiInfo();
             $info = $wr->getPlayerInfo();
-            if (!array_key_exists('cfb_id', $apiInfo) && $wr->getTeam() != 'FA') {
+            if (!array_key_exists('cfb_id', $apiInfo) && $wr->getTeam() == 'Rookie') {
                 $playerInfo = $wr->getPlayerInfo();
                 $firstName = $wr->getFirstName();
                 $lastName = $wr->getLastName();

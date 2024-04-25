@@ -400,7 +400,7 @@ EOT;
         foreach ($offensive as $type) {
             for ($i=1; $i < 33; $i++) {
                 for ($week=1; $week < 18; $week++) {
-                    $games = $this->sisApi->getPlayersQuery('2021', $type, [
+                    $games = $this->sisApi->getPlayersQuery('2023', $type, [
                         "TimeFilters.StartWeek" => $week,
                         "TimeFilters.EndWeek" => $week,
                         "GameFilters.Team" => $i

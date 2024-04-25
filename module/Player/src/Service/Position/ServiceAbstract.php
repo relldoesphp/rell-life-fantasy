@@ -280,6 +280,11 @@ class ServiceAbstract
                 $player->setPlayerInfo($info);
             }
 
+            if (!array_key_exists('age', $info)) {
+                $info['age'] = '';
+                $player->setPlayerInfo($info);
+            }
+
             //fix height
             if (array_key_exists('height', $info) && $info['height'] > 66 and $info['height'] < 82) {
                 $info['heightInches'] = $info['height'];

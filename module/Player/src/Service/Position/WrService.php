@@ -490,7 +490,7 @@ class WrService extends ServiceAbstract
                     } elseif (in_array($metrics['conf'], $minor5)) {
                         $confMultiplier = 1;
                     } else {
-                        $confMultiplier = .95;
+                        $confMultiplier = .9;
                     }
                 } else {
                     $confMultiplier = 1;
@@ -619,6 +619,16 @@ class WrService extends ServiceAbstract
                 if ($metrics['yac'] != null) {
                     $metrics['yac'] = round(($yacPerformance * .3) + ($metrics['yac'] * .7), 2);
                 }
+
+                // The YAC God Tax
+                if (array_key_exists('recs', $metrics['bestSeason']) && array_key_exists('skillScore', $metrics)) {
+                    $screenP = $metrics['collegeRecBreakdown']['underneath']['receptions']/$metrics['bestSeason']['recs'];
+                    if ($screenP > .25 && $totalYacP > .25 && $metrics['skillScore'] > 20) {
+                        $metrics['skillScore'] = $metrics['skillScore'] - round(($metrics['skillScore'] * ($totalYacP/100)), 2);
+                    }
+                }
+
+
             } else {
                 //use averages for adjustments when we don't have college breakdown
             }
@@ -1196,7 +1206,11 @@ class WrService extends ServiceAbstract
                     $lastYear = $stats['class'];
                 }
 
-                if ($stats['recYds'] > 1000) {
+                if (($stats['recYds']/$stats['games']) > 79) {
+                    $bonus = $bonus + 1;
+                }
+
+                if (($stats['recYds']/$stats['games']) > 99) {
                     $bonus = $bonus + 1;
                 }
 
@@ -1371,6 +1385,13 @@ class WrService extends ServiceAbstract
         } else {
             $collegeScore = round(($collegeScore * .9),1);
         }
+
+        if (array_key_exists('conference', $bestSeason)) {
+            $conf = $bestSeason['conference'];
+            if ($bestSeason['college'] == "Notre Dame") {
+                $conf = "ACC";
+            }
+        }
         
         return [
             'collegeScore' => $collegeScore,
@@ -1393,11 +1414,11 @@ class WrService extends ServiceAbstract
         $wrs = $this->repository->findAllPlayers("WR");
         $progressBar = new ProgressBar($this->consoleAdapter, 0, $wrs->count());
         $pointer = 0;
-        $collegePlayers = $this->sisApi->getCollegePlayers('2021');
+        $collegePlayers = $this->sisApi->getCollegePlayers('2022');
         $collect = collect($collegePlayers);
-        $needsFix = [];
+        $needsFix = [29683];
         foreach ($wrs as $wr) {
-            if ($wr->getId() == "28198") {
+            if ($wr->getId() == 29683) {
                 $wr->decodeJson();
                 $metrics = $wr->getMetrics();
                 $apiInfo = $wr->getApiInfo();
@@ -1418,7 +1439,16 @@ class WrService extends ServiceAbstract
                         $this->command->save($wr);
                     }
                 }
-                $result = $this->scrapCollegeStats($wr);
+                $result = true;
+               // $needStat = [];
+                if (in_array($wr->getId(), $needsFix)) {
+                    $wr->decodeJson();
+//                    $collegeStats = $this->getSisMissingCollegeStats($wr, $wr->getCollegeStats());
+//                    $wr->setCollegeStats($collegeStats);
+//                    $this->command->save($wr);
+                   $result = $this->scrapCollegeStats($wr);
+                }
+
                 if ($result == false) {
                     $firstName = $wr->getFirstName();
                     $lastName = $wr->getLastName();
@@ -1435,6 +1465,7 @@ class WrService extends ServiceAbstract
     public function scrapCollegeStats($wr)
     {
         $request = new Request();
+        $wr->decodeJson();
         $apiInfo = $wr->getApiInfo();
         if (!array_key_exists('cfb-alias', $apiInfo) || $apiInfo['cfb-alias'] == null) {
             $firstName = strtolower($wr->getFirstName());
@@ -1445,9 +1476,16 @@ class WrService extends ServiceAbstract
         }
         $request->setUri("https://www.sports-reference.com/cfb/players/{$cfb}.html");
 
+        sleep(20);
+
         $client = new Client();
         $response = $client->send($request);
         $html = $response->getBody();
+
+        if ($html == 'error code: 1015') {
+            print "blocked too many requests\n";
+            return false;
+        }
 
         $dom = new Query($html);
         $results = $dom->execute('#receiving tr');
@@ -1467,10 +1505,14 @@ class WrService extends ServiceAbstract
 //                }
                 $year = $rowChildren->item(0)->nodeValue;
                 $year = str_replace("*", "", $year);
+                if (!is_numeric($year)) {
+                    continue;
+                }
                 if (! $rowChildren->item(1)->firstChild instanceof \DOMElement && $year) {
                     return false;
                 }
                 $collegeHref = $rowChildren->item(1)->firstChild->getAttribute("href");
+                sleep(10);
                 $totals = $this->getCollegeTotals($collegeHref);
                 $collegeStats[$year]['totals'] = $totals;
                 $collegeStats[$year]['year'] = $year;
@@ -1581,6 +1623,7 @@ class WrService extends ServiceAbstract
 
     public function getSisMissingCollegeStats($wr, $collegeStats)
     {
+        $wr->decodeJson();
         $apiInfo = $wr->getApiInfo();
         if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
             $recSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "receiving");
@@ -1688,12 +1731,13 @@ class WrService extends ServiceAbstract
         $pointer = 0;
         $missing = [];
         foreach ($wrs as $wr) {
-            if (1) {
+            if ($wr->getId() == 29823) {
             $wr->decodeJson();
             $metrics = $wr->getMetrics();
             $apiInfo = $wr->getApiInfo();
             $info = $wr->getPlayerInfo();
-            if ($wr->getId() == "28198") {
+            $needStats = [29823];
+            if (in_array($wr->getId(), $needStats)) {
                 $collegeStats = $wr->getCollegeStats();
                 if (array_key_exists('cfb_id', $apiInfo) && $apiInfo['cfb_id'] != null) {
                     $recSeasons = $this->sisApi->getCollegeStats($apiInfo['cfb_id'], "receiving");

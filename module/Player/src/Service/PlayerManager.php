@@ -186,26 +186,32 @@ class PlayerManager
 
             $playerInfo['sport'] = $value->sport;
 
-            if ($player->getTeam() == 'Rookie') {
-                $playerInfo['age'] = $value->age;
-//                if ($value->team == null) {
-//                    $player->setTeam("FA");
-//                }
-//                if (!empty($value->height)) {
-//                    $playerInfo['height'] = $value->height;
-//                }
-
-                $playerInfo['status'] = $value->status;
-
-//                if (!empty($value->weight)) {
-//                    $playerInfo['weight'] = $value->weight;
-//                }
-            } else {
+//sport            if ($player->getTeam() == 'Rookie') {
+//                $playerInfo['age'] = $value->age;
+////                if ($value->team == null) {
+////                    $player->setTeam("FA");
+////                }
+////                if (!empty($value->height)) {
+////                    $playerInfo['height'] = $value->height;
+////                }
+//
+//                $playerInfo['status'] = $value->status;
+//
+////                if (!empty($value->weight)) {
+////                    $playerInfo['weight'] = $value->weight;
+////                }
+//            } else {
+//                $playerInfo['height'] = $value->height;
+//                $playerInfo['heightInches'] = $value->heightInches;
+//                $playerInfo['weight'] = $value->weight;
+//            }
+            if ($player->getTeam() != 'Rookie') {
+                $player->setTeam($value->team);
                 $playerInfo['height'] = $value->height;
                 $playerInfo['heightInches'] = $value->heightInches;
                 $playerInfo['weight'] = $value->weight;
+                $playerInfo['birth_date'] = $value->birth_date;
             }
-
             $playerInfo['college'] = $value->college;
             $playerInfo['hashtag'] = $value->hashtag;
             $playerInfo['player_id'] = $value->player_id;
@@ -214,7 +220,7 @@ class PlayerManager
             $playerInfo['birth_city'] = $value->birth_city;
             $playerInfo['birth_state'] = $value->birth_state;
             $playerInfo['birth_country'] = $value->birth_country;
-            $playerInfo['birth_date'] = $value->birth_date;
+
             $playerInfo['first_name'] = $value->first_name;
             $playerInfo['last_name'] = $value->last_name;
             $playerInfo['search_rank'] = $value->search_rank;
@@ -352,8 +358,8 @@ class PlayerManager
 
     public function scrapCollegeJob()
     {
-//        $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
-//        $rbService->findCfbId('2021');
+ //       $rbService = new Position\RbService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+ //       $rbService->findCfbId('2023');
 //        $rbService->findCfbId('2020');
 //        $rbService->findCfbId('2019');
 //        $rbService->findCfbId('2018');
@@ -361,23 +367,19 @@ class PlayerManager
 //        $rbService->findCfbId('2016');
 //        $rbService->scrapCollegeJob();
 //        $rbService->makeCollegeBreakdown();
-////
-//        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
-//        $teService->findCfbId('2022');
-//        $teService->scrapCollegeJob();
-//
-//        $teService->findCfbId('2021');
-//        $teService->findCfbId('2020');
-//        $teService->findCfbId('2019');
-//        $teService->findCfbId('2018');
-//        $teService->findCfbId('2017');
-//        $teService->findCfbId('2016');
-//        $teService->makeCollegeBreakdown();
+//        $this->updateRbMetrics();
+//////
+        $teService = new Position\TeService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+       // $teService->findCfbId('2024');
+        //$teService->scrapCollegeJob();
+        $teService->makeCollegeBreakdown();
 
-        $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
-//       // $wrService->findCfbId('2022');
-        $wrService->scrapCollegeJob();
-        $wrService->makeCollegeBreakdown();
+   //         $wrService = new Position\WrService($this->db, $this->consoleAdapter, $this->playerCommand, $this->playerRepository, $this->sisApi);
+
+  //          $wrService->findCfbId('2024');
+ //           $wrService->scrapCollegeJob();
+//          $wrService->makeCollegeBreakdown();
+ //         $this->updateWrMetrics();
 
 //        $wrService->findCfbId('2021');
 //        $wrService->findCfbId('2020');
